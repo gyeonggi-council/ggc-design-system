@@ -1,0 +1,35 @@
+# ── 시크릿·자격증명 — 절대 커밋 금지 ─────────────────────────────
+# 이 저장소는 언젠가 public 으로 전환될 수 있다. 그때 되돌릴 수 없으므로
+# 애초에 들어오지 못하게 막는다. 디자인 자산에는 이런 것이 필요 없다.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*-jwk.json
+.mcp.json
+credentials*.json
+secrets*.yaml
+secrets*.yml
+*.kubeconfig
+id_rsa*
+id_ed25519*
+
+# ── 이 저장소의 범위 밖 ──────────────────────────────────────────
+# 서비스 소스·배포 매니페스트·DB 는 상위 플랫폼 저장소에 있다.
+k8s/
+db/
+deploy/
+*.sql
+
+# ── 빌드·캐시 ────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+Thumbs.db
+
+# 실주소 치환 규칙 — 공개 저장소에 절대 올리지 않는다
+redaction.local.sed

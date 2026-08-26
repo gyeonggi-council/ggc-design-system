@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>토큰 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">공통 디자인 시스템</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <label for="q" class="ex-sr">토큰 검색</label>
+      <input id="q" type="search" placeholder="토큰 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ex-lnb-cap">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ex-lnb-cap">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+    </nav>
+
+    <main class="ggc-shell-main" id="main">
+
+      <h1 class="ex-h1">토큰 · 팔레트<span class="ver">ggc-tokens.css v1.2</span></h1>
+      <p class="ex-lede">
+        아래 <b>모든 색값과 대비비는 이 페이지가 열릴 때 브라우저가 계산한 것</b>이다.
+        마크업에는 토큰 <b>이름</b>만 있고 숫자가 하나도 없다 —
+        <code class="ex-inline">getComputedStyle</code> 로 정본을 읽어 채운다.
+        그래서 이 표는 낡을 수 없다.
+      </p>
+
+      <div class="ex-note">
+        <p><b>고대비를 켜고 다시 보라.</b> 브라우저·OS 에서
+        <code>prefers-contrast: more</code> 를 켜면 중립 램프가 한 단계 진해지고
+        <b>숫자가 즉시 따라 바뀐다.</b> 팔레트를 하나 더 만든 것이 아니라
+        같은 이름의 미디어 오버라이드이기 때문이다.</p>
+      </div>
+
+      <!-- ==================================================== 브랜드 -->
+      <section class="ex-section">
+        <h2>브랜드 <span class="cls">경기도의회 네이비</span></h2>
+        <p>KRDS 기본 파랑을 기관 CI 로 오버라이드한 체계다. KRDS 가 전제하는 사용법이며,
+          폐기값 <code class="ex-inline">#256ef4</code>·<code class="ex-inline">#246beb</code> 는
+          검사기가 발견 즉시 FAIL 로 잡는다.</p>
+        <div class="ex-grid">
+          <div class="ex-swatch" data-token="--ggc-primary" data-on="--ggc-surface,--ggc-bg"
+               data-use="주요 버튼 · 활성 상태 · 링크"></div>
+          <div class="ex-swatch" data-token="--ggc-primary-dark" data-on="--ggc-surface"
+               data-use="hover"></div>
+          <div class="ex-swatch" data-token="--ggc-primary-deep" data-on="--ggc-surface"
+               data-use="pressed · 유틸리티 바 배경 · 표 헤더 상단선"></div>
+          <div class="ex-swatch" data-token="--ggc-primary-light" data-min="3"
+               data-use="선택 배경 · 활성 LNB 항목 (배경 전용)"></div>
+          <div class="ex-swatch" data-token="--ggc-primary-light-strong" data-min="3"
+               data-use="강조 배경 · 지급완료 배지 (배경 전용)"></div>
+        </div>
+      </section>
+
+      <!-- ==================================================== 상태 -->
+      <section class="ex-section">
+        <h2>상태 <span class="cls">자기 틴트 위 · 흰 위 양쪽 AA</span></h2>
+        <p>v1.1 은 네 색 전부 자기 틴트 위에서 3.65~3.83:1 이라 <b>미달이었다.</b>
+          v1.2 는 색상각을 유지한 채 명도만 낮춰 AA 를 넘겼고, 흰 위에서도 5.2:1 이상이라
+          <b>연한 배지와 채움 버튼 양방향</b>으로 쓸 수 있다.</p>
+        <div class="ex-grid">
+          <div class="ex-swatch" data-token="--ggc-success" data-on="--ggc-success-tint,--ggc-surface"
+               data-use="승인 · 확정 · 완료"></div>
+          <div class="ex-swatch" data-token="--ggc-warning" data-on="--ggc-warning-tint,--ggc-surface"
+               data-use="대기 · 주의 · 검토 필요"></div>
+          <div class="ex-swatch" data-token="--ggc-danger" data-on="--ggc-danger-tint,--ggc-surface"
+               data-use="반려 · 오류 · 기한 초과"></div>
+          <div class="ex-swatch" data-token="--ggc-info" data-on="--ggc-info-tint,--ggc-surface"
+               data-use="정보 · 회기 중 · 진행"></div>
+        </div>
+        <div class="ex-sub">틴트 (배경 전용)</div>
+        <div class="ex-grid">
+          <div class="ex-swatch" data-token="--ggc-success-tint" data-min="3" data-use="승인 배지 배경"></div>
+          <div class="ex-swatch" data-token="--ggc-warning-tint" data-min="3" data-use="대기 배지 배경"></div>
+          <div class="ex-swatch" data-token="--ggc-danger-tint"  data-min="3" data-use="반려 배지 배경"></div>
+          <div class="ex-swatch" data-token="--ggc-info-tint"    data-min="3" data-use="회기 배지 배경"></div>
+        </div>
+
+        <div class="ex-note ex-note--warn">
+          <p><b>색 단독에 의존하지 않는다.</b> 아래처럼 배지에는 항상 텍스트나 아이콘을 함께 둔다.
+          색각 이상 사용자에게는 대비만으로 부족하고, 이것은 대비 수치와 무관하게 지켜야 한다.</p>
+        </div>
+        <div class="ex-demo ex-row">
+          <span class="ggc-badge ggc-badge--approved">✓ 승인</span>
+          <span class="ggc-badge ggc-badge--pending">◷ 대기</span>
+          <span class="ggc-badge ggc-badge--rejected">✕ 반려</span>
+          <span class="ggc-badge ggc-badge--session">● 회기 중</span>
+          <span class="ggc-badge ggc-badge--meeting">◆ 회의일</span>
+          <span class="ggc-badge ggc-badge--recess">○ 비회기</span>
+          <span class="ggc-badge ggc-badge--paid">₩ 지급완료</span>
+        </div>
+      </section>
+
+      <!-- ==================================================== 중립 -->
+      <section class="ex-section">
+        <h2>중립 텍스트 램프 <span class="cls">4단 + 비텍스트 1</span></h2>
+        <p>네 단 전부 <b>흰 배경과 페이지 배경 양쪽</b>에서 AA 를 넘고 단조성이 유지된다.
+          아래 두 번째 대비값이 페이지 배경 <code class="ex-inline">--ggc-bg</code> 위 값이다.</p>
+        <div class="ex-grid">
+          <div class="ex-swatch" data-token="--ggc-text-strong" data-on="--ggc-surface,--ggc-bg" data-use="제목 · 강조 수치"></div>
+          <div class="ex-swatch" data-token="--ggc-text"        data-on="--ggc-surface,--ggc-bg" data-use="본문"></div>
+          <div class="ex-swatch" data-token="--ggc-text-muted"  data-on="--ggc-surface,--ggc-bg" data-use="보조 · 라벨 · 표 헤더"></div>
+          <div class="ex-swatch" data-token="--ggc-text-subtle" data-on="--ggc-surface,--ggc-bg" data-use="메타 · 시각 · 힌트"></div>
+          <div class="ex-swatch" data-token="--ggc-text-faint"  data-on="--ggc-surface" data-min="3"
+               data-use="⚠ 텍스트 아님. 아이콘 stroke · 구분 · 장식 전용"></div>
+        </div>
+        <div class="ex-note ex-note--danger">
+          <p><b><code>--ggc-text-faint</code> 를 텍스트에 쓰면 AA 미달이다.</b>
+          이름이 램프의 다섯 번째처럼 보이지만 아니다 — v1.1 의
+          <code>--ggc-text-subtle</code> 이었고 정본 최다 사용색이라
+          삭제하지 않고 <b>비텍스트 전용으로 역할만 강등</b>했다.
+          3:1 대상(아이콘·구분선)에만 쓴다.</p>
+        </div>
+      </section>
+
+      <!-- ==================================================== 면·선 -->
+      <section class="ex-section">
+        <h2>면 · 선</h2>
+        <p>전부 배경·테두리 전용이다. 대비 판정 대상이 아니라 대비비를 표시하지 않는다.</p>
+        <div class="ex-grid">
+          <div class="ex-swatch" data-token="--ggc-bg"            data-use="페이지 배경"></div>
+          <div class="ex-swatch" data-token="--ggc-surface"       data-use="카드 · 패널 · GNB · LNB"></div>
+          <div class="ex-swatch" data-token="--ggc-surface-inset" data-use="인셋 영역 · 표 합계행"></div>
+          <div class="ex-swatch" data-token="--ggc-control-bg"    data-use="검색창 · 입력 컨트롤 · 아이콘 박스"></div>
+          <div class="ex-swatch" data-token="--ggc-row-hover"     data-use="목록 행 hover · 밴드형 카드 헤더"></div>
+          <div class="ex-swatch" data-token="--ggc-border"        data-use="카드 테두리"></div>
+          <div class="ex-swatch" data-token="--ggc-border-strong" data-use="버튼 테두리 · 강조 구분"></div>
+          <div class="ex-swatch" data-token="--ggc-shell-border"  data-use="GNB 하단선 · LNB 우측선"></div>
+          <div class="ex-swatch" data-token="--ggc-hairline"      data-use="표 행 구분 · 옅은 구분선"></div>
+        </div>
+      </section>
+
+      <!-- ==================================================== 역할 -->
+      <section class="ex-section">
+        <h2>역할 색쌍 <span class="cls">신원 — 상태와 다른 축이다</span></h2>
+        <p>“누구인가”를 나타낸다. 결재 상태(승인/반려)와 <b>겹쳐 쓰지 않는다</b> —
+          한 화면에서 두 축이 같은 색을 쓰면 배지 하나가 두 가지로 읽힌다.</p>
+        <div class="ex-grid">
+          <div class="ex-swatch" data-token="--ggc-role-member" data-on="--ggc-role-member-tint" data-use="의원"></div>
+          <div class="ex-swatch" data-token="--ggc-role-staff"  data-on="--ggc-role-staff-tint"  data-use="사무처"></div>
+          <div class="ex-swatch" data-token="--ggc-role-policy" data-on="--ggc-role-policy-tint" data-use="정책지원관"></div>
+          <div class="ex-swatch" data-token="--ggc-role-other"  data-on="--ggc-role-other-tint"  data-use="기타"></div>
+        </div>
+        <div class="ex-demo ex-row">
+          <span class="ggc-badge ggc-badge--role-member">의원</span>
+          <span class="ggc-badge ggc-badge--role-staff">사무처</span>
+          <span class="ggc-badge ggc-badge--role-policy">정책지원관</span>
+          <span class="ggc-badge ggc-badge--role-other">기타</span>
+        </div>
+        <div class="ex-note ex-note--warn">
+          <p><b>금/앰버를 역할 배지 밖으로 확산시키지 않는다.</b> 확산하면 플랫폼에
+          주 색상이 하나 더 늘고, 그게 지금까지 색이 여덟 종으로 벌어진 기제다.</p>
+        </div>
+      </section>
+
+      <!-- ==================================================== 타이포 -->
+      <section class="ex-section">
+        <h2>타이포그래피 <span class="cls">--ggc-font · --ggc-font-mono</span></h2>
+        <p><b>자체 호스팅이다.</b> <code class="ex-inline">Pretendard GOV</code> 를 서비스가 직접
+          담고 <code class="ex-inline">@font-face</code> 를 선언한다.
+          <b>외부 CDN 을 링크하지 않는다</b> — 망분리 환경에서 요청이 나가지 않아
+          글꼴이 폴백으로 떨어진다. 이 저장소도 폰트 파일을 담지 않으므로
+          아래는 폴백 체인으로 보일 수 있다.</p>
+        <div class="ex-demo ex-demo--flow">
+          <div style="font-size:26px;font-weight:800;letter-spacing:-0.03em;color:var(--ggc-text-strong)">제12대 경기도의회 의정지원 플랫폼</div>
+          <div style="font-size:17px;font-weight:800;letter-spacing:-0.02em;color:var(--ggc-text-strong)">섹션 제목 — 조례 제정 현황</div>
+          <div style="font-size:15px;font-weight:700;color:var(--ggc-text)">카드 제목 15px / 700</div>
+          <div style="font-size:14px;font-weight:700;color:var(--ggc-text)">행 제목 14px / 700</div>
+          <div style="font-size:13.5px;line-height:1.75;color:var(--ggc-text);max-width:62ch">
+            본문 13.5px. 조례안은 소관 상임위원회의 심사를 거쳐 본회의에 부의한다.
+            의장은 필요하다고 인정할 때에는 관계 위원회에 회부하여 의견을 들을 수 있다.
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--ggc-text-muted)">라벨 13px / 700 muted</div>
+          <div style="font-size:12px;color:var(--ggc-text-subtle)">메타 12px subtle — 2026-08-22 14:30 등록</div>
+          <div style="font-family:var(--ggc-font-mono);font-size:12.5px;color:var(--ggc-text)">
+            숫자·코드 mono — BILL-2026-0417 · 1,284,000원 · 10.10.11.x
+          </div>
+          <div style="font-family:var(--ggc-font-mono);font-size:13px;color:var(--ggc-text-strong);font-variant-numeric:tabular-nums">
+            표 정렬용 tabular-nums &nbsp; 1,284,000 / 987,300 / 41,020
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== 간격 -->
+      <section class="ex-section">
+        <h2>간격 <span class="cls">--ggc-space-1 ~ -7</span></h2>
+        <p>v1.1 에는 간격 토큰이 아예 없어 각 서비스가 px 를 직접 썼다.
+          아래는 디자인 원본 실측 최빈값이고, KRDS <code class="ex-inline">semantic.gap</code> 의
+          부분집합과 일치한다.</p>
+        <div class="ex-demo">
+          <div class="ex-scale">
+            <div class="item" data-size="--ggc-space-1"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-2"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-3"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-4"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-5"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-6"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-7"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== 형태 -->
+      <section class="ex-section">
+        <h2>형태 · 그림자 · 포커스</h2>
+        <div class="ex-demo">
+          <div class="ex-scale">
+            <div class="item" data-radius="--ggc-radius-sm"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-radius="--ggc-radius"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-radius="--ggc-radius-lg"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+          </div>
+        </div>
+
+        <div class="ex-sub">그림자 — 카드는 그림자를 쓰지 않는다 (계약 §2). primary 버튼만 예외다</div>
+        <div class="ex-demo ex-demo--bg ex-row" style="gap:var(--ggc-space-6)">
+          <div style="background:var(--ggc-surface);border:1px solid var(--ggc-border);border-radius:var(--ggc-radius-lg);padding:var(--ggc-space-5);font-size:12.5px;color:var(--ggc-text-muted);box-shadow:var(--ggc-shadow)">
+            <code style="font-family:var(--ggc-font-mono)">--ggc-shadow</code><br>기본 · 거의 보이지 않는다
+          </div>
+          <button class="ggc-btn ggc-btn--primary" type="button">--ggc-shadow-primary</button>
+        </div>
+
+        <div class="ex-sub">포커스 링 — <code class="ex-inline">--ggc-focus-ring</code></div>
+        <p>아래 세 컨트롤에 <kbd class="ex-inline">Tab</kbd> 으로 들어가 보라.
+          디자인 원본은 <code class="ex-inline">outline:none</code> 을 28곳에 두고
+          대체를 두지 않았다 — 그대로 이식하면 KWCAG 2.2 / WCAG 2.4.7 위반을
+          전 시스템에 복제한다. <b>이 지점에서는 원본을 따르지 않는다.</b></p>
+        <div class="ex-demo ex-row">
+          <button class="ggc-btn ggc-btn--secondary" type="button">버튼</button>
+          <div class="ggc-field" style="width:220px">
+            <label for="f1">입력 <span class="req">*</span></label>
+            <input id="f1" type="text" placeholder="Tab 으로 들어와 보라">
+          </div>
+          <a href="#main">링크</a>
+        </div>
+        <div class="ex-note ex-note--danger">
+          <p><b><code>forced-colors</code> 에서 <code>box-shadow</code> 는 렌더되지 않는다.</b>
+          포커스 링을 그림자로만 만들면 Windows 고대비 사용자에게 <b>통째로 사라진다.</b>
+          실제로 그런 상태였고, 토큰이 <code>outline: 3px solid Highlight</code> 로 복원한다.
+          포커스·선택·현재 단계를 그림자로만 나타내지 말 것.</p>
+        </div>
+      </section>
+
+      <!-- ==================================================== 셸 치수 -->
+      <section class="ex-section">
+        <h2>셸 치수 <span class="cls">계약 §2</span></h2>
+        <div class="ex-demo">
+          <div class="ggc-table-wrap">
+            <table class="ggc-table ggc-table--kv">
+              <tbody>
+                <tr><th scope="row">--ggc-gnb-h</th><td>64px — GNB 높이. sticky, 하단선 <code style="font-family:var(--ggc-font-mono)">--ggc-shell-border</code></td></tr>
+                <tr><th scope="row">--ggc-lnb-w</th><td>256px — LNB 폭. GNB 브랜드 슬롯과 같은 폭이라 세로선이 이어진다</td></tr>
+                <tr><th scope="row">--ggc-main-max</th><td>1320px — 대시보드 본문 최대폭</td></tr>
+                <tr><th scope="row">--ggc-main-max-wide</th><td>1360px — 기타 업무 화면 (<code style="font-family:var(--ggc-font-mono)">.ggc-shell-main--wide</code>)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="ex-note">
+          <p><b>≥1680px 에서 1560/1600 으로 확폭</b>되고, 1679px 이하는 수치가 그대로 보존된다 —
+          기존 1440×900 검증 증적과 Windows 125% 배율 FHD(뷰포트 1536px)가 확폭의 영향을
+          받지 않게 하기 위한 <b>의도된 동작</b>이다.</p>
+          <p><b>≤900px 에서 LNB 가 drawer 로 접힌다.</b> 이 규칙은 디자인 원본에 근거가 없다 —
+          원본은 <code>@media</code> 0건이고 시안이 전부 1440 데스크톱이다.
+          계약 §2 를 근거로 <b>여기서 1회 정의해 공통으로 고정</b>했다.
+          창을 좁혀 보면 동작을 확인할 수 있다.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      값과 대비비는 이 페이지가 <b>정본에서 실측</b>한 것이다 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v1.2
+    </div>
+  </footer>
+</div>
+
+<script src="examples.js"></script>
+</body>
+</html>

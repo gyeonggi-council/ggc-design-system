@@ -1,0 +1,6 @@
+# design/brand/dist — 배포 정본. 서비스는 오직 여기서만 복사한다.
+# 배경판 #3C5D93 (--ggc-primary) · 여백 8% · 생성 build-brand-assets.py
+b24b4433141b5a48e4cc3bb2730e7a1a484f1d89080b184bc6f1642f1d522ef9  apple-touch-icon-180.png
+4030aaaad32289cec3eb80977a11747cfbef8c8a2540d3659d7e21328356ab7c  assembly-mark.png
+277ddc7c7423ec6df0b9f22a7b6f9783c6669be05e72d0b82e2c61ba56f767a6  favicon-32.png
+636061cc14446bcfc38e473c7989c8f3a30b084d575f4a87da4aca89f50efb80  favicon.ico

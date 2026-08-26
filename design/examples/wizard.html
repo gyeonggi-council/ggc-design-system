@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>위저드 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">조례 초안 작성</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <label for="q" class="ex-sr">조례 검색</label>
+      <input id="q" type="search" placeholder="조례 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ex-lnb-cap">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ex-lnb-cap">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+    </nav>
+
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main">
+
+      <div class="ex-note" style="margin-top:0">
+        <p><b>Configure archetype 이다.</b> 순서가 있는 다단계 입력 — 단계 표시가
+        <b>화면 최상단에 고정</b>되고, 본문은 현재 단계 하나만 보여 주며,
+        하단에 <b>이전 / 다음</b> 이 항상 같은 자리에 있다. 예시 데이터다.</p>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--ggc-space-4);flex-wrap:wrap;margin-bottom:var(--ggc-space-5)">
+        <div>
+          <h1 class="ex-h1" style="margin-bottom:6px">조례 초안 작성</h1>
+          <div style="font-size:13px;color:var(--ggc-text-subtle)">
+            경기도 청년 기본조례 일부개정조례안 ·
+            <span style="font-family:var(--ggc-font-mono)">DRAFT-2026-0088</span>
+          </div>
+        </div>
+        <div class="ex-row">
+          <span style="font-size:12px;color:var(--ggc-text-subtle)">08-22 14:07 자동저장됨</span>
+          <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
+        </div>
+      </div>
+
+      <!-- ── 단계 표시 (가로형 정본) ─────────────────────────────────── -->
+      <div class="ggc-wizard">
+        <div class="ggc-wizard-step is-done">
+          <div class="track"><span class="line"></span><button class="dot" type="button">✓</button><span class="line"></span></div>
+          <div class="meta"><div class="label">개요 설정</div><div class="sub">소크라테스식 문답</div></div>
+        </div>
+        <div class="ggc-wizard-step is-done">
+          <div class="track"><span class="line"></span><button class="dot" type="button">✓</button><span class="line"></span></div>
+          <div class="meta"><div class="label">유사 조례 검토</div><div class="sub">타 시·도 17건</div></div>
+        </div>
+        <div class="ggc-wizard-step is-current" aria-current="step">
+          <div class="track"><span class="line"></span><button class="dot" type="button">3</button><span class="line"></span></div>
+          <div class="meta"><div class="label">조문 작성</div><div class="sub">본칙 8조 · 부칙 2조</div></div>
+        </div>
+        <div class="ggc-wizard-step">
+          <div class="track"><span class="line"></span><button class="dot" type="button">4</button><span class="line"></span></div>
+          <div class="meta"><div class="label">검토 · 제출</div><div class="sub">법제관 사전검토</div></div>
+        </div>
+      </div>
+
+      <!-- ── 본문: 편집 + 참조 레일 ──────────────────────────────────── -->
+      <div style="display:flex;flex-wrap:wrap;gap:var(--ggc-space-5);margin-top:var(--ggc-space-5);align-items:flex-start">
+
+        <!-- 좌: 편집 — flex:1 1 520px 아래로는 한 단으로 접힌다 -->
+        <div class="ggc-card ggc-card--pad" style="flex:1 1 520px;min-width:0">
+          <div class="ggc-card-head--band" style="margin:-18px -22px var(--ggc-space-5);border-radius:var(--ggc-radius-lg) var(--ggc-radius-lg) 0 0;display:flex;align-items:center;justify-content:space-between;gap:var(--ggc-space-3)">
+            <div style="font-size:15px;font-weight:700;color:var(--ggc-text-strong)">3단계 · 조문 작성</div>
+            <span class="ggc-tag ggc-tag--info">본칙 8조</span>
+          </div>
+
+          <div style="display:grid;gap:var(--ggc-space-4);grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))">
+            <div class="ggc-field">
+              <label for="w1">조례명 <span class="req">*</span></label>
+              <input id="w1" type="text" value="경기도 청년 기본조례 일부개정조례안">
+              <span class="hint">공포된 조례명과 일치해야 한다</span>
+            </div>
+            <div class="ggc-field">
+              <label for="w2">소관 부서 <span class="req">*</span></label>
+              <select id="w2">
+                <option>청년기회과</option>
+                <option>기획담당관</option>
+                <option>사회적경제과</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ggc-field" style="margin-top:var(--ggc-space-4)">
+            <label for="w3">제안이유 <span class="req">*</span></label>
+            <textarea id="w3" rows="3">청년 정책의 대상 연령을 상위법 개정에 맞추어 조정하고, 청년정책조정위원회의 구성과 운영에 관한 사항을 보완하려는 것임.</textarea>
+          </div>
+
+          <div class="ex-sub" style="margin-bottom:var(--ggc-space-3)">조문</div>
+
+          <div class="ggc-field">
+            <label for="w4">제2조(정의) <span class="req">*</span></label>
+            <textarea id="w4" rows="3">이 조례에서 "청년"이란 19세 이상 39세 이하인 사람을 말한다. 다만, 다른 법령과 조례에서 청년에 대한 연령을 다르게 적용하는 경우에는 그에 따를 수 있다.</textarea>
+          </div>
+
+          <div class="ggc-field is-error" style="margin-top:var(--ggc-space-4)">
+            <label for="w5">제9조(청년정책조정위원회) <span class="req">*</span></label>
+            <textarea id="w5" rows="3" aria-describedby="w5e">위원회는 위원장 1명과 부위원장 1명을 포함한 25명 이상 30명 이하의 위원으로 구성한다.</textarea>
+            <span class="error" id="w5e">상위법이 정한 상한(25명)을 초과한다 — 「청년기본법 시행령」 제6조 제2항</span>
+          </div>
+
+          <div style="margin-top:var(--ggc-space-5)">
+            <button class="ggc-btn ggc-btn--dashed" type="button">＋ 조문 직접 추가</button>
+          </div>
+
+          <!-- 하단 이동 바 — 항상 같은 자리 -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--ggc-space-4);margin:var(--ggc-space-6) -22px -18px;padding:var(--ggc-space-4) var(--ggc-space-5);background:var(--ggc-surface-inset);border-top:1px solid var(--ggc-hairline);border-radius:0 0 var(--ggc-radius-lg) var(--ggc-radius-lg)">
+            <button class="ggc-btn ggc-btn--secondary" type="button">← 이전</button>
+            <div class="ggc-wizard-mini">
+              <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
+              <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
+              <span class="step is-current"><span class="dot"></span><span class="line"></span></span>
+              <span class="step"><span class="dot"></span><span class="line"></span></span>
+              <span class="stage">3 / 4</span>
+            </div>
+            <button class="ggc-btn ggc-btn--primary" type="button">다음 →</button>
+          </div>
+        </div>
+
+        <!-- 우: 참조 레일 -->
+        <div style="flex:1 1 300px;max-width:460px;min-width:0;display:flex;flex-direction:column;gap:var(--ggc-space-5)">
+
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div><div class="title">진행 상황</div><div class="sub">세로형 스텝퍼</div></div>
+            </div>
+            <div style="padding:var(--ggc-space-5)">
+              <div class="ggc-wizard ggc-wizard--vertical" style="border:none;padding:0;background:transparent">
+                <div class="ggc-wizard-step is-done">
+                  <div class="track"><span class="line"></span><button class="dot" type="button">✓</button><span class="line"></span></div>
+                  <div class="meta"><div class="label">개요 설정</div><div class="sub">08-20 완료</div></div>
+                </div>
+                <div class="ggc-wizard-step is-done">
+                  <div class="track"><span class="line"></span><button class="dot" type="button">✓</button><span class="line"></span></div>
+                  <div class="meta"><div class="label">유사 조례 검토</div><div class="sub">08-21 완료 · 17건 대조</div></div>
+                </div>
+                <div class="ggc-wizard-step is-current" aria-current="step">
+                  <div class="track"><span class="line"></span><button class="dot" type="button">3</button><span class="line"></span></div>
+                  <div class="meta"><div class="label">조문 작성</div><div class="sub">진행 중 · 오류 1건</div></div>
+                </div>
+                <div class="ggc-wizard-step">
+                  <div class="track"><span class="line"></span><button class="dot" type="button">4</button><span class="line"></span></div>
+                  <div class="meta"><div class="label">검토 · 제출</div><div class="sub">법제관 사전검토</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div><div class="title">유사 조례</div><div class="sub">타 시·도 · 17건 중 3건</div></div>
+              <a class="action" href="#main">전체</a>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">§</span>
+              <div class="body">
+                <div class="title">서울특별시 청년 기본조례</div>
+                <div class="meta">2026-04-11 개정 · 19~39세</div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--success">일치</span></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">§</span>
+              <div class="body">
+                <div class="title">부산광역시 청년 기본조례</div>
+                <div class="meta">2026-02-28 개정 · 18~39세</div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--warning">상이</span></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">§</span>
+              <div class="body">
+                <div class="title">인천광역시 청년 기본조례</div>
+                <div class="meta">2026-05-30 개정 · 19~39세</div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--success">일치</span></div>
+            </div>
+          </div>
+
+          <div class="ggc-card ggc-card--pad">
+            <div style="display:flex;align-items:center;gap:var(--ggc-space-2);margin-bottom:var(--ggc-space-3)">
+              <span style="font-size:16px;color:var(--ggc-danger)" aria-hidden="true">⚠</span>
+              <span style="font-size:13.5px;font-weight:800;color:var(--ggc-text-strong)">검토 필요 1건</span>
+            </div>
+            <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted)">
+              제9조 위원 정수가 「청년기본법 시행령」 제6조 제2항의 상한을 초과한다.
+              좌측 편집 영역에서 해당 조문이 오류 상태로 표시돼 있다.
+            </div>
+            <div class="ex-row" style="margin-top:var(--ggc-space-4)">
+              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">조문으로 이동</button>
+              <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button">근거 보기</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ex-note ex-note--warn" style="margin-top:var(--ggc-space-7)">
+        <p><b>위저드에서 가장 자주 빠지는 것은 “되돌아가기”다.</b> 완료 단계의
+        <code>.dot</code> 은 <code>&lt;button&gt;</code> 이라 <b>클릭으로 되돌아갈 수 있어야 한다.</b>
+        표시만 하고 동작을 붙이지 않으면 포커스는 가는데 아무 일도 일어나지 않아,
+        키보드 사용자에게는 고장으로 읽힌다.</p>
+        <p><b>현재 단계를 그림자로만 표시하지 말 것.</b>
+        <code>forced-colors</code>(Windows 고대비)에서 <code>box-shadow</code> 가 렌더되지 않아
+        사라진다. 정본은 그 모드에서
+        <code>.ggc-wizard-step[aria-current]</code> 에 <code>outline</code> 을 건다 —
+        위 마크업이 클래스와 <code>aria-current</code> 를 <b>둘 다</b> 갖는 이유다.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      예시 데이터다 · 조례명 · 조문 · 날짜는 전부 가상 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v1.2
+    </div>
+  </footer>
+</div>
+
+<script src="examples.js"></script>
+</body>
+</html>

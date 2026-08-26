@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>대시보드 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">의정지원 플랫폼</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <label for="q" class="ex-sr">의안 · 조례 검색</label>
+      <input id="q" type="search" placeholder="의안 · 조례 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ex-lnb-cap">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ex-lnb-cap">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+    </nav>
+
+    <main class="ggc-shell-main" id="main">
+
+      <div class="ex-note" style="margin-top:0">
+        <p><b>이 화면은 예시 데이터다.</b> Monitor archetype 이 실제 업무 화면으로
+        조립되면 어떻게 되는지 보여 주려고 만들었고, 여기 나오는 숫자·의안명·이름은
+        전부 가상이다. 아래 본문에는 <b>갤러리 전용 스타일이 하나도 없다</b> —
+        <code>ggc-tokens.css</code> 와 <code>ggc-components.css</code> 만으로 그려진다.</p>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--ggc-space-4);flex-wrap:wrap;margin-bottom:var(--ggc-space-6)">
+        <div>
+          <h1 class="ex-h1" style="margin-bottom:6px">제12대 제3차 정례회</h1>
+          <div style="font-size:13px;color:var(--ggc-text-subtle)">
+            회기 2026-08-18 ~ 2026-09-05 · 오늘 <b style="color:var(--ggc-text-muted)">18일차</b>
+            <span class="ggc-badge ggc-badge--session" style="margin-left:8px">● 회기 중</span>
+          </div>
+        </div>
+        <div class="ex-row">
+          <button class="ggc-btn ggc-btn--secondary" type="button">회기 전환</button>
+          <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+        </div>
+      </div>
+
+      <!-- ── 통계 4종 (Monitor 최상단 고정) ───────────────────────────── -->
+      <div class="ggc-stat-grid">
+        <div class="ggc-stat">
+          <div class="label-row">
+            <span class="label">접수 의안</span>
+            <span class="icon icon--info" aria-hidden="true">📋</span>
+          </div>
+          <div class="value">147<span class="unit">건</span></div>
+          <div class="trend trend--up">▲ 전 회기 대비 12건</div>
+        </div>
+        <div class="ggc-stat">
+          <div class="label-row">
+            <span class="label">가결</span>
+            <span class="icon icon--success" aria-hidden="true">✓</span>
+          </div>
+          <div class="value">118<span class="unit">건</span></div>
+          <div class="trend trend--up">▲ 처리율 80.3%</div>
+        </div>
+        <div class="ggc-stat">
+          <div class="label-row">
+            <span class="label">계속심사</span>
+            <span class="icon icon--warning" aria-hidden="true">◷</span>
+          </div>
+          <div class="value">21<span class="unit">건</span></div>
+          <div class="trend trend--warn">기한 임박 4건</div>
+        </div>
+        <div class="ggc-stat">
+          <div class="label-row">
+            <span class="label">부결 · 폐기</span>
+            <span class="icon icon--danger" aria-hidden="true">✕</span>
+          </div>
+          <div class="value">8<span class="unit">건</span></div>
+          <div class="trend trend--down">▼ 전 회기 대비 3건</div>
+        </div>
+      </div>
+
+      <!-- ── 2단 격자 ─────────────────────────────────────────────────── -->
+      <div style="display:flex;flex-wrap:wrap;gap:var(--ggc-space-5);margin-top:var(--ggc-space-5);align-items:flex-start">
+
+        <!-- 좌: 결재 흐름 — flex:1 1 560px 는 "560px 아래로는 접는다" 는 뜻이다 -->
+        <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:var(--ggc-space-5)">
+
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div>
+                <div class="title">입법검토보고서 결재 흐름</div>
+                <div class="sub">최근 7일 · 12건</div>
+              </div>
+              <a class="action" href="#main">전체 보기</a>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">📄</span>
+              <div class="body">
+                <div class="title">경기도 청년 기본조례 일부개정조례안 검토보고</div>
+                <div class="meta">기획재정위원회 · 정책지원관 이○○ <span class="ggc-tag ggc-tag--primary">본회의</span></div>
+              </div>
+              <div class="end">
+                <span class="ggc-badge ggc-badge--approved">✓ 승인</span>
+                <span>08-21 16:40</span>
+              </div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">📄</span>
+              <div class="body">
+                <div class="title">경기도 사회적경제 육성 지원 조례안 검토보고</div>
+                <div class="meta">경제노동위원회 · 정책지원관 박○○ <span class="ggc-tag ggc-tag--info">상임위</span></div>
+              </div>
+              <div class="end">
+                <span class="ggc-badge ggc-badge--pending">◷ 대기</span>
+                <span>08-21 11:02</span>
+              </div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">📄</span>
+              <div class="body">
+                <div class="title">경기도 도시공원 및 녹지 등에 관한 조례 일부개정조례안 검토보고</div>
+                <div class="meta">건설교통위원회 · 정책지원관 최○○ <span class="ggc-tag ggc-tag--info">상임위</span></div>
+              </div>
+              <div class="end">
+                <span class="ggc-badge ggc-badge--rejected">✕ 반려</span>
+                <span>08-20 17:25</span>
+              </div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">📄</span>
+              <div class="body">
+                <div class="title">경기도 평생교육 진흥 조례 전부개정조례안 검토보고</div>
+                <div class="meta">문화체육관광위원회 · 정책지원관 정○○ <span class="ggc-tag ggc-tag--primary">본회의</span></div>
+              </div>
+              <div class="end">
+                <span class="ggc-badge ggc-badge--approved">✓ 승인</span>
+                <span>08-20 09:14</span>
+              </div>
+            </div>
+            <div class="ggc-card-foot ggc-card-foot--inset ggc-card-foot--center">
+              <a class="action" href="#main">8건 더 보기</a>
+            </div>
+          </div>
+
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div>
+                <div class="title">위원회별 처리 현황</div>
+                <div class="sub">제12대 제3차 정례회 기준</div>
+              </div>
+              <a class="action" href="#main">내려받기</a>
+            </div>
+            <div class="ggc-table-wrap" style="padding:0 var(--ggc-space-5) var(--ggc-space-5)">
+              <table class="ggc-table">
+                <caption class="ex-sr">위원회별 의안 처리 현황</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">위원회</th>
+                    <th scope="col" class="num">접수</th>
+                    <th scope="col" class="num">가결</th>
+                    <th scope="col" class="num">계속심사</th>
+                    <th scope="col" class="num">처리율</th>
+                    <th scope="col">상태</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>기획재정위원회</td><td class="num">38</td><td class="num">31</td><td class="num">5</td><td class="num">81.6%</td><td><span class="ggc-badge ggc-badge--session">● 회기 중</span></td></tr>
+                  <tr><td>경제노동위원회</td><td class="num">29</td><td class="num">24</td><td class="num">4</td><td class="num">82.8%</td><td><span class="ggc-badge ggc-badge--session">● 회기 중</span></td></tr>
+                  <tr><td>문화체육관광위원회</td><td class="num">22</td><td class="num">19</td><td class="num">2</td><td class="num">86.4%</td><td><span class="ggc-badge ggc-badge--meeting">◆ 회의일</span></td></tr>
+                  <tr><td>보건복지위원회</td><td class="num">34</td><td class="num">28</td><td class="num">6</td><td class="num">82.4%</td><td><span class="ggc-badge ggc-badge--recess">○ 비회기</span></td></tr>
+                  <tr><td>건설교통위원회</td><td class="num">24</td><td class="num">16</td><td class="num">4</td><td class="num">66.7%</td><td><span class="ggc-badge ggc-badge--recess">○ 비회기</span></td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><td>합계</td><td class="num">147</td><td class="num">118</td><td class="num">21</td><td class="num">80.3%</td><td></td></tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 우: 일정 · 정비 필요 -->
+        <div style="flex:1 1 320px;max-width:460px;min-width:0;display:flex;flex-direction:column;gap:var(--ggc-space-5)">
+
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div><div class="title">이번 주 일정</div><div class="sub">08-24 ~ 08-30</div></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">🗓</span>
+              <div class="body">
+                <div class="title">제3차 본회의</div>
+                <div class="meta">08-25 (월) 10:00 · 본회의장</div>
+              </div>
+              <div class="end"><span class="ggc-badge ggc-badge--meeting">◆ 회의일</span></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">🗓</span>
+              <div class="body">
+                <div class="title">기획재정위원회 제2차</div>
+                <div class="meta">08-26 (화) 14:00 · 제1회의실</div>
+              </div>
+              <div class="end"><span class="ggc-badge ggc-badge--session">● 회기 중</span></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">🗓</span>
+              <div class="body">
+                <div class="title">행정사무감사 계획 보고</div>
+                <div class="meta">08-28 (목) 10:00 · 제2회의실</div>
+              </div>
+              <div class="end"><span class="ggc-badge ggc-badge--session">● 회기 중</span></div>
+            </div>
+            <div class="ggc-card-foot ggc-card-foot--center">
+              <a class="action" href="#main">전체 일정</a>
+            </div>
+          </div>
+
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div><div class="title">정비 필요 조례</div><div class="sub">상위법 개정 미반영</div></div>
+              <a class="action" href="#main">전체 3건</a>
+            </div>
+            <div class="ggc-list-row">
+              <span class="sev-bar sev-bar--danger" aria-hidden="true"></span>
+              <div class="body">
+                <div class="title">경기도 옥외광고물 등 관리 조례</div>
+                <div class="meta">경과 <b style="color:var(--ggc-danger)">161일</b></div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--danger">시급</span></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="sev-bar sev-bar--warning" aria-hidden="true"></span>
+              <div class="body">
+                <div class="title">경기도 주차장 설치 및 관리 조례</div>
+                <div class="meta">경과 81일</div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--warning">주의</span></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="sev-bar sev-bar--info" aria-hidden="true"></span>
+              <div class="body">
+                <div class="title">경기도 도시계획 조례</div>
+                <div class="meta">경과 25일</div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--info">확인</span></div>
+            </div>
+          </div>
+
+          <div class="ggc-card ggc-card--pad">
+            <div style="font-size:13px;font-weight:700;color:var(--ggc-text-muted);margin-bottom:var(--ggc-space-3)">예산 심사 진행</div>
+            <div class="ggc-wizard-mini">
+              <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
+              <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
+              <span class="step is-current"><span class="dot"></span><span class="line"></span></span>
+              <span class="step"><span class="dot"></span><span class="line"></span></span>
+              <span class="stage">3 / 4 · 계수조정</span>
+            </div>
+            <div class="ggc-table-wrap" style="margin-top:var(--ggc-space-4)">
+              <table class="ggc-table ggc-table--flat">
+                <caption class="ex-sr">예산 심사 계수조정 요약</caption>
+                <thead><tr><th scope="col">구분</th><th scope="col" class="num">금액(백만원)</th></tr></thead>
+                <tbody>
+                  <tr><td>제출액</td><td class="num">1,284,000</td></tr>
+                  <tr><td>증액</td><td class="num">41,020</td></tr>
+                  <tr><td>감액</td><td class="num">987,300</td></tr>
+                </tbody>
+                <tfoot><tr><td>조정 후</td><td class="num">337,720</td></tr></tfoot>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ex-note" style="margin-top:var(--ggc-space-7)">
+        <p><b>2단 격자는 <code>ggc-components.css</code> 에 없다.</b> 화면마다 비율이 달라
+        토큰화하지 않았고, 여기서는 <code>flex-wrap</code> 과 <code>flex-basis</code> 로 직접 짰다 —
+        <b>미디어 쿼리 없이</b> 폭이 모자라면 한 단으로 접힌다.
+        <b>색·간격·형태는 전부 토큰</b>이므로 이 정도의 배치 자유는 드리프트가 되지 않는다 —
+        갈라지는 것은 언제나 <b>값</b>이지 배치가 아니었다.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      예시 데이터다 · 의안명 · 숫자 · 이름은 전부 가상 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v1.2
+    </div>
+  </footer>
+</div>
+
+<script src="examples.js"></script>
+</body>
+</html>

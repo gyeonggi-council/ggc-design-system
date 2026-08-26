@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>컴포넌트 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">공통 디자인 시스템</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <label for="q" class="ex-sr">컴포넌트 검색</label>
+      <input id="q" type="search" placeholder="컴포넌트 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ex-lnb-cap">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ex-lnb-cap">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+    </nav>
+
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main">
+
+      <h1 class="ex-h1">컴포넌트 카탈로그<span class="ver">ggc-components.css v1.1</span></h1>
+      <p class="ex-lede">
+        각 예제 아래 <b>“마크업”</b> 을 펼치면 지금 화면에 그려진 <b>바로 그 DOM</b> 이 나온다.
+        손으로 옮겨 적은 코드가 아니라 <code class="ex-inline">innerHTML</code> 을 읽어 채운 것이라,
+        예제 코드와 렌더 결과가 갈라질 자리가 없다.
+      </p>
+
+      <div class="ex-note">
+        <p><b>컴포넌트 레이어는 강제하지 않는다.</b> 9계열 전부를 의무화하면 아무도 도입하지 않는다 —
+        v1.0 의 채택률이 <b>0</b> 이었던 것이 증거다. <b>선택 도입하되, 도입하면 바이트 동일 복사</b>다.
+        어느 화면에나 나오는 <code>.ggc-card</code> · <code>.ggc-btn</code> ·
+        <code>.ggc-table</code> · <code>.ggc-field</code> 넷을 먼저 권한다.</p>
+      </div>
+
+      <!-- ============================================================ 버튼 -->
+      <section class="ex-section">
+        <h2>버튼 <span class="cls">.ggc-btn</span></h2>
+        <p>기본 높이 42px · radius 10px. <code class="ex-inline">--sm</code> 34px,
+          <code class="ex-inline">--lg</code> 46px. primary 만 그림자를 갖는다.</p>
+        <div class="ex-demo" id="d-btn">
+          <div class="ex-row">
+            <button class="ggc-btn ggc-btn--primary" type="button">의안 상정</button>
+            <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
+            <button class="ggc-btn ggc-btn--ghost" type="button">미리보기</button>
+            <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">작게</button>
+            <button class="ggc-btn ggc-btn--primary ggc-btn--lg" type="button">크게</button>
+            <button class="ggc-btn ggc-btn--primary" type="button" disabled>비활성</button>
+          </div>
+          <div style="max-width:420px;margin-top:var(--ggc-space-4)">
+            <button class="ggc-btn ggc-btn--dashed" type="button">＋ 조문 직접 추가</button>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-btn"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 배지·태그 -->
+      <section class="ex-section">
+        <h2>배지 · 태그 <span class="cls">.ggc-badge · .ggc-tag</span></h2>
+        <p><b>알약형 <code class="ex-inline">.ggc-badge</code> 는 상태</b>(결재·회기),
+          <b>사각형 <code class="ex-inline">.ggc-tag</code> 는 분류·출처</b>다.
+          둘을 섞어 쓰면 한 화면에서 같은 모양이 두 가지 뜻으로 읽힌다.</p>
+        <div class="ex-demo ex-demo--flow" id="d-badge">
+          <div class="ex-row">
+            <span class="ggc-badge ggc-badge--approved">✓ 승인</span>
+            <span class="ggc-badge ggc-badge--pending">◷ 대기</span>
+            <span class="ggc-badge ggc-badge--rejected">✕ 반려</span>
+            <span class="ggc-badge ggc-badge--session">● 회기 중</span>
+            <span class="ggc-badge ggc-badge--meeting">◆ 회의일</span>
+            <span class="ggc-badge ggc-badge--recess">○ 비회기</span>
+            <span class="ggc-badge ggc-badge--paid">₩ 지급완료</span>
+          </div>
+          <div class="ex-row">
+            <span class="ggc-badge ggc-badge--role-member">의원</span>
+            <span class="ggc-badge ggc-badge--role-staff">사무처</span>
+            <span class="ggc-badge ggc-badge--role-policy">정책지원관</span>
+            <span class="ggc-badge ggc-badge--role-other">기타</span>
+          </div>
+          <div class="ex-row">
+            <span class="ggc-tag">조례</span>
+            <span class="ggc-tag ggc-tag--primary">본회의</span>
+            <span class="ggc-tag ggc-tag--info">상임위</span>
+            <span class="ggc-tag ggc-tag--success">가결</span>
+            <span class="ggc-tag ggc-tag--warning">계속심사</span>
+            <span class="ggc-tag ggc-tag--danger">부결</span>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-badge"><summary>마크업</summary><pre class="ex-code"></pre></details>
+        <div class="ex-note ex-note--warn">
+          <p><b>배지 안의 텍스트나 아이콘을 지우지 말 것.</b> 색만 남기면 색각 이상 사용자가 구분할 수 없고,
+          <code>forced-colors</code>(Windows 고대비)에서는 <b>배경이 평탄화돼 일곱 종이 전부 같아 보인다.</b>
+          토큰이 그 모드에서 테두리를 보장하지만, 텍스트 병기가 1차 방어선이다.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================ 카드 -->
+      <section class="ex-section">
+        <h2>카드 <span class="cls">.ggc-card</span></h2>
+        <p>radius 14px, <b>그림자 없음</b>(계약 §2). 목록을 담는 기본형과, 자유 본문을 담는
+          <code class="ex-inline">--pad</code> 두 가지다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-card">
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div>
+                <div class="title">입법검토보고서 결재 흐름</div>
+                <div class="sub">최근 7일 · 12건</div>
+              </div>
+              <a class="action" href="#main">전체 보기</a>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">📄</span>
+              <div class="body">
+                <div class="title">경기도 청년 기본조례 일부개정조례안 검토보고</div>
+                <div class="meta">기획재정위원회 · 정책지원관 이○○ · 2026-08-21</div>
+              </div>
+              <div class="end"><span class="ggc-badge ggc-badge--approved">✓ 승인</span></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="icon" aria-hidden="true">📄</span>
+              <div class="body">
+                <div class="title">경기도 사회적경제 육성 지원 조례안 검토보고</div>
+                <div class="meta">경제노동위원회 · 정책지원관 박○○ · 2026-08-20</div>
+              </div>
+              <div class="end"><span class="ggc-badge ggc-badge--pending">◷ 대기</span></div>
+            </div>
+            <div class="ggc-card-foot ggc-card-foot--inset ggc-card-foot--center">
+              <a class="action" href="#main">9건 더 보기</a>
+            </div>
+          </div>
+
+          <div class="ggc-card ggc-card--pad" style="margin-top:var(--ggc-space-5)">
+            <div class="ggc-card-head--band" style="margin:-18px -22px 16px;border-radius:var(--ggc-radius-lg) var(--ggc-radius-lg) 0 0">
+              <div class="title" style="font-size:15px;font-weight:700;color:var(--ggc-text-strong)">밴드형 헤더 · .ggc-card-head--band</div>
+            </div>
+            <div style="font-size:13.5px;line-height:1.8;color:var(--ggc-text)">
+              자유 본문을 담는 카드다. 에디터·설명·긴 문단처럼 목록이 아닌 내용에 쓴다.
+              기본형은 <code style="font-family:var(--ggc-font-mono)">overflow:hidden</code> 으로
+              행 리스트의 모서리를 잘라 주지만, 이 변형은 패딩을 갖고 넘침을 허용한다.
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-card"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 통계 -->
+      <section class="ex-section">
+        <h2>통계 <span class="cls">.ggc-stat-grid · .ggc-stat</span></h2>
+        <p>Monitor archetype 의 최상단 고정 요소다. 4개가 기본이고 900px 이하에서 2열,
+          480px 이하에서 1열로 접힌다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-stat">
+          <div class="ggc-stat-grid">
+            <div class="ggc-stat">
+              <div class="label-row">
+                <span class="label">접수 의안</span>
+                <span class="icon icon--info" aria-hidden="true">📋</span>
+              </div>
+              <div class="value">147<span class="unit">건</span></div>
+              <div class="trend trend--up">▲ 전 회기 대비 12건</div>
+            </div>
+            <div class="ggc-stat">
+              <div class="label-row">
+                <span class="label">가결</span>
+                <span class="icon icon--success" aria-hidden="true">✓</span>
+              </div>
+              <div class="value">118<span class="unit">건</span></div>
+              <div class="trend trend--up">▲ 처리율 80.3%</div>
+            </div>
+            <div class="ggc-stat">
+              <div class="label-row">
+                <span class="label">계속심사</span>
+                <span class="icon icon--warning" aria-hidden="true">◷</span>
+              </div>
+              <div class="value">21<span class="unit">건</span></div>
+              <div class="trend trend--warn">기한 임박 4건</div>
+            </div>
+            <div class="ggc-stat">
+              <div class="label-row">
+                <span class="label">부결 · 폐기</span>
+                <span class="icon icon--danger" aria-hidden="true">✕</span>
+              </div>
+              <div class="value">8<span class="unit">건</span></div>
+              <div class="trend trend--down">▼ 전 회기 대비 3건</div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-stat"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 행 리스트 -->
+      <section class="ex-section">
+        <h2>행 리스트 <span class="cls">.ggc-list-row</span></h2>
+        <p>카드 <b>안</b>에 쓰는 행이다. 좌측 <code class="ex-inline">.sev-bar</code> 로 심각도를 세로 막대로
+          표시할 수 있고, 우측 <code class="ex-inline">.end</code> 는 상태·시각·버튼 슬롯이다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-row">
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div><div class="title">정비 필요 조례</div><div class="sub">상위법 개정 반영 대기</div></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="sev-bar sev-bar--danger" aria-hidden="true"></span>
+              <div class="body">
+                <div class="title">경기도 옥외광고물 등의 관리와 옥외광고산업 진흥에 관한 조례</div>
+                <div class="meta">상위법 개정 2026-03-14 · <b style="color:var(--ggc-danger)">경과 161일</b></div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--danger">시급</span><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토</button></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="sev-bar sev-bar--warning" aria-hidden="true"></span>
+              <div class="body">
+                <div class="title">경기도 주차장 설치 및 관리 조례</div>
+                <div class="meta">상위법 개정 2026-06-02 · 경과 81일</div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--warning">주의</span><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토</button></div>
+            </div>
+            <div class="ggc-list-row">
+              <span class="sev-bar sev-bar--info" aria-hidden="true"></span>
+              <div class="body">
+                <div class="title">경기도 도시계획 조례</div>
+                <div class="meta">상위법 개정 2026-07-28 · 경과 25일</div>
+              </div>
+              <div class="end"><span class="ggc-tag ggc-tag--info">확인</span><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토</button></div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-row"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 표 -->
+      <section class="ex-section">
+        <h2>표 <span class="cls">.ggc-table</span></h2>
+        <p>헤더 상단선이 <code class="ex-inline">--ggc-primary-deep</code> 2px 다 — 공공 문서 표의 관례를
+          따랐다. 숫자 칸은 <code class="ex-inline">.num</code> 을 붙이면 우측 정렬 +
+          <code class="ex-inline">tabular-nums</code> 가 걸려 자릿수가 흔들리지 않는다.</p>
+        <div class="ex-demo" id="d-table">
+          <div class="ggc-table-wrap">
+            <table class="ggc-table">
+              <caption class="ex-sr">위원회별 의안 처리 현황</caption>
+              <thead>
+                <tr>
+                  <th scope="col">위원회</th>
+                  <th scope="col">구분</th>
+                  <th scope="col" class="num">접수</th>
+                  <th scope="col" class="num">가결</th>
+                  <th scope="col" class="num">계속심사</th>
+                  <th scope="col">상태</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>기획재정위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">38</td><td class="num">31</td><td class="num">5</td><td><span class="ggc-badge ggc-badge--session">● 회기 중</span></td></tr>
+                <tr><td>경제노동위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">29</td><td class="num">24</td><td class="num">4</td><td><span class="ggc-badge ggc-badge--session">● 회기 중</span></td></tr>
+                <tr><td>문화체육관광위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">22</td><td class="num">19</td><td class="num">2</td><td><span class="ggc-badge ggc-badge--meeting">◆ 회의일</span></td></tr>
+                <tr><td>보건복지위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">34</td><td class="num">28</td><td class="num">6</td><td><span class="ggc-badge ggc-badge--recess">○ 비회기</span></td></tr>
+                <tr><td>건설교통위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">24</td><td class="num">16</td><td class="num">4</td><td><span class="ggc-badge ggc-badge--recess">○ 비회기</span></td></tr>
+              </tbody>
+              <tfoot>
+                <tr><td>합계</td><td></td><td class="num">147</td><td class="num">118</td><td class="num">21</td><td></td></tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-table"><summary>마크업</summary><pre class="ex-code"></pre></details>
+
+        <div class="ex-sub">키-값 2열 표 · <code class="ex-inline">.ggc-table--kv</code></div>
+        <div class="ex-demo" id="d-kv">
+          <div class="ggc-table-wrap">
+            <table class="ggc-table ggc-table--kv">
+              <tbody>
+                <tr><th scope="row">의안번호</th><td>BILL-2026-0417</td></tr>
+                <tr><th scope="row">의안명</th><td>경기도 청년 기본조례 일부개정조례안</td></tr>
+                <tr><th scope="row">제안자</th><td>○○○ 의원 외 12인 <span class="ggc-badge ggc-badge--role-member">의원</span></td></tr>
+                <tr><th scope="row">소관위원회</th><td>기획재정위원회</td></tr>
+                <tr><th scope="row">처리결과</th><td><span class="ggc-badge ggc-badge--approved">✓ 원안가결</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-kv"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 폼 -->
+      <section class="ex-section">
+        <h2>폼 <span class="cls">.ggc-field</span></h2>
+        <p>라벨은 <b>항상 있다.</b> placeholder 를 유일한 라벨로 쓰지 않는다 —
+          입력을 시작하는 순간 라벨이 사라져 무엇을 적는 칸인지 알 수 없게 되고,
+          스크린리더에서도 불안정하다(계약 §3).</p>
+        <div class="ex-demo" id="d-field">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label for="t1">의안명 <span class="req">*</span></label>
+              <input id="t1" type="text" value="경기도 청년 기본조례 일부개정조례안">
+              <span class="hint">공포된 조례명과 일치해야 한다</span>
+            </div>
+            <div class="ggc-field">
+              <label for="t2">소관위원회 <span class="req">*</span></label>
+              <select id="t2">
+                <option>기획재정위원회</option>
+                <option>경제노동위원회</option>
+                <option>문화체육관광위원회</option>
+              </select>
+            </div>
+            <div class="ggc-field is-error">
+              <label for="t3">제안일 <span class="req">*</span></label>
+              <input id="t3" type="text" value="2026-13-45" aria-describedby="t3e">
+              <span class="error" id="t3e">날짜 형식이 아니다 — YYYY-MM-DD</span>
+            </div>
+            <div class="ggc-field">
+              <label for="t4">의안번호</label>
+              <input id="t4" type="text" placeholder="자동 부여" disabled>
+              <span class="hint">접수 시 자동으로 부여된다</span>
+            </div>
+          </div>
+          <div class="ggc-field" style="margin-top:var(--ggc-space-4)">
+            <label for="t5">제안이유</label>
+            <textarea id="t5" rows="3">청년 정책의 대상 연령을 상위법 개정에 맞추어 조정하고, 청년정책조정위원회의 구성과 운영에 관한 사항을 보완하려는 것임.</textarea>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-field"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 위저드 -->
+      <section class="ex-section">
+        <h2>위저드 <span class="cls">.ggc-wizard · --vertical · -mini</span></h2>
+        <p>세 형태가 같은 상태 어휘(<code class="ex-inline">.is-done</code> ·
+          <code class="ex-inline">.is-current</code> · 기본)를 쓴다.
+          실제 화면 조립은 <a href="wizard.html">위저드 예제</a>에 있다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-wiz">
+          <div class="ggc-wizard">
+            <div class="ggc-wizard-step is-done">
+              <div class="track"><span class="line"></span><button class="dot" type="button">✓</button><span class="line"></span></div>
+              <div class="meta"><div class="label">개요 설정</div><div class="sub">소크라테스식 문답</div></div>
+            </div>
+            <div class="ggc-wizard-step is-done">
+              <div class="track"><span class="line"></span><button class="dot" type="button">✓</button><span class="line"></span></div>
+              <div class="meta"><div class="label">유사 조례 검토</div><div class="sub">타 시·도 17건</div></div>
+            </div>
+            <div class="ggc-wizard-step is-current" aria-current="step">
+              <div class="track"><span class="line"></span><button class="dot" type="button">3</button><span class="line"></span></div>
+              <div class="meta"><div class="label">조문 작성</div><div class="sub">본칙 8조 · 부칙 2조</div></div>
+            </div>
+            <div class="ggc-wizard-step">
+              <div class="track"><span class="line"></span><button class="dot" type="button">4</button><span class="line"></span></div>
+              <div class="meta"><div class="label">검토 · 제출</div><div class="sub">법제관 사전검토</div></div>
+            </div>
+          </div>
+          <div style="margin-top:var(--ggc-space-5);background:var(--ggc-surface);border:1px solid var(--ggc-border);border-radius:var(--ggc-radius-lg);padding:var(--ggc-space-4) var(--ggc-space-5)">
+            <div class="ggc-wizard-mini">
+              <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
+              <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
+              <span class="step is-current"><span class="dot"></span><span class="line"></span></span>
+              <span class="step"><span class="dot"></span><span class="line"></span></span>
+              <span class="stage">3 / 4 · 조문 작성</span>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-wiz"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 세 상태 -->
+      <section class="ex-section">
+        <h2>빈 상태 · 오류 · 로딩 <span class="cls">전용 클래스가 없다 — 조립한다</span></h2>
+        <p>이 세 가지는 PoC 에서 가장 자주 빠지고 <b>시연 당일에 드러난다.</b> 정본에 전용 클래스를
+          두지 않은 것은 의도다 — 화면마다 문구와 다음 행동이 달라서 클래스로 굳히면 반드시
+          누군가 자기 것을 새로 만든다. <b>기존 요소로 조립하고, 세 가지를 처음부터 함께 만든다.</b></p>
+        <div class="ex-demo ex-demo--bg" id="d-states">
+          <div class="ex-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+
+            <div class="ggc-card ggc-card--pad" style="text-align:center;padding:var(--ggc-space-7) var(--ggc-space-5)">
+              <div style="font-size:30px;line-height:1;color:var(--ggc-text-faint)" aria-hidden="true">◻</div>
+              <div style="font-size:14px;font-weight:700;color:var(--ggc-text-strong);margin:var(--ggc-space-3) 0 var(--ggc-space-2)">등록된 검토보고서가 없다</div>
+              <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted);margin-bottom:var(--ggc-space-4)">
+                이번 회기에 배정된 의안이 아직 없다.<br>의안이 접수되면 여기에 나타난다.
+              </div>
+              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">의안 목록 열기</button>
+            </div>
+
+            <div class="ggc-card ggc-card--pad" style="text-align:center;padding:var(--ggc-space-7) var(--ggc-space-5)">
+              <div style="font-size:30px;line-height:1;color:var(--ggc-danger)" aria-hidden="true">⚠</div>
+              <div style="font-size:14px;font-weight:700;color:var(--ggc-text-strong);margin:var(--ggc-space-3) 0 var(--ggc-space-2)">목록을 불러오지 못했다</div>
+              <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted);margin-bottom:var(--ggc-space-4)">
+                의안정보 연계에 응답이 없다.<br>
+                <span style="font-family:var(--ggc-font-mono);font-size:11.5px">BILL-SYNC-504 · 14:32:07</span>
+              </div>
+              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">다시 시도</button>
+            </div>
+
+            <div class="ggc-card" aria-busy="true">
+              <div class="ggc-card-head">
+                <div><div class="title">불러오는 중</div><div class="sub">의안 목록</div></div>
+              </div>
+              <div class="ggc-list-row">
+                <span class="icon" aria-hidden="true"></span>
+                <div class="body">
+                  <div style="height:13px;width:78%;border-radius:4px;background:var(--ggc-hairline);margin-bottom:7px"></div>
+                  <div style="height:11px;width:46%;border-radius:4px;background:var(--ggc-hairline)"></div>
+                </div>
+              </div>
+              <div class="ggc-list-row">
+                <span class="icon" aria-hidden="true"></span>
+                <div class="body">
+                  <div style="height:13px;width:64%;border-radius:4px;background:var(--ggc-hairline);margin-bottom:7px"></div>
+                  <div style="height:11px;width:38%;border-radius:4px;background:var(--ggc-hairline)"></div>
+                </div>
+              </div>
+              <div class="ggc-card-foot ggc-card-foot--inset ggc-card-foot--center">
+                <span class="ex-sr">목록을 불러오는 중이다</span>
+                <span style="font-size:12px;color:var(--ggc-text-subtle)" aria-hidden="true">불러오는 중…</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-states"><summary>마크업</summary><pre class="ex-code"></pre></details>
+        <div class="ex-note ex-note--warn">
+          <p><b>로딩 골격에 애니메이션을 넣는다면</b> <code>prefers-reduced-motion</code> 을
+          반드시 존중해야 한다. 정본이 그 미디어 쿼리를 이미 걸어 두었으므로
+          <code>ggc-components.css</code> 를 로드하면 자동으로 따라온다.
+          오류 상태에는 <b>식별 가능한 코드와 시각</b>을 남긴다 — 담당자가 로그를 찾을 유일한 단서다.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v1.2
+    </div>
+  </footer>
+</div>
+
+<script src="examples.js"></script>
+</body>
+</html>

@@ -1,0 +1,1224 @@
+/* =============================================================================
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v1.2 (2026-08-22)
+ * 전제: design/ggc-tokens.css v1.2 를 먼저 로드할 것 (--ggc-* 변수 의존)
+ * 출처: Claude Design 산출물(.dc.html) 실측 추출
+ *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
+ *   정본 2  design_경기도의회_의정지원_플랫폼/조례초안 작성 위저드.dc.html
+ *   보조    입법검토보고서 · 예산분석 비용추계 · 필수조례정비 지원 · 입법 모니터링 정책챗.dc.html
+ *   레이아웃 참고(색은 v1.1 토큰으로 정규화) design_경기도의회_경비정산_서비스/경비정산 화면.dc.html
+ * 규칙: 기존 .ggc-utility-bar / .ggc-badge / .ggc-footer(토큰 파일 정의)와 충돌 금지.
+ *       적용 지침은 `/ggc-design` 스킬 참조.
+ *
+ * -- v1.1 에서 바뀐 것 -------------------------------------------------------
+ * 이 파일은 v1.0 이후 **채택률이 0** 이었다. 이유는 실측으로 분명했다 —
+ * 각 서비스가 가장 먼저 필요로 하는 GNB/LNB 셸이 여기에 없었다.
+ * (focus-visible 0건 · 64px 0건 · 256px 0건 · ggc-scroll 0건 · @media 3건)
+ *
+ *   §0  토큰 v1.2 로 승격된 값들의 중복 정의 제거.
+ *       **--ggc-focus-ring 의 .15 오버라이드를 삭제했다** — 계약 §3 은 .20 이고,
+ *       여기서 덮어쓰던 것이 계약 위반이었다.
+ *   §9  공통 셸 — GNB 64px · LNB 256px · 본문 폭 · 커스텀 스크롤바
+ *   §10 접근성·반응형 — skip-link · 모션 감소 · 900px drawer · >=1680px 확폭
+ *
+ * -- v1.2 에서 바뀐 것 -------------------------------------------------------
+ *   §11 .ggc-qr — QR 로그인 블록. **9개 시스템이 같은 화면을 노출하는데 정본에
+ *       그 컴포넌트가 없었다.** 그래서 9벌이 각자 발명했고 시각 언어가 셋으로
+ *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
+ *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
+ *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ * ============================================================================= */
+
+/* --- 0. 컴포넌트 레이어 전용 값 ---------------------------------------------
+ * v1.0 의 보조 중립값 9개 중 6개는 **토큰 v1.2 로 승격**됐다
+ * (--ggc-hairline · --ggc-surface-inset · --ggc-control-bg · --ggc-shell-border
+ *  · --ggc-focus-ring · --ggc-row-hover). 여기서 다시 정의하지 않는다 —
+ * 두 벌이 되면 반드시 갈라진다.
+ *
+ * ⚠ --ggc-focus-ring 을 여기서 .15 로 덮어쓰고 있었다. 계약 §3 은 .20 이므로
+ *   그 오버라이드는 계약 위반이었다. 삭제했고 토큰 정의를 그대로 쓴다.
+ * --------------------------------------------------------------------------- */
+:root {
+  --ggc-text-body: #3a4150;       /* 본문 단락(카드 안 긴 글) — 흰 위 10.23:1 */
+  --ggc-btn-shadow: var(--ggc-shadow-primary);   /* 토큰 승격분 별칭 */
+
+  /* v1.0 이름 호환 별칭 — 기존 사본이 깨지지 않게 남긴다. 새 코드는 오른쪽을 쓴다 */
+  --ggc-surface-hover: var(--ggc-row-hover);
+  --ggc-border-soft: var(--ggc-shell-border);
+  --ggc-text-soft: var(--ggc-text-muted);
+}
+
+/* =============================================================================
+ * 1. .ggc-page — 페이지 셸
+ * 출처: 대시보드.dc.html body(background:#eef1f5) + <main>(padding:26px 32px 48px;
+ *       max-width:1320px). #eef1f5 = --ggc-bg 토큰과 동일.
+ * 사용: .ggc-page 가 전체 배경, .ggc-page-main 이 콘텐츠 컬럼(LNB 없는 앱은 margin:0 auto).
+ * ============================================================================= */
+.ggc-page {
+  min-height: 100vh;
+  background: var(--ggc-bg);
+  color: var(--ggc-text);
+  font-family: var(--ggc-font);
+  -webkit-font-smoothing: antialiased;
+}
+.ggc-page-main {
+  max-width: 1320px;            /* 위저드 화면은 1360px — 필요 시 .ggc-page-main--wide */
+  min-width: 0;
+  padding: 26px 32px 48px;
+  margin: 0 auto;
+}
+.ggc-page-main--wide { max-width: 1360px; }
+@media (max-width: 768px) {
+  .ggc-page-main { padding: 18px 16px 40px; }  /* 모바일 축소(경비정산 화면 폭 350px 기준 파생) */
+}
+
+/* =============================================================================
+ * 2. .ggc-card — 흰 서피스 카드
+ * 출처: 대시보드.dc.html <section>(background:#fff; border:1px solid #e6ebf1;
+ *       border-radius:16px; overflow:hidden) — 리스트형 카드 실측.
+ *       KPI 타일은 radius 14px → .ggc-stat 이 별도 담당.
+ * ============================================================================= */
+.ggc-card {
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.ggc-card--pad { padding: 18px 22px; overflow: visible; }  /* 리스트가 아닌 자유 본문 카드 */
+
+/* .ggc-card-head — 제목 + 우측 액션 슬롯
+ * 출처: 대시보드.dc.html 섹션 헤더(padding:18px 22px 14px; h2 16px/800/-0.02em #131722;
+ *       부제 12.5px #8a94a3; 우측 링크 13px/600 #3C5D93) */
+.ggc-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 22px 14px;
+}
+.ggc-card-head .title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ggc-text-strong);
+}
+.ggc-card-head .sub {
+  margin: 3px 0 0;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--ggc-text-subtle);
+}
+.ggc-card-head .action {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ggc-primary);
+  text-decoration: none;
+}
+.ggc-card-head .action:hover { color: var(--ggc-primary-dark); text-decoration: underline; }
+/* 밴드형 헤더 — 출처: 조례초안 작성 위저드.dc.html 에디터 카드 헤더
+ * (background:#fafbfd; border-bottom:1px solid #f0f3f7; padding:18px 24px) */
+.ggc-card-head--band {
+  background: var(--ggc-surface-hover);
+  border-bottom: 1px solid var(--ggc-hairline);
+  padding: 16px 22px;
+}
+
+/* .ggc-card-foot — 카드 하단 슬롯
+ * 출처: 대시보드.dc.html 입법 모니터링 카드 푸터(padding:13px; border-top:1px solid #f0f3f7;
+ *       가운데 링크) + 경비정산 화면.dc.html PC 푸터(합계 좌 + 액션 우, 배경 인셋)를 토큰 정규화 */
+.ggc-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 22px;
+  border-top: 1px solid var(--ggc-hairline);
+  font-size: 13px;
+  color: var(--ggc-text-muted);
+}
+.ggc-card-foot--center { justify-content: center; font-weight: 600; color: var(--ggc-primary); }
+.ggc-card-foot--inset { background: var(--ggc-surface-inset); }
+
+/* =============================================================================
+ * 3. .ggc-stat — KPI 스탯 타일
+ * 출처: 대시보드.dc.html KPI row 실측 —
+ *   그리드 repeat(4,1fr) gap 16px / 타일 radius 14px padding 18px 20px
+ *   라벨 13px/600 #6b7585 · 아이콘 박스 34px radius 9px 틴트 배경
+ *   숫자 30px/800/-0.03em #131722 lh1 · 단위 14px/600 #a3adba
+ *   추이 12px/600 (semantic 색) margin-top 9px
+ * ============================================================================= */
+.ggc-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1024px) { .ggc-stat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .ggc-stat-grid { grid-template-columns: 1fr; } }
+
+.ggc-stat {
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+.ggc-stat .label-row {           /* 라벨 + 아이콘 박스 한 줄 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.ggc-stat .label { font-size: 13px; font-weight: 600; color: var(--ggc-text-muted); }
+.ggc-stat .icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  background: var(--ggc-primary-light);   /* 틴트 변형: 인라인으로 tint 토큰 교체 */
+  color: var(--ggc-primary);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ggc-stat .icon--success { background: var(--ggc-success-tint); color: var(--ggc-success); }
+.ggc-stat .icon--warning { background: var(--ggc-warning-tint); color: var(--ggc-warning); }
+.ggc-stat .icon--danger  { background: var(--ggc-danger-tint);  color: var(--ggc-danger); }
+.ggc-stat .icon--info    { background: var(--ggc-info-tint);    color: var(--ggc-info); }
+.ggc-stat .value {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ggc-text-strong);
+  line-height: 1;
+}
+.ggc-stat .value .unit {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ggc-text-subtle);
+  margin-left: 3px;
+  letter-spacing: normal;
+}
+.ggc-stat .trend {
+  display: flex; align-items: center; gap: 5px;
+  margin-top: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ggc-text-muted);
+}
+.ggc-stat .trend--up   { color: var(--ggc-success); }
+.ggc-stat .trend--warn { color: var(--ggc-warning); }
+.ggc-stat .trend--down { color: var(--ggc-danger); }
+
+/* =============================================================================
+ * 4. .ggc-wizard — 단계 스텝퍼
+ * 출처(가로형 정본): 조례초안 작성 위저드.dc.html STEP PROGRESS 실측 —
+ *   컨테이너: 카드(padding 22px 26px), 스텝 flex:1 세로 정렬
+ *   원형: 38px, border 2px / 완료 bg #1F8A5B·체크 / 현재 bg #3C5D93·번호·
+ *         링 box-shadow 0 0 0 4px rgba(60,93,147,.15) / 대기 bg #fff border #d5dce5 글자 #a3adba
+ *   연결선: height 3px radius 2px — 지나온 구간 #1F8A5B, 남은 구간 #e6ebf1
+ *   라벨: 13.5px (현재 800 #131722 / 완료 700 #2E4A78 / 대기 500 #a3adba), 부제 11px #a3adba
+ * 마크업 계약(.dc.html 구조 유지):
+ *   <div class="ggc-wizard">
+ *     <div class="ggc-wizard-step is-done">
+ *       <div class="track"><span class="line"></span><button class="dot">✓</button><span class="line"></span></div>
+ *       <div class="meta"><div class="label">개요 설정</div><div class="sub">소크라테스식 문답</div></div>
+ *     </div>
+ *     <div class="ggc-wizard-step is-current"> … </div>
+ *     <div class="ggc-wizard-step"> … </div>
+ *   </div>
+ * ============================================================================= */
+.ggc-wizard {
+  display: flex;
+  align-items: flex-start;
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border);
+  border-radius: 16px;
+  padding: 22px 26px;
+  font-family: var(--ggc-font);
+}
+.ggc-wizard-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.ggc-wizard-step .track { display: flex; align-items: center; width: 100%; }
+.ggc-wizard-step .line {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--ggc-border);
+}
+/* 진행 채색: 완료 스텝의 양쪽·현재 스텝의 왼쪽 선은 success (위저드 실측 로직) */
+.ggc-wizard-step.is-done .line,
+.ggc-wizard-step.is-current .line:first-child { background: var(--ggc-success); }
+/* 양 끝 선 숨김 */
+.ggc-wizard-step:first-child .line:first-child,
+.ggc-wizard-step:last-child .line:last-child { background: transparent; }
+
+.ggc-wizard-step .dot {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin: 0 4px;
+  border: 2px solid var(--ggc-border-strong);
+  background: var(--ggc-surface);
+  color: var(--ggc-text-subtle);
+  font-size: 15px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.ggc-wizard-step.is-done .dot {
+  background: var(--ggc-success);
+  border-color: var(--ggc-success);
+  color: #fff;
+}
+.ggc-wizard-step.is-current .dot {
+  background: var(--ggc-primary);
+  border-color: var(--ggc-primary);
+  color: #fff;
+  box-shadow: var(--ggc-focus-ring);
+}
+.ggc-wizard-step .meta { text-align: center; margin-top: 10px; }
+.ggc-wizard-step .label { font-size: 13.5px; font-weight: 500; color: var(--ggc-text-subtle); }
+.ggc-wizard-step .sub   { font-size: 11px; color: var(--ggc-text-subtle); margin-top: 2px; }
+.ggc-wizard-step.is-done .label    { font-weight: 700; color: var(--ggc-primary-deep); }
+.ggc-wizard-step.is-current .label { font-weight: 800; color: var(--ggc-text-strong); }
+
+/* 세로형 변형 — 동일 마크업. (.dc.html에는 가로형만 존재, 동일 토큰으로 파생)
+ * 결재 이력·모바일 단계 표시용 */
+.ggc-wizard--vertical { flex-direction: column; align-items: stretch; }
+.ggc-wizard--vertical .ggc-wizard-step { flex-direction: row; align-items: stretch; gap: 12px; }
+.ggc-wizard--vertical .track { flex-direction: column; width: auto; }
+.ggc-wizard--vertical .line { width: 3px; height: auto; flex: 1; min-height: 14px; }
+.ggc-wizard--vertical .dot { margin: 4px 0; }
+.ggc-wizard--vertical .meta { text-align: left; margin: 0; padding: 12px 0 22px; align-self: center; }
+.ggc-wizard--vertical .ggc-wizard-step:last-child .meta { padding-bottom: 12px; }
+
+/* 미니(도트) 변형 — 출처: 대시보드.dc.html "진행 중인 조례초안" 행 내부 스텝퍼 실측 —
+ *   도트 20px(완료 #1F8A5B 체크 / 현재 브랜드+흰 점 7px / 대기 #eef1f5 + 1.5px #d5dce5),
+ *   연결선 26px×2px(지나온 구간 #1F8A5B, 남은 #e6ebf1), 우측 단계 라벨 12px/600 #6b7585
+ * 마크업: <div class="ggc-wizard-mini"><span class="step is-done"><span class="dot"></span>
+ *         <span class="line"></span></span> … <span class="stage">3단계 · 조문 생성 중</span></div> */
+/* ⚠ 좁은 카드 안에서 **페이지 전체에 가로 스크롤을 만들던 자리**다.
+ *   .stage 가 nowrap 인데 컨테이너가 줄바꿈도 축소도 허용하지 않아,
+ *   폭이 모자라면 카드 밖으로 밀려나 body 를 넘겼다(2026-08-22 예제 갤러리에서
+ *   대시보드 우측 레일 8px 초과로 확인). 줄바꿈을 허용해 흘려보낸다. */
+.ggc-wizard-mini {
+  display: flex; align-items: center;
+  flex-wrap: wrap; row-gap: 6px;   /* 폭이 모자라면 넘치는 대신 줄을 바꾼다 */
+  max-width: 100%;                 /* 블록 안에서 부모 폭을 넘지 않는다 */
+  flex-shrink: 0;                  /* 자신이 flex 항목일 때, 자리가 있는데도
+                                      줄바꿈되지 않게 한다 — wrap 을 켜면
+                                      min-content 가 점 하나로 떨어져 쉽게 접힌다 */
+}
+.ggc-wizard-mini .step { display: flex; align-items: center; }
+.ggc-wizard-mini .dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--ggc-bg);
+  border: 1.5px solid var(--ggc-border-strong);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+.ggc-wizard-mini .step.is-done .dot    { background: var(--ggc-success); border-color: transparent; }
+.ggc-wizard-mini .step.is-current .dot { background: var(--ggc-primary); border-color: transparent; }
+.ggc-wizard-mini .step.is-current .dot::after {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #fff;
+}
+.ggc-wizard-mini .line { width: 26px; height: 2px; background: var(--ggc-border); }
+.ggc-wizard-mini .step.is-done .line { background: var(--ggc-success); }
+.ggc-wizard-mini .step:last-of-type .line { display: none; }
+.ggc-wizard-mini .stage {
+  margin-left: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ggc-text-muted);
+  white-space: nowrap;
+  min-width: 0;                 /* flex 항목 기본값 auto 는 축소를 막는다 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =============================================================================
+ * 5. .ggc-list-row — 행 리스트 (카드 내부)
+ * 출처: 대시보드.dc.html "입법검토보고서 결재 흐름" 행 실측 —
+ *   padding 15px 22px · border-top 1px #f0f3f7 · hover #fafbfd · gap 14px
+ *   선두 아이콘 박스 40px radius 10px bg #f3f5f9 · 제목 14px/700 ellipsis · 메타 12px #8a94a3
+ * ============================================================================= */
+.ggc-list-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 22px;
+  border-top: 1px solid var(--ggc-hairline);
+  font-family: var(--ggc-font);
+}
+.ggc-list-row:hover { background: var(--ggc-surface-hover); }
+.ggc-list-row .icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--ggc-control-bg);
+  color: var(--ggc-text-muted);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ggc-list-row .body { flex: 1; min-width: 0; }
+.ggc-list-row .title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ggc-text);
+  margin-bottom: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ggc-list-row .meta { font-size: 12px; color: var(--ggc-text-subtle); }
+.ggc-list-row .end {           /* 우측 상태·시각·버튼 슬롯 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 12px;
+  color: var(--ggc-text-subtle);
+}
+/* 심각도 좌측 바 — 출처: 필수조례정비 지원.dc.html (width 5px radius 3px, 행 높이만큼) */
+.ggc-list-row .sev-bar {
+  width: 5px;
+  align-self: stretch;
+  border-radius: 3px;
+  background: var(--ggc-border-strong);
+  flex-shrink: 0;
+}
+.ggc-list-row .sev-bar--danger  { background: var(--ggc-danger); }
+.ggc-list-row .sev-bar--warning { background: var(--ggc-warning); }
+.ggc-list-row .sev-bar--info    { background: var(--ggc-info); }
+
+/* .ggc-tag — 행 안 소형 사각 태그 (.ggc-badge(알약형 상태)와 구분되는 출처·분류 표기)
+ * 출처: 대시보드.dc.html roleBadge/srcTag(10.5px/700, padding 2px 8px, radius 6px, 틴트 배경) */
+.ggc-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--ggc-font);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 2px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  background: var(--ggc-control-bg);
+  color: var(--ggc-text-muted);
+}
+.ggc-tag--primary { background: var(--ggc-primary-light);  color: var(--ggc-primary-deep); }
+.ggc-tag--info    { background: var(--ggc-info-tint);      color: var(--ggc-info); }
+.ggc-tag--success { background: var(--ggc-success-tint);   color: var(--ggc-success); }
+.ggc-tag--warning { background: var(--ggc-warning-tint);   color: var(--ggc-warning); }
+.ggc-tag--danger  { background: var(--ggc-danger-tint);    color: var(--ggc-danger); }
+
+/* =============================================================================
+ * 6. .ggc-btn — 버튼
+ * 출처: 대시보드.dc.html 실측 —
+ *   primary: bg #3C5D93 · radius 10px · 700 · shadow 0 4px 12px rgba(60,93,147,.3) · hover #345080
+ *   secondary: border 1px #d5dce5 · bg #fff · 글자 #2E4A78 · hover #f6f8fb
+ *   높이 스케일: 34px(행 액션) / 42px(헤더 액션) / 44px(주 CTA) / 46px(위저드 하단 바)
+ *   → 기본 42px, --sm 34px, --lg 46px 로 정규화
+ * ============================================================================= */
+.ggc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-family: var(--ggc-font);
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background .12s, border-color .12s, color .12s;
+}
+.ggc-btn:disabled { opacity: 0.45; cursor: default; }
+
+.ggc-btn--primary {
+  background: var(--ggc-primary);
+  color: #fff;
+  box-shadow: var(--ggc-btn-shadow);
+}
+.ggc-btn--primary:hover:not(:disabled)  { background: var(--ggc-primary-dark); }
+.ggc-btn--primary:active:not(:disabled) { background: var(--ggc-primary-deep); }
+
+.ggc-btn--secondary {
+  background: var(--ggc-surface);
+  border-color: var(--ggc-border-strong);
+  color: var(--ggc-primary-deep);
+}
+.ggc-btn--secondary:hover:not(:disabled) { background: var(--ggc-surface-inset); }
+/* 행 안 소형 secondary hover 강조 — 대시보드 '이어서 작성' 실측(#eef3fa / #b9c6da) */
+.ggc-btn--secondary.ggc-btn--sm:hover:not(:disabled) {
+  background: var(--ggc-primary-light);
+  border-color: #b9c6da;
+}
+
+.ggc-btn--ghost {
+  background: transparent;
+  color: var(--ggc-primary-deep);
+}
+.ggc-btn--ghost:hover:not(:disabled) { background: var(--ggc-primary-light); }
+
+/* 점선 추가 버튼 — 출처: 조례초안 작성 위저드.dc.html '조문 직접 추가'
+ * (1.5px dashed #cdd5df · bg #fafbfd · hover 시 브랜드 테두리·글자) */
+.ggc-btn--dashed {
+  width: 100%;
+  height: 44px;
+  border: 1.5px dashed #cdd5df;
+  background: var(--ggc-surface-hover);
+  color: var(--ggc-text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.ggc-btn--dashed:hover:not(:disabled) {
+  border-color: var(--ggc-primary);
+  color: var(--ggc-primary-deep);
+  background: #f6f9fd;
+}
+
+.ggc-btn--sm { height: 34px; padding: 0 14px; border-radius: 8px; font-size: 13px; }
+.ggc-btn--lg { height: 46px; padding: 0 20px; border-radius: 11px; font-size: 14px; }
+.ggc-btn--block { width: 100%; }
+
+/* =============================================================================
+ * 7. .ggc-field — 라벨 + 인풋 폼 필드
+ * 출처: 조례초안 작성 위저드.dc.html AI 문답 입력(input 44px · border 1px #d5dce5 ·
+ *       radius 10px · padding 0 14px · 13.5px) + 입법검토보고서.dc.html textarea
+ *       (padding 10px 12px · 13px · resize none). 포커스 링은 위저드 현재단계 링 값 재사용.
+ *       라벨은 카드 인셋 라벨(12px/700 #6b7585 계열) 실측에서 파생.
+ * ============================================================================= */
+.ggc-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--ggc-font); }
+.ggc-field > label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ggc-text-soft);
+}
+.ggc-field > label .req { color: var(--ggc-danger); margin-left: 2px; }
+.ggc-field input,
+.ggc-field select {
+  height: 44px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: 10px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--ggc-text);
+  background: var(--ggc-surface);
+  outline: none;
+}
+.ggc-field textarea {
+  min-height: 72px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ggc-text);
+  background: var(--ggc-surface);
+  resize: vertical;
+  outline: none;
+}
+.ggc-field input:focus,
+.ggc-field select:focus,
+.ggc-field textarea:focus {
+  border-color: var(--ggc-primary);
+  box-shadow: var(--ggc-focus-ring);
+}
+.ggc-field input::placeholder,
+.ggc-field textarea::placeholder { color: var(--ggc-text-subtle); }
+.ggc-field .hint { font-size: 11.5px; color: var(--ggc-text-subtle); }
+.ggc-field .error { font-size: 11.5px; font-weight: 600; color: var(--ggc-danger); }
+.ggc-field.is-error input,
+.ggc-field.is-error select,
+.ggc-field.is-error textarea { border-color: var(--ggc-danger); }
+
+/* =============================================================================
+ * 8. .ggc-table — 얇은 보더 테이블
+ * 출처: 예산분석 비용추계.dc.html 5년 추계표 실측 —
+ *   13px · thead 상단 2px solid #2E4A78 / 하단 1px #e2e7ee · th 11px 10px 700 #4a5566
+ *   td 11px 10px #3a4150 · 행 구분 1px #f0f3f7 · 숫자열 tabular-nums 우정렬
+ *   합계행 상단 2px #2E4A78 + bg #f6f8fb + 800
+ * ============================================================================= */
+.ggc-table-wrap { overflow-x: auto; }
+.ggc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--ggc-font);
+  font-size: 13px;
+}
+.ggc-table thead tr {
+  border-top: 2px solid var(--ggc-primary-deep);
+  border-bottom: 1px solid var(--ggc-border-soft);
+}
+.ggc-table th {
+  text-align: left;
+  padding: 11px 10px;
+  font-weight: 700;
+  color: var(--ggc-text-soft);
+  white-space: nowrap;
+}
+.ggc-table td {
+  padding: 11px 10px;
+  color: var(--ggc-text-body);
+  border-bottom: 1px solid var(--ggc-hairline);
+}
+.ggc-table .num,
+.ggc-table th.num, .ggc-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ggc-table tbody tr:hover { background: var(--ggc-surface-hover); }
+/* 긴 경로·토큰이 든 칸은 **그 안에서만** 끊는다. 셀 전체에 word-break:break-all 을
+   걸면 'Bearer' 가 'Beare/r' 로 쪼개져 값이 잘못 읽힌다(2026-08-22 연동 명세 표에서
+   실제로 그랬다). anywhere 는 넘칠 때만 끊으므로 보통 단어는 그대로 둔다. */
+.ggc-table code,
+.ggc-table .mono { overflow-wrap: anywhere; }
+.ggc-table tr.total,
+.ggc-table tfoot tr {
+  border-top: 2px solid var(--ggc-primary-deep);
+  background: var(--ggc-surface-inset);
+}
+.ggc-table tr.total td,
+.ggc-table tfoot td {
+  padding: 13px 10px;
+  font-weight: 800;
+  color: var(--ggc-text-strong);
+  border-bottom: none;
+}
+/* 헤더 음영 변형 — 출처: 경비정산 화면.dc.html PC 목록 헤더(bg #F8F8F8 12px/700)를
+ * 네이비 토큰 체계로 정규화(상단 2px 브랜드선 없이 배경 밴드만) */
+.ggc-table--flat thead tr { border-top: none; }
+.ggc-table--flat th {
+  background: var(--ggc-surface-inset);
+  font-size: 12px;
+  color: var(--ggc-text-muted);
+}
+/* 키-값 2열 표 — 출처: 입법검토보고서.dc.html Ⅲ 참고사항(라벨셀 bg #f6f8fb 700 #4a5566) */
+.ggc-table--kv th[scope="row"], .ggc-table--kv td.key {
+  background: var(--ggc-surface-inset);
+  font-weight: 700;
+  color: var(--ggc-text-soft);
+  width: 160px;
+}
+
+
+/* =============================================================================
+ * 9. 공통 셸 — GNB + LNB (계약 §2)
+ *
+ * v1.0 에 이것이 없어서 각 서비스가 셸을 새로 짰고, 그게 드리프트의 최대 원인이었다.
+ * 치수는 전부 계약 §2 와 .dc.html 실측값이다.
+ * ============================================================================= */
+
+.ggc-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ggc-bg);
+  color: var(--ggc-text);
+  font-family: var(--ggc-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ggc-gnb {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--ggc-gnb-h);
+  flex-shrink: 0;
+  background: var(--ggc-surface);
+  border-bottom: 1px solid var(--ggc-shell-border);
+  display: flex;
+  align-items: center;
+  gap: var(--ggc-space-5);
+  padding: 0 var(--ggc-space-6) 0 0;
+  box-shadow: 0 1px 0 rgba(20, 30, 50, 0.02);
+}
+.ggc-gnb-brand {
+  display: flex; align-items: center; gap: 11px;
+  flex-shrink: 0; width: var(--ggc-lnb-w); height: 100%;
+  padding: 0 18px;
+  border-right: 1px solid var(--ggc-shell-border);
+  /* 브랜드 슬롯은 어느 서비스에서나 홈 <a> 다. 없으면 UA 기본 밑줄이 그어지고
+     글자색이 링크색으로 덮여 .org/.svc 의 색 지정이 무효가 된다.
+     (.ggc-utility-bar .brand 와 .ggc-lnb-item 에는 있는데 여기만 빠져 있었다) */
+  text-decoration: none;
+  color: inherit;
+}
+.ggc-gnb-brand img { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
+.ggc-gnb-title { display: flex; flex-direction: column; line-height: 1.2; white-space: nowrap; }
+.ggc-gnb-title .org { font-size: 15px; font-weight: 700; color: var(--ggc-text); letter-spacing: -0.02em; }
+.ggc-gnb-title .svc { font-size: 13px; font-weight: 600; color: var(--ggc-primary); letter-spacing: -0.01em; }
+.ggc-gnb-spacer { flex: 1; min-width: 12px; }
+
+/* 검색 — 계약 §2: 300x40, --ggc-control-bg, r10 */
+.ggc-search {
+  display: flex; align-items: center; gap: var(--ggc-space-2);
+  height: 40px; width: 300px; min-width: 120px;
+  padding: 0 12px;
+  background: var(--ggc-control-bg);
+  border: 1px solid var(--ggc-shell-border);
+  border-radius: var(--ggc-radius);
+}
+.ggc-search input {
+  border: none; background: transparent; width: 100%;
+  font-family: inherit; font-size: 13.5px; color: var(--ggc-text);
+}
+/* ⚠ placeholder 를 유일한 라벨로 쓰지 않는다. 색도 AA 를 넘겨야 한다 */
+.ggc-search input::placeholder { color: var(--ggc-text-subtle); }
+
+.ggc-icon-btn {
+  position: relative; width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: var(--ggc-radius);
+  border: 1px solid var(--ggc-shell-border);
+  background: var(--ggc-surface);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.ggc-icon-btn:hover { background: var(--ggc-control-bg); }
+
+.ggc-shell-body { display: flex; flex: 1; align-items: stretch; }
+
+.ggc-lnb {
+  width: var(--ggc-lnb-w);
+  flex-shrink: 0;
+  background: var(--ggc-surface);
+  border-right: 1px solid var(--ggc-shell-border);
+  padding: var(--ggc-space-5) 14px;
+  position: sticky;
+  top: var(--ggc-gnb-h);
+  height: calc(100vh - var(--ggc-gnb-h));
+  overflow-y: auto;
+}
+.ggc-lnb-group {
+  padding: 0 var(--ggc-space-2) var(--ggc-space-3);
+  font-size: 11px; font-weight: 700;
+  color: var(--ggc-text-subtle);
+  letter-spacing: 0.06em;
+}
+.ggc-lnb-item {
+  display: flex; align-items: center; gap: 11px; width: 100%;
+  padding: 10px 12px; margin-bottom: 3px;
+  border: none; background: none;
+  border-radius: var(--ggc-radius);
+  font-family: inherit; font-size: 13.5px; font-weight: 600;
+  color: var(--ggc-text-muted);
+  text-align: left; text-decoration: none; cursor: pointer;
+}
+.ggc-lnb-item:hover { background: var(--ggc-control-bg); }
+.ggc-lnb-item[aria-current], .ggc-lnb-item.is-active {
+  background: var(--ggc-primary-light);
+  color: var(--ggc-primary-deep);
+  font-weight: 700;
+}
+.ggc-lnb-divider { height: 1px; background: var(--ggc-bg); margin: var(--ggc-space-4) var(--ggc-space-2); }
+
+/* 본문 — 계약 §2: 대시보드 1320, 기타 업무화면 1360 */
+.ggc-shell-main {
+  flex: 1; min-width: 0;
+  max-width: var(--ggc-main-max);
+  padding: 26px var(--ggc-space-7) 48px;
+}
+.ggc-shell-main--wide { max-width: var(--ggc-main-max-wide); }
+/* Converse 화면만 격자가 다르다 — 대화 + 출처 레일, 페이지 스크롤 없음 */
+.ggc-shell-main--split {
+  max-width: none; padding: 0;
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(340px, 420px);
+  height: calc(100vh - var(--ggc-gnb-h));
+}
+
+/* 커스텀 스크롤바 (.dc.html 실측) */
+.ggc-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+.ggc-scroll::-webkit-scrollbar-thumb {
+  background: var(--ggc-border-strong);
+  border-radius: var(--ggc-radius-sm);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+.ggc-scroll::-webkit-scrollbar-thumb:hover { background: #aab5c2; background-clip: content-box; }
+.ggc-scroll { scrollbar-width: thin; scrollbar-color: var(--ggc-border-strong) transparent; }
+
+::selection { background: #cddcef; }
+
+
+/* =============================================================================
+ * 10. 접근성 · 반응형
+ *
+ * ⚠ **이 절은 디자인 원본에 근거가 없다.** 원본 8파일 합계로
+ *    @media 0건 · aria-* 0건 · role 0건 · tabindex 0건 · focus-visible 0건 ·
+ *    outline:none 28건이고 $preview 는 전부 1440 데스크톱이다.
+ *    따라서 아래는 "정본 준수" 가 아니라 **계약 §2·§3 을 근거로 한 신규 설계**이며,
+ *    여기서 1회 정의해 전 시스템 공통 계약으로 고정한다.
+ *    (DESIGN.md §8-② 가 요청한 바로 그것 — 파동마다 각자 만들면 반드시 갈라진다)
+ * ============================================================================= */
+
+/* 키보드 진입점 — 원본에 없다. 공공 웹 접근성 의무다 */
+.ggc-skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  padding: var(--ggc-space-2) var(--ggc-space-4);
+  background: var(--ggc-primary-deep); color: #fff;
+  border-radius: 0 0 var(--ggc-radius-sm) 0;
+  font-family: var(--ggc-font); font-size: 13px; font-weight: 700;
+}
+.ggc-skip-link:focus { left: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- 900px 이하: GNB 압축 + LNB drawer (계약 §2) ---
+ * 원본은 256px LNB 가 좁은 폭에서도 고정이라 390px 에서 가로 오버플로가
+ * 606~818px 났다(실측). 아래가 그것을 막는다. */
+@media (max-width: 900px) {
+  .ggc-gnb { gap: var(--ggc-space-3); padding-right: var(--ggc-space-4); }
+  .ggc-gnb-brand { width: auto; border-right: none; padding: 0 var(--ggc-space-3); }
+  .ggc-gnb-title .svc { display: none; }
+  .ggc-search { width: auto; flex: 1; min-width: 0; }
+  .ggc-search kbd { display: none; }
+
+  .ggc-lnb {
+    position: fixed; top: var(--ggc-gnb-h); left: 0; z-index: 45;
+    height: calc(100vh - var(--ggc-gnb-h));
+    transform: translateX(-100%);
+    transition: transform 0.18s ease;
+    box-shadow: 0 8px 24px rgba(20, 30, 50, 0.12);
+  }
+  .ggc-lnb[data-open="true"] { transform: translateX(0); }
+
+  .ggc-shell-main,
+  .ggc-shell-main--wide { max-width: 100%; padding: 18px var(--ggc-space-4) 40px; }
+  .ggc-shell-main--split { grid-template-columns: 1fr; height: auto; }
+  .ggc-stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .ggc-stat-grid { grid-template-columns: 1fr; }
+  .ggc-shell-main, .ggc-shell-main--wide { padding: 14px var(--ggc-space-3) 32px; }
+}
+
+/* --- Windows 고대비 (forced-colors) — 깨지지 않게 하는 것이 전부다 ---
+ * OS 가 색을 갈아끼우므로 우리 팔레트는 무시된다. 문제는 **배경색만으로 구분되던 것**이
+ * 전부 같아 보이고, **box-shadow 가 렌더되지 않아** 그림자·링이 사라진다는 점이다.
+ * 토큰 파일이 포커스와 배지를 복원하고, 여기서는 셸·카드·표를 복원한다. */
+@media (forced-colors: active) {
+  .ggc-gnb { border-bottom: 1px solid; }
+  .ggc-lnb { border-right: 1px solid; }
+  /* 활성 내비는 배경 틴트로만 구분됐다 — 평탄화되면 어디 있는지 알 수 없다 */
+  .ggc-lnb-item[aria-current],
+  .ggc-lnb-item.is-active { border: 1px solid; font-weight: 700; }
+
+  .ggc-card { border: 1px solid; }
+  .ggc-btn--primary { border: 1px solid; }      /* border:none 이라 사라진다 */
+  .ggc-btn--dashed { border-style: dashed; }
+  .ggc-tag { border: 1px solid currentColor; }
+  .ggc-stat { border: 1px solid; }
+
+  /* 표 합계행·인셋은 배경으로만 구분됐다 */
+  .ggc-table tfoot tr,
+  .ggc-table .is-total { border-top: 2px solid; }
+
+  /* 위저드 현재 단계 — 배경 + 링으로 표시했다. 둘 다 죽는다 */
+  .ggc-wizard-step[aria-current] { outline: 2px solid Highlight; outline-offset: 2px; }
+
+  /* 스크롤바 커스텀은 forced-colors 에서 의미가 없다 — OS 것을 쓴다 */
+  .ggc-scroll { scrollbar-color: auto; }
+}
+
+/* --- 색 반전 없이 대비만 강화 --- */
+@media (prefers-contrast: more) {
+  .ggc-card,
+  .ggc-stat,
+  .ggc-table th,
+  .ggc-field input,
+  .ggc-field textarea,
+  .ggc-field select { border-color: var(--ggc-border-strong); }
+  .ggc-badge { border: 1px solid currentColor; }
+  .ggc-lnb-item[aria-current],
+  .ggc-lnb-item.is-active { outline: 1px solid var(--ggc-primary); }
+}
+
+/* --- >=1680px 확폭 (계약 §2-1, 2026-07-31 사용자 결정) ---
+ * 1679px 이하 렌더는 기본 폭(1320/1360)을 수치상 그대로 보존해야 한다 —
+ * 기존 1440x900 검증 증적과 Windows 125% 배율 FHD(뷰포트 1536px)가
+ * 확폭의 영향을 받지 않게 하기 위해서다(의도된 동작). */
+@media (min-width: 1680px) {
+  .ggc-shell-main { max-width: 1560px; }
+  .ggc-shell-main--wide { max-width: 1600px; }
+  /* 긴 문서 본문의 측정 폭은 가독 한계 920px 로 캡한다. 카드·표는 풀폭 확장 가능 */
+  .ggc-prose { max-width: 920px; }
+}
+
+/* =============================================================================
+ * 11. .ggc-qr — 경기도의정포털 앱 QR 로그인 블록  (v1.2, 2026-08-22 신설)
+ *
+ * 왜 정본에 넣나 — 이 화면은 **9개 시스템이 전부 노출한다.** 그런데 v1.1 까지
+ * 정본에 없었고, 그 결과 9벌이 각자 발명해 시각 언어가 셋으로 갈렸다
+ * (Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 유틸리티바·배지·푸터와
+ * 같은 성격이라 **컴포넌트로 고정한다.** 새 색은 하나도 만들지 않는다.
+ *
+ * -- 마크업 계약 (스택 7종 공통) -------------------------------------------
+ *   <div class="ggc-qr">
+ *     <div class="ggc-qr-head">
+ *       <p  class="ggc-qr-eyebrow">경기도의회사무처</p>
+ *       <h2 class="ggc-qr-title">경기도의정포털 앱으로 로그인</h2>
+ *       <p  class="ggc-qr-lead">…</p>
+ *     </div>
+ *     <div class="ggc-qr-stage" data-state="showing" role="status" aria-live="polite">
+ *       <div class="ggc-qr-frame"> QR 200x200 </div>
+ *       <div class="ggc-qr-veil">
+ *         <span class="ggc-badge ggc-badge--pending">만료</span>
+ *         <p class="ggc-qr-veil-text">유효시간이 지났습니다</p>
+ *       </div>
+ *     </div>
+ *     <p  class="ggc-qr-meta">남은 시간 <span class="ggc-qr-timer">4:32</span> · 1회용</p>
+ *     <ol class="ggc-qr-steps"> 3단계 안내 </ol>
+ *     <div class="ggc-qr-actions"> .ggc-btn </div>
+ *   </div>
+ *
+ * -- 상태는 .ggc-qr-stage 의 data-state 하나가 몬다 -------------------------
+ * 여섯 이름은 플랫폼 정본이다: idle · loading · showing · expired ·
+ * unregistered · error (/ggc-qr-login 스킬 contract.md).
+ * **덮개 방식인 이유** — 만료·미등록에서 QR 을 통째로 지우면 무대가 접혔다
+ * 펴지면서 화면이 튀고, 사용자가 방금 보던 자리를 잃는다. QR 은 그대로 두고
+ * 흐리게 덮은 뒤 그 위에 배지와 다음 행동을 얹는다. 무대 높이는 고정이다.
+ *
+ * 덮개는 **하나만 둔다.** 배지 클래스와 문구는 상태에 따라 코드가 바꾼다 —
+ *   expired      .ggc-badge--pending   "만료"    유효시간이 지났습니다
+ *   unregistered .ggc-badge--rejected  "미등록"  계정이 없습니다
+ *   error        .ggc-badge--rejected  "오류"    잠시 후 다시 시도해 주세요
+ * 덮개는 **상태**를 말하고, 그 아래 .ggc-qr-callout 이 **이유**를 말한다.
+ * 둘이 같은 말을 하면 화면에 같은 문장이 두 번 나온다(2026-08-22 실제로 그랬다).
+ * 상태마다 덮개를 하나씩 두면 마크업이 세 벌이 되고, 그 세 벌이 갈라진다.
+ *
+ * QR 자체 크기는 **200px · 오류정정 M** 고정이다(명세 3.2). 줄이면 앱
+ * 인식률이 떨어진다. 프레임 여백은 조용한 영역(quiet zone) 위에 얹는 시각
+ * 여백이지 QR 여백의 대체가 아니다.
+ * ============================================================================= */
+/* ⚠ [hidden] 은 **UA 스타일시트**의 display:none 이라 author 가 선언한 display 에
+ *   진다. .ggc-btn(inline-flex) · .ggc-qr-veil(flex) 이 정확히 그 경우여서,
+ *   hidden 을 걸어도 화면에 그대로 남는다 — 상태 전환이 조용히 깨진다.
+ *   이 블록 안에서는 hidden 이 항상 이기게 한다. (2026-08-22 실제로 걸렸다) */
+.ggc-qr [hidden] { display: none !important; }
+
+.ggc-qr {
+  font-family: var(--ggc-font);
+  color: var(--ggc-text);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ggc-space-4);
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* --- 머리 — 기관 맥락을 로그인 첫 화면에 둔다 --- */
+.ggc-qr-head { text-align: center; }
+.ggc-qr-eyebrow {
+  margin: 0 0 var(--ggc-space-1);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ggc-primary);
+}
+.ggc-qr-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+  color: var(--ggc-text-strong);
+}
+.ggc-qr-lead {
+  margin: var(--ggc-space-2) 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ggc-text-muted);
+  word-break: keep-all;
+}
+
+/* --- 무대 — 높이 고정. 상태가 바뀌어도 아래 요소가 움직이지 않는다 --- */
+.ggc-qr-stage {
+  position: relative;
+  align-self: center;
+  width: 232px;
+  height: 232px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ggc-radius-lg);
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border-strong);
+}
+
+/* QR 자리. 배경은 반드시 순백이어야 한다 — 틴트를 깔면 대비가 떨어져
+   조명이 나쁜 회의장에서 인식률이 눈에 띄게 나빠진다. */
+.ggc-qr-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  background: #fff;
+  transition: filter 0.15s, opacity 0.15s;
+}
+.ggc-qr-frame svg,
+.ggc-qr-frame img,
+.ggc-qr-frame canvas { display: block; width: 200px; height: 200px; }
+
+/* --- 대기 표시 --- */
+.ggc-qr-spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--ggc-primary-light-strong);
+  border-top-color: var(--ggc-primary);
+  animation: ggc-qr-spin 0.8s linear infinite;
+}
+@keyframes ggc-qr-spin { to { transform: rotate(360deg); } }
+
+/* --- 덮개 — 만료·미등록·오류에서 QR 위에 얹힌다 --- */
+.ggc-qr-veil {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ggc-space-2);
+  padding: var(--ggc-space-4);
+  text-align: center;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.88);
+}
+.ggc-qr-veil-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--ggc-text-muted);
+  word-break: keep-all;
+}
+
+/* 상태 배선 — 이 여섯 줄이 화면 전환의 전부다 */
+.ggc-qr-stage[data-state="idle"]    .ggc-qr-frame,
+.ggc-qr-stage[data-state="loading"] .ggc-qr-frame { display: none; }
+/* 대기 상태의 빈 무대가 "고장난 카드" 로 읽히지 않게 자리를 표시한다.
+   글자를 쓰지 않는 이유 — CSS content 는 번역·읽기 순서 밖에 있다. */
+.ggc-qr-stage[data-state="idle"]::after {
+  content: "";
+  position: absolute;
+  inset: var(--ggc-space-4);
+  border: 1.5px dashed var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+}
+.ggc-qr-stage[data-state="expired"]      .ggc-qr-frame,
+.ggc-qr-stage[data-state="unregistered"] .ggc-qr-frame,
+.ggc-qr-stage[data-state="error"]        .ggc-qr-frame {
+  filter: grayscale(1);
+  opacity: 0.25;
+}
+.ggc-qr-stage[data-state="expired"]      .ggc-qr-veil,
+.ggc-qr-stage[data-state="unregistered"] .ggc-qr-veil,
+.ggc-qr-stage[data-state="error"]        .ggc-qr-veil { display: flex; }
+/* 스피너도 CSS 가 몬다 — 마크업은 항상 두고 hidden 을 손으로 토글하지 않는다 */
+.ggc-qr-stage .ggc-qr-spinner { display: none; }
+.ggc-qr-stage[data-state="loading"] .ggc-qr-spinner { display: block; }
+
+/* --- 남은 시간 · 1회용 고지 --- */
+.ggc-qr-meta {
+  margin: 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ggc-text-subtle);
+}
+.ggc-qr-timer {
+  font-family: var(--ggc-font-mono);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ggc-text-muted);
+}
+
+/* --- 3단계 안내 — 이 블록이 곧 화면 안 매뉴얼이다 ---
+ * 별도 도움말 페이지로 빼지 않는다. 처음 쓰는 의원·직원이 막히는 지점은
+ * "앱 어디에 QR 로그인이 있나" 하나이고, 그 답은 QR 옆에 있어야 한다. */
+.ggc-qr-steps {
+  margin: 0;
+  padding: var(--ggc-space-4);
+  list-style: none;
+  counter-reset: ggc-qr-step;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ggc-space-3);
+  background: var(--ggc-surface-inset);
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius);
+}
+/* ⚠ 2026-08-22 수정: 여기는 flex 면 안 된다.
+   flex 컨테이너는 **연속된 텍스트 런마다 익명 항목**을 만든다. 그래서 이 컴포넌트가
+   전제하는 마크업(`휴대폰에서 <strong>경기도의정포털</strong> 앱을 실행합니다`)에서
+   텍스트·<strong>·텍스트가 각각 항목이 되고 그 사이가 gap 만큼(12px) 벌어졌다 —
+   화면에서는 "단어 사이가 이상하게 뜬" 것으로 보인다(예산 집행현황에서 실측).
+   번호는 흐름에서 빼고(absolute) 본문은 보통 인라인 흐름으로 둔다. 그러면 강조·링크·
+   줄바꿈이 어떤 조합으로 와도 자연스럽게 흐르고, 서비스 쪽 마크업은 고칠 필요가 없다. */
+.ggc-qr-steps li {
+  position: relative;
+  padding-left: calc(20px + var(--ggc-space-3));
+  min-height: 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ggc-text-muted);
+  word-break: keep-all;
+}
+.ggc-qr-steps li::before {
+  counter-increment: ggc-qr-step;
+  content: counter(ggc-qr-step);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ggc-primary-light-strong);
+  color: var(--ggc-primary-deep);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+.ggc-qr-steps strong { color: var(--ggc-text); font-weight: 700; }
+/* 인증이 끝난 뒤(미등록)나 발급 자체가 실패한 뒤(오류)에는 "앱으로 스캔하세요" 가
+   틀린 안내다 — 스캔할 것이 없고, 문제도 거기 있지 않다. 그때만 접는다.
+   :has() 미지원 브라우저에서는 안내가 남을 뿐이라 기능에 영향이 없다. */
+.ggc-qr:has(.ggc-qr-stage[data-state="unregistered"]) .ggc-qr-steps,
+.ggc-qr:has(.ggc-qr-stage[data-state="error"]) .ggc-qr-steps { display: none; }
+
+/* --- 액션 --- */
+.ggc-qr-actions { display: flex; flex-direction: column; gap: var(--ggc-space-2); }
+
+/* --- 알림 — 오류·미등록 안내. 색 단독에 의존하지 않게 배지·텍스트를 함께 둔다 --- */
+.ggc-qr-callout {
+  margin: 0;
+  padding: var(--ggc-space-3) var(--ggc-space-4);
+  border-radius: var(--ggc-radius);
+  border: 1px solid var(--ggc-border);
+  background: var(--ggc-surface-inset);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ggc-text-muted);
+  word-break: keep-all;
+}
+.ggc-qr-callout--danger {
+  border-color: var(--ggc-danger);
+  background: var(--ggc-danger-tint);
+  color: var(--ggc-danger);
+}
+.ggc-qr-callout--warning {
+  border-color: var(--ggc-warning);
+  background: var(--ggc-warning-tint);
+  color: var(--ggc-warning);
+}
+
+/* --- 사용자 코드 — 미등록일 때 관리자에게 불러 줘야 하는 값 ---
+ * 사람이 전화로 읽거나 그대로 복사한다. 그래서 등폭·큰 자간·선택 강조다. */
+.ggc-qr-usercode {
+  margin: 0;
+  padding: var(--ggc-space-3);
+  text-align: center;
+  font-family: var(--ggc-font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ggc-primary-deep);
+  background: var(--ggc-primary-light);
+  border: 1px solid var(--ggc-primary-light-strong);
+  border-radius: var(--ggc-radius);
+  user-select: all;
+  word-break: break-all;
+}
+
+/* --- 보조 링크 줄 (다른 로그인 수단으로 가는 통로) --- */
+.ggc-qr-alt {
+  display: flex;
+  align-items: center;
+  gap: var(--ggc-space-3);
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ggc-text-subtle);
+}
+.ggc-qr-alt::before,
+.ggc-qr-alt::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ggc-border);
+}
+
+/* --- 로그인 화면 셸 — QR 이 유일한 입구인 서비스용 ---
+ * 카드를 페이지 폭(1320px)에 그대로 두면 380px 짜리 QR 블록이 허허벌판에 놓인다.
+ * 아홉 서비스가 각자 이 폭을 정하지 않도록 여기서 한 번만 정한다.
+ * 카드는 기존 .ggc-card .ggc-card--pad 를 그대로 쓴다 — 새 카드를 만들지 않는다. */
+.ggc-login {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--ggc-space-7) var(--ggc-space-4) 64px;
+}
+.ggc-login > .ggc-card {
+  width: 100%;
+  max-width: 440px;
+  padding: var(--ggc-space-7) var(--ggc-space-6);
+}
+
+/* --- 좁은 화면 — 의원 개인 휴대폰이 주 사용처인 서비스가 있다 --- */
+@media (max-width: 420px) {
+  .ggc-qr { gap: var(--ggc-space-3); }
+  .ggc-qr-stage { width: 100%; max-width: 232px; }
+  .ggc-qr-steps { padding: var(--ggc-space-3); }
+}
+
+/* §10 이 animation-iteration-count 를 1 로 강제하므로 여기서 회전 속도를 늦춰 봐야
+   한 바퀴에서 멈춘다. 움직임을 되살리려 하지 말고 **정적 표시**로 바꾼다 —
+   진행 상황은 .ggc-qr-meta 의 문구("QR 을 준비하고 있습니다…")가 말한다. */
+@media (prefers-reduced-motion: reduce) {
+  .ggc-qr-spinner {
+    animation: none;
+    border-color: var(--ggc-border-strong);
+  }
+  .ggc-qr-frame { transition: none; }
+}
+
+/* forced-colors 는 배경을 평탄화한다 — 덮개가 투명해져 만료된 QR 이
+   멀쩡한 QR 로 보이는 것이 가장 위험하다. 불투명 Canvas 로 되돌린다. */
+@media (forced-colors: active) {
+  .ggc-qr-stage { border: 1px solid; }
+  .ggc-qr-veil { background: Canvas; border: 1px solid; }
+  .ggc-qr-steps,
+  .ggc-qr-callout,
+  .ggc-qr-usercode { border: 1px solid; }
+  .ggc-qr-steps li::before { border: 1px solid; }
+  .ggc-qr-stage[data-state="expired"]      .ggc-qr-frame,
+  .ggc-qr-stage[data-state="unregistered"] .ggc-qr-frame,
+  .ggc-qr-stage[data-state="error"]        .ggc-qr-frame { opacity: 1; filter: none; }
+}

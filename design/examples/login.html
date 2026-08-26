@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR 로그인 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+<style>
+/* 이 페이지 전용 — 상태 6종을 나란히 놓기 위한 격자다. 정본이 아니다. */
+.ex-qr-grid { display: flex; flex-wrap: wrap; gap: var(--ggc-space-6); }
+.ex-qr-cell { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: var(--ggc-space-2); }
+.ex-qr-cap { font-size: 12.5px; font-weight: 700; color: var(--ggc-text-strong); }
+.ex-qr-desc { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--ggc-text-subtle); word-break: keep-all; }
+</style>
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">공통 디자인 시스템</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ex-lnb-cap">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ex-lnb-cap">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+    </nav>
+
+    <main class="ggc-shell-main" id="main">
+
+      <h1 class="ex-h1">QR 로그인<span class="ver">.ggc-qr · 컴포넌트 v1.2</span></h1>
+      <p class="ex-lede">경기도의정포털 앱으로 들어오는 <b>전 시스템 공통 입구</b>다.
+      9개 서비스가 같은 화면을 노출하므로, 여기가 갈라지면 사용자는 서비스마다
+      다른 제품을 쓰는 것처럼 느낀다.</p>
+
+      <div class="ex-note">
+        <p><b>이 화면이 정본에 없던 것이 드리프트의 원인이었다.</b> 컴포넌트가 없으니
+        9벌이 각자 발명했고, 시각 언어가 셋으로 갈렸다(Tailwind 유틸리티 · 서비스 자체
+        클래스 · 인라인 스타일). 색만 맞추는 수렴으로는 다음에 또 갈라지므로
+        <b>컴포넌트 자체를 고정</b>한다.</p>
+      </div>
+
+      <!-- ============================================================ 실물 -->
+      <section class="ex-section">
+        <h2>실물 <span class="cls">.ggc-qr</span></h2>
+        <p>카드 안에 그대로 넣으면 된다. 폭은 <code class="ex-inline">max-width:380px</code>
+        로 스스로 잡고 가운데 정렬한다 — 감싸는 쪽이 폭을 정하지 않아도 된다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-qr">
+      <div class="ggc-card ggc-card--pad">
+        <div class="ggc-qr">
+          <div class="ggc-qr-head">
+            <p class="ggc-qr-eyebrow">경기도의회사무처</p>
+            <h2 class="ggc-qr-title">경기도의정포털 앱으로 로그인</h2>
+            <p class="ggc-qr-lead">이 서비스는 앱 QR 로그인만 지원합니다.</p>
+          </div>
+          <div class="ggc-qr-stage" data-state="showing" role="status" aria-live="polite">
+            <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div>
+          </div>
+          <p class="ggc-qr-meta">남은 시간 <span class="ggc-qr-timer">4:32</span> · 이 코드는 1회용입니다</p>
+          <ol class="ggc-qr-steps">
+            <li>휴대폰에서 <strong>경기도의정포털</strong> 앱을 실행합니다</li>
+            <li>앱 메뉴에서 <strong>QR 로그인</strong>을 선택합니다</li>
+            <li>위 코드를 화면에 맞춰 스캔합니다</li>
+          </ol>
+          <p class="ggc-qr-alt">앱을 쓸 수 없는 경우</p>
+          <div class="ggc-qr-actions">
+            <button class="ggc-btn ggc-btn--secondary ggc-btn--block" type="button">담당자에게 문의</button>
+          </div>
+        </div>
+      </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-qr"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 상태 -->
+      <section class="ex-section">
+        <h2>상태 6종 <span class="cls">data-state</span></h2>
+        <p>이름은 플랫폼 정본이다 —
+        <code class="ex-inline">idle</code> ·
+        <code class="ex-inline">loading</code> ·
+        <code class="ex-inline">showing</code> ·
+        <code class="ex-inline">expired</code> ·
+        <code class="ex-inline">unregistered</code> ·
+        <code class="ex-inline">error</code>.
+        같은 뜻에 다른 이름을 만들지 않는다. 화면 전환은
+        <code class="ex-inline">.ggc-qr-stage</code> 의
+        <code class="ex-inline">data-state</code> <b>하나</b>가 몬다 —
+        상태마다 요소를 붙였다 뗐다 하지 않아도 된다.</p>
+        <div class="ex-qr-grid">
+        <div class="ex-qr-cell">
+          <div class="ex-qr-cap"><code class="ex-inline">idle</code> 대기</div>
+          <div class="ggc-card ggc-card--pad">
+            <div class="ggc-qr">
+      <div class="ggc-qr-stage" data-state="idle" role="status" aria-live="polite">
+        <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div>
+      </div>
+      <p class="ggc-qr-meta">QR 은 발급 후 5분간 유효하며 1회만 사용됩니다</p>
+      <div class="ggc-qr-actions">
+        <button class="ggc-btn ggc-btn--primary ggc-btn--block" type="button">QR 로그인 시작</button>
+      </div>
+            </div>
+          </div>
+          <p class="ex-qr-desc">서비스가 QR 을 아직 발급하지 않은 상태. 비밀번호 로그인과
+     함께 쓰는 화면에서만 나온다 — QR 이 유일한 수단이면 화면 진입과 동시에
+     발급해 이 상태를 건너뛴다.</p>
+        </div>
+        <div class="ex-qr-cell">
+          <div class="ex-qr-cap"><code class="ex-inline">loading</code> 발급 중</div>
+          <div class="ggc-card ggc-card--pad">
+            <div class="ggc-qr">
+      <div class="ggc-qr-stage" data-state="loading" role="status" aria-live="polite">
+        <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div><div class="ggc-qr-spinner"></div>
+      </div>
+      <p class="ggc-qr-meta">QR 을 준비하고 있습니다…</p>
+            </div>
+          </div>
+          <p class="ex-qr-desc">세션을 만드는 동안. 무대 높이가 고정이라 QR 이 도착해도
+     아래 요소가 밀리지 않는다.</p>
+        </div>
+        <div class="ex-qr-cell">
+          <div class="ex-qr-cap"><code class="ex-inline">showing</code> 표시 중</div>
+          <div class="ggc-card ggc-card--pad">
+            <div class="ggc-qr">
+      <div class="ggc-qr-stage" data-state="showing" role="status" aria-live="polite">
+        <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div>
+      </div>
+      <p class="ggc-qr-meta">남은 시간 <span class="ggc-qr-timer">4:32</span> · 이 코드는 1회용입니다</p>
+      <ol class="ggc-qr-steps">
+        <li>휴대폰에서 <strong>경기도의정포털</strong> 앱을 실행합니다</li>
+        <li>앱 메뉴에서 <strong>QR 로그인</strong>을 선택합니다</li>
+        <li>위 코드를 화면에 맞춰 스캔합니다</li>
+      </ol>
+            </div>
+          </div>
+          <p class="ex-qr-desc">정상 상태. 남은 시간은 등폭 숫자라 초가 줄어도 폭이
+     흔들리지 않는다.</p>
+        </div>
+        <div class="ex-qr-cell">
+          <div class="ex-qr-cap"><code class="ex-inline">expired</code> 만료</div>
+          <div class="ggc-card ggc-card--pad">
+            <div class="ggc-qr">
+      <div class="ggc-qr-stage" data-state="expired" role="status" aria-live="polite">
+        <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div><div class="ggc-qr-veil"><span class="ggc-badge ggc-badge--pending">만료</span><p class="ggc-qr-veil-text">유효시간이 지났습니다</p></div>
+      </div>
+      <div class="ggc-qr-actions">
+        <button class="ggc-btn ggc-btn--primary ggc-btn--block" type="button">새 QR 발급</button>
+      </div>
+            </div>
+          </div>
+          <p class="ex-qr-desc"><b>QR 을 지우지 않는다.</b> 흐리게 덮고 그 위에 배지를 얹는다 —
+     통째로 지우면 무대가 접혔다 펴지며 화면이 튀고, 사용자가 보던 자리를 잃는다.</p>
+        </div>
+        <div class="ex-qr-cell">
+          <div class="ex-qr-cap"><code class="ex-inline">unregistered</code> 미등록</div>
+          <div class="ggc-card ggc-card--pad">
+            <div class="ggc-qr">
+      <div class="ggc-qr-stage" data-state="unregistered" role="status" aria-live="polite">
+        <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div><div class="ggc-qr-veil"><span class="ggc-badge ggc-badge--rejected">미등록</span><p class="ggc-qr-veil-text">계정이 없습니다</p></div>
+      </div>
+      <p class="ggc-qr-callout">인증은 완료됐지만 이 서비스에 등록된 계정이 없습니다.
+      아래 <strong>사용자 코드</strong>로 담당자에게 계정 등록을 요청하십시오.</p>
+      <p class="ggc-qr-usercode">GGC-4F27-A19C</p>
+      <div class="ggc-qr-actions">
+        <button class="ggc-btn ggc-btn--secondary ggc-btn--block" type="button">새 QR 발급</button>
+      </div>
+            </div>
+          </div>
+          <p class="ex-qr-desc">앱 인증은 됐지만 이 서비스에 계정이 없다.
+     <b>사용자 코드를 반드시 화면에 보여 준다</b> — 담당자가 그 값으로 계정을 만든다.</p>
+        </div>
+        <div class="ex-qr-cell">
+          <div class="ex-qr-cap"><code class="ex-inline">error</code> 오류</div>
+          <div class="ggc-card ggc-card--pad">
+            <div class="ggc-qr">
+      <div class="ggc-qr-stage" data-state="error" role="status" aria-live="polite">
+        <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div><div class="ggc-qr-veil"><span class="ggc-badge ggc-badge--rejected">오류</span><p class="ggc-qr-veil-text">잠시 후 다시 시도해 주세요</p></div>
+      </div>
+      <p class="ggc-qr-callout ggc-qr-callout--danger">QR 세션 발급에 실패했습니다.
+      잠시 후 다시 시도하십시오. 반복되면 담당자에게 알려 주십시오.</p>
+      <div class="ggc-qr-actions">
+        <button class="ggc-btn ggc-btn--primary ggc-btn--block" type="button">다시 시도</button>
+      </div>
+            </div>
+          </div>
+          <p class="ex-qr-desc">상류 서버·네트워크 실패. 사람이 할 수 있는 다음 행동을 반드시 남긴다.</p>
+        </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ 계약 -->
+      <section class="ex-section">
+        <h2>바꾸면 안 되는 것</h2>
+        <div class="ex-note ex-note--danger">
+          <p><b>QR 은 200px · 오류정정 M 고정이다</b>(연동 명세 3.2). 줄이면 조명이
+          나쁜 회의장에서 앱 인식률이 눈에 띄게 떨어진다. 프레임 배경은
+          <b>반드시 순백</b>이며 틴트를 깔지 않는다.</p>
+          <p><b>페이로드는 바이트까지 계약이다</b> —
+          <code>{"type":"ggc_qr_login","sessionId":…,"apiUrl":…}</code>.
+          공백을 넣으면 QR 버전이 올라가 모듈이 작아진다. 서버에서 만들 때는
+          <code>separators=(",",":")</code>, 브라우저에서는
+          <code>JSON.stringify</code> 기본값이 그 형태다.</p>
+          <p><b>서버 생성 SVG 에는 viewBox 가 있어야 한다</b>
+          (<code>omitsize=True</code>). 없으면 CSS 폭이 축척이 아니라 <b>잘림</b>으로
+          동작해, 화면에는 멀쩡한 QR 이 보이는데 앱이 읽지 못한다.</p>
+        </div>
+        <div class="ex-note ex-note--warn">
+          <p><b>사용자 코드를 감추지 않는다.</b> 미등록 상태에서 그 값이 화면에 없으면
+          담당자가 계정을 만들 방법이 없고, 사용자는 "안 된다" 는 말밖에 전할 수 없다.</p>
+          <p><b>브라우저 QR 라이브러리를 CDN 에서 불러오지 않는다.</b> 망분리 환경에서
+          스크립트가 오지 않아 <b>QR 자리만 비어 있는</b> 화면이 된다. 정적 HTML 서비스는
+          서버가 SVG 를 만들어 보내고, 번들러가 있는 서비스는
+          <code>qrcode.react</code> 를 번들에 넣는다.</p>
+        </div>
+        <p>절차·검증의 정본은 <code class="ex-inline">/ggc-qr-login</code> 스킬이다.
+        이 페이지는 <b>그 화면이 어떻게 보여야 하는가</b>만 고정한다.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      데모 QR 은 <code style="font-family:var(--ggc-font-mono)">segno</code> 로 생성한
+      예시 세션이며 실제로 로그인되지 않는다 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v1.2
+    </div>
+  </footer>
+</div>
+
+<script src="examples.js"></script>
+</body>
+</html>

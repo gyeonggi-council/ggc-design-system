@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>개요 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<!-- ⚠ 정본을 **상대경로로 직접** 링크한다. 사본을 두지 않는다.
+     그래서 이 갤러리는 정본의 스모크 테스트이기도 하다 —
+     토큰 이름이 깨지면 여기가 눈에 띄게 망가진다. -->
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">공통 디자인 시스템</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <label for="q" class="ex-sr">예제 검색</label>
+      <input id="q" type="search" placeholder="예제 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ex-lnb-cap">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ex-lnb-cap">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+    </nav>
+
+    <main class="ggc-shell-main" id="main">
+
+      <h1 class="ex-h1">경기도의회 공통 디자인 시스템<span class="ver">토큰 v1.2 · 컴포넌트 v1.2</span></h1>
+      <p class="ex-lede">
+        의정정보시스템 <b>11개 프런트엔드</b>가 공유하는 한 벌이다. Next 14/15/16 ·
+        React 18/19 · Vite · JSP/Tiles · Jinja2 · FastAPI · 정적 HTML —
+        스택이 일곱 종이라 공유 단위를 <b>CSS 커스텀 프로퍼티</b>까지 낮췄다.
+        패키지가 아니라 <b>복사</b>다.
+      </p>
+
+      <div class="ex-note">
+        <p><b>지금 보고 있는 이 페이지가 예제다.</b> 별도 스타일시트를 갖지 않고
+        <code>../ggc-tokens.css</code> 와 <code>../ggc-components.css</code> 를
+        <b>상대경로로 직접</b> 링크한다. 상단 유틸리티 바 · GNB 64px · LNB 256px ·
+        본문 1320px 은 전부 계약 §2 의 공통 셸이고, 여기서 손으로 그린 것이 없다.</p>
+        <p>정본이 바뀌면 이 페이지가 같이 바뀐다. 갤러리가 정본을 배신할 수 없다는 뜻이고,
+        반대로 <b>정본이 깨지면 여기가 눈에 띄게 망가진다.</b></p>
+      </div>
+
+      <section class="ex-section">
+        <h2>무엇부터 보나</h2>
+        <div class="ex-index" style="margin-top:var(--ggc-space-5)">
+          <a href="tokens.html">
+            <span class="no">01 · TOKENS</span>
+            <span class="ttl">토큰 · 팔레트</span>
+            <span class="dsc">색 · 타이포 · 간격 · 형태 · 포커스 전수. 값과 대비비는
+              브라우저가 정본에서 <b>실측</b>해 채운다 — 옮겨 적은 숫자가 한 개도 없다.</span>
+          </a>
+          <a href="components.html">
+            <span class="no">02 · COMPONENTS</span>
+            <span class="ttl">컴포넌트 카탈로그</span>
+            <span class="dsc">버튼 · 배지 · 카드 · 통계 · 행리스트 · 표 · 폼 · 위저드.
+              각 예제 아래에 <b>렌더된 그 마크업</b>이 그대로 펼쳐진다.</span>
+          </a>
+          <a href="dashboard.html">
+            <span class="no">03 · MONITOR</span>
+            <span class="ttl">대시보드 화면</span>
+            <span class="dsc">Archetype 이 실제 업무 화면으로 조립되면 어떻게 되는지.
+              통계 4종 · 결재 흐름 · 심사 현황표 · 회기 일정.</span>
+          </a>
+          <a href="wizard.html">
+            <span class="no">04 · CONFIGURE</span>
+            <span class="ttl">위저드 화면</span>
+            <span class="dsc">조례 초안 작성 4단계. 스텝퍼 3형(가로·세로·미니) ·
+              폼 필드 · 오류/힌트 · 빈 상태 3종.</span>
+          </a>
+          <a href="login.html">
+            <span class="no">05 · ENTRY</span>
+            <span class="ttl">QR 로그인 화면</span>
+            <span class="dsc">전 시스템 공통 입구. 상태 6종 · 화면 안 3단계 안내 ·
+              사용자 코드 · 바꾸면 안 되는 계약.</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="ex-section">
+        <h2>3분 도입</h2>
+        <p>빌드 도구도 패키지 매니저도 필요 없다. 파일 두 개를 복사하고 자기 스타일보다
+          <b>먼저</b> 로드한다. 순서가 곧 우선순위다.</p>
+        <pre class="ex-code" style="border:1px solid var(--ggc-border);border-radius:var(--ggc-radius)">
+<span class="a">1</span>  <span class="t">복사</span>   design/ggc-tokens.css      →  &lt;서비스&gt;/&lt;정적루트&gt;/ggc-tokens.css
+           design/ggc-components.css  →  &lt;서비스&gt;/&lt;정적루트&gt;/ggc-components.css
+           design/brand/dist/*        →  ASSET-MAP.tsv 가 지정한 경로
+
+<span class="a">2</span>  <span class="t">로드</span>   <span class="v">&lt;link rel="stylesheet" href="ggc-tokens.css"&gt;</span>      ← 반드시 먼저
+           <span class="v">&lt;link rel="stylesheet" href="ggc-components.css"&gt;</span>
+           <span class="v">&lt;link rel="stylesheet" href="app.css"&gt;</span>              ← 자기 스타일
+
+<span class="a">3</span>  <span class="t">검사</span>   python design/check_design.py --gate &lt;서비스경로&gt;</pre>
+
+        <div class="ex-note ex-note--warn">
+          <p><b>손으로 옮겨 적지 않는다.</b> D1 검사가 사본의 <b>바이트 동일</b>을 요구한다.
+          한 글자만 달라도 FAIL 이고, 그것이 이 시스템의 유일한 강제 수단이다.</p>
+          <p>값을 인라인으로 이식하는 것도 막지 않는다 — 다만 D2 검사가
+          소스의 모든 색 리터럴을 <b>정본에서 파생한 허용집합</b>과 대조한다.
+          발명한 색은 그 자리에서 잡힌다.</p>
+        </div>
+      </section>
+
+      <section class="ex-section">
+        <h2>관통 원칙 — 이름은 복제해도 되고, 값은 복제하면 안 된다</h2>
+        <p>이 조직에서 값 복제는 <b>이미 실패한 실험</b>이다. 계약 문서가 선언한
+          <code class="ex-inline">--ggc-success</code> 값이 실물 CSS 와 두 달간 어긋난 채
+          아무도 그 갭을 보지 않았다.</p>
+
+        <div class="ex-grid" style="margin-top:var(--ggc-space-5)">
+          <div class="ggc-card ggc-card--pad">
+            <div style="font-size:12px;font-weight:800;color:var(--ggc-success);letter-spacing:.06em">복제해도 되는 것</div>
+            <div style="font-size:14px;font-weight:700;margin:6px 0 8px;color:var(--ggc-text-strong)">토큰 <b>이름</b></div>
+            <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted)">
+              <code class="ex-inline">--ggc-primary</code> 는 소비자와의 인터페이스다.
+              문서·스킬·이 갤러리가 색인해도 안전하다.
+            </div>
+          </div>
+          <div class="ggc-card ggc-card--pad">
+            <div style="font-size:12px;font-weight:800;color:var(--ggc-danger);letter-spacing:.06em">복제하면 안 되는 것</div>
+            <div style="font-size:14px;font-weight:700;margin:6px 0 8px;color:var(--ggc-text-strong)">토큰 <b>값</b></div>
+            <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted)">
+              <code class="ex-inline">#3c5d93</code> 는 구현이다.
+              <code class="ex-inline">design/ggc-tokens.css</code> 한 곳에만 산다.
+              문서에 적는 순간 그 줄은 낡기 시작한다.
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top:var(--ggc-space-5)">그래서 이 갤러리에는 <b>손으로 적은 색값이 하나도 없다.</b>
+          토큰 페이지의 스와치와 대비비는 <code class="ex-inline">getComputedStyle</code> 로 정본을
+          읽어 채우고, 컴포넌트 페이지의 코드블록은 <b>렌더된 데모의 실제 innerHTML</b> 을 읽어 채운다.</p>
+      </section>
+
+      <section class="ex-section">
+        <h2>접근성 — 값보다 먼저 지키는 것</h2>
+        <p>경기도의회는 공공기관이라 <b>KWCAG 2.2 가 법적 준수 대상</b>이다.
+          토큰 v1.2 는 자기 자신이 AA(4.5:1)를 통과한다 — v1.1 은 통과하지 못했고,
+          상태 배지 7종이 전부 미달이었다.</p>
+
+        <div class="ex-grid">
+          <div class="ggc-card ggc-card--pad">
+            <div style="font-size:13.5px;font-weight:800;color:var(--ggc-text-strong);margin-bottom:8px">키보드</div>
+            <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted)">
+              지금 <kbd class="ex-inline">Tab</kbd> 을 눌러 보라. 맨 처음 나오는 것이
+              <b>본문 바로가기</b> 링크이고, 이후 모든 컨트롤에 포커스 링이 보인다.
+              디자인 원본은 <code class="ex-inline">outline:none</code> 을 28곳에 두고
+              대체를 두지 않았다 — <b>그 지점만은 원본을 따르지 않았다.</b>
+            </div>
+          </div>
+          <div class="ggc-card ggc-card--pad">
+            <div style="font-size:13.5px;font-weight:800;color:var(--ggc-text-strong);margin-bottom:8px">고대비</div>
+            <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted)">
+              <b>Windows 고대비 테마</b>를 켜고 다시 보라. 팔레트를 하나 더 만들지 않고
+              <code class="ex-inline">forced-colors</code> 에서 <b>깨지지 않게</b> 했다.
+              이 모드에서 <code class="ex-inline">box-shadow</code> 가 렌더되지 않아
+              포커스 링이 통째로 사라지던 결함을 <code class="ex-inline">outline</code> 으로 복원했다.
+            </div>
+          </div>
+          <div class="ggc-card ggc-card--pad">
+            <div style="font-size:13.5px;font-weight:800;color:var(--ggc-text-strong);margin-bottom:8px">색 단독 의존 금지</div>
+            <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted)">
+              상태 배지에는 <b>항상 텍스트나 아이콘을 함께</b> 둔다.
+              색각 이상 사용자에게는 대비만으로 부족하다.
+              <code class="ex-inline">--ggc-text-faint</code> 는 이름과 달리
+              <b>텍스트용이 아니다</b> — 아이콘 stroke·구분선 전용이다.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ex-section">
+        <h2>이 갤러리를 여는 법</h2>
+        <p>서버도 빌드도 필요 없다. 저장소를 내려받아
+          <code class="ex-inline">design/examples/index.html</code> 을 브라우저로 열면 된다.
+          GitHub 웹에서는 HTML 이 렌더되지 않고 소스로만 보인다.</p>
+        <div class="ex-note ex-note--warn">
+          <p><b>글꼴은 폴백으로 보일 수 있다.</b> 이 저장소는 <code>Pretendard GOV</code>
+          파일을 담지 않는다(자체 호스팅 대상이고, <b>외부 CDN 은 망분리 환경에서 깨지므로
+          링크하지 않는다</b>). 폰트가 없으면 토큰의 폴백 체인이 동작해
+          Windows 에서는 맑은 고딕으로 떨어진다 — <b>자간·굵기만 다르고 레이아웃은 같다.</b></p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      경기도의회 의정정보시스템 · 공통 디자인 시스템 예제 갤러리 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v1.2
+    </div>
+  </footer>
+</div>
+
+<script src="examples.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+# ASSET-MAP.tsv — 브랜드 자산 배포 매핑 정본
+#
+# 게이트가 이 표를 읽어 행마다 diff 를 돌린다. 이름이 아니라 표로 매핑을 고정하는
+# 이유: Next App Router 가 파일명을 icon.png / apple-icon.png 로 강제하므로 전
+# 서비스 이름 통일이 애초에 불가능하다. 표에 없는 서비스는 "미적용" 으로 드러난다.
+#
+# 서비스 경로는 D:\2026-ggc-vibe\ggc-services\ 기준 상대경로다.
+# 정본은 design/brand/dist/ 하나뿐이다 — 다른 곳에서 복사하지 않는다.
+#
+# 서비스<TAB>정본파일<TAB>대상경로
+#
+# --- 오리진 루트 (암묵 /favicon.ico 요청을 받는 유일한 서비스) ---
+ggc-poc-web	favicon.ico	ggc-poc-web/webapp/public/favicon.ico
+#
+# --- Next App Router: 파일 관례를 쓴다. 수동 <link> 를 쓰지 않는다 ---
+#     basePath 가 빌드마다 다르고(Vercel 빈 값 / k3s 프리픽스) Next 가 자동으로
+#     붙여 주며, href 에 내용 해시가 붙어 캐시 무효화가 공짜다.
+ggc-poc-web	favicon-32.png	ggc-poc-web/webapp/app/icon.png
+ggc-poc-web	apple-touch-icon-180.png	ggc-poc-web/webapp/app/apple-icon.png
+ggc_ai_hr	favicon-32.png	ggc_ai_hr/src/app/icon.png
+ggc_ai_hr	apple-touch-icon-180.png	ggc_ai_hr/src/app/apple-icon.png
+ggc_ai_hr	assembly-mark.png	ggc_ai_hr/public/assembly-mark.png
+ggc_mobile_login	favicon-32.png	ggc_mobile_login/app/icon.png
+ggc_mobile_login	apple-touch-icon-180.png	ggc_mobile_login/app/apple-icon.png
+ggc-ai-live-transcribe	favicon-32.png	ggc-ai-live-transcribe/frontend/src/app/icon.png
+ggc-ai-live-transcribe	apple-touch-icon-180.png	ggc-ai-live-transcribe/frontend/src/app/apple-icon.png
+#
+# --- FastAPI + StaticFiles("/" 마운트) — 상대 href ---
+_template	favicon-32.png	_template/app/static/favicon-32.png
+_template	apple-touch-icon-180.png	_template/app/static/apple-touch-icon-180.png
+ggc_kb	favicon-32.png	ggc_kb/app/static/favicon-32.png
+ggc_kb	apple-touch-icon-180.png	ggc_kb/app/static/apple-touch-icon-180.png
+ggc_kb	assembly-mark.png	ggc_kb/app/static/assembly-mark.png
+#
+# --- FastAPI + StaticFiles("/static" 마운트) ---
+ggc_ai_aide	favicon-32.png	ggc_ai_aide/app/static/favicon-32.png
+ggc_ai_aide	apple-touch-icon-180.png	ggc_ai_aide/app/static/apple-touch-icon-180.png
+#
+# --- Jinja2 / Flask ---
+ggc_ai_hipass	favicon-32.png	ggc_ai_hipass/hipass_app/static/favicon-32.png
+ggc_ai_hipass	apple-touch-icon-180.png	ggc_ai_hipass/hipass_app/static/apple-touch-icon-180.png
+#
+# --- 정적 HTML ---
+ggc_hermes	favicon-32.png	ggc_hermes/app/static/favicon-32.png
+ggc_hermes	apple-touch-icon-180.png	ggc_hermes/app/static/apple-touch-icon-180.png
+#
+# --- Vite + React ---
+award_office	favicon-32.png	award_office/frontend/public/favicon-32.png
+award_office	apple-touch-icon-180.png	award_office/frontend/public/apple-touch-icon-180.png
+award_office	assembly-mark.png	award_office/frontend/public/assembly-mark.png
+#
+# --- JSP / Tiles (eGovFrame) — 이미 마크를 쓰고 있었다. 리샘플본으로 정밀화 ---
+#     삽입 지점은 defaultLayout.jsp · loginLayout.jsp 두 곳.
+#     src/main/webapp/rhwp/ 벤더 번들은 손대지 않는다 (재빌드하면 덮어써진다).
+bill-system	favicon-32.png	bill-system/src/main/webapp/images/ci/favicon-32.png
+bill-system	apple-touch-icon-180.png	bill-system/src/main/webapp/images/ci/apple-touch-icon-180.png
+bill-system	assembly-mark.png	bill-system/src/main/webapp/images/ci/assembly_mark.png
+ggc-poc-web	assembly-mark.png	ggc-poc-web/webapp/public/assembly-mark.png
+ggc_budget	favicon-32.png	ggc_budget/nextjs/src/app/icon.png
+ggc_budget	apple-touch-icon-180.png	ggc_budget/nextjs/src/app/apple-icon.png
+ggc_budget	assembly-mark.png	ggc_budget/nextjs/public/assembly-mark.png

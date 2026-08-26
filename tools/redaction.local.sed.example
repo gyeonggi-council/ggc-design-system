@@ -1,0 +1,9 @@
+# redaction.local.sed 예시 — 실제 값은 담당자에게 받는다.
+# 이 형식으로 채운 파일을 tools/redaction.local.sed 로 저장하면
+# sync-from-platform.sh 가 자동으로 쓴다. 실제 파일은 절대 커밋하지 않는다.
+#
+# s/<서버 공인 IP>/27.96.x.x/g
+# s/<담당자 PC IP>/담당자 PC IP/g
+# s/<앱서버 내부 IP>/10.10.11.x/g
+# s/<DB서버 내부 IP>/10.10.12.x/g
+# s#<내부 업무시스템 배포 URL>#(내부 안내 참조)#g

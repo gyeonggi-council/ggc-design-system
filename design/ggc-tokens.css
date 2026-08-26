@@ -1,0 +1,214 @@
+/* =============================================================================
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v1.2 (2026-08-22)
+ * 근거: docs/03-공통디자인가이드.md · docs/23-…-단일디자인-계약.md (AUTHORITATIVE)
+ * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
+ *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
+ *       (v1.0 의 KRDS 기본 파랑 #246BEB 는 폐기. #256ef4 도 마찬가지다)
+ * 사용: 각 앱이 이 파일을 복사(또는 값 이식)해 자체 스타일의 최상단에 둔다.
+ * 검사: python design/check_design.py --canon   /   --gate <서비스>
+ *
+ * ── v1.2 에서 바뀐 것 (WCAG AA 보정) ─────────────────────────────────────────
+ * v1.1 은 자기 자신이 AA 미달이었다. 경기도의회는 공공기관이라 KWCAG 2.2(4.5:1)가
+ * 법적 준수 대상인데, 상태색 4종이 자기 틴트 위에서 3.65~3.83:1 이고 .ggc-badge
+ * 7종이 전부 미달이었다. 중립도 text-muted 4.11 · text-subtle 2.71(페이지 배경 위)이었다.
+ *
+ * 보정값은 가급적 **디자인 원본(.dc.html)이 이미 쓰는 색**에서 골랐다 —
+ * "새 값을 발명하지 않는다" 규약을 지키기 위해서다.
+ *
+ *   success  #1F8A5B → #0A7B4E   계약 §3 이 선언한 값이자 원본에 16회 등장
+ *   info     #2882B5 → #1F6A97   원본의 링크 hover 색
+ *   warning  #B26B00 → #9D5E00   색상각 유지, 명도만 보정
+ *   danger   #D64545 → #CD2D2D   색상각 유지, 명도만 보정
+ *   text-muted   #6B7585 → #4A5566   원본 ×10
+ *   text-subtle  #8A94A3 → #5A6577   원본 ×4
+ *   text-faint   #8A94A3 신설 — 삭제하지 않고 **비텍스트 전용으로 강등**
+ *
+ * 레이아웃·간격·radius 는 불변이다. 리플로우가 없다.
+ * ============================================================================= */
+
+:root {
+  /* --- 브랜드 (경기도의회 네이비) --- */
+  --ggc-primary: #3c5d93;        /* 주 색상: 주요 버튼, 활성 상태, 링크. 흰 위 6.61:1 */
+  --ggc-primary-dark: #345080;   /* hover */
+  --ggc-primary-deep: #2e4a78;   /* active/pressed, 유틸리티 바 배경. 흰 위 8.87:1 */
+  --ggc-primary-light: #eef3fa;  /* 선택 배경, 강조 배경 (tint) */
+  --ggc-primary-light-strong: #dbe6f5;
+
+  /* --- 상태 (v1.2 — 전부 자기 틴트 위 4.5:1 이상) ---
+   * 흰 글자를 얹어도 5.2:1 이상이라 채움 버튼·배지 양방향으로 쓸 수 있다. */
+  --ggc-success: #0a7b4e;  --ggc-success-tint: #e6f4ee;  /* 틴트 4.69 · 흰 5.31 */
+  --ggc-warning: #9d5e00;  --ggc-warning-tint: #fbeed2;  /* 틴트 4.53 · 흰 5.20 */
+  --ggc-danger:  #cd2d2d;  --ggc-danger-tint:  #fdeaea;  /* 틴트 4.52 · 흰 5.24 */
+  --ggc-info:    #1f6a97;  --ggc-info-tint:    #e2f0f8;  /* 틴트 5.06 · 흰 5.89 */
+
+  /* --- 중립 텍스트 램프 (4단, 전부 흰·페이지배경 양쪽에서 AA) ---
+   * 단조성 유지: 15.80 > 14.57 > 6.66 > 5.20 (페이지 배경 #EEF1F5 기준) */
+  --ggc-text-strong: #131722;  /* 흰 17.90 · bg 15.80 */
+  --ggc-text:        #1a1f29;  /* 흰 16.51 · bg 14.57 */
+  --ggc-text-muted:  #4a5566;  /* 흰  7.55 · bg  6.66 */
+  --ggc-text-subtle: #5a6577;  /* 흰  5.89 · bg  5.20 */
+
+  /* ⚠ --ggc-text-faint 는 **텍스트에 쓰지 않는다.** 흰 위 3.07:1 로 AA 미달이다.
+   *   아이콘 stroke · 구분 · 장식 등 3:1 대상 전용이다. v1.1 의 text-subtle 이었고
+   *   정본 최다 사용색이라 삭제하지 않고 역할만 강등했다. */
+  --ggc-text-faint: #8a94a3;
+
+  /* --- 중립 면·선 --- */
+  --ggc-border:        #e6ebf1;  /* 카드 테두리 */
+  --ggc-border-strong: #d5dce5;  /* 버튼 테두리, 강조 구분 */
+  --ggc-shell-border:  #e2e7ee;  /* GNB 하단선 · LNB 우측선 (계약 §2) */
+  --ggc-hairline:      #f0f3f7;  /* 표 행 구분, 옅은 구분선 */
+  --ggc-bg:            #eef1f5;  /* 페이지 배경 */
+  --ggc-surface:       #ffffff;  /* 카드·패널 */
+  --ggc-surface-inset: #f6f8fb;  /* 인셋 영역, 표 합계행 */
+  --ggc-control-bg:    #f3f5f9;  /* 검색창·입력 컨트롤 */
+  --ggc-row-hover:     #fafbfd;  /* 목록 행 hover */
+
+  /* --- 역할 색쌍 (신원 표시 — 상태 배지와 다른 축이다) ---
+   * 원본 roleBadgeStyle() 4쌍. 앰버쌍은 #8A6A20 이 4.39:1 이라 원본의 #7A5F1F(5.24)로 보정.
+   * ⚠ 금/앰버를 역할 배지와 강조 패널 밖으로 확산시키지 않는다 — 확산하면 주 색상이 하나 더 는다. */
+  --ggc-role-member:    #2e4a78;  --ggc-role-member-tint:    #e6edf7;  /* 의원 */
+  --ggc-role-staff:     #1f6a97;  --ggc-role-staff-tint:     #e2f0f8;  /* 사무처 */
+  --ggc-role-policy:    #7a5f1f;  --ggc-role-policy-tint:    #f7edd6;  /* 정책지원관 */
+  --ggc-role-other:     #5a6577;  --ggc-role-other-tint:     #f0f3f7;  /* 기타 */
+
+  /* --- 타이포그래피 ---
+   * ⚠ 자체 호스팅이다. 외부 CDN 금지 — 망분리 환경에서 깨진다.
+   *   폰트 파일을 넣으면 <정적루트>/fonts/ 아래에 두고 @font-face 를 자기 CSS 에 선언한다.
+   *   넣지 않으면 아래 폴백 체인이 동작한다. */
+  --ggc-font: "Pretendard GOV", Pretendard, "Noto Sans KR", "Malgun Gothic",
+              system-ui, -apple-system, sans-serif;
+  --ggc-font-mono: ui-monospace, "Cascadia Mono", Consolas, "D2Coding", Menlo, monospace;
+
+  /* --- 간격 (v1.2 신설) ---
+   * v1.1 에 간격 토큰이 아예 없어 각 서비스가 px 를 직접 썼다.
+   * 원본 실측 최빈값이다. */
+  --ggc-space-1: 4px;
+  --ggc-space-2: 8px;
+  --ggc-space-3: 12px;
+  --ggc-space-4: 16px;
+  --ggc-space-5: 20px;
+  --ggc-space-6: 24px;
+  --ggc-space-7: 32px;
+
+  /* --- 형태 --- */
+  --ggc-radius:    10px;   /* 버튼·입력 */
+  --ggc-radius-sm:  6px;   /* 배지·칩 */
+  --ggc-radius-lg: 14px;   /* 카드 (계약 §2: 14~16px, 그림자 없음) */
+  --ggc-shadow: 0 1px 2px rgba(20, 30, 50, 0.04);
+  --ggc-shadow-primary: 0 4px 12px rgba(60, 93, 147, 0.3);  /* primary 버튼 전용 */
+
+  /* --- 포커스 (계약 §3 — 알파 .20) --- */
+  --ggc-focus-ring: 0 0 0 3px rgba(60, 93, 147, 0.20);
+
+  /* --- 셸 치수 (계약 §2) --- */
+  --ggc-gnb-h: 64px;
+  --ggc-lnb-w: 256px;
+  --ggc-main-max: 1320px;        /* 대시보드 */
+  --ggc-main-max-wide: 1360px;   /* 기타 업무 화면 */
+}
+
+/* --- 공통 포커스 규칙 (계약 §3) ---
+ * 디자인 원본은 폼 컨트롤의 포커스 표시를 28곳에서 제거(outline:none)하고 대체를 두지
+ * 않았다. 그것을 그대로 이식하면 KWCAG 2.2 / WCAG 2.4.7 위반을 전 시스템에 복제한다.
+ * **이 지점에서는 원본을 따르지 않는다.** */
+:focus-visible {
+  border-color: var(--ggc-primary);
+  box-shadow: var(--ggc-focus-ring);
+  outline: none;
+}
+
+/* =============================================================================
+ * 고대비 — 팔레트를 하나 더 만들지 않는다 (v1.2, 2026-08-22)
+ *
+ * KRDS 의 `mode-high-contrast` 는 밝은 글자(#E6E8EA 등)를 쓰는 **사실상 다크 테마**다.
+ * 그것을 채택하면 계약이 비범위로 둔 다크모드를 고대비라는 이름으로 우회 도입하게 되고,
+ * 토큰 표면이 2배가 된다 — "두 벌이 갈라진다" 위험 그 자체다. 그래서 따르지 않는다.
+ *
+ * 대신 **실제 사용자가 켜는 것**에 대응한다. 사내 PC 는 Windows 고대비 테마이고,
+ * 브라우저는 이것을 `forced-colors: active` 로 노출하며 **OS 가 색을 통째로 갈아끼운다.**
+ * 여기서 할 일은 팔레트 정의가 아니라 **깨지지 않게 하는 것**이다.
+ * ============================================================================= */
+
+/* ⚠ forced-colors 모드에서는 `box-shadow` 가 렌더되지 않는다.
+ *   즉 위의 포커스 링이 **통째로 사라져** 키보드 사용자가 위치를 잃는다.
+ *   `outline` 은 살아남으므로 그것으로 복원한다. */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+
+  /* 배경색만으로 의미를 전달하던 것들에 테두리를 보장한다 —
+     forced-colors 는 배경을 평탄화하므로, 없으면 배지 7종이 전부 같아 보인다. */
+  .ggc-badge,
+  .ggc-utility-bar nav a.active {
+    border: 1px solid currentColor;
+  }
+}
+
+/* 색 반전 없이 대비만 더 원하는 사용자. 중립을 한 단계 진하게, 링을 두껍게. */
+@media (prefers-contrast: more) {
+  :root {
+    --ggc-text-muted: #3a4150;   /* 7.55 → 10.23:1 (원본 ×27) */
+    --ggc-text-subtle: #4a5566;  /* 5.89 →  7.55:1 (원본 ×53) */
+    --ggc-border: #d5dce5;
+    --ggc-border-strong: #b9c6da;
+    --ggc-focus-ring: 0 0 0 4px rgba(60, 93, 147, 0.45);
+  }
+  /* faint 는 여전히 텍스트가 아니지만, 아이콘 대비 3:1 을 확보한다 */
+  :root { --ggc-text-faint: #6b7585; }
+}
+
+/* --- 공통 유틸리티 바 (모든 시스템 최상단 동일 노출) --- */
+.ggc-utility-bar {
+  background: var(--ggc-primary-deep);
+  color: #c9d6ea;
+  font-family: var(--ggc-font);
+  font-size: 13px;
+  line-height: 1;
+}
+.ggc-utility-bar .inner {
+  max-width: 1280px; margin: 0 auto; padding: 8px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.ggc-utility-bar .brand { color: #fff; font-weight: 700; text-decoration: none; letter-spacing: -0.2px; }
+.ggc-utility-bar nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.ggc-utility-bar nav .label { color: #9cb0cd; margin-right: 4px; }
+.ggc-utility-bar nav a {
+  color: #c9d6ea; text-decoration: none; padding: 3px 8px; border-radius: var(--ggc-radius-sm);
+}
+.ggc-utility-bar nav a:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+.ggc-utility-bar nav a.active { background: var(--ggc-primary); color: #fff; font-weight: 600; }
+.ggc-utility-bar nav .disabled { color: #7d90ad; padding: 3px 8px; cursor: default; }
+
+/* --- 상태 배지 (결재상태·회기판정 공용) ---
+ * v1.2 상태색으로 7종 전부 AA 를 통과한다.
+ * ⚠ 색 단독에 의존하지 않는다 — 배지에는 항상 텍스트 또는 아이콘을 함께 둔다. */
+.ggc-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--ggc-font); font-size: 12px; font-weight: 600; line-height: 1;
+  padding: 4px 8px; border-radius: 999px; white-space: nowrap;
+}
+.ggc-badge--session  { background: var(--ggc-info-tint); color: var(--ggc-info); }        /* 회기 중 */
+.ggc-badge--meeting  { background: var(--ggc-success-tint); color: var(--ggc-success); }  /* 회의일 */
+.ggc-badge--recess   { background: var(--ggc-hairline); color: var(--ggc-text-subtle); }  /* 비회기 */
+.ggc-badge--approved { background: var(--ggc-success-tint); color: var(--ggc-success); }
+.ggc-badge--pending  { background: var(--ggc-warning-tint); color: var(--ggc-warning); }
+.ggc-badge--rejected { background: var(--ggc-danger-tint); color: var(--ggc-danger); }
+.ggc-badge--paid     { background: var(--ggc-primary-light-strong); color: var(--ggc-primary); }
+
+/* --- 역할 배지 (신원 — 상태와 다른 축) --- */
+.ggc-badge--role-member { background: var(--ggc-role-member-tint); color: var(--ggc-role-member); }
+.ggc-badge--role-staff  { background: var(--ggc-role-staff-tint);  color: var(--ggc-role-staff); }
+.ggc-badge--role-policy { background: var(--ggc-role-policy-tint); color: var(--ggc-role-policy); }
+.ggc-badge--role-other  { background: var(--ggc-role-other-tint);  color: var(--ggc-role-other); }
+
+/* --- 공통 푸터 --- */
+.ggc-footer {
+  background: var(--ggc-bg); color: var(--ggc-text-muted);
+  font-family: var(--ggc-font); font-size: 12px;
+  border-top: 1px solid var(--ggc-border);
+}
+.ggc-footer .inner { max-width: 1280px; margin: 0 auto; padding: 16px; }

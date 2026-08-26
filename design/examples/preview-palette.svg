@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="836" height="412" viewBox="0 0 836 412" role="img" aria-label="경기도의회 공통 디자인 시스템 팔레트">
+<rect width="836" height="412" fill="#ffffff"/>
+<text x="24" y="40" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="17" font-weight="700" fill="#131722">경기도의회 공통 디자인 시스템</text>
+<text x="24" y="58" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="11.5" fill="#4a5566">ggc-tokens.css · 이 그림은 정본에서 생성된다 — 직접 고치지 말 것</text>
+<line x1="24" y1="52" x2="812" y2="52" stroke="#e6ebf1" stroke-width="1"/>
+<text x="24" y="95" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#4a5566">브랜드</text>
+<rect x="120" y="62" width="132" height="58" rx="8" fill="#3c5d93" stroke="#e6ebf1" stroke-width="1"/>
+<text x="130" y="82" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#3C5D93</text>
+<text x="130" y="98" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">주 색상</text>
+<text x="130" y="111" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">primary</text>
+<rect x="260" y="62" width="132" height="58" rx="8" fill="#345080" stroke="#e6ebf1" stroke-width="1"/>
+<text x="270" y="82" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#345080</text>
+<text x="270" y="98" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">hover</text>
+<text x="270" y="111" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">primary-dark</text>
+<rect x="400" y="62" width="132" height="58" rx="8" fill="#2e4a78" stroke="#e6ebf1" stroke-width="1"/>
+<text x="410" y="82" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#2E4A78</text>
+<text x="410" y="98" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">유틸리티 바</text>
+<text x="410" y="111" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">primary-deep</text>
+<rect x="540" y="62" width="132" height="58" rx="8" fill="#eef3fa" stroke="#e6ebf1" stroke-width="1"/>
+<text x="550" y="82" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#131722">#EEF3FA</text>
+<text x="550" y="98" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#131722" opacity="0.92">선택 배경</text>
+<text x="550" y="111" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#131722" opacity="0.78">primary-light</text>
+<rect x="680" y="62" width="132" height="58" rx="8" fill="#dbe6f5" stroke="#e6ebf1" stroke-width="1"/>
+<text x="690" y="82" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#131722">#DBE6F5</text>
+<text x="690" y="98" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#131722" opacity="0.92">강조 배경</text>
+<text x="690" y="111" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#131722" opacity="0.78">primary-light-strong</text>
+<text x="24" y="173" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#4a5566">상태</text>
+<rect x="120" y="140" width="132" height="58" rx="8" fill="#0a7b4e" stroke="#e6ebf1" stroke-width="1"/>
+<text x="130" y="160" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#0A7B4E</text>
+<text x="130" y="176" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">승인·확정</text>
+<text x="130" y="189" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">success</text>
+<rect x="260" y="140" width="132" height="58" rx="8" fill="#9d5e00" stroke="#e6ebf1" stroke-width="1"/>
+<text x="270" y="160" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#9D5E00</text>
+<text x="270" y="176" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">대기·주의</text>
+<text x="270" y="189" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">warning</text>
+<rect x="400" y="140" width="132" height="58" rx="8" fill="#cd2d2d" stroke="#e6ebf1" stroke-width="1"/>
+<text x="410" y="160" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#CD2D2D</text>
+<text x="410" y="176" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">반려·오류</text>
+<text x="410" y="189" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">danger</text>
+<rect x="540" y="140" width="132" height="58" rx="8" fill="#1f6a97" stroke="#e6ebf1" stroke-width="1"/>
+<text x="550" y="160" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#1F6A97</text>
+<text x="550" y="176" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">정보·회기</text>
+<text x="550" y="189" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">info</text>
+<text x="24" y="251" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#4a5566">중립 텍스트</text>
+<rect x="120" y="218" width="132" height="58" rx="8" fill="#131722" stroke="#e6ebf1" stroke-width="1"/>
+<text x="130" y="238" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#131722</text>
+<text x="130" y="254" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">제목</text>
+<text x="130" y="267" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">text-strong</text>
+<rect x="260" y="218" width="132" height="58" rx="8" fill="#1a1f29" stroke="#e6ebf1" stroke-width="1"/>
+<text x="270" y="238" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#1A1F29</text>
+<text x="270" y="254" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">본문</text>
+<text x="270" y="267" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">text</text>
+<rect x="400" y="218" width="132" height="58" rx="8" fill="#4a5566" stroke="#e6ebf1" stroke-width="1"/>
+<text x="410" y="238" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#4A5566</text>
+<text x="410" y="254" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">보조</text>
+<text x="410" y="267" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">text-muted</text>
+<rect x="540" y="218" width="132" height="58" rx="8" fill="#5a6577" stroke="#e6ebf1" stroke-width="1"/>
+<text x="550" y="238" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#5A6577</text>
+<text x="550" y="254" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">메타</text>
+<text x="550" y="267" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">text-subtle</text>
+<rect x="680" y="218" width="132" height="58" rx="8" fill="#8a94a3" stroke="#e6ebf1" stroke-width="1"/>
+<text x="690" y="238" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#131722">#8A94A3</text>
+<text x="690" y="254" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#131722" opacity="0.92">비텍스트</text>
+<text x="690" y="267" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#131722" opacity="0.78">text-faint</text>
+<text x="24" y="329" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="12" font-weight="700" fill="#4a5566">역할</text>
+<rect x="120" y="296" width="132" height="58" rx="8" fill="#2e4a78" stroke="#e6ebf1" stroke-width="1"/>
+<text x="130" y="316" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#2E4A78</text>
+<text x="130" y="332" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">의원</text>
+<text x="130" y="345" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">role-member</text>
+<rect x="260" y="296" width="132" height="58" rx="8" fill="#1f6a97" stroke="#e6ebf1" stroke-width="1"/>
+<text x="270" y="316" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#1F6A97</text>
+<text x="270" y="332" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">사무처</text>
+<text x="270" y="345" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">role-staff</text>
+<rect x="400" y="296" width="132" height="58" rx="8" fill="#7a5f1f" stroke="#e6ebf1" stroke-width="1"/>
+<text x="410" y="316" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#7A5F1F</text>
+<text x="410" y="332" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">정책지원관</text>
+<text x="410" y="345" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">role-policy</text>
+<rect x="540" y="296" width="132" height="58" rx="8" fill="#5a6577" stroke="#e6ebf1" stroke-width="1"/>
+<text x="550" y="316" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="10.5" font-weight="700" fill="#ffffff">#5A6577</text>
+<text x="550" y="332" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10" fill="#ffffff" opacity="0.92">기타</text>
+<text x="550" y="345" font-family="ui-monospace,Consolas,'D2Coding',Menlo,monospace" font-size="9" fill="#ffffff" opacity="0.78">role-other</text>
+<text x="24" y="384" font-family="'Pretendard GOV',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,-apple-system,sans-serif" font-size="10.5" fill="#4a5566">WCAG AA 4.5:1 · 상태색 4종은 자기 틴트 위에서 최소 4.52:1 (--ggc-danger) · 중립 램프는 흰 배경 위 최소 5.89:1</text>
+</svg>

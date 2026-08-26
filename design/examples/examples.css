@@ -1,0 +1,304 @@
+/* =============================================================================
+ * examples.css — 예제 갤러리 **전용** 껍데기 (2026-08-22)
+ *
+ * ⚠ 이 파일은 디자인 시스템이 아니다. 갤러리 페이지의 설명 장치
+ *   (섹션 제목 · 스와치 격자 · 마크업 코드블록 · 주석 상자)만 담는다.
+ *   서비스에 복사하지 말 것. 서비스가 복사할 것은 `ggc-tokens.css` 와
+ *   `ggc-components.css` 두 개뿐이다.
+ *
+ * 규칙 — 이 파일은 **--ggc-* 를 하나도 정의하지 않는다.** 색·간격·형태를
+ *   직접 쓰지도 않는다. 전부 var() 로 정본을 참조한다. 그래서 정본을 고치면
+ *   갤러리도 같이 변하고, 갤러리가 정본을 배신할 수 없다.
+ * ============================================================================= */
+
+/* --- 문서 흐름 ------------------------------------------------------------- */
+body { margin: 0; }
+
+.ex-lede {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ggc-text-muted);
+  max-width: 62ch;
+  margin: 0 0 var(--ggc-space-6);
+}
+
+.ex-h1 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ggc-text-strong);
+  margin: 0 0 var(--ggc-space-2);
+}
+.ex-h1 .ver {
+  font-family: var(--ggc-font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ggc-text-subtle);
+  margin-left: var(--ggc-space-2);
+  vertical-align: 3px;
+}
+
+/* 섹션 — 위 여백이 곧 구획이다. 구분선을 긋지 않는다 */
+.ex-section { margin: var(--ggc-space-7) 0 0; }
+.ex-section > h2 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ggc-text-strong);
+  margin: 0 0 var(--ggc-space-1);
+  padding-bottom: var(--ggc-space-2);
+  border-bottom: 2px solid var(--ggc-primary-deep);
+}
+.ex-section > h2 .cls {
+  font-family: var(--ggc-font-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ggc-text-subtle);
+  margin-left: var(--ggc-space-2);
+}
+.ex-section > p {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ggc-text-muted);
+  max-width: 74ch;
+  margin: var(--ggc-space-3) 0 var(--ggc-space-4);
+}
+
+.ex-sub {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ggc-text-muted);
+  margin: var(--ggc-space-6) 0 var(--ggc-space-3);
+}
+
+/* --- 데모 상자 — 렌더 결과를 얹는 판 ---------------------------------------- */
+.ex-demo {
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-lg);
+  padding: var(--ggc-space-6);
+}
+.ex-demo--bg { background: var(--ggc-bg); }   /* 카드처럼 흰 요소를 얹을 때 */
+.ex-demo--flow > * + * { margin-top: var(--ggc-space-4); }
+
+.ex-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ggc-space-3);
+}
+.ex-grid {
+  display: grid;
+  gap: var(--ggc-space-4);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* --- 마크업 코드블록 -------------------------------------------------------
+ * 내용은 손으로 적지 않는다. ex-reveal.js 가 **렌더된 데모의 실제 innerHTML** 을
+ * 읽어 채운다 — 코드와 화면이 갈라질 자리를 없앤다. */
+.ex-code {
+  margin: 0;
+  border: 1px solid var(--ggc-border);
+  border-top: none;
+  border-radius: 0 0 var(--ggc-radius) var(--ggc-radius);
+  background: var(--ggc-surface-inset);
+  padding: var(--ggc-space-4) var(--ggc-space-5);
+  overflow-x: auto;
+  font-family: var(--ggc-font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--ggc-text);
+  white-space: pre;
+  tab-size: 2;
+}
+.ex-code .t { color: var(--ggc-primary); }        /* 태그명 */
+.ex-code .a { color: var(--ggc-role-policy); }    /* 속성명 */
+.ex-code .v { color: var(--ggc-success); }        /* 속성값 */
+
+.ex-reveal { margin-top: var(--ggc-space-3); }
+.ex-reveal > summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ggc-space-2);
+  padding: var(--ggc-space-2) var(--ggc-space-4);
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius) var(--ggc-radius) 0 0;
+  background: var(--ggc-control-bg);
+  font-family: var(--ggc-font);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ggc-text-muted);
+}
+.ex-reveal > summary::-webkit-details-marker { display: none; }
+.ex-reveal > summary::before { content: "▸"; font-size: 10px; }
+.ex-reveal[open] > summary::before { content: "▾"; }
+.ex-reveal > summary:hover { color: var(--ggc-primary); }
+
+/* --- 주석 상자 -------------------------------------------------------------- */
+.ex-note {
+  border-left: 4px solid var(--ggc-info);
+  background: var(--ggc-info-tint);
+  border-radius: 0 var(--ggc-radius) var(--ggc-radius) 0;
+  padding: var(--ggc-space-4) var(--ggc-space-5);
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--ggc-text);
+  margin: var(--ggc-space-4) 0;
+  max-width: 78ch;
+}
+.ex-note--warn   { border-left-color: var(--ggc-warning); background: var(--ggc-warning-tint); }
+.ex-note--danger { border-left-color: var(--ggc-danger);  background: var(--ggc-danger-tint); }
+.ex-note b { font-weight: 800; }
+.ex-note code, .ex-inline {
+  font-family: var(--ggc-font-mono);
+  font-size: 0.92em;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: var(--ggc-radius-sm);
+  padding: 1px 5px;
+}
+.ex-note :is(p):first-child { margin-top: 0; }
+.ex-note :is(p):last-child  { margin-bottom: 0; }
+
+/* --- 토큰 스와치 (tokens.html) ---------------------------------------------
+ * 값과 대비비는 JS 가 getComputedStyle 로 **실측**해 채운다.
+ * 숫자를 마크업에 적으면 그 순간부터 낡는다 — 정본이 이미 겪은 실패다. */
+.ex-swatch {
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius);
+  overflow: hidden;
+  background: var(--ggc-surface);
+}
+.ex-swatch .chip {
+  height: 72px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: var(--ggc-space-2) var(--ggc-space-3);
+  font-family: var(--ggc-font);
+  font-size: 12px;
+  font-weight: 700;
+}
+.ex-swatch .body {
+  padding: var(--ggc-space-3);
+  border-top: 1px solid var(--ggc-hairline);
+}
+.ex-swatch .name {
+  font-family: var(--ggc-font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ggc-text);
+  word-break: break-all;
+}
+.ex-swatch .hex {
+  font-family: var(--ggc-font-mono);
+  font-size: 11.5px;
+  color: var(--ggc-text-subtle);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.ex-swatch .use {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--ggc-text-muted);
+  margin-top: var(--ggc-space-2);
+}
+.ex-swatch .pair {
+  display: flex;
+  align-items: center;
+  gap: var(--ggc-space-2);
+  margin-top: var(--ggc-space-2);
+}
+.ex-swatch .vs {
+  font-family: var(--ggc-font-mono);
+  font-size: 10.5px;
+  color: var(--ggc-text-subtle);
+}
+.ex-swatch .ratio {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--ggc-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--ggc-radius-sm);
+}
+.ex-swatch .ratio.pass { background: var(--ggc-success-tint); color: var(--ggc-success); }
+.ex-swatch .ratio.warn { background: var(--ggc-warning-tint); color: var(--ggc-warning); }
+.ex-swatch .ratio.fail { background: var(--ggc-danger-tint);  color: var(--ggc-danger); }
+
+/* --- 스케일 막대 (간격·형태) ------------------------------------------------ */
+.ex-scale { display: flex; flex-direction: column; gap: var(--ggc-space-3); }
+.ex-scale .item { display: flex; align-items: center; gap: var(--ggc-space-4); }
+.ex-scale .key {
+  font-family: var(--ggc-font-mono);
+  font-size: 11.5px;
+  color: var(--ggc-text-muted);
+  width: 150px;
+  flex-shrink: 0;
+}
+.ex-scale .bar { height: 18px; border-radius: 3px; background: var(--ggc-primary); }
+.ex-scale .px  { font-family: var(--ggc-font-mono); font-size: 11.5px; color: var(--ggc-text-subtle); }
+
+/* --- 갤러리 색인 카드 (index.html) ------------------------------------------ */
+.ex-index { display: grid; gap: var(--ggc-space-5); grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.ex-index a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ggc-space-2);
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-lg);
+  padding: var(--ggc-space-5);
+  text-decoration: none;
+  transition: border-color .12s, box-shadow .12s;
+}
+.ex-index a:hover { border-color: var(--ggc-primary); box-shadow: var(--ggc-shadow-primary); }
+.ex-index .no {
+  font-family: var(--ggc-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ggc-primary);
+  letter-spacing: 0.08em;
+}
+.ex-index .ttl { font-size: 15.5px; font-weight: 800; color: var(--ggc-text-strong); letter-spacing: -0.02em; }
+.ex-index .dsc { font-size: 12.5px; line-height: 1.65; color: var(--ggc-text-muted); }
+
+/* --- 링크 기본 — 계약 §3: 링크에 밑줄 --------------------------------------
+ * ⚠ 범위를 **산문 컨테이너로 한정**한다. 처음에 `.ex-body a:not(...)` 로 넓게 잡았더니
+ *   특정도가 캔온의 `.ggc-utility-bar nav a.active` 를 이겨 **활성 링크 글자가
+ *   배경과 같은 색이 되어 사라졌다.** 갤러리 CSS 가 셸을 덮으면 안 된다. */
+.ex-body :is(.ex-lede, .ex-note, .ex-section > p, .ex-demo) a {
+  color: var(--ggc-primary);
+  text-underline-offset: 2px;
+}
+
+/* --- LNB 안 현재 페이지 표시 ------------------------------------------------ */
+.ggc-lnb .ex-lnb-cap {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--ggc-text-faint);
+  padding: 0 var(--ggc-space-3) var(--ggc-space-2);
+}
+
+/* --- 반응형 ---------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .ex-scale .key { width: 110px; }
+}
+
+/* --- 스크린리더 전용 라벨 -----------------------------------------------------
+ * 계약 §3: placeholder 를 유일한 라벨로 쓰지 않는다. 시각적으로 감추되
+ * 접근성 트리에는 남긴다 (display:none 은 트리에서도 사라져 쓸 수 없다). */
+.ex-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
