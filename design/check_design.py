@@ -22,7 +22,7 @@ check_design.py — 경기도의회 공통 디자인 드리프트 검사기
   python check_design.py --canon
   python check_design.py --report <서비스경로>
   python check_design.py --gate   <서비스경로> [--aa=observe|enforce]
-  python check_design.py --all    [ggc-services 경로]
+  python check_design.py --all    <서비스루트>        (또는 GGC_SERVICES 환경변수)
 """
 import os
 import re
@@ -38,8 +38,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CANON_TOKENS = os.path.join(HERE, "ggc-tokens.css")
 CANON_COMPONENTS = os.path.join(HERE, "ggc-components.css")
 CANON_BRAND = os.path.join(HERE, "brand")
-CONTRACT_DOC = os.path.normpath(os.path.join(
-    HERE, "..", "docs", "23-Claude-Design-전시스템-단일디자인-계약.md"))
+CONTRACT_DOC = os.path.normpath(os.path.join(HERE, "..", "docs", "contract.md"))
 
 SCAN_EXT = {".css", ".scss", ".sass", ".less", ".tsx", ".jsx", ".ts", ".js",
             ".html", ".htm", ".jsp", ".vue", ".svelte"}
@@ -537,7 +536,9 @@ def check_service(root, aa_mode="observe", verbose=True):
 
 
 # ------------------------------------------------------------- 자산 배포 검사
-SERVICES_ROOT = os.environ.get("GGC_SERVICES", r"D:\2026-ggc-vibe\ggc-services")
+# 서비스 루트는 환경마다 다르다 — GGC_SERVICES 환경변수 또는 --all <경로> 로 지정한다.
+# 지정이 없으면 자산 배포 검사는 "해당 없음" 으로 SKIP 한다(검사 안 함과 구분해 표기).
+SERVICES_ROOT = os.environ.get("GGC_SERVICES")
 
 
 def check_asset_map(services_root=None):
@@ -548,6 +549,10 @@ def check_asset_map(services_root=None):
     표에 없는 서비스는 '미적용' 으로 드러난다. 조용히 빠지지 않는다.
     """
     root = services_root or SERVICES_ROOT
+    if not root:
+        print("D6 INFO  assets    서비스 루트 미지정 — 해당 없음 "
+              "(GGC_SERVICES 환경변수로 지정하면 배포 상태를 대조한다)")
+        return 0
     mp = os.path.join(CANON_BRAND, "ASSET-MAP.tsv")
     dist = os.path.join(CANON_BRAND, "dist")
     if not os.path.exists(mp):
@@ -751,6 +756,9 @@ def main():
 
     if a.all:
         base = a.target or SERVICES_ROOT
+        if not base:
+            print("서비스 루트가 필요하다 — --all <경로> 또는 GGC_SERVICES 환경변수")
+            sys.exit(2)
         if not os.path.isdir(base):
             print("서비스 폴더를 찾을 수 없다:", base)
             sys.exit(2)

@@ -28,8 +28,8 @@
 **되돌릴 지점이 없으면 리스킨을 시작하지 않는다.**
 
 ```bash
-python /d/260712_경기도의회_시스템구축/design/check_design.py --report \
-       /d/2026-ggc-vibe/ggc-services/<서비스명> > <서비스명>/docs/design-baseline.txt
+python <저장소>/design/check_design.py --report <서비스경로> \
+       > <서비스경로>/docs/design-baseline.txt
 ```
 
 1. 위 리포트(현재 팔레트 전량 + 형 판정)를 파일로 남긴다
@@ -123,5 +123,5 @@ eGovFrame WAR 무수정 원칙과 리스킨이 충돌한다. `custom.css` 2,620�
 
 리스킨은 서비스 저장소를 건드린다. **원격 push 가 승인된 것만 push 한다** —
 `ggc-ai-live-transcribe` · `ggc_ai_hr` · `ggc_ai_hipass` · `ggc_mobile_login` · `ggc_ai_aide`
-다섯이며 전부 조직 private 저장소다(정본은 `D:\2026-ggc-vibe\CLAUDE.md`).
+다섯이며 전부 조직 private 저장소다(운영 규약 문서 기준).
 나머지는 **로컬 커밋까지**만 한다. `ggc-poc-web` 은 git 저장소가 아니다.

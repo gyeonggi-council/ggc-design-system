@@ -8,20 +8,19 @@
 
 ## 정본 위치
 
+경로는 전부 **이 저장소 루트 기준**이다.
+
 | 무엇 | 어디 |
 |---|---|
-| **토큰 정본** | `D:\260712_경기도의회_시스템구축\design\ggc-tokens.css` (v1.2) |
+| **토큰 정본** | `design\ggc-tokens.css` (v1.2) |
 | **컴포넌트 정본** | `design\ggc-components.css` (v1.1) |
 | **폰트 정본** | `design\ggc-fonts.css` (v1.0) + `design\fonts\` — @font-face 하나와 woff2 하나. **두 파일을 같은 폴더에 나란히** 복사하고 토큰보다 먼저 링크한다. 재생성은 `fonts\build-font.py` |
 | **브랜드 자산 정본** | `design\brand\dist\` + `design\brand\ASSET-MAP.tsv` |
 | **검사기** | `design\check_design.py` (`check-design.sh` 는 래퍼) |
 | **예제 갤러리** | `design\examples\index.html` — 빌드 없이 열린다. 토큰 전수·컴포넌트 카탈로그·실물 화면 2종 |
-| **단일디자인 계약** | `docs\23-Claude-Design-전시스템-단일디자인-계약.md` — **AUTHORITATIVE** |
-| 공통 가이드 | `docs\03-공통디자인가이드.md` |
-| **505줄 실측 문서** | `docs\design-reference\claude-design\DESIGN.md` — 빈도·대비·부재 항목 |
-| 디자인 원본 8개 | `docs\design-reference\claude-design\platform-0b392186\*.dc.html` |
-| 진짜 KRDS 원본 | `ggc-services\bill-system\docs\design-reference\` (토큰 JSON · 컴포넌트 HTML 22개) |
-| **실물 스캐폴드** | `D:\2026-ggc-vibe\ggc-services\_template\app\static\` |
+| **단일디자인 계약** | `docs\contract.md` — **AUTHORITATIVE** |
+| 공통 가이드 (구판) | `archive\03-공통디자인가이드.md` |
+| 505줄 실측 문서 · 디자인 원본 8개(`*.dc.html`) · KRDS 원본(토큰 JSON·컴포넌트 HTML 22개) | 플랫폼 저장소(비공개) 자산 — **이 저장소에는 없다.** 필요하면 담당자에게 요청 |
 
 ## 토큰 이름 색인 (값은 정본 파일에)
 

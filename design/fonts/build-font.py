@@ -39,10 +39,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "PretendardGOVVariable.subset.woff2")
 
 # 커버리지 기준 — 이미 배포돼 있는 정적 서브셋. 여기서 코드포인트 목록을 그대로 가져온다.
-BASELINE = os.path.join(
-    HERE, "..", "..", "..", "2026-ggc-vibe", "ggc-services",
-    "ggc-poc-web", "webapp", "public", "fonts", "PretendardGOV-Regular.subset.woff2",
-)
+# 플랫폼 경로 의존을 제거했다(v2) — 재생성할 때 기준 woff2 경로를 환경변수로 지정한다.
+BASELINE = os.environ.get("GGC_FONT_BASELINE", "")
 
 # 디자인 시스템이 상태 표기의 정식 어휘로 정한 기호 — 커버리지에서 빠지면
 # 그 자리만 폴백 글꼴로 그려져 배지 안에서 크기·굵기가 튄다.
@@ -77,6 +75,10 @@ def build():
     from fontTools.ttLib import TTFont
     from fontTools.subset import Subsetter, Options
 
+    if not BASELINE or not os.path.exists(BASELINE):
+        _log("커버리지 기준 서브셋 woff2 가 필요하다 — "
+             "GGC_FONT_BASELINE 환경변수에 경로를 지정할 것")
+        sys.exit(2)
     keep = coverage(BASELINE) | {ord(c) for c in SYMBOLS}
     _log("커버리지 기준 %s → %d 코드포인트" % (os.path.basename(BASELINE), len(keep)))
 

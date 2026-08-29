@@ -3,12 +3,12 @@
 ## 검사기
 
 ```bash
-CHK=/d/260712_경기도의회_시스템구축/design/check_design.py
+CHK=<저장소>/design/check_design.py
 
 python $CHK --canon                                   # 정본 자체 (서비스 인자 없음)
-python $CHK --report /d/2026-ggc-vibe/ggc-services/<서비스명>
-python $CHK --gate   /d/2026-ggc-vibe/ggc-services/<서비스명> --aa=observe
-python $CHK --all                                     # 전 서비스 요약
+python $CHK --report <서비스경로>
+python $CHK --gate   <서비스경로> --aa=observe
+python $CHK --all    <서비스루트>                      # 전 서비스 요약 (또는 GGC_SERVICES)
 ```
 
 `--report` 는 항상 exit 0(판정만), `--gate` 는 FAIL 이면 exit 1.

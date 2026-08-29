@@ -4,7 +4,7 @@
 # 이유: Next App Router 가 파일명을 icon.png / apple-icon.png 로 강제하므로 전
 # 서비스 이름 통일이 애초에 불가능하다. 표에 없는 서비스는 "미적용" 으로 드러난다.
 #
-# 서비스 경로는 D:\2026-ggc-vibe\ggc-services\ 기준 상대경로다.
+# 서비스 경로는 서비스 루트(GGC_SERVICES 환경변수로 지정) 기준 상대경로다.
 # 정본은 design/brand/dist/ 하나뿐이다 — 다른 곳에서 복사하지 않는다.
 #
 # 서비스<TAB>정본파일<TAB>대상경로

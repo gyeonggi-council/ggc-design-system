@@ -1,12 +1,12 @@
 # 브랜드 자산 — 파비콘과 마크
 
-정본과 근거는 `D:\260712_경기도의회_시스템구축\design\brand\SOURCE.md` 다.
+정본과 근거는 `design/brand/SOURCE.md` 다.
 여기는 **서비스에 붙이는 절차**만 담는다.
 
 ## 복사원은 하나다
 
 ```
-D:\260712_경기도의회_시스템구축\design\brand\dist\
+design\brand\dist\
   favicon.ico                 16+32+48, BMP 페이로드
   favicon-32.png              32x32 불투명
   apple-touch-icon-180.png    180x180 불투명
@@ -99,7 +99,7 @@ dist/apple-touch-icon-180.png →  <app루트>/apple-icon.png
 ## 재현
 
 ```bash
-cd /d/260712_경기도의회_시스템구축/design/brand
+cd <저장소>/design/brand
 python build-brand-assets.py           # dist/ 재생성
 python build-brand-assets.py --check   # MANIFEST 대조만
 ```

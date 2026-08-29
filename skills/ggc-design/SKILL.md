@@ -1,5 +1,5 @@
 ---
-name: 2ggc-design
+name: ggc-design
 description: [2단계·디자인] 경기도의회 업무플랫폼 서비스에 공통 디자인을 입히는 스킬. "디자인 입혀줘", "화면 만들어줘", "대시보드 짜줘", "토큰 적용해줘", "파비콘 넣어줘", "이 서비스만 색이 다르다"(수렴), "디자인이 제각각이다" 요청에 사용. `/1ggc-deploy` 의 Phase 2.5 를 이 스킬이 수행한다 — 신규 서비스는 스캐폴드 직후에, 이미 가동 중인 서비스는 리스킨으로. 검사기로 현재 상태 4형 판정 → 결정 대화 6문항 → 토큰·브랜드 자산 착지 → 공통 셸 → Surface Archetype 별 화면 조립 → 증거 기반 `G-DESIGN` 검증까지 일괄 진행한다.
 ---
 
@@ -49,10 +49,9 @@ description: [2단계·디자인] 경기도의회 업무플랫폼 서비스에 �
 | `references/reskin.md` | 상황 B — 가동 중 서비스 수렴 |
 | `references/verify.md` | Phase 5 — `G-DESIGN` 증거 · 실패 시 복귀 지점 |
 | **`.ggc-qr` 로그인 블록** | 로그인 화면이 있으면 **반드시** — 정의는 `design/ggc-components.css` §11, 실물·상태 6종은 `design/examples/login.html`. 절차는 `/3ggc-qr-login` 스킬 |
-| `D:\260712_경기도의회_시스템구축\design\examples\index.html` | **실물 갤러리.** 브라우저로 연다. 화면을 짜기 전에 무엇이 나오는지 본다 |
-| `D:\260712_경기도의회_시스템구축\design\ggc-tokens.css` | **실물 정본.** 값은 오직 여기 |
-| `D:\260712_경기도의회_시스템구축\docs\23-Claude-Design-전시스템-단일디자인-계약.md` | **AUTHORITATIVE** — 셸 치수·archetype·완료 정의 |
-| `D:\2026-ggc-vibe\ggc-services\_template\app\static\` | **실물 스캐폴드** |
+| `design/examples/index.html` | **실물 갤러리.** 브라우저로 연다. 화면을 짜기 전에 무엇이 나오는지 본다 |
+| `design/ggc-tokens.css` | **실물 정본.** 값은 오직 여기 |
+| `docs/contract.md` | **AUTHORITATIVE** — 셸 치수·archetype·완료 정의 |
 
 실행 명령의 정본은 `../ggc-deploy/references/deploy-runbook.md` 다. 여기서 되풀이하지 않는다.
 
@@ -61,8 +60,7 @@ description: [2단계·디자인] 경기도의회 업무플랫폼 서비스에 �
 첫 명령이 검사기다.
 
 ```bash
-python /d/260712_경기도의회_시스템구축/design/check_design.py --report \
-       /d/2026-ggc-vibe/ggc-services/<서비스명>
+python <저장소>/design/check_design.py --report <서비스경로>
 ```
 
 **현재 상태 4형** 중 무엇인지 확정하고 `state.json` 에 적는다.
@@ -116,7 +114,7 @@ python /d/260712_경기도의회_시스템구축/design/check_design.py --report
 ## Phase 2 — 토큰과 브랜드 자산 착지
 
 ```bash
-CANON=/d/260712_경기도의회_시스템구축/design
+CANON=<저장소>/design
 cp "$CANON/ggc-tokens.css" <정적루트>/ggc-tokens.css      # 손으로 옮겨 적지 않는다
 
 # 폰트도 정본에서 온다(2026-08-25 신설). **두 파일을 같은 폴더에 나란히** 두고
@@ -185,8 +183,7 @@ cp "$CANON/fonts/PretendardGOVVariable.subset.woff2" <폰트폴더>/
 ## Phase 5 — 검증 → `G-DESIGN`
 
 ```bash
-python /d/260712_경기도의회_시스템구축/design/check_design.py --gate --aa=observe \
-       /d/2026-ggc-vibe/ggc-services/<서비스명>
+python <저장소>/design/check_design.py --gate --aa=observe <서비스경로>
 ```
 
 증거 3종을 `state.json.gates["G-DESIGN"]` 에 기록하고 `phase` 를 `design-ready` 로 전진시킨다 —
