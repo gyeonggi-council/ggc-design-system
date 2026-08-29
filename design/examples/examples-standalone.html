@@ -4,8 +4,8 @@
   생성물이다. design/examples/build-standalone.py 가 정본에서 만든다.
   직접 고치지 말 것 — 다음 생성에서 덮어써진다.
 
-  담긴 것: ggc-tokens.css v1.2 · ggc-components.css v1.1 · examples.css ·
-  examples.js · 의회 마크(data URI) · 갤러리 5쪽의 본문.
+  담긴 것: ggc-tokens.css v2.0 · ggc-components.css v2.0 · ggc-behaviors.js ·
+  examples.css · examples.js · 의회 마크(data URI) · 갤러리 9쪽의 본문.
   외부 요청 0 — 망분리 환경과 오프라인에서도 그대로 열린다.
 
   <meta charset> 을 반드시 첫 줄에 둔다. 이 파일은 <head> 없이 쓰이므로,
@@ -333,6 +333,13 @@
  *   치환했다. **렌더 결과는 바이트 수준으로 같다**(갤러리 6쪽 × 2폭 계산 스타일 해시 대조).
  *   이 치환이 있어야 <html data-ggc-profile="public"> 이 대민 밀도로 바꿀 자리가 생긴다.
  *   --ggc-text-body 는 토큰으로 승격돼 여기서 정의하지 않는다.
+ *
+ *   §12 .ggc-page-head  §13 .ggc-breadcrumb  §14 .ggc-tabs  §15 .ggc-pagination
+ *   §16 .ggc-select     §17 .ggc-check/.ggc-radio/.ggc-chip  §18 .ggc-alert
+ *   §19 .ggc-modal(<dialog>)  §20 .ggc-actionbar  §21 .ggc-spinner  §22 .ggc-skeleton
+ *   §23 .ggc-prose · .ggc-sr  §24 고대비 보강
+ *   마크업·ARIA 는 KRDS 컴포넌트 HTML 을 따랐고 CSS 는 토큰으로 다시 썼다. 이미지 자산 0.
+ *   동작(탭 키보드 · 모달 여닫기 · drawer)은 ggc-behaviors.js — 없어도 화면은 깨지지 않는다.
  * ============================================================================= */
 
 /* --- 0. 컴포넌트 레이어 전용 값 ---------------------------------------------
@@ -460,8 +467,9 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
-@media (max-width: 1024px) { .ggc-stat-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px)  { .ggc-stat-grid { grid-template-columns: 1fr; } }
+.ggc-stat-grid--3 { grid-template-columns: repeat(3, 1fr); }   /* 타일이 셋일 때 (v2.0) — 인라인 style 을 쓰지 않는다 */
+@media (max-width: 1024px) { .ggc-stat-grid, .ggc-stat-grid--3 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .ggc-stat-grid, .ggc-stat-grid--3 { grid-template-columns: 1fr; } }
 
 .ggc-stat {
   background: var(--ggc-surface);
@@ -1530,6 +1538,740 @@
   .ggc-qr-stage[data-state="error"]        .ggc-qr-frame { opacity: 1; filter: none; }
 }
 
+
+/* =============================================================================
+ * 12. .ggc-page-head — 페이지 헤더 (브레드크럼 · 제목 · 메타 · 주 액션)   (v2.0)
+ * 출처: archetypes.md 헤더 제목부 2형 — "홈 / 상위" breadcrumb + 제목 18px/800/-0.02em.
+ *       Monitor 첫 화면만 인사말형(.ggc-page-head--greeting, 17px/800/-0.03em).
+ * 마크업:
+ *   <div class="ggc-page-head">
+ *     <nav class="ggc-breadcrumb" aria-label="현재 경로">…</nav>
+ *     <div class="row">
+ *       <div><h1 class="title">의안 목록</h1><p class="meta">제12대 · 제380회 · 접수 147건</p></div>
+ *       <div class="actions"><button class="ggc-btn ggc-btn--primary">＋ 의안 등록</button></div>
+ *     </div>
+ *   </div>
+ * 주 액션은 하나다 — 둘 이상이면 무엇을 눌러야 하는지 흐려진다(archetypes Learn/Decide).
+ * ============================================================================= */
+.ggc-page-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ggc-space-2);
+  margin-bottom: var(--ggc-space-5);
+  font-family: var(--ggc-font);
+}
+.ggc-page-head .row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ggc-space-4);
+  flex-wrap: wrap;
+}
+.ggc-page-head .title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--ggc-text-strong);
+}
+.ggc-page-head--greeting .title { font-size: 17px; letter-spacing: -0.03em; }
+.ggc-page-head .meta {
+  margin: 3px 0 0;
+  font-size: 12.5px;
+  color: var(--ggc-text-subtle);
+}
+.ggc-page-head .actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ggc-space-2);
+  flex-shrink: 0;
+}
+
+/* =============================================================================
+ * 13. .ggc-breadcrumb — 현재 경로   (v2.0)
+ * 출처: KRDS breadcrumb — <nav aria-label="현재 경로"><ol><li><a>홈</a></li>…</ol></nav>.
+ *       마지막 항목은 링크가 아니라 aria-current="page" 텍스트다.
+ * 구분자는 CSS 가 그린다 — 마크업에 "/" 나 ">" 를 적으면 스크린리더가 읽는다.
+ * ============================================================================= */
+.ggc-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--ggc-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--ggc-font);
+  font-size: 12.5px;
+  color: var(--ggc-text-subtle);
+}
+.ggc-breadcrumb li { display: inline-flex; align-items: center; gap: var(--ggc-space-1); }
+.ggc-breadcrumb li + li::before {
+  content: "";
+  width: 5px; height: 5px;
+  border-right: 1.5px solid var(--ggc-text-faint);
+  border-bottom: 1.5px solid var(--ggc-text-faint);
+  transform: rotate(-45deg);
+  margin: 0 3px 0 1px;
+}
+.ggc-breadcrumb a {
+  color: var(--ggc-text-muted);
+  text-decoration: none;
+  padding: 2px 4px;
+  margin: 0 -4px;
+  border-radius: var(--ggc-radius-sm);
+}
+.ggc-breadcrumb a:hover { color: var(--ggc-primary); text-decoration: underline; }
+.ggc-breadcrumb [aria-current="page"] { color: var(--ggc-text); font-weight: 600; }
+
+/* =============================================================================
+ * 14. .ggc-tabs — 탭   (v2.0)
+ * 출처: KRDS tab(line) — role="tablist" / role="tab" aria-selected aria-controls /
+ *       role="tabpanel" aria-labelledby. 선택 탭만 tabindex=0(roving), 화살표로 이동.
+ * 마크업:
+ *   <div class="ggc-tabs">
+ *     <div class="ggc-tablist" role="tablist" aria-label="의안 정보">
+ *       <button class="ggc-tab" role="tab" id="t1" aria-selected="true" aria-controls="p1">개요</button>
+ *       <button class="ggc-tab" role="tab" id="t2" aria-selected="false" aria-controls="p2" tabindex="-1">심사 경과</button>
+ *     </div>
+ *     <div class="ggc-tabpanel" role="tabpanel" id="p1" aria-labelledby="t1">…</div>
+ *     <div class="ggc-tabpanel" role="tabpanel" id="p2" aria-labelledby="t2" hidden>…</div>
+ *   </div>
+ * 동작(클릭·화살표·Home/End)은 ggc-behaviors.js 가 준다. 없으면 정적 표시만 된다.
+ * 선택 표시는 색 + 하단 2px 선 **둘 다**다 — 색 단독 의존 금지.
+ * ============================================================================= */
+.ggc-tabs { font-family: var(--ggc-font); }
+.ggc-tablist {
+  display: flex;
+  gap: var(--ggc-space-1);
+  border-bottom: 1px solid var(--ggc-border-strong);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ggc-tablist::-webkit-scrollbar { display: none; }
+.ggc-tab {
+  appearance: none;
+  border: none;
+  background: none;
+  margin: 0 0 -1px;
+  padding: 10px 14px;
+  border-bottom: 2px solid transparent;
+  font-family: inherit;
+  font-size: var(--ggc-control-font);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ggc-text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ggc-tab:hover { color: var(--ggc-text); background: var(--ggc-row-hover); }
+.ggc-tab[aria-selected="true"] {
+  color: var(--ggc-primary-deep);
+  border-bottom-color: var(--ggc-primary);
+  font-weight: 700;
+}
+.ggc-tab .count {                 /* 탭 안 건수 — "심사 경과 (3)" */
+  margin-left: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ggc-text-subtle);
+}
+.ggc-tab[aria-selected="true"] .count { color: var(--ggc-primary); }
+.ggc-tabpanel { padding: var(--ggc-space-5) 0 0; }
+.ggc-tabpanel[hidden] { display: none; }
+/* 카드 안 탭 — 카드 헤더 아래에 붙을 때 좌우 패딩을 카드에 맞춘다 */
+.ggc-card > .ggc-tabs > .ggc-tablist { padding: 0 var(--ggc-space-5); }
+.ggc-card > .ggc-tabs > .ggc-tabpanel { padding: var(--ggc-space-5); }
+
+/* =============================================================================
+ * 15. .ggc-pagination — 페이지네이션   (v2.0)
+ * 출처: KRDS pagination — 이전/다음 + 페이지 링크 + 생략(…) + 현재 표시.
+ * 마크업:
+ *   <nav class="ggc-pagination" aria-label="페이지">
+ *     <a class="nav" href="…" aria-disabled="true">← 이전</a>
+ *     <ol class="pages">
+ *       <li><a href="…">1</a></li>
+ *       <li><a href="…" aria-current="page"><span class="ggc-sr">현재 페이지 </span>2</a></li>
+ *       <li><span class="gap" aria-hidden="true">…</span></li>
+ *       <li><a href="…">99</a></li>
+ *     </ol>
+ *     <a class="nav" href="…">다음 →</a>
+ *   </nav>
+ * 페이지네이션 없이 전량 렌더하지 않는다(archetypes Explore). 기본 20건.
+ * ============================================================================= */
+.ggc-pagination {
+  display: flex;
+  flex-wrap: wrap;                 /* 좁은 폭에서 요약·이전/다음이 줄을 바꾼다 — 넘치지 않는다 */
+  align-items: center;
+  justify-content: center;
+  gap: var(--ggc-space-2);
+  font-family: var(--ggc-font);
+  font-size: var(--ggc-control-font-sm);
+}
+.ggc-pagination .pages {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ggc-pagination a,
+.ggc-pagination .gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ggc-control-h-sm);
+  height: var(--ggc-control-h-sm);
+  padding: 0 var(--ggc-space-2);
+  border-radius: var(--ggc-radius-sm);
+  color: var(--ggc-text-muted);
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+.ggc-pagination a:hover { background: var(--ggc-control-bg); color: var(--ggc-text); }
+.ggc-pagination a[aria-current="page"] {
+  background: var(--ggc-primary);
+  color: #fff;
+  font-weight: 700;
+}
+.ggc-pagination .nav {
+  padding: 0 var(--ggc-space-3);
+  font-weight: 600;
+  border: 1px solid var(--ggc-border-strong);
+  background: var(--ggc-surface);
+  color: var(--ggc-primary-deep);
+}
+.ggc-pagination .nav:hover { background: var(--ggc-surface-inset); }
+.ggc-pagination .nav[aria-disabled="true"] {
+  color: var(--ggc-text-faint);
+  border-color: var(--ggc-border);
+  pointer-events: none;
+}
+.ggc-pagination .gap { color: var(--ggc-text-faint); }
+.ggc-pagination .summary {            /* "총 147건 · 2/8쪽" — 좌측 보조 텍스트 */
+  margin-right: auto;
+  color: var(--ggc-text-subtle);
+}
+.ggc-pagination--start { justify-content: flex-start; }
+@media (max-width: 480px) {
+  .ggc-pagination .summary { flex-basis: 100%; margin: 0 0 2px; text-align: center; }
+  .ggc-pagination .nav { padding: 0 var(--ggc-space-2); }
+}
+
+/* =============================================================================
+ * 16. .ggc-select — 네이티브 셀렉트 (화살표 포함)   (v2.0)
+ * 출처: KRDS select — 네이티브 <select> 를 스타일링. 커스텀 리스트박스는 P2(.ggc-listbox).
+ * 마크업: <div class="ggc-select"><select …>…</select></div>
+ *        .ggc-field 안에서는 <div class="ggc-select"> 로 감싸기만 하면 된다.
+ * 화살표는 CSS 가 그린다(이미지 없음). 크기는 --ggc-input-h 를 따른다.
+ * ============================================================================= */
+.ggc-select { position: relative; display: block; font-family: var(--ggc-font); }
+.ggc-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: var(--ggc-input-h);
+  padding: 0 38px 0 14px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+  font-family: inherit;
+  font-size: var(--ggc-control-font);
+  color: var(--ggc-text);
+  cursor: pointer;
+}
+.ggc-select::after {
+  content: "";
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  width: 7px; height: 7px;
+  border-right: 2px solid var(--ggc-text-muted);
+  border-bottom: 2px solid var(--ggc-text-muted);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+.ggc-select select:disabled { color: var(--ggc-text-subtle); background: var(--ggc-control-bg); cursor: default; }
+.ggc-select select:focus { border-color: var(--ggc-primary); box-shadow: var(--ggc-focus-ring); outline: none; }
+.ggc-field.is-error .ggc-select select { border-color: var(--ggc-danger); }
+.ggc-select--sm select { height: var(--ggc-control-h-sm); font-size: var(--ggc-control-font-sm); padding-right: 32px; }
+.ggc-select--inline { display: inline-block; width: auto; }
+.ggc-select--inline select { width: auto; }
+
+/* =============================================================================
+ * 17. .ggc-check · .ggc-radio · .ggc-chip — 체크박스 · 라디오 · 칩   (v2.0)
+ * 출처: KRDS checkbox / radio_button / checkbox_chip / radio_chip.
+ * 마크업 (라벨이 input 을 감싼다 — for/id 짝 없이도 클릭 영역과 이름이 붙는다):
+ *   <label class="ggc-check"><input type="checkbox"><span class="box"></span><span class="text">가결</span></label>
+ *   <label class="ggc-radio"><input type="radio" name="r"><span class="box"></span><span class="text">원안</span></label>
+ *   <label class="ggc-chip"><input type="checkbox"><span class="text">기획재정</span></label>
+ * 묶음: <fieldset class="ggc-check-group"><legend>처리 결과</legend>…</fieldset>
+ *       (--column 이면 세로). legend 는 폼 라벨과 같은 모습이다.
+ * 표시는 CSS 가 그린다(이미지 0). 네이티브 input 은 시각적으로만 숨기고 포커스·키보드는 그대로다.
+ * ============================================================================= */
+.ggc-check,
+.ggc-radio {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--ggc-space-2);
+  font-family: var(--ggc-font);
+  font-size: var(--ggc-control-font);
+  line-height: 1.4;
+  color: var(--ggc-text);
+  cursor: pointer;
+  min-height: 24px;
+}
+.ggc-check input,
+.ggc-radio input,
+.ggc-chip input {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.ggc-check .box,
+.ggc-radio .box {
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+  margin-top: 1px;
+  border: 1.5px solid var(--ggc-border-strong);
+  background: var(--ggc-surface);
+  position: relative;
+  transition: background .12s, border-color .12s;
+}
+.ggc-check .box { border-radius: var(--ggc-radius-sm); }
+.ggc-radio .box { border-radius: 50%; }
+.ggc-check .box::after {
+  content: "";
+  position: absolute;
+  left: 6px; top: 2px;
+  width: 5px; height: 10px;
+  border-right: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+  transform: rotate(45deg) scale(0);
+}
+.ggc-radio .box::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: #fff;
+  transform: scale(0);
+}
+.ggc-check input:checked + .box,
+.ggc-radio input:checked + .box { background: var(--ggc-primary); border-color: var(--ggc-primary); }
+.ggc-check input:checked + .box::after { transform: rotate(45deg) scale(1); }
+.ggc-radio input:checked + .box::after { transform: scale(1); }
+.ggc-check input:focus-visible + .box,
+.ggc-radio input:focus-visible + .box { box-shadow: var(--ggc-focus-ring); border-color: var(--ggc-primary); }
+.ggc-check input:disabled ~ *,
+.ggc-radio input:disabled ~ * { color: var(--ggc-text-subtle); cursor: default; }
+.ggc-check input:disabled + .box,
+.ggc-radio input:disabled + .box { background: var(--ggc-control-bg); border-color: var(--ggc-border); }
+.ggc-check input:disabled:checked + .box,
+.ggc-radio input:disabled:checked + .box { background: var(--ggc-text-faint); border-color: var(--ggc-text-faint); }
+.ggc-check .text .sub,
+.ggc-radio .text .sub { display: block; font-size: 12px; color: var(--ggc-text-subtle); margin-top: 2px; }
+
+.ggc-check-group {
+  margin: 0; padding: 0; border: 0;
+  display: flex; flex-wrap: wrap;
+  gap: var(--ggc-space-2) var(--ggc-space-5);
+  font-family: var(--ggc-font);
+}
+.ggc-check-group > legend {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 0;
+  font-size: var(--ggc-label-font);
+  font-weight: 700;
+  color: var(--ggc-text-muted);
+}
+.ggc-check-group--column { flex-direction: column; gap: var(--ggc-space-2); }
+
+/* 칩 — 필터 스트립의 다중/단일 선택. 선택은 색 + 테두리 + ✓ 기호로 표시 */
+.ggc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--ggc-control-h-sm);
+  padding: 0 12px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: 999px;
+  background: var(--ggc-surface);
+  font-family: var(--ggc-font);
+  font-size: var(--ggc-control-font-sm);
+  font-weight: 600;
+  color: var(--ggc-text-muted);
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+.ggc-chip:hover { background: var(--ggc-surface-inset); }
+.ggc-chip .text::before { content: ""; display: inline-block; width: 0; transition: width .12s; }
+.ggc-chip input:checked ~ .text { color: var(--ggc-primary-deep); }
+.ggc-chip input:checked ~ .text::before { content: "✓ "; width: auto; }
+.ggc-chip:has(input:checked) { background: var(--ggc-primary-light); border-color: var(--ggc-primary); }
+.ggc-chip input:focus-visible ~ .text { outline: none; }
+.ggc-chip:has(input:focus-visible) { box-shadow: var(--ggc-focus-ring); border-color: var(--ggc-primary); }
+.ggc-chip:has(input:disabled) { color: var(--ggc-text-faint); background: var(--ggc-control-bg); cursor: default; }
+
+/* =============================================================================
+ * 18. .ggc-alert — 인라인 알림 · 콜아웃   (v2.0)
+ * 출처: KRDS critical_alerts(배지 + 문구 + 링크) + 기존 .ggc-qr-callout(§11)을 일반화.
+ *       .ggc-qr-callout 은 그대로 남긴다(로그인 화면 호환). 새 코드는 .ggc-alert 를 쓴다.
+ * 마크업:
+ *   <div class="ggc-alert ggc-alert--warning" role="status">
+ *     <span class="icon" aria-hidden="true">⚠</span>
+ *     <div class="body"><strong class="title">기한 임박</strong><p>회부 후 30일이 2026-09-02 에 지난다.</p></div>
+ *     <div class="actions"><a class="ggc-btn ggc-btn--secondary ggc-btn--sm" href="…">의안 보기</a></div>
+ *   </div>
+ * role: 정보·상태는 status, 즉시 알려야 하는 오류는 alert. 닫기 버튼은 .close (선택).
+ * 색 단독 금지 — 기호(ⓘ ✓ ⚠ ✕)와 제목을 함께 둔다.
+ * ============================================================================= */
+.ggc-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ggc-space-3);
+  padding: var(--ggc-space-3) var(--ggc-space-4);
+  border: 1px solid var(--ggc-border);
+  border-left-width: 4px;
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface-inset);
+  font-family: var(--ggc-font);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ggc-text-muted);
+  word-break: keep-all;
+}
+.ggc-alert .icon { flex-shrink: 0; font-size: 15px; line-height: 1.3; }
+.ggc-alert .body { flex: 1; min-width: 0; }
+.ggc-alert .title { display: block; font-weight: 700; color: var(--ggc-text-strong); margin-bottom: 2px; }
+.ggc-alert .body p { margin: 0; }
+.ggc-alert .body p + p { margin-top: 4px; }
+.ggc-alert .actions { display: flex; align-items: center; gap: var(--ggc-space-2); flex-shrink: 0; }
+.ggc-alert .close {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  margin: -4px -6px -4px 0;
+  border: none; background: none;
+  border-radius: var(--ggc-radius-sm);
+  color: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.ggc-alert .close:hover { background: rgba(20, 30, 50, 0.06); }
+.ggc-alert--info    { border-color: var(--ggc-info);    background: var(--ggc-info-tint);    color: var(--ggc-info); }
+.ggc-alert--success { border-color: var(--ggc-success); background: var(--ggc-success-tint); color: var(--ggc-success); }
+.ggc-alert--warning { border-color: var(--ggc-warning); background: var(--ggc-warning-tint); color: var(--ggc-warning); }
+.ggc-alert--danger  { border-color: var(--ggc-danger);  background: var(--ggc-danger-tint);  color: var(--ggc-danger); }
+.ggc-alert--info .title,
+.ggc-alert--success .title,
+.ggc-alert--warning .title,
+.ggc-alert--danger .title { color: inherit; }
+/* 페이지 상단 띠형 — 긴급 공지(KRDS critical alerts). 본문 폭 가득, 모서리 없음 */
+.ggc-alert--banner { border-radius: 0; border-left-width: 1px; border-top: none; padding: 10px var(--ggc-space-5); }
+
+/* =============================================================================
+ * 19. .ggc-modal — 모달 · 다이얼로그 (네이티브 <dialog>)   (v2.0)
+ * 출처: KRDS modal — 제목(aria-labelledby) · 본문 · 버튼 행 · 닫기 버튼 · 배경.
+ *       <dialog> 를 쓰므로 포커스 가두기 · ESC · inert 배경을 브라우저가 준다.
+ * 마크업:
+ *   <button class="ggc-btn" data-ggc-modal-open="#m1">회부</button>
+ *   <dialog class="ggc-modal" id="m1" aria-labelledby="m1-t">
+ *     <div class="head"><h2 class="title" id="m1-t">위원회 회부</h2>
+ *       <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button></div>
+ *     <div class="body">…</div>
+ *     <div class="foot"><button class="ggc-btn ggc-btn--secondary" data-ggc-modal-close>취소</button>
+ *                       <button class="ggc-btn ggc-btn--primary">회부</button></div>
+ *   </dialog>
+ * 여닫기는 ggc-behaviors.js(data-ggc-modal-open / -close). 없으면 showModal() 을 직접 부른다.
+ * 파괴적 동작(반려·회수·삭제)은 .ggc-modal--alert + role="alertdialog" 로 확인 단계를 둔다.
+ * 크기: 기본 560 · --sm 420 · --lg 800. 모바일(≤480)은 화면 폭 가득.
+ * ============================================================================= */
+.ggc-modal {
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(85vh, 720px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-lg);
+  background: var(--ggc-surface);
+  color: var(--ggc-text);
+  font-family: var(--ggc-font);
+  box-shadow: 0 16px 48px rgba(20, 30, 50, 0.18);
+  display: flex;
+  flex-direction: column;
+}
+.ggc-modal:not([open]) { display: none; }
+.ggc-modal--sm { width: min(420px, calc(100vw - 32px)); }
+.ggc-modal--lg { width: min(800px, calc(100vw - 32px)); }
+.ggc-modal::backdrop { background: rgba(20, 30, 50, 0.45); }
+.ggc-modal .head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ggc-space-3);
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--ggc-hairline);
+}
+.ggc-modal .title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ggc-text-strong);
+}
+.ggc-modal .close {
+  width: 32px; height: 32px;
+  margin-right: -8px;
+  border: none; background: none;
+  border-radius: var(--ggc-radius-sm);
+  color: var(--ggc-text-muted);
+  font-size: 15px;
+  cursor: pointer;
+}
+.ggc-modal .close:hover { background: var(--ggc-control-bg); color: var(--ggc-text); }
+.ggc-modal .body {
+  padding: var(--ggc-space-5) 22px;
+  overflow-y: auto;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ggc-text-body);
+}
+.ggc-modal .body > :first-child { margin-top: 0; }
+.ggc-modal .body > :last-child { margin-bottom: 0; }
+.ggc-modal .foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ggc-space-2);
+  padding: 14px 22px 18px;
+  border-top: 1px solid var(--ggc-hairline);
+  background: var(--ggc-surface-inset);
+  border-radius: 0 0 var(--ggc-radius-lg) var(--ggc-radius-lg);
+}
+.ggc-modal .foot .left { margin-right: auto; font-size: 12.5px; color: var(--ggc-text-subtle); }
+.ggc-modal--alert .head { border-bottom: none; padding-bottom: 6px; }
+.ggc-modal--alert .body { padding-top: 6px; }
+@media (max-width: 480px) {
+  .ggc-modal { width: 100vw; max-width: none; max-height: 100vh; border-radius: 0; border: none; }
+  .ggc-modal .foot { border-radius: 0; flex-direction: column-reverse; align-items: stretch; }
+}
+/* 모달이 열려 있는 동안 뒤 문서의 스크롤을 잠근다 — behaviors.js 가 <html> 에 붙인다.
+ * 트리거 속성(data-ggc-modal-open)과 이름이 다르다 — 같으면 closest() 가 <html> 을 잡는다. */
+html[data-ggc-modal-active] { overflow: hidden; }
+
+/* =============================================================================
+ * 20. .ggc-actionbar — 하단 스티키 액션바   (v2.0)
+ * 출처: archetypes.md Configure 슬롯 5 — rgba(255,255,255,.92) + blur(8px) + 0 -4px 16px.
+ *       "액션바가 없으면 Configure 가 아니다." 임시저장(secondary) · 상신(primary) 순서 고정.
+ * 마크업:
+ *   <div class="ggc-actionbar">
+ *     <div class="status">임시저장 2026-08-25 14:32 · 3 / 4 단계</div>
+ *     <div class="actions"><button class="ggc-btn ggc-btn--secondary">임시저장</button>
+ *                          <button class="ggc-btn ggc-btn--primary">상신</button></div>
+ *   </div>
+ * position: sticky; bottom: 0 — 본문 컬럼 안에 두면 LNB 폭을 계산할 필요가 없다.
+ * 본문 끝에 놓는다(문서 흐름의 마지막). 위 콘텐츠가 짧으면 그냥 바닥에 붙는다.
+ * fixed 가 꼭 필요하면 --fixed: 셸 안에서 left 를 LNB 폭만큼 띄운다.
+ * ============================================================================= */
+.ggc-actionbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ggc-space-4);
+  margin: var(--ggc-space-6) calc(-1 * var(--ggc-space-7)) calc(-1 * 48px);
+  padding: 14px var(--ggc-space-7);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--ggc-border);
+  box-shadow: 0 -4px 16px rgba(20, 30, 50, 0.06);
+  font-family: var(--ggc-font);
+}
+.ggc-actionbar .status { font-size: 12.5px; color: var(--ggc-text-subtle); min-width: 0; }
+.ggc-actionbar .actions { display: flex; align-items: center; gap: var(--ggc-space-2); flex-shrink: 0; margin-left: auto; }
+.ggc-actionbar--fixed {
+  position: fixed;
+  left: var(--ggc-lnb-w); right: 0;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .ggc-actionbar { margin-left: calc(-1 * var(--ggc-space-4)); margin-right: calc(-1 * var(--ggc-space-4)); margin-bottom: -40px; padding: 12px var(--ggc-space-4); }
+  .ggc-actionbar--fixed { left: 0; }
+  .ggc-actionbar .status { display: none; }
+  .ggc-actionbar .actions { width: 100%; }
+  .ggc-actionbar .actions .ggc-btn { flex: 1; }
+}
+@media (max-width: 480px) {
+  /* §10 이 이 폭에서 본문 패딩을 14px / space-3 / 32px 로 줄인다 — 음수 마진도 그만큼만 */
+  .ggc-actionbar { margin-left: calc(-1 * var(--ggc-space-3)); margin-right: calc(-1 * var(--ggc-space-3)); margin-bottom: -32px; padding: 12px var(--ggc-space-3); }
+}
+
+/* =============================================================================
+ * 21. .ggc-spinner — 대기 표시   (v2.0)
+ * 출처: KRDS spinner(role="status" + sr 텍스트) · 기존 .ggc-qr-spinner(§11) 일반화.
+ * 마크업: <span class="ggc-spinner" role="status"><span class="ggc-sr">불러오는 중</span></span>
+ *        버튼 안: <button class="ggc-btn ggc-btn--primary" disabled><span class="ggc-spinner ggc-spinner--sm"></span> 상신 중</button>
+ * 크기: 기본 28 · --sm 16 · --lg 40. prefers-reduced-motion 은 §10 이 전역으로 끈다.
+ * ============================================================================= */
+.ggc-spinner {
+  display: inline-block;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--ggc-primary-light-strong);
+  border-top-color: var(--ggc-primary);
+  animation: ggc-spin 0.8s linear infinite;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.ggc-spinner--sm { width: 16px; height: 16px; border-width: 2px; }
+.ggc-spinner--lg { width: 40px; height: 40px; border-width: 4px; }
+.ggc-btn .ggc-spinner { border-color: rgba(255, 255, 255, 0.35); border-top-color: #fff; }
+.ggc-btn--secondary .ggc-spinner,
+.ggc-btn--ghost .ggc-spinner { border-color: var(--ggc-primary-light-strong); border-top-color: var(--ggc-primary); }
+@keyframes ggc-spin { to { transform: rotate(360deg); } }
+.ggc-spinner-block {              /* 카드·표 자리에 가운데 놓을 때 */
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--ggc-space-3);
+  padding: var(--ggc-space-8) var(--ggc-space-5);
+  font-family: var(--ggc-font); font-size: 12.5px; color: var(--ggc-text-subtle);
+}
+
+/* =============================================================================
+ * 22. .ggc-skeleton — 로딩 골격   (v2.0)
+ * 마크업: <div class="ggc-skeleton ggc-skeleton--title" style="width:60%"></div>
+ *        <div class="ggc-skeleton" style="width:40%"></div>
+ *        <span class="ggc-skeleton ggc-skeleton--circle"></span>
+ * 컨테이너에 aria-busy="true" 를 두고, 로드가 끝나면 실제 내용으로 바꾼다.
+ * 행 높이를 실제 행과 같게 유지한다(archetypes: 로딩은 행 높이 유지). 애니메이션은
+ * prefers-reduced-motion 에서 §10 이 끈다.
+ * ============================================================================= */
+.ggc-skeleton {
+  display: block;
+  height: 12px;
+  border-radius: var(--ggc-radius-sm);
+  background: linear-gradient(90deg, var(--ggc-hairline) 25%, var(--ggc-control-bg) 50%, var(--ggc-hairline) 75%);
+  background-size: 200% 100%;
+  animation: ggc-shimmer 1.4s ease-in-out infinite;
+}
+.ggc-skeleton + .ggc-skeleton { margin-top: 8px; }
+.ggc-skeleton--title { height: 15px; }
+.ggc-skeleton--circle { width: 40px; height: 40px; border-radius: 50%; }
+.ggc-skeleton--rect { height: 120px; border-radius: var(--ggc-radius); }
+@keyframes ggc-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* =============================================================================
+ * 23. .ggc-prose — 문서 본문 조판   (v2.0, §10 의 확폭 캡과 짝)
+ * 출처: Learn/Decide --doc 슬롯(조문·단락) · 계약 §2-1(측정 폭 920px 캡은 ≥1680 에서만).
+ * 조례 조문·검토보고서 본문·안내문처럼 **긴 글**에 쓴다. 표·카드에는 쓰지 않는다.
+ * 법령 인용은 「낫표」, 조문 번호는 § 기호(domain-language.md).
+ * ============================================================================= */
+.ggc-prose {
+  font-family: var(--ggc-font);
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ggc-text-body);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.ggc-prose > :first-child { margin-top: 0; }
+.ggc-prose > :last-child { margin-bottom: 0; }
+.ggc-prose p { margin: 0 0 var(--ggc-space-4); }
+.ggc-prose h2, .ggc-prose h3, .ggc-prose h4 {
+  margin: var(--ggc-space-6) 0 var(--ggc-space-3);
+  color: var(--ggc-text-strong);
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+.ggc-prose h2 { font-size: 17px; font-weight: 800; }
+.ggc-prose h3 { font-size: 15px; font-weight: 700; }
+.ggc-prose h4 { font-size: 14px; font-weight: 700; }
+.ggc-prose ul, .ggc-prose ol { margin: 0 0 var(--ggc-space-4); padding-left: 22px; }
+.ggc-prose li + li { margin-top: 4px; }
+.ggc-prose a { color: var(--ggc-primary); text-decoration: underline; text-underline-offset: 2px; }
+.ggc-prose strong { color: var(--ggc-text-strong); }
+.ggc-prose blockquote {                 /* 근거 조문 인용 */
+  margin: 0 0 var(--ggc-space-4);
+  padding: var(--ggc-space-3) var(--ggc-space-4);
+  border-left: 3px solid var(--ggc-primary-light-strong);
+  background: var(--ggc-surface-inset);
+  color: var(--ggc-text-muted);
+  border-radius: 0 var(--ggc-radius-sm) var(--ggc-radius-sm) 0;
+}
+.ggc-prose blockquote p:last-child { margin-bottom: 0; }
+.ggc-prose code {
+  font-family: var(--ggc-font-mono);
+  font-size: 0.92em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--ggc-control-bg);
+  color: var(--ggc-text);
+}
+.ggc-prose hr { border: 0; border-top: 1px solid var(--ggc-border); margin: var(--ggc-space-6) 0; }
+.ggc-prose .article {                   /* 조문 한 개 — 번호는 굵게, 항·호는 들여쓰기 */
+  margin: 0 0 var(--ggc-space-4);
+}
+.ggc-prose .article .no { font-weight: 800; color: var(--ggc-text-strong); margin-right: 6px; }
+.ggc-prose .article .para { display: block; padding-left: 18px; }
+
+/* 시각적으로만 숨기는 텍스트 — 스크린리더용. 서비스는 이것을 쓴다.
+ * 전부 !important 다 — <legend> 처럼 컴포넌트 규칙이 width 를 주는 요소에 붙여도 이겨야 한다
+ * (.ggc-check-group > legend { width:100% } 가 이 클래스를 덮어 legend 가 화면 폭만큼
+ *  튀어나온 일이 실제로 있었다, 2026-08-29). */
+.ggc-sr {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  margin: -1px !important; padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* =============================================================================
+ * 24. 고대비 보강 — §12~§23 의 새 컴포넌트   (v2.0)
+ * §10 과 같은 원칙: forced-colors 에서 배경·그림자가 죽으므로 테두리·outline 으로 복원한다.
+ * ============================================================================= */
+@media (forced-colors: active) {
+  .ggc-tab[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+  .ggc-pagination a[aria-current="page"] { outline: 2px solid Highlight; outline-offset: -2px; }
+  .ggc-pagination .nav { border: 1px solid; }
+  .ggc-check .box, .ggc-radio .box { border: 1.5px solid; }
+  .ggc-check input:checked + .box, .ggc-radio input:checked + .box { background: Highlight; border-color: Highlight; }
+  .ggc-check input:checked + .box::after { border-color: HighlightText; }
+  .ggc-radio input:checked + .box::after { background: HighlightText; }
+  /* 비활성 + 선택 — 회색 채움이 Canvas 로 평탄화되면 흰 체크가 사라진다. 시스템 회색으로 */
+  .ggc-check input:disabled:checked + .box,
+  .ggc-radio input:disabled:checked + .box { background: GrayText; border-color: GrayText; }
+  .ggc-chip { border: 1px solid; }
+  .ggc-chip:has(input:checked) { outline: 2px solid Highlight; outline-offset: -2px; }
+  .ggc-alert { border: 1px solid; border-left-width: 4px; }
+  .ggc-modal { border: 1px solid; }
+  .ggc-modal::backdrop { background: rgba(0, 0, 0, 0.6); }
+  .ggc-actionbar { border-top: 1px solid; background: Canvas; }
+  .ggc-skeleton { border: 1px solid; background: none; animation: none; }
+  .ggc-spinner { border-color: GrayText; border-top-color: Highlight; }
+  .ggc-select select { border: 1px solid; }
+  .ggc-select::after { border-color: CanvasText; }
+  .ggc-breadcrumb li + li::before { border-color: CanvasText; }
+}
+@media (prefers-contrast: more) {
+  .ggc-tab[aria-selected="true"] { border-bottom-width: 3px; }
+  .ggc-check .box, .ggc-radio .box, .ggc-chip, .ggc-select select { border-color: var(--ggc-text-muted); }
+  .ggc-alert { border-left-width: 5px; }
+  .ggc-modal { border-color: var(--ggc-border-strong); }
+}
+
 /* ---- design/examples/examples.css (갤러리 전용) -------------------------- */
 /* =============================================================================
  * examples.css — 예제 갤러리 **전용** 껍데기 (2026-08-22)
@@ -1836,6 +2578,10 @@ body { margin: 0; }
   border: 0;
 }
 
+/* 갤러리 GNB 의 drawer 토글 — LNB 가 drawer 로 접히는 ≤900px 에서만 보인다 (v2.0) */
+.ex-only-narrow { display: none; }
+@media (max-width: 900px) { .ex-only-narrow { display: flex; margin-left: var(--ggc-space-3); } }
+
 /* ---- 합본 전용 ------------------------------------------------------------
  * 이 디자인은 **단일 라이트 세계로 확정**돼 있다 — 계약이 다크모드를 비범위로 뒀고,
  * 고대비는 팔레트를 하나 더 만드는 대신 forced-colors·prefers-contrast 로 대응한다
@@ -1895,6 +2641,9 @@ body {
       <a class="ggc-lnb-item" href="#index" data-page="index">개요</a>
       <a class="ggc-lnb-item" href="#tokens" data-page="tokens">토큰 · 팔레트</a>
       <a class="ggc-lnb-item" href="#components" data-page="components">컴포넌트 카탈로그</a>
+      <a class="ggc-lnb-item" href="#forms" data-page="forms">폼 컨트롤</a>
+      <a class="ggc-lnb-item" href="#nav" data-page="nav">내비게이션 · 탭</a>
+      <a class="ggc-lnb-item" href="#overlay" data-page="overlay">오버레이 · 상태 · 본문</a>
       <div class="ggc-lnb-divider"></div>
       <div class="ex-lnb-cap">실물 화면</div>
       <a class="ggc-lnb-item" href="#dashboard" data-page="dashboard">대시보드 · Monitor</a>
@@ -1904,7 +2653,7 @@ body {
 
       <main class="ggc-shell-main" data-page="index">
       <div class="ex-note ex-note--warn">
-        <p><b>이 파일은 생성물이다.</b> 갤러리 5쪽과 정본 CSS·JS·브랜드 자산을
+        <p><b>이 파일은 생성물이다.</b> 갤러리 9쪽과 정본 CSS·JS·브랜드 자산을
         한 파일로 합친 것이고, <code>design/examples/build-standalone.py</code> 가
         정본에서 다시 만든다. <b>직접 고치지 말 것</b> — 다음 생성에서 덮어써진다.</p>
         <p>저장소의 원본 갤러리는 정본을 <b>상대경로로 직접 링크</b>해 사본을 두지 않는다.
@@ -2410,7 +3159,7 @@ body {
     </main>
       <main class="ggc-shell-main ggc-shell-main--wide" data-page="components" hidden>
 
-      <h1 class="ex-h1">컴포넌트 카탈로그<span class="ver">ggc-components.css v1.1</span></h1>
+      <h1 class="ex-h1">컴포넌트 카탈로그<span class="ver">ggc-components.css v2.0</span></h1>
       <p class="ex-lede">
         각 예제 아래 <b>“마크업”</b> 을 펼치면 지금 화면에 그려진 <b>바로 그 DOM</b> 이 나온다.
         손으로 옮겨 적은 코드가 아니라 <code class="ex-inline">innerHTML</code> 을 읽어 채운 것이라,
@@ -2808,6 +3557,590 @@ body {
           오류 상태에는 <b>식별 가능한 코드와 시각</b>을 남긴다 — 담당자가 로그를 찾을 유일한 단서다.</p>
         </div>
       </section>
+
+    </main>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="forms" hidden>
+
+      <h1 class="ex-h1">폼 컨트롤<span class="ver">ggc-components.css v2.0 · §16~17</span></h1>
+      <p class="ex-lede">
+        셀렉트 · 체크박스 · 라디오 · 칩. 전부 <b>네이티브 input 위에 CSS 만 얹은 것</b>이라
+        키보드·스크린리더·폼 전송이 브라우저 그대로 동작한다. 이미지 자산이 없다 —
+        화살표와 체크 표시는 CSS 가 그린다. 마크업 구조와 ARIA 는 KRDS 컴포넌트를 따랐다.
+      </p>
+
+      <div class="ex-note">
+        <p><b>대민 프로필에서는 이 컨트롤들이 KRDS 치수(48px · 17px)로 커진다.</b>
+        <code>&lt;html data-ggc-profile="public"&gt;</code> 한 줄이며, 마크업은 같다.
+        <a href="tokens.html#profile">토큰 페이지의 토글</a>로 확인할 수 있다.</p>
+      </div>
+
+      <!-- ============================================================ 셀렉트 -->
+      <section class="ex-section">
+        <h2>셀렉트 <span class="cls">.ggc-select</span></h2>
+        <p>네이티브 <code class="ex-inline">&lt;select&gt;</code> 를 <code class="ex-inline">.ggc-select</code> 로
+          감싸면 화살표가 붙고 높이가 <code class="ex-inline">--ggc-input-h</code> 를 따른다.
+          <code class="ex-inline">.ggc-field</code> 안에서는 감싸기만 하면 라벨·힌트·오류가 그대로 붙는다.
+          커스텀 리스트박스(검색·다중 선택)는 별도 컴포넌트(P2)다 — 항목이 20개 이하면 네이티브가 낫다.</p>
+        <div class="ex-demo" id="d-select">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label for="s1">소관위원회 <span class="req">*</span></label>
+              <div class="ggc-select">
+                <select id="s1">
+                  <option>기획재정위원회</option>
+                  <option>경제노동위원회</option>
+                  <option>문화체육관광위원회</option>
+                  <option>보건복지위원회</option>
+                </select>
+              </div>
+              <span class="hint">회부 시 소관위원회는 의장이 결정한다</span>
+            </div>
+            <div class="ggc-field is-error">
+              <label for="s2">처리 결과 <span class="req">*</span></label>
+              <div class="ggc-select">
+                <select id="s2" aria-describedby="s2e">
+                  <option value="">선택</option>
+                  <option>원안가결</option>
+                  <option>수정가결</option>
+                  <option>부결</option>
+                </select>
+              </div>
+              <span class="error" id="s2e">처리 결과를 선택해야 의결 처리가 된다</span>
+            </div>
+            <div class="ggc-field">
+              <label for="s3">회기</label>
+              <div class="ggc-select">
+                <select id="s3" disabled>
+                  <option>제380회 (정례회)</option>
+                </select>
+              </div>
+              <span class="hint">진행 중인 회기로 고정된다</span>
+            </div>
+          </div>
+          <div class="ex-row" style="margin-top:var(--ggc-space-4)">
+            <span style="font-size:12.5px;color:var(--ggc-text-subtle)">인라인 · 소형 (표 상단 정렬·페이지 크기 같은 보조 선택)</span>
+            <div class="ggc-select ggc-select--sm ggc-select--inline">
+              <label for="s4" class="ex-sr">정렬</label>
+              <select id="s4"><option>최근 접수순</option><option>의안번호순</option><option>경과일순</option></select>
+            </div>
+            <div class="ggc-select ggc-select--sm ggc-select--inline">
+              <label for="s5" class="ex-sr">페이지 크기</label>
+              <select id="s5"><option>20건</option><option>50건</option><option>100건</option></select>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-select"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 체크·라디오 -->
+      <section class="ex-section">
+        <h2>체크박스 · 라디오 <span class="cls">.ggc-check · .ggc-radio · .ggc-check-group</span></h2>
+        <p><code class="ex-inline">&lt;label&gt;</code> 이 input 을 감싼다 — <code class="ex-inline">for/id</code>
+          짝 없이도 클릭 영역과 접근 가능한 이름이 붙는다. 묶음은 <code class="ex-inline">&lt;fieldset&gt;</code> +
+          <code class="ex-inline">&lt;legend&gt;</code> 다(스크린리더가 그룹 이름을 읽는다).
+          선택 표시는 <b>배경색 + 체크 기호</b> 둘 다이며, 고대비에서는 시스템 색으로 복원된다.</p>
+        <div class="ex-demo" id="d-check">
+          <fieldset class="ggc-check-group">
+            <legend>표시할 상태</legend>
+            <label class="ggc-check"><input type="checkbox" checked><span class="box"></span><span class="text">접수</span></label>
+            <label class="ggc-check"><input type="checkbox" checked><span class="box"></span><span class="text">심사 중</span></label>
+            <label class="ggc-check"><input type="checkbox"><span class="box"></span><span class="text">의결</span></label>
+            <label class="ggc-check"><input type="checkbox" disabled><span class="box"></span><span class="text">폐기 (권한 없음)</span></label>
+            <label class="ggc-check"><input type="checkbox" disabled checked><span class="box"></span><span class="text">보관</span></label>
+          </fieldset>
+          <fieldset class="ggc-check-group ggc-check-group--column" style="margin-top:var(--ggc-space-5)">
+            <legend>심사 결과</legend>
+            <label class="ggc-radio"><input type="radio" name="r1" checked><span class="box"></span><span class="text">원안가결<span class="sub">제안된 내용 그대로 가결한다</span></span></label>
+            <label class="ggc-radio"><input type="radio" name="r1"><span class="box"></span><span class="text">수정가결<span class="sub">수정안을 첨부해야 한다 — 다음 단계에서 입력</span></span></label>
+            <label class="ggc-radio"><input type="radio" name="r1"><span class="box"></span><span class="text">계속심사</span></label>
+            <label class="ggc-radio"><input type="radio" name="r1" disabled><span class="box"></span><span class="text">부결<span class="sub">위원장 권한으로만 선택할 수 있다</span></span></label>
+          </fieldset>
+        </div>
+        <details class="ex-reveal" data-src="#d-check"><summary>마크업</summary><pre class="ex-code"></pre></details>
+        <div class="ex-note ex-note--warn">
+          <p><b>비활성 항목에는 이유를 적는다.</b> "왜 못 고르는가" 가 화면에 없으면 담당자는 오류로 본다.
+          <code>.sub</code> 슬롯이 그 자리다. 색만 흐리게 하는 것으로 끝내지 않는다.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================ 칩 -->
+      <section class="ex-section">
+        <h2>칩 <span class="cls">.ggc-chip</span></h2>
+        <p>Explore 화면의 <b>필터 스트립</b>에 쓴다. 안에 든 input 이 checkbox 면 다중 선택,
+          radio 면 단일 선택이다. 선택은 색 + 테두리 + <b>✓ 기호</b>로 표시한다.
+          결과 요약("총 N건")과 함께 둬야 필터가 무엇을 걸렀는지 보인다.</p>
+        <div class="ex-demo" id="d-chip">
+          <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2)">
+            <legend>소관위원회 (복수)</legend>
+            <label class="ggc-chip"><input type="checkbox" checked><span class="text">기획재정</span></label>
+            <label class="ggc-chip"><input type="checkbox"><span class="text">경제노동</span></label>
+            <label class="ggc-chip"><input type="checkbox" checked><span class="text">문화체육관광</span></label>
+            <label class="ggc-chip"><input type="checkbox"><span class="text">보건복지</span></label>
+            <label class="ggc-chip"><input type="checkbox"><span class="text">건설교통</span></label>
+            <label class="ggc-chip"><input type="checkbox" disabled><span class="text">운영</span></label>
+          </fieldset>
+          <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2);margin-top:var(--ggc-space-4)">
+            <legend>기간 (택일)</legend>
+            <label class="ggc-chip"><input type="radio" name="p" checked><span class="text">이번 회기</span></label>
+            <label class="ggc-chip"><input type="radio" name="p"><span class="text">최근 30일</span></label>
+            <label class="ggc-chip"><input type="radio" name="p"><span class="text">제12대 전체</span></label>
+          </fieldset>
+        </div>
+        <details class="ex-reveal" data-src="#d-chip"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 조립 -->
+      <section class="ex-section">
+        <h2>조립 — Explore 필터 스트립 <span class="cls">.ggc-card + .ggc-search + .ggc-select + .ggc-chip</span></h2>
+        <p>archetypes 의 Explore 슬롯 2·3 이다. 검색 → 선택 → 칩 → 결과 요약 → 초기화 순으로 읽힌다.
+          기본 필터는 <b>내 소관 · 처리 대기</b>이고, 빈 결과는 "필터 때문인지 데이터가 없는 건지"를
+          문구로 가른다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-filter">
+          <div class="ggc-card ggc-card--pad">
+            <div class="ex-row" style="align-items:flex-end;gap:var(--ggc-space-3)">
+              <div class="ggc-field" style="flex:1 1 260px">
+                <label for="f-q">의안명 · 의안번호</label>
+                <input id="f-q" type="search" placeholder="예: 청년 기본 조례">
+              </div>
+              <div class="ggc-field" style="flex:0 1 200px">
+                <label for="f-c">소관위원회</label>
+                <div class="ggc-select"><select id="f-c"><option>내 소관</option><option>전체</option><option>기획재정위원회</option></select></div>
+              </div>
+              <div class="ggc-field" style="flex:0 1 180px">
+                <label for="f-s">처리 상태</label>
+                <div class="ggc-select"><select id="f-s"><option>처리 대기</option><option>전체</option><option>의결</option></select></div>
+              </div>
+              <button class="ggc-btn ggc-btn--primary" type="button">검색</button>
+              <button class="ggc-btn ggc-btn--ghost" type="button">초기화</button>
+            </div>
+            <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2);margin-top:var(--ggc-space-4)">
+              <legend class="ggc-sr">의안 종류</legend>
+              <label class="ggc-chip"><input type="checkbox" checked><span class="text">조례안</span></label>
+              <label class="ggc-chip"><input type="checkbox" checked><span class="text">동의안</span></label>
+              <label class="ggc-chip"><input type="checkbox"><span class="text">결의안</span></label>
+              <label class="ggc-chip"><input type="checkbox"><span class="text">건의안</span></label>
+              <label class="ggc-chip"><input type="checkbox"><span class="text">청원</span></label>
+            </fieldset>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:var(--ggc-space-4);padding-top:var(--ggc-space-3);border-top:1px solid var(--ggc-hairline);font-size:12.5px;color:var(--ggc-text-subtle)">
+              <span>총 <b style="color:var(--ggc-text-strong)">21건</b> · 내 소관 · 처리 대기 · 조례안 · 동의안</span>
+              <span>정렬: 최근 접수순</span>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-filter"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+    </main>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="nav" hidden>
+
+      <h1 class="ex-h1">내비게이션 · 탭<span class="ver">ggc-components.css v2.0 · §12~15</span></h1>
+      <p class="ex-lede">
+        페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션. 화면 안에서 <b>"내가 어디 있고 어디로 갈 수 있는가"</b>를
+        말하는 요소들이다. 탭의 키보드 동작(화살표 · Home · End)은
+        <code class="ex-inline">ggc-behaviors.js</code> 가 준다 — 이 페이지에서 <kbd class="ex-inline">Tab</kbd> 으로
+        탭에 들어가 화살표를 눌러 보라.
+      </p>
+
+      <!-- ============================================================ 페이지 헤더 -->
+      <section class="ex-section">
+        <h2>페이지 헤더 <span class="cls">.ggc-page-head</span></h2>
+        <p>브레드크럼 + 제목 + 메타 + <b>주 액션 하나</b>. archetypes 의 "헤더 제목부 2형" 이다 —
+          Monitor 첫 화면만 인사말형(<code class="ex-inline">--greeting</code>)을 쓰고 나머지는
+          경로형이다. 메타에는 기관 맥락(제N대 · 제NNN회 · 소관)을 적는다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-head">
+          <div class="ggc-page-head">
+            <nav class="ggc-breadcrumb" aria-label="현재 경로">
+              <ol>
+                <li><a href="#main">홈</a></li>
+                <li><a href="#main">의안</a></li>
+                <li aria-current="page">의안 목록</li>
+              </ol>
+            </nav>
+            <div class="row">
+              <div>
+                <h1 class="title">의안 목록</h1>
+                <p class="meta">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
+              </div>
+              <div class="actions">
+                <button class="ggc-btn ggc-btn--secondary" type="button">엑셀 내려받기</button>
+                <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ggc-page-head ggc-page-head--greeting" style="margin-top:var(--ggc-space-6);margin-bottom:0">
+            <div class="row">
+              <div>
+                <h1 class="title">이○○님, 오늘 처리할 검토보고서 3건이 있습니다</h1>
+                <p class="meta">정책지원관 · 기획재정위원회 · 2026-08-29 (금)</p>
+              </div>
+              <div class="actions">
+                <button class="ggc-btn ggc-btn--primary" type="button">＋ 검토보고서 작성</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-head"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 브레드크럼 -->
+      <section class="ex-section">
+        <h2>브레드크럼 <span class="cls">.ggc-breadcrumb</span></h2>
+        <p>KRDS 구조 그대로 — <code class="ex-inline">&lt;nav aria-label="현재 경로"&gt;&lt;ol&gt;</code>.
+          마지막 항목은 링크가 아니라 <code class="ex-inline">aria-current="page"</code> 텍스트다.
+          구분자는 CSS 가 그린다 — 마크업에 "/" 나 "›" 를 적으면 스크린리더가 읽는다.</p>
+        <div class="ex-demo" id="d-bc">
+          <nav class="ggc-breadcrumb" aria-label="현재 경로">
+            <ol>
+              <li><a href="#main">홈</a></li>
+              <li><a href="#main">입법지원</a></li>
+              <li><a href="#main">조례초안</a></li>
+              <li aria-current="page">경기도 청년 기본 조례 일부개정조례안</li>
+            </ol>
+          </nav>
+        </div>
+        <details class="ex-reveal" data-src="#d-bc"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 탭 -->
+      <section class="ex-section">
+        <h2>탭 <span class="cls">.ggc-tabs · .ggc-tablist · .ggc-tab · .ggc-tabpanel</span></h2>
+        <p><code class="ex-inline">role="tablist" / tab / tabpanel</code> + <code class="ex-inline">aria-selected</code> +
+          <code class="ex-inline">aria-controls</code>. 선택 탭만 <code class="ex-inline">tabindex=0</code> 이고
+          나머지는 -1 이라, <kbd class="ex-inline">Tab</kbd> 한 번으로 탭 묶음을 지나 본문으로 간다.
+          선택 표시는 색 + 하단 2px 선 둘 다다. 탭 안 건수는 <code class="ex-inline">.count</code>.</p>
+        <div class="ex-demo" id="d-tabs">
+          <div class="ggc-tabs">
+            <div class="ggc-tablist" role="tablist" aria-label="의안 정보">
+              <button class="ggc-tab" role="tab" id="tb1" aria-selected="true" aria-controls="tp1" type="button">개요</button>
+              <button class="ggc-tab" role="tab" id="tb2" aria-selected="false" aria-controls="tp2" tabindex="-1" type="button">심사 경과 <span class="count">3</span></button>
+              <button class="ggc-tab" role="tab" id="tb3" aria-selected="false" aria-controls="tp3" tabindex="-1" type="button">첨부 문서 <span class="count">7</span></button>
+              <button class="ggc-tab" role="tab" id="tb4" aria-selected="false" aria-controls="tp4" tabindex="-1" type="button">감사 이력</button>
+            </div>
+            <div class="ggc-tabpanel" role="tabpanel" id="tp1" aria-labelledby="tb1">
+              <div class="ggc-table-wrap">
+                <table class="ggc-table ggc-table--kv">
+                  <tbody>
+                    <tr><th scope="row">의안번호</th><td>BILL-2026-0417</td></tr>
+                    <tr><th scope="row">제안자</th><td>○○○ 의원 외 12인 <span class="ggc-badge ggc-badge--role-member">의원</span></td></tr>
+                    <tr><th scope="row">소관위원회</th><td>기획재정위원회</td></tr>
+                    <tr><th scope="row">접수일</th><td>2026-08-25</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="ggc-tabpanel" role="tabpanel" id="tp2" aria-labelledby="tb2" hidden>
+              <div class="ggc-list-row" style="border-top:none;padding-left:0;padding-right:0">
+                <div class="body"><div class="title">위원회 회부</div><div class="meta">2026-08-26 · 의장</div></div>
+                <div class="end"><span class="ggc-badge ggc-badge--approved">✓ 완료</span></div>
+              </div>
+              <div class="ggc-list-row" style="padding-left:0;padding-right:0">
+                <div class="body"><div class="title">전문위원 검토보고</div><div class="meta">2026-08-28 · 정책지원관 이○○</div></div>
+                <div class="end"><span class="ggc-badge ggc-badge--pending">◷ 검토</span></div>
+              </div>
+              <div class="ggc-list-row" style="padding-left:0;padding-right:0">
+                <div class="body"><div class="title">상임위원회 심사</div><div class="meta">예정 · 제380회 제2차</div></div>
+                <div class="end"><span class="ggc-badge ggc-badge--recess">○ 대기</span></div>
+              </div>
+            </div>
+            <div class="ggc-tabpanel" role="tabpanel" id="tp3" aria-labelledby="tb3" hidden>
+              <p style="margin:0;font-size:13.5px;color:var(--ggc-text-muted)">첨부 문서 7건 — 의안 원문 · 비용추계서 · 검토보고서 초안 · 관련 법령 4건</p>
+            </div>
+            <div class="ggc-tabpanel" role="tabpanel" id="tp4" aria-labelledby="tb4" hidden>
+              <p style="margin:0;font-size:13.5px;color:var(--ggc-text-muted)">2026-08-25 14:32 접수 (사무처 김○○) · 2026-08-26 09:10 회부 (의장)</p>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-tabs"><summary>마크업</summary><pre class="ex-code"></pre></details>
+
+        <div class="ex-sub">카드 안 탭 — 카드 헤더 아래에 붙으면 좌우 패딩이 카드에 맞춰진다</div>
+        <div class="ex-demo ex-demo--bg" id="d-tabs-card">
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div><div class="title">회기별 처리 현황</div><div class="sub">제12대</div></div>
+            </div>
+            <div class="ggc-tabs">
+              <div class="ggc-tablist" role="tablist" aria-label="회기">
+                <button class="ggc-tab" role="tab" id="tc1" aria-selected="true" aria-controls="tpc1" type="button">제380회</button>
+                <button class="ggc-tab" role="tab" id="tc2" aria-selected="false" aria-controls="tpc2" tabindex="-1" type="button">제379회</button>
+                <button class="ggc-tab" role="tab" id="tc3" aria-selected="false" aria-controls="tpc3" tabindex="-1" type="button">제378회</button>
+              </div>
+              <div class="ggc-tabpanel" role="tabpanel" id="tpc1" aria-labelledby="tc1">
+                <div class="ggc-stat-grid ggc-stat-grid--3">
+                  <div class="ggc-stat"><div class="label-row"><span class="label">접수</span></div><div class="value">147<span class="unit">건</span></div></div>
+                  <div class="ggc-stat"><div class="label-row"><span class="label">가결</span></div><div class="value">118<span class="unit">건</span></div></div>
+                  <div class="ggc-stat"><div class="label-row"><span class="label">계속심사</span></div><div class="value">21<span class="unit">건</span></div></div>
+                </div>
+              </div>
+              <div class="ggc-tabpanel" role="tabpanel" id="tpc2" aria-labelledby="tc2" hidden>
+                <p style="margin:0;font-size:13.5px;color:var(--ggc-text-muted)">제379회 임시회 — 접수 62건 · 가결 55건 · 계속심사 4건</p>
+              </div>
+              <div class="ggc-tabpanel" role="tabpanel" id="tpc3" aria-labelledby="tc3" hidden>
+                <p style="margin:0;font-size:13.5px;color:var(--ggc-text-muted)">제378회 임시회 — 접수 48건 · 가결 41건 · 계속심사 3건</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-tabs-card"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 페이지네이션 -->
+      <section class="ex-section">
+        <h2>페이지네이션 <span class="cls">.ggc-pagination</span></h2>
+        <p>KRDS 구조 — 이전/다음 + 페이지 링크 + 생략(…) + 현재. 현재 페이지는
+          <code class="ex-inline">aria-current="page"</code> 와 화면 밖 텍스트 "현재 페이지" 를 갖는다.
+          <b>페이지네이션 없이 전량 렌더하지 않는다</b>(Explore). 기본 20건, 좌측 요약은 <code class="ex-inline">.summary</code>.</p>
+        <div class="ex-demo" id="d-pg">
+          <nav class="ggc-pagination" aria-label="페이지">
+            <span class="summary">총 147건 · 2 / 8쪽</span>
+            <a class="nav" href="#main">← 이전</a>
+            <ol class="pages">
+              <li><a href="#main">1</a></li>
+              <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>2</a></li>
+              <li><a href="#main">3</a></li>
+              <li><a href="#main">4</a></li>
+              <li><a href="#main">5</a></li>
+              <li><span class="gap" aria-hidden="true">…</span></li>
+              <li><a href="#main">8</a></li>
+            </ol>
+            <a class="nav" href="#main">다음 →</a>
+          </nav>
+          <nav class="ggc-pagination" aria-label="페이지 (첫 쪽)" style="margin-top:var(--ggc-space-5)">
+            <a class="nav" href="#main" aria-disabled="true" tabindex="-1">← 이전</a>
+            <ol class="pages">
+              <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>1</a></li>
+              <li><a href="#main">2</a></li>
+              <li><a href="#main">3</a></li>
+            </ol>
+            <a class="nav" href="#main">다음 →</a>
+          </nav>
+        </div>
+        <details class="ex-reveal" data-src="#d-pg"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+    </main>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="overlay" hidden>
+
+      <h1 class="ex-h1">오버레이 · 상태 · 본문<span class="ver">ggc-components.css v2.0 · §18~23</span></h1>
+      <p class="ex-lede">
+        알림 · 모달 · 스피너 · 스켈레톤 · 문서 본문 · 하단 액션바. 모달은 네이티브
+        <code class="ex-inline">&lt;dialog&gt;</code> 라 포커스 가두기 · ESC · 배경 inert 를 브라우저가 준다.
+        여닫기는 <code class="ex-inline">ggc-behaviors.js</code> 의 <code class="ex-inline">data-ggc-modal-open</code> /
+        <code class="ex-inline">-close</code> 속성이다. 액션바는 이 페이지 맨 아래에 붙어 있다 — 스크롤해 보라.
+      </p>
+
+      <!-- ============================================================ 알림 -->
+      <section class="ex-section">
+        <h2>알림 · 콜아웃 <span class="cls">.ggc-alert</span></h2>
+        <p>인라인 알림이다. 네 상태 전부 <b>기호 + 제목 + 문구</b>를 갖는다 — 색 단독 금지.
+          오류 문구는 <b>사유와 근거</b>를 함께 준다("입력값이 잘못되었습니다" 가 아니라).
+          <code class="ex-inline">role</code> 은 정보·상태면 <code class="ex-inline">status</code>,
+          즉시 알려야 하는 오류면 <code class="ex-inline">alert</code>.</p>
+        <div class="ex-demo ex-demo--flow" id="d-alert">
+          <div class="ggc-alert ggc-alert--info" role="status">
+            <span class="icon" aria-hidden="true">ⓘ</span>
+            <div class="body"><strong class="title">회기 중</strong><p>제380회 정례회가 2026-09-12 까지 진행된다. 회기 중 접수 의안은 당일 회부된다.</p></div>
+          </div>
+          <div class="ggc-alert ggc-alert--success" role="status">
+            <span class="icon" aria-hidden="true">✓</span>
+            <div class="body"><strong class="title">상신 완료</strong><p>검토보고서가 위원장 결재함으로 넘어갔다 — 2026-08-29 14:32.</p></div>
+            <div class="actions"><a class="ggc-btn ggc-btn--secondary ggc-btn--sm" href="#main">결재함 보기</a></div>
+          </div>
+          <div class="ggc-alert ggc-alert--warning" role="status">
+            <span class="icon" aria-hidden="true">⚠</span>
+            <div class="body"><strong class="title">기한 임박</strong><p>회부 후 30일이 2026-09-02 에 지난다. 「경기도의회 회의규칙」 제42조에 따라 계속심사 여부를 결정해야 한다.</p></div>
+            <button class="close" type="button" aria-label="닫기">✕</button>
+          </div>
+          <div class="ggc-alert ggc-alert--danger" role="alert">
+            <span class="icon" aria-hidden="true">✕</span>
+            <div class="body"><strong class="title">상신할 수 없다</strong><p>위원 정수 상한(25명)을 초과한다 — 「청년기본법 시행령」 제6조 제2항. 명단에서 1명을 제외하고 다시 시도한다.</p></div>
+          </div>
+          <div class="ggc-alert" role="status">
+            <span class="icon" aria-hidden="true">§</span>
+            <div class="body"><p>중립 콜아웃 — 근거 조문·참고 안내처럼 상태가 아닌 보조 정보에 쓴다.</p></div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-alert"><summary>마크업</summary><pre class="ex-code"></pre></details>
+
+        <div class="ex-sub">띠형 · <code class="ex-inline">.ggc-alert--banner</code> — 본문 상단 긴급 공지 (KRDS critical alerts)</div>
+        <div class="ex-demo ex-demo--bg" id="d-banner" style="padding:0;overflow:hidden">
+          <div class="ggc-alert ggc-alert--danger ggc-alert--banner" role="alert">
+            <span class="icon" aria-hidden="true">⚠</span>
+            <div class="body"><p><strong class="title" style="display:inline;margin-right:6px">긴급</strong>의안정보 연계 서버 점검 — 2026-08-30 (토) 02:00~06:00 동안 접수·회부가 중단된다.</p></div>
+            <div class="actions"><a class="ggc-btn ggc-btn--ghost ggc-btn--sm" href="#main">자세히 →</a></div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-banner"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 모달 -->
+      <section class="ex-section">
+        <h2>모달 · 다이얼로그 <span class="cls">.ggc-modal (&lt;dialog&gt;)</span></h2>
+        <p>제목(<code class="ex-inline">aria-labelledby</code>) · 본문 · 버튼 행 · 닫기. 파괴적 동작(반려 · 회수 · 삭제)은
+          <code class="ex-inline">--alert</code> + <code class="ex-inline">role="alertdialog"</code> 로 확인 단계를 두고,
+          그 경우 배경 클릭으로는 닫히지 않는다. 열릴 때 첫 입력(없으면 주 버튼)으로 포커스가 가고,
+          닫히면 <b>열었던 버튼으로 돌아온다.</b></p>
+        <div class="ex-demo ex-row" id="d-modal">
+          <button class="ggc-btn ggc-btn--primary" type="button" data-ggc-modal-open="#m-refer">위원회 회부</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-open="#m-reject">반려 (확인형)</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-open="#m-doc">문서 미리보기 (--lg)</button>
+
+          <dialog class="ggc-modal" id="m-refer" aria-labelledby="m-refer-t">
+            <div class="head">
+              <h2 class="title" id="m-refer-t">위원회 회부</h2>
+              <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button>
+            </div>
+            <div class="body">
+              <p>BILL-2026-0417 「경기도 청년 기본 조례 일부개정조례안」을 소관위원회에 회부한다.</p>
+              <div class="ggc-field" style="margin-top:var(--ggc-space-4)">
+                <label for="m-c">소관위원회 <span class="req">*</span></label>
+                <div class="ggc-select"><select id="m-c"><option>기획재정위원회</option><option>경제노동위원회</option><option>문화체육관광위원회</option></select></div>
+              </div>
+              <div class="ggc-field" style="margin-top:var(--ggc-space-4)">
+                <label for="m-n">회부 사유</label>
+                <textarea id="m-n" rows="2" placeholder="선택 — 관련 위원회가 둘 이상이면 근거를 적는다"></textarea>
+              </div>
+            </div>
+            <div class="foot">
+              <span class="left">회부 후 30일 심사 기한이 시작된다</span>
+              <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>취소</button>
+              <button class="ggc-btn ggc-btn--primary" type="button" data-ggc-modal-close="refer">회부</button>
+            </div>
+          </dialog>
+
+          <dialog class="ggc-modal ggc-modal--sm ggc-modal--alert" id="m-reject" role="alertdialog" aria-labelledby="m-reject-t" aria-describedby="m-reject-d">
+            <div class="head">
+              <h2 class="title" id="m-reject-t">검토보고서를 반려하는가</h2>
+            </div>
+            <div class="body" id="m-reject-d">
+              <p>작성자(정책지원관 이○○)에게 되돌아가고, 결재선은 초기화된다. 되돌릴 수 있다 — 작성자가 다시 상신하면 된다.</p>
+              <div class="ggc-field" style="margin-top:var(--ggc-space-4)">
+                <label for="m-r">반려 사유 <span class="req">*</span></label>
+                <textarea id="m-r" rows="2" autofocus></textarea>
+              </div>
+            </div>
+            <div class="foot">
+              <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>취소</button>
+              <button class="ggc-btn ggc-btn--primary" type="button" data-ggc-modal-close="reject" style="background:var(--ggc-danger);box-shadow:none">반려</button>
+            </div>
+          </dialog>
+
+          <dialog class="ggc-modal ggc-modal--lg" id="m-doc" aria-labelledby="m-doc-t">
+            <div class="head">
+              <h2 class="title" id="m-doc-t">비용추계서 · BILL-2026-0417</h2>
+              <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button>
+            </div>
+            <div class="body">
+              <div class="ggc-table-wrap">
+                <table class="ggc-table">
+                  <thead><tr><th scope="col">연도</th><th scope="col" class="num">인건비</th><th scope="col" class="num">사업비</th><th scope="col" class="num">합계</th></tr></thead>
+                  <tbody>
+                    <tr><td>2027</td><td class="num">184,000</td><td class="num">1,100,000</td><td class="num">1,284,000</td></tr>
+                    <tr><td>2028</td><td class="num">189,500</td><td class="num">1,133,000</td><td class="num">1,322,500</td></tr>
+                    <tr><td>2029</td><td class="num">195,200</td><td class="num">1,167,000</td><td class="num">1,362,200</td></tr>
+                  </tbody>
+                  <tfoot><tr><td>3년 합계</td><td class="num">568,700</td><td class="num">3,400,000</td><td class="num">3,968,700</td></tr></tfoot>
+                </table>
+              </div>
+              <p style="margin:var(--ggc-space-3) 0 0;font-size:12px;color:var(--ggc-text-subtle)">단위: 천원 · 「지방자치법」 제148조에 따른 추계</p>
+            </div>
+            <div class="foot">
+              <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>닫기</button>
+              <button class="ggc-btn ggc-btn--primary" type="button">HWP 내려받기</button>
+            </div>
+          </dialog>
+        </div>
+        <details class="ex-reveal" data-src="#d-modal"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 스피너·스켈레톤 -->
+      <section class="ex-section">
+        <h2>스피너 · 스켈레톤 <span class="cls">.ggc-spinner · .ggc-skeleton</span></h2>
+        <p>로딩은 <b>자리를 지킨다</b> — 행 높이 · 카드 크기를 실제와 같게 두고 골격만 보인다(archetypes).
+          스피너에는 <code class="ex-inline">role="status"</code> 와 화면 밖 텍스트를 둔다.
+          두 애니메이션 모두 <code class="ex-inline">prefers-reduced-motion</code> 에서 멈춘다.</p>
+        <div class="ex-demo" id="d-spin">
+          <div class="ex-row" style="gap:var(--ggc-space-6)">
+            <span class="ggc-spinner ggc-spinner--sm" role="status"><span class="ggc-sr">불러오는 중</span></span>
+            <span class="ggc-spinner" role="status"><span class="ggc-sr">불러오는 중</span></span>
+            <span class="ggc-spinner ggc-spinner--lg" role="status"><span class="ggc-sr">불러오는 중</span></span>
+            <button class="ggc-btn ggc-btn--primary" type="button" disabled><span class="ggc-spinner ggc-spinner--sm" aria-hidden="true"></span> 상신 중</button>
+            <button class="ggc-btn ggc-btn--secondary" type="button" disabled><span class="ggc-spinner ggc-spinner--sm" aria-hidden="true"></span> 저장 중</button>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-spin"><summary>마크업</summary><pre class="ex-code"></pre></details>
+
+        <div class="ex-demo ex-demo--bg" id="d-skel" style="margin-top:var(--ggc-space-4)">
+          <div class="ex-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+            <div class="ggc-card" aria-busy="true">
+              <div class="ggc-card-head"><div style="flex:1"><div class="ggc-skeleton ggc-skeleton--title" style="width:45%"></div><div class="ggc-skeleton" style="width:28%"></div></div></div>
+              <div class="ggc-list-row"><span class="ggc-skeleton ggc-skeleton--circle"></span><div class="body"><div class="ggc-skeleton" style="width:78%"></div><div class="ggc-skeleton" style="width:46%"></div></div></div>
+              <div class="ggc-list-row"><span class="ggc-skeleton ggc-skeleton--circle"></span><div class="body"><div class="ggc-skeleton" style="width:64%"></div><div class="ggc-skeleton" style="width:38%"></div></div></div>
+              <span class="ggc-sr">목록을 불러오는 중</span>
+            </div>
+            <div class="ggc-card" aria-busy="true">
+              <div class="ggc-spinner-block">
+                <span class="ggc-spinner" role="status"><span class="ggc-sr">불러오는 중</span></span>
+                <span aria-hidden="true">의안정보 연계 응답 대기 중 — 보통 2초 안에 끝난다</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-skel"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 본문 -->
+      <section class="ex-section">
+        <h2>문서 본문 <span class="cls">.ggc-prose</span></h2>
+        <p>조례 조문 · 검토보고서 · 안내문처럼 <b>긴 글</b>에 쓴다. 표·카드에는 쓰지 않는다.
+          법령은 「낫표」, 조문은 § 기호, 문장은 평서형이다(domain-language). ≥1680px 에서는
+          측정 폭이 920px 로 캡된다(계약 §2-1).</p>
+        <div class="ex-demo ex-demo--bg" id="d-prose">
+          <div class="ggc-card ggc-card--pad">
+            <div class="ggc-prose">
+              <h2>Ⅱ. 검토 의견</h2>
+              <p>이 조례안은 「청년기본법」 제3조의 청년 연령(19세 이상 34세 이하)에 맞추어 도 조례의 청년 정의를 정비하고, 청년정책조정위원회의 구성을 보완하려는 것이다. 상위법과의 정합성 측면에서 개정 필요성이 인정된다.</p>
+              <div class="article">
+                <span class="no">제3조(정의)</span>이 조례에서 "청년"이란 19세 이상 34세 이하인 사람을 말한다.
+                <span class="para">① 다만, 도지사는 청년 정책의 특성에 따라 그 범위를 달리 정할 수 있다.</span>
+                <span class="para">② 제1항 단서에 따라 범위를 달리 정한 경우 그 사실을 공고하여야 한다.</span>
+              </div>
+              <blockquote>
+                <p>§ 「청년기본법 시행령」 제6조 제2항 — 위원회는 위원장 1명을 포함하여 25명 이내의 위원으로 구성한다.</p>
+              </blockquote>
+              <h3>검토 결과</h3>
+              <ul>
+                <li>위원 정수 상한을 25명으로 조정한다 — 현행 30명은 상위법 위반이다.</li>
+                <li>청년 위원 비율 30% 이상 규정은 「청년기본법」 제15조와 부합한다.</li>
+                <li>부칙의 경과조치(현 위원 임기 보장)는 문제가 없다.</li>
+              </ul>
+              <p>이상의 사항을 반영하면 <strong>수정가결</strong>이 적절하다. 수정안은 별첨 <code>수정안-0417-v2.hwpx</code> 와 같다.</p>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-prose"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 액션바 -->
+      <section class="ex-section">
+        <h2>하단 스티키 액션바 <span class="cls">.ggc-actionbar</span></h2>
+        <p>Configure 화면의 슬롯 5 — <b>액션바가 없으면 Configure 가 아니다.</b> 본문 컬럼 끝에 두면
+          <code class="ex-inline">position: sticky</code> 로 뷰포트 바닥에 붙는다(LNB 폭을 계산할 필요가 없다).
+          순서는 임시저장(secondary) → 상신(primary) 고정. 상신 중에는 버튼을 비활성하고 스피너를 넣는다.
+          아래 액션바는 이 페이지의 실물이다.</p>
+        <div class="ex-note">
+          <p>페이지에 액션바를 두면 본문이 짧아도 바닥에 붙고, 길면 스크롤하는 동안 계속 보인다.
+          Tab 순서상 본문 다음이라 키보드 사용자가 자연스럽게 도달한다.</p>
+        </div>
+      </section>
+
+      <div class="ggc-actionbar" id="d-actionbar">
+        <div class="status">임시저장 2026-08-29 14:32 · 3 / 4 단계 · 조문 작성</div>
+        <div class="actions">
+          <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
+          <button class="ggc-btn ggc-btn--primary" type="button">상신</button>
+        </div>
+      </div>
 
     </main>
       <main class="ggc-shell-main" data-page="dashboard" hidden>
@@ -3461,12 +4794,197 @@ body {
   <footer class="ggc-footer">
     <div class="inner">
       경기도의회 의정정보시스템 · 공통 디자인 시스템 예제 갤러리 (합본) ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v1.2 ·
-      <code style="font-family:var(--ggc-font-mono)">ggc-components.css</code> v1.2
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v2.0 ·
+      <code style="font-family:var(--ggc-font-mono)">ggc-components.css</code> v2.0
     </div>
   </footer>
 </div>
 
+<script>
+/* ---- design/ggc-behaviors.js (정본) ------------------------------------- */
+/* =============================================================================
+ * ggc-behaviors.js — 경기도의회 공통 컴포넌트 동작 v2.0 (2026-08-29)
+ * 전제: design/ggc-components.css v2.0 (마크업 계약은 그 파일의 §14·§19·§9 주석)
+ *
+ * 하는 일은 셋뿐이다. 전부 **마크업의 ARIA 상태를 옮기는 것**이고, 스타일은 CSS 가 그 상태를
+ * 보고 그린다. 그래서 이 파일이 없어도 화면은 깨지지 않는다 — 동작만 없다.
+ *   ① 탭      role="tab" 의 aria-selected · tabindex(roving) · 패널 hidden · 화살표/Home/End
+ *   ② 모달    <dialog>.showModal() · data-ggc-modal-open / -close · 배경 클릭 · 포커스 복귀
+ *   ③ drawer  ≤900px 에서 .ggc-lnb[data-open] · ESC · 바깥 클릭
+ *
+ * 외부 파일 하나, 인라인 0 — eGovFrame CSP(unsafe-inline 금지)에서도 그대로 붙는다.
+ * 의존성 0. React 서비스는 이 파일 대신 Tier 2 레지스트리 컴포넌트를 쓴다.
+ *
+ * 사용: <script src="ggc-behaviors.js" defer></script>
+ *       동적으로 삽입한 마크업은 GGC.init(루트요소) 로 다시 묶는다.
+ * ============================================================================= */
+(function () {
+  "use strict";
+  var GGC = window.GGC = window.GGC || {};
+
+  /* ------------------------------------------------------------------ ① 탭 */
+  function initTabs(root) {
+    (root || document).querySelectorAll(".ggc-tabs").forEach(function (tabs) {
+      if (tabs.__ggcTabs) return;
+      var list = tabs.querySelector('[role="tablist"]');
+      if (!list) return;
+      tabs.__ggcTabs = true;
+      var tabEls = [].slice.call(list.querySelectorAll('[role="tab"]'));
+
+      function select(tab, focus) {
+        tabEls.forEach(function (t) {
+          var on = t === tab;
+          t.setAttribute("aria-selected", on ? "true" : "false");
+          t.tabIndex = on ? 0 : -1;
+          var panel = document.getElementById(t.getAttribute("aria-controls") || "");
+          if (panel) panel.hidden = !on;
+        });
+        if (focus) tab.focus();
+        tabs.dispatchEvent(new CustomEvent("ggc:tabchange", { detail: { tab: tab }, bubbles: true }));
+      }
+
+      tabEls.forEach(function (t) {
+        t.addEventListener("click", function () { select(t, false); });
+        t.addEventListener("keydown", function (e) {
+          var i = tabEls.indexOf(t), n = tabEls.length, j = null;
+          if (e.key === "ArrowRight") j = (i + 1) % n;
+          else if (e.key === "ArrowLeft") j = (i - 1 + n) % n;
+          else if (e.key === "Home") j = 0;
+          else if (e.key === "End") j = n - 1;
+          if (j === null) return;
+          e.preventDefault();
+          select(tabEls[j], true);
+        });
+      });
+
+      var current = tabEls.filter(function (t) {
+        return t.getAttribute("aria-selected") === "true";
+      })[0] || tabEls[0];
+      if (current) select(current, false);
+    });
+  }
+
+  /* ---------------------------------------------------------------- ② 모달 */
+  var openerOf = typeof WeakMap === "function" ? new WeakMap() : null;
+
+  function resolve(target) {
+    return typeof target === "string" ? document.querySelector(target) : target;
+  }
+
+  function anyOpen() {
+    return !!document.querySelector("dialog.ggc-modal[open]");
+  }
+
+  function openModal(target, opener) {
+    var dialog = resolve(target);
+    if (!dialog || dialog.open || typeof dialog.showModal !== "function") return;
+    if (openerOf) openerOf.set(dialog, opener || document.activeElement);
+    dialog.showModal();
+    document.documentElement.setAttribute("data-ggc-modal-active", "");
+    /* 첫 포커스: autofocus > 본문의 첫 입력 > 주 버튼 > 닫기 */
+    var first = dialog.querySelector("[autofocus]") ||
+      dialog.querySelector(".body input:not([type=hidden]), .body select, .body textarea") ||
+      dialog.querySelector(".foot .ggc-btn--primary") ||
+      dialog.querySelector(".close");
+    if (first) first.focus();
+    dialog.dispatchEvent(new CustomEvent("ggc:open", { bubbles: true }));
+  }
+
+  function closeModal(target, value) {
+    var dialog = resolve(target);
+    if (!dialog || !dialog.open) return;
+    dialog.close(value);
+  }
+
+  function initModals(root) {
+    (root || document).querySelectorAll("dialog.ggc-modal").forEach(function (dialog) {
+      if (dialog.__ggcModal) return;
+      dialog.__ggcModal = true;
+      function released() {
+        if (!anyOpen()) document.documentElement.removeAttribute("data-ggc-modal-active");
+        var back = openerOf && openerOf.get(dialog);
+        if (back && typeof back.focus === "function" && document.contains(back)) back.focus();
+      }
+      /* 'close' 이벤트는 브라우저가 한 박자 늦게 보낸다(ESC 경로에서 실측 수백 ms).
+         open 속성이 사라지는 순간을 직접 보고 잠금을 푼다 — 누가 닫았든 같다. */
+      if (typeof MutationObserver === "function") {
+        new MutationObserver(function () { if (!dialog.open) released(); })
+          .observe(dialog, { attributes: true, attributeFilter: ["open"] });
+      } else {
+        dialog.addEventListener("close", released);
+      }
+      /* 배경 클릭으로 닫기 — 확인 다이얼로그(--alert)는 명시적 선택만 받는다 */
+      dialog.addEventListener("click", function (e) {
+        if (e.target === dialog && !dialog.classList.contains("ggc-modal--alert")) dialog.close();
+      });
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target : null;
+    if (!t) return;
+    /* 값이 있는 트리거만 오프너다 — <html> 의 잠금 표식(data-ggc-modal-active)과 이름을
+       달리 둔 이유가 이것이다. 같은 이름이면 모달 안의 모든 클릭이 <html> 을 오프너로 잡는다
+       (2026-08-29 실제로 그랬다). */
+    var opener = t.closest("[data-ggc-modal-open]");
+    if (opener && opener.getAttribute("data-ggc-modal-open")) {
+      e.preventDefault();
+      openModal(opener.getAttribute("data-ggc-modal-open"), opener);
+      return;
+    }
+    var closer = t.closest("[data-ggc-modal-close]");
+    if (closer) {
+      e.preventDefault();
+      closeModal(closer.closest("dialog.ggc-modal"), closer.getAttribute("data-ggc-modal-close") || "");
+    }
+  });
+
+  /* --------------------------------------------------------------- ③ drawer */
+  function lnb() { return document.querySelector(".ggc-lnb"); }
+
+  function setDrawer(open) {
+    var nav = lnb();
+    if (!nav) return;
+    if (open) nav.setAttribute("data-open", "true"); else nav.removeAttribute("data-open");
+    document.querySelectorAll("[data-ggc-drawer-toggle]").forEach(function (b) {
+      b.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
+
+  function toggleDrawer() {
+    var nav = lnb();
+    if (nav) setDrawer(nav.getAttribute("data-open") !== "true");
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-ggc-drawer-toggle]") : null;
+    if (t) { e.preventDefault(); toggleDrawer(); return; }
+    var nav = lnb();
+    if (nav && nav.getAttribute("data-open") === "true" && !nav.contains(e.target)) setDrawer(false);
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    var nav = lnb();
+    if (nav && nav.getAttribute("data-open") === "true") setDrawer(false);
+  });
+
+  /* ------------------------------------------------------------------ 공개 */
+  GGC.initTabs = initTabs;
+  GGC.initModals = initModals;
+  GGC.openModal = openModal;
+  GGC.closeModal = closeModal;
+  GGC.toggleDrawer = toggleDrawer;
+  GGC.init = function (root) { initTabs(root); initModals(root); };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { GGC.init(); });
+  } else {
+    GGC.init();
+  }
+})();
+
+</script>
 <script>
 /* =============================================================================
  * examples.js — 갤러리 전용. 빌드 도구 없이 파일을 더블클릭해 열어도 동작한다.
@@ -3693,7 +5211,7 @@ body {
 /* 쪽 전환 — 합본 전용. 원본 갤러리는 파일이 나뉘어 있어 이 코드가 없다. */
 (function () {
   "use strict";
-  var SVC = {index: "공통 디자인 시스템", tokens: "공통 디자인 시스템", components: "공통 디자인 시스템", dashboard: "의정지원 플랫폼", wizard: "조례 초안 작성", login: "공통 디자인 시스템"};
+  var SVC = {index: "공통 디자인 시스템", tokens: "공통 디자인 시스템", components: "공통 디자인 시스템", forms: "공통 디자인 시스템", nav: "공통 디자인 시스템", overlay: "공통 디자인 시스템", dashboard: "의정지원 플랫폼", wizard: "조례 초안 작성", login: "공통 디자인 시스템"};
   var mains = document.querySelectorAll("main[data-page]");
   var items = document.querySelectorAll(".ggc-lnb-item[data-page]");
   var svc = document.getElementById("svc");

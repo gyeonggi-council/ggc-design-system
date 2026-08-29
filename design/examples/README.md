@@ -9,6 +9,9 @@
 | `index.html` | 개요 · 3분 도입 · 관통 원칙 · 접근성 |
 | `tokens.html` | 색 · 타이포 · 간격 · 형태 · 포커스 **전수**, 대비비 실측 |
 | `components.html` | 버튼 · 배지 · 카드 · 통계 · 행리스트 · 표 · 폼 · 위저드 · 세 상태 |
+| `components-forms.html` | 셀렉트 · 체크박스 · 라디오 · 칩 · Explore 필터 스트립 조립 (v2.0) |
+| `components-nav.html` | 페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 (v2.0) |
+| `components-overlay.html` | 알림 · 모달 · 스피너 · 스켈레톤 · 문서 본문 · 하단 액션바 (v2.0) |
 | `dashboard.html` | Monitor archetype 실물 화면 |
 | `wizard.html` | Configure archetype 실물 화면 |
 | `login.html` | **QR 로그인 화면** — 전 시스템 공통 입구. 상태 6종 · 화면 안 3단계 안내 |

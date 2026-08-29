@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (84e0b540) -->
+<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (e5dded11) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -126,18 +126,18 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 검색창 | `.ggc-search` | `ggc-search` | work | P1 | 있음 |
 | 스텝퍼 / 위저드 | `.ggc-wizard (--vertical) .ggc-wizard-mini` | `ggc-stepper` | both | P0 | 있음 |
 | QR 로그인 블록 | `.ggc-qr .ggc-login` | `ggc-qr-login` | work | P1 | 있음 |
-| 본문 조판 | `.ggc-prose` | `ggc-prose` | both | P1 | 부분 |
-| 하단 스티키 액션바 | `.ggc-actionbar` | `ggc-actionbar` | work | P0 | 예정 |
-| 모달 / 다이얼로그 | `.ggc-modal (<dialog>)` | `dialog alert-dialog` | both | P0 | 예정 |
-| 탭 | `.ggc-tabs .ggc-tab .ggc-tabpanel` | `tabs` | both | P0 | 예정 |
-| 셀렉트 (네이티브) | `.ggc-select` | `select` | both | P0 | 예정 |
-| 체크박스 · 라디오 (칩 변형) | `.ggc-check .ggc-radio (--group --chip)` | `checkbox radio-group` | both | P0 | 예정 |
-| 알림 / 콜아웃 | `.ggc-alert (--info --success --warning --danger)` | `alert` | both | P0 | 예정 |
-| 페이지네이션 | `.ggc-pagination` | `pagination` | both | P0 | 예정 |
-| 브레드크럼 | `.ggc-breadcrumb` | `breadcrumb` | both | P0 | 예정 |
-| 페이지 헤더 (제목 · 메타 · 주 액션) | `.ggc-page-head` | `ggc-page-head` | work | P1 | 예정 |
-| 스피너 | `.ggc-spinner` | `spinner` | both | P1 | 예정 |
-| 스켈레톤 | `.ggc-skeleton` | `skeleton` | both | P1 | 예정 |
+| 본문 조판 | `.ggc-prose` | `ggc-prose` | both | P1 | 있음 |
+| 하단 스티키 액션바 | `.ggc-actionbar` | `ggc-actionbar` | work | P0 | 있음 |
+| 모달 / 다이얼로그 | `.ggc-modal (<dialog>)` | `dialog alert-dialog` | both | P0 | 있음 |
+| 탭 | `.ggc-tabs .ggc-tablist .ggc-tab .ggc-tabpanel` | `tabs` | both | P0 | 있음 |
+| 셀렉트 (네이티브) | `.ggc-select` | `select` | both | P0 | 있음 |
+| 체크박스 · 라디오 · 칩 | `.ggc-check .ggc-radio .ggc-check-group(--column) .ggc-chip` | `checkbox radio-group` | both | P0 | 있음 |
+| 알림 / 콜아웃 | `.ggc-alert (--info --success --warning --danger)` | `alert` | both | P0 | 있음 |
+| 페이지네이션 | `.ggc-pagination` | `pagination` | both | P0 | 있음 |
+| 브레드크럼 | `.ggc-breadcrumb` | `breadcrumb` | both | P0 | 있음 |
+| 페이지 헤더 (제목 · 메타 · 주 액션) | `.ggc-page-head` | `ggc-page-head` | work | P1 | 있음 |
+| 스피너 | `.ggc-spinner .ggc-spinner-block` | `spinner` | both | P1 | 있음 |
+| 스켈레톤 | `.ggc-skeleton` | `skeleton` | both | P1 | 있음 |
 | 마스트헤드 (정부 공식 사이트 띠) | `.ggc-masthead` | `ggc-masthead` | public | P0 | 예정 |
 | 아이덴티파이어 (기관 식별 띠) | `.ggc-identifier` | `ggc-identifier` | public | P0 | 예정 |
 | 대민 헤더 + 주 메뉴 | `.ggc-header .ggc-main-menu` | `ggc-public-header` | public | P0 | 예정 |

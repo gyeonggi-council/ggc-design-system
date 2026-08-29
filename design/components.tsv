@@ -22,18 +22,18 @@ field	폼 필드 (라벨 · 입력 · 힌트 · 오류)	.ggc-field (.hint .error
 search	검색창	.ggc-search	ggc-search	기존 §9	work	P1	있음	1
 stepper	스텝퍼 / 위저드	.ggc-wizard (--vertical) .ggc-wizard-mini	ggc-stepper	기존 §4 · KRDS step_indicator	both	P0	있음	1
 qr-login	QR 로그인 블록	.ggc-qr .ggc-login	ggc-qr-login	기존 §11	work	P1	있음	1
-prose	본문 조판	.ggc-prose	ggc-prose	기존 §10 (확폭 캡만)	both	P1	부분	3
-actionbar	하단 스티키 액션바	.ggc-actionbar	ggc-actionbar	archetypes Configure 슬롯 5	work	P0	예정	3
-modal	모달 / 다이얼로그	.ggc-modal (<dialog>)	dialog alert-dialog	KRDS modal	both	P0	예정	3
-tabs	탭	.ggc-tabs .ggc-tab .ggc-tabpanel	tabs	KRDS tab	both	P0	예정	3
-select	셀렉트 (네이티브)	.ggc-select	select	KRDS select	both	P0	예정	3
-check-radio	체크박스 · 라디오 (칩 변형)	.ggc-check .ggc-radio (--group --chip)	checkbox radio-group	KRDS checkbox/radio	both	P0	예정	3
-alert	알림 / 콜아웃	.ggc-alert (--info --success --warning --danger)	alert	KRDS critical_alerts · .ggc-qr-callout 일반화	both	P0	예정	3
-pagination	페이지네이션	.ggc-pagination	pagination	KRDS pagination	both	P0	예정	3
-breadcrumb	브레드크럼	.ggc-breadcrumb	breadcrumb	KRDS breadcrumb · archetypes 헤더 2형	both	P0	예정	3
-page-head	페이지 헤더 (제목 · 메타 · 주 액션)	.ggc-page-head	ggc-page-head	archetypes 슬롯 1·2	work	P1	예정	3
-spinner	스피너	.ggc-spinner	spinner	KRDS spinner · .ggc-qr-spinner 일반화	both	P1	예정	3
-skeleton	스켈레톤	.ggc-skeleton	skeleton	갤러리 로딩 예시	both	P1	예정	3
+prose	본문 조판	.ggc-prose	ggc-prose	기존 §10 (확폭 캡만)	both	P1	있음	3
+actionbar	하단 스티키 액션바	.ggc-actionbar	ggc-actionbar	archetypes Configure 슬롯 5	work	P0	있음	3
+modal	모달 / 다이얼로그	.ggc-modal (<dialog>)	dialog alert-dialog	KRDS modal	both	P0	있음	3
+tabs	탭	.ggc-tabs .ggc-tablist .ggc-tab .ggc-tabpanel	tabs	KRDS tab	both	P0	있음	3
+select	셀렉트 (네이티브)	.ggc-select	select	KRDS select	both	P0	있음	3
+check-radio	체크박스 · 라디오 · 칩	.ggc-check .ggc-radio .ggc-check-group(--column) .ggc-chip	checkbox radio-group	KRDS checkbox/radio/chip	both	P0	있음	3
+alert	알림 / 콜아웃	.ggc-alert (--info --success --warning --danger)	alert	KRDS critical_alerts · .ggc-qr-callout 일반화	both	P0	있음	3
+pagination	페이지네이션	.ggc-pagination	pagination	KRDS pagination	both	P0	있음	3
+breadcrumb	브레드크럼	.ggc-breadcrumb	breadcrumb	KRDS breadcrumb · archetypes 헤더 2형	both	P0	있음	3
+page-head	페이지 헤더 (제목 · 메타 · 주 액션)	.ggc-page-head	ggc-page-head	archetypes 슬롯 1·2	work	P1	있음	3
+spinner	스피너	.ggc-spinner .ggc-spinner-block	spinner	KRDS spinner · .ggc-qr-spinner 일반화	both	P1	있음	3
+skeleton	스켈레톤	.ggc-skeleton	skeleton	갤러리 로딩 예시	both	P1	있음	3
 masthead	마스트헤드 (정부 공식 사이트 띠)	.ggc-masthead	ggc-masthead	KRDS masthead	public	P0	예정	4
 identifier	아이덴티파이어 (기관 식별 띠)	.ggc-identifier	ggc-identifier	KRDS identifier	public	P0	예정	4
 public-header	대민 헤더 + 주 메뉴	.ggc-header .ggc-main-menu	ggc-public-header	KRDS header · main_menu_pc/mobile	public	P0	예정	4

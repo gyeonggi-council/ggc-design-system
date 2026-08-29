@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오버레이 · 상태 · 본문 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <button class="ggc-icon-btn ex-only-narrow" type="button" data-ggc-drawer-toggle aria-expanded="false" aria-controls="lnb" aria-label="메뉴 열기">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">공통 디자인 시스템</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <label for="q" class="ex-sr">컴포넌트 검색</label>
+      <input id="q" type="search" placeholder="컴포넌트 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" id="lnb" aria-label="예제 목록">
+      <div class="ex-lnb-cap">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <a class="ggc-lnb-item" href="components-forms.html">폼 컨트롤</a>
+      <a class="ggc-lnb-item" href="components-nav.html">내비게이션 · 탭</a>
+      <a class="ggc-lnb-item" href="components-overlay.html">오버레이 · 상태 · 본문</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ex-lnb-cap">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+    </nav>
+
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main">
+
+      <h1 class="ex-h1">오버레이 · 상태 · 본문<span class="ver">ggc-components.css v2.0 · §18~23</span></h1>
+      <p class="ex-lede">
+        알림 · 모달 · 스피너 · 스켈레톤 · 문서 본문 · 하단 액션바. 모달은 네이티브
+        <code class="ex-inline">&lt;dialog&gt;</code> 라 포커스 가두기 · ESC · 배경 inert 를 브라우저가 준다.
+        여닫기는 <code class="ex-inline">ggc-behaviors.js</code> 의 <code class="ex-inline">data-ggc-modal-open</code> /
+        <code class="ex-inline">-close</code> 속성이다. 액션바는 이 페이지 맨 아래에 붙어 있다 — 스크롤해 보라.
+      </p>
+
+      <!-- ============================================================ 알림 -->
+      <section class="ex-section">
+        <h2>알림 · 콜아웃 <span class="cls">.ggc-alert</span></h2>
+        <p>인라인 알림이다. 네 상태 전부 <b>기호 + 제목 + 문구</b>를 갖는다 — 색 단독 금지.
+          오류 문구는 <b>사유와 근거</b>를 함께 준다("입력값이 잘못되었습니다" 가 아니라).
+          <code class="ex-inline">role</code> 은 정보·상태면 <code class="ex-inline">status</code>,
+          즉시 알려야 하는 오류면 <code class="ex-inline">alert</code>.</p>
+        <div class="ex-demo ex-demo--flow" id="d-alert">
+          <div class="ggc-alert ggc-alert--info" role="status">
+            <span class="icon" aria-hidden="true">ⓘ</span>
+            <div class="body"><strong class="title">회기 중</strong><p>제380회 정례회가 2026-09-12 까지 진행된다. 회기 중 접수 의안은 당일 회부된다.</p></div>
+          </div>
+          <div class="ggc-alert ggc-alert--success" role="status">
+            <span class="icon" aria-hidden="true">✓</span>
+            <div class="body"><strong class="title">상신 완료</strong><p>검토보고서가 위원장 결재함으로 넘어갔다 — 2026-08-29 14:32.</p></div>
+            <div class="actions"><a class="ggc-btn ggc-btn--secondary ggc-btn--sm" href="#main">결재함 보기</a></div>
+          </div>
+          <div class="ggc-alert ggc-alert--warning" role="status">
+            <span class="icon" aria-hidden="true">⚠</span>
+            <div class="body"><strong class="title">기한 임박</strong><p>회부 후 30일이 2026-09-02 에 지난다. 「경기도의회 회의규칙」 제42조에 따라 계속심사 여부를 결정해야 한다.</p></div>
+            <button class="close" type="button" aria-label="닫기">✕</button>
+          </div>
+          <div class="ggc-alert ggc-alert--danger" role="alert">
+            <span class="icon" aria-hidden="true">✕</span>
+            <div class="body"><strong class="title">상신할 수 없다</strong><p>위원 정수 상한(25명)을 초과한다 — 「청년기본법 시행령」 제6조 제2항. 명단에서 1명을 제외하고 다시 시도한다.</p></div>
+          </div>
+          <div class="ggc-alert" role="status">
+            <span class="icon" aria-hidden="true">§</span>
+            <div class="body"><p>중립 콜아웃 — 근거 조문·참고 안내처럼 상태가 아닌 보조 정보에 쓴다.</p></div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-alert"><summary>마크업</summary><pre class="ex-code"></pre></details>
+
+        <div class="ex-sub">띠형 · <code class="ex-inline">.ggc-alert--banner</code> — 본문 상단 긴급 공지 (KRDS critical alerts)</div>
+        <div class="ex-demo ex-demo--bg" id="d-banner" style="padding:0;overflow:hidden">
+          <div class="ggc-alert ggc-alert--danger ggc-alert--banner" role="alert">
+            <span class="icon" aria-hidden="true">⚠</span>
+            <div class="body"><p><strong class="title" style="display:inline;margin-right:6px">긴급</strong>의안정보 연계 서버 점검 — 2026-08-30 (토) 02:00~06:00 동안 접수·회부가 중단된다.</p></div>
+            <div class="actions"><a class="ggc-btn ggc-btn--ghost ggc-btn--sm" href="#main">자세히 →</a></div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-banner"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 모달 -->
+      <section class="ex-section">
+        <h2>모달 · 다이얼로그 <span class="cls">.ggc-modal (&lt;dialog&gt;)</span></h2>
+        <p>제목(<code class="ex-inline">aria-labelledby</code>) · 본문 · 버튼 행 · 닫기. 파괴적 동작(반려 · 회수 · 삭제)은
+          <code class="ex-inline">--alert</code> + <code class="ex-inline">role="alertdialog"</code> 로 확인 단계를 두고,
+          그 경우 배경 클릭으로는 닫히지 않는다. 열릴 때 첫 입력(없으면 주 버튼)으로 포커스가 가고,
+          닫히면 <b>열었던 버튼으로 돌아온다.</b></p>
+        <div class="ex-demo ex-row" id="d-modal">
+          <button class="ggc-btn ggc-btn--primary" type="button" data-ggc-modal-open="#m-refer">위원회 회부</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-open="#m-reject">반려 (확인형)</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-open="#m-doc">문서 미리보기 (--lg)</button>
+
+          <dialog class="ggc-modal" id="m-refer" aria-labelledby="m-refer-t">
+            <div class="head">
+              <h2 class="title" id="m-refer-t">위원회 회부</h2>
+              <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button>
+            </div>
+            <div class="body">
+              <p>BILL-2026-0417 「경기도 청년 기본 조례 일부개정조례안」을 소관위원회에 회부한다.</p>
+              <div class="ggc-field" style="margin-top:var(--ggc-space-4)">
+                <label for="m-c">소관위원회 <span class="req">*</span></label>
+                <div class="ggc-select"><select id="m-c"><option>기획재정위원회</option><option>경제노동위원회</option><option>문화체육관광위원회</option></select></div>
+              </div>
+              <div class="ggc-field" style="margin-top:var(--ggc-space-4)">
+                <label for="m-n">회부 사유</label>
+                <textarea id="m-n" rows="2" placeholder="선택 — 관련 위원회가 둘 이상이면 근거를 적는다"></textarea>
+              </div>
+            </div>
+            <div class="foot">
+              <span class="left">회부 후 30일 심사 기한이 시작된다</span>
+              <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>취소</button>
+              <button class="ggc-btn ggc-btn--primary" type="button" data-ggc-modal-close="refer">회부</button>
+            </div>
+          </dialog>
+
+          <dialog class="ggc-modal ggc-modal--sm ggc-modal--alert" id="m-reject" role="alertdialog" aria-labelledby="m-reject-t" aria-describedby="m-reject-d">
+            <div class="head">
+              <h2 class="title" id="m-reject-t">검토보고서를 반려하는가</h2>
+            </div>
+            <div class="body" id="m-reject-d">
+              <p>작성자(정책지원관 이○○)에게 되돌아가고, 결재선은 초기화된다. 되돌릴 수 있다 — 작성자가 다시 상신하면 된다.</p>
+              <div class="ggc-field" style="margin-top:var(--ggc-space-4)">
+                <label for="m-r">반려 사유 <span class="req">*</span></label>
+                <textarea id="m-r" rows="2" autofocus></textarea>
+              </div>
+            </div>
+            <div class="foot">
+              <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>취소</button>
+              <button class="ggc-btn ggc-btn--primary" type="button" data-ggc-modal-close="reject" style="background:var(--ggc-danger);box-shadow:none">반려</button>
+            </div>
+          </dialog>
+
+          <dialog class="ggc-modal ggc-modal--lg" id="m-doc" aria-labelledby="m-doc-t">
+            <div class="head">
+              <h2 class="title" id="m-doc-t">비용추계서 · BILL-2026-0417</h2>
+              <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button>
+            </div>
+            <div class="body">
+              <div class="ggc-table-wrap">
+                <table class="ggc-table">
+                  <thead><tr><th scope="col">연도</th><th scope="col" class="num">인건비</th><th scope="col" class="num">사업비</th><th scope="col" class="num">합계</th></tr></thead>
+                  <tbody>
+                    <tr><td>2027</td><td class="num">184,000</td><td class="num">1,100,000</td><td class="num">1,284,000</td></tr>
+                    <tr><td>2028</td><td class="num">189,500</td><td class="num">1,133,000</td><td class="num">1,322,500</td></tr>
+                    <tr><td>2029</td><td class="num">195,200</td><td class="num">1,167,000</td><td class="num">1,362,200</td></tr>
+                  </tbody>
+                  <tfoot><tr><td>3년 합계</td><td class="num">568,700</td><td class="num">3,400,000</td><td class="num">3,968,700</td></tr></tfoot>
+                </table>
+              </div>
+              <p style="margin:var(--ggc-space-3) 0 0;font-size:12px;color:var(--ggc-text-subtle)">단위: 천원 · 「지방자치법」 제148조에 따른 추계</p>
+            </div>
+            <div class="foot">
+              <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>닫기</button>
+              <button class="ggc-btn ggc-btn--primary" type="button">HWP 내려받기</button>
+            </div>
+          </dialog>
+        </div>
+        <details class="ex-reveal" data-src="#d-modal"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 스피너·스켈레톤 -->
+      <section class="ex-section">
+        <h2>스피너 · 스켈레톤 <span class="cls">.ggc-spinner · .ggc-skeleton</span></h2>
+        <p>로딩은 <b>자리를 지킨다</b> — 행 높이 · 카드 크기를 실제와 같게 두고 골격만 보인다(archetypes).
+          스피너에는 <code class="ex-inline">role="status"</code> 와 화면 밖 텍스트를 둔다.
+          두 애니메이션 모두 <code class="ex-inline">prefers-reduced-motion</code> 에서 멈춘다.</p>
+        <div class="ex-demo" id="d-spin">
+          <div class="ex-row" style="gap:var(--ggc-space-6)">
+            <span class="ggc-spinner ggc-spinner--sm" role="status"><span class="ggc-sr">불러오는 중</span></span>
+            <span class="ggc-spinner" role="status"><span class="ggc-sr">불러오는 중</span></span>
+            <span class="ggc-spinner ggc-spinner--lg" role="status"><span class="ggc-sr">불러오는 중</span></span>
+            <button class="ggc-btn ggc-btn--primary" type="button" disabled><span class="ggc-spinner ggc-spinner--sm" aria-hidden="true"></span> 상신 중</button>
+            <button class="ggc-btn ggc-btn--secondary" type="button" disabled><span class="ggc-spinner ggc-spinner--sm" aria-hidden="true"></span> 저장 중</button>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-spin"><summary>마크업</summary><pre class="ex-code"></pre></details>
+
+        <div class="ex-demo ex-demo--bg" id="d-skel" style="margin-top:var(--ggc-space-4)">
+          <div class="ex-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+            <div class="ggc-card" aria-busy="true">
+              <div class="ggc-card-head"><div style="flex:1"><div class="ggc-skeleton ggc-skeleton--title" style="width:45%"></div><div class="ggc-skeleton" style="width:28%"></div></div></div>
+              <div class="ggc-list-row"><span class="ggc-skeleton ggc-skeleton--circle"></span><div class="body"><div class="ggc-skeleton" style="width:78%"></div><div class="ggc-skeleton" style="width:46%"></div></div></div>
+              <div class="ggc-list-row"><span class="ggc-skeleton ggc-skeleton--circle"></span><div class="body"><div class="ggc-skeleton" style="width:64%"></div><div class="ggc-skeleton" style="width:38%"></div></div></div>
+              <span class="ggc-sr">목록을 불러오는 중</span>
+            </div>
+            <div class="ggc-card" aria-busy="true">
+              <div class="ggc-spinner-block">
+                <span class="ggc-spinner" role="status"><span class="ggc-sr">불러오는 중</span></span>
+                <span aria-hidden="true">의안정보 연계 응답 대기 중 — 보통 2초 안에 끝난다</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-skel"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 본문 -->
+      <section class="ex-section">
+        <h2>문서 본문 <span class="cls">.ggc-prose</span></h2>
+        <p>조례 조문 · 검토보고서 · 안내문처럼 <b>긴 글</b>에 쓴다. 표·카드에는 쓰지 않는다.
+          법령은 「낫표」, 조문은 § 기호, 문장은 평서형이다(domain-language). ≥1680px 에서는
+          측정 폭이 920px 로 캡된다(계약 §2-1).</p>
+        <div class="ex-demo ex-demo--bg" id="d-prose">
+          <div class="ggc-card ggc-card--pad">
+            <div class="ggc-prose">
+              <h2>Ⅱ. 검토 의견</h2>
+              <p>이 조례안은 「청년기본법」 제3조의 청년 연령(19세 이상 34세 이하)에 맞추어 도 조례의 청년 정의를 정비하고, 청년정책조정위원회의 구성을 보완하려는 것이다. 상위법과의 정합성 측면에서 개정 필요성이 인정된다.</p>
+              <div class="article">
+                <span class="no">제3조(정의)</span>이 조례에서 "청년"이란 19세 이상 34세 이하인 사람을 말한다.
+                <span class="para">① 다만, 도지사는 청년 정책의 특성에 따라 그 범위를 달리 정할 수 있다.</span>
+                <span class="para">② 제1항 단서에 따라 범위를 달리 정한 경우 그 사실을 공고하여야 한다.</span>
+              </div>
+              <blockquote>
+                <p>§ 「청년기본법 시행령」 제6조 제2항 — 위원회는 위원장 1명을 포함하여 25명 이내의 위원으로 구성한다.</p>
+              </blockquote>
+              <h3>검토 결과</h3>
+              <ul>
+                <li>위원 정수 상한을 25명으로 조정한다 — 현행 30명은 상위법 위반이다.</li>
+                <li>청년 위원 비율 30% 이상 규정은 「청년기본법」 제15조와 부합한다.</li>
+                <li>부칙의 경과조치(현 위원 임기 보장)는 문제가 없다.</li>
+              </ul>
+              <p>이상의 사항을 반영하면 <strong>수정가결</strong>이 적절하다. 수정안은 별첨 <code>수정안-0417-v2.hwpx</code> 와 같다.</p>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-prose"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 액션바 -->
+      <section class="ex-section">
+        <h2>하단 스티키 액션바 <span class="cls">.ggc-actionbar</span></h2>
+        <p>Configure 화면의 슬롯 5 — <b>액션바가 없으면 Configure 가 아니다.</b> 본문 컬럼 끝에 두면
+          <code class="ex-inline">position: sticky</code> 로 뷰포트 바닥에 붙는다(LNB 폭을 계산할 필요가 없다).
+          순서는 임시저장(secondary) → 상신(primary) 고정. 상신 중에는 버튼을 비활성하고 스피너를 넣는다.
+          아래 액션바는 이 페이지의 실물이다.</p>
+        <div class="ex-note">
+          <p>페이지에 액션바를 두면 본문이 짧아도 바닥에 붙고, 길면 스크롤하는 동안 계속 보인다.
+          Tab 순서상 본문 다음이라 키보드 사용자가 자연스럽게 도달한다.</p>
+        </div>
+      </section>
+
+      <div class="ggc-actionbar" id="d-actionbar">
+        <div class="status">임시저장 2026-08-29 14:32 · 3 / 4 단계 · 조문 작성</div>
+        <div class="actions">
+          <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
+          <button class="ggc-btn ggc-btn--primary" type="button">상신</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v2.0
+    </div>
+  </footer>
+</div>
+
+<script src="../ggc-behaviors.js"></script>
+<script src="examples.js"></script>
+</body>
+</html>

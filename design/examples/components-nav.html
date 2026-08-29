@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내비게이션 · 탭 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <button class="ggc-icon-btn ex-only-narrow" type="button" data-ggc-drawer-toggle aria-expanded="false" aria-controls="lnb" aria-label="메뉴 열기">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">공통 디자인 시스템</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <label for="q" class="ex-sr">컴포넌트 검색</label>
+      <input id="q" type="search" placeholder="컴포넌트 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" id="lnb" aria-label="예제 목록">
+      <div class="ex-lnb-cap">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <a class="ggc-lnb-item" href="components-forms.html">폼 컨트롤</a>
+      <a class="ggc-lnb-item" href="components-nav.html">내비게이션 · 탭</a>
+      <a class="ggc-lnb-item" href="components-overlay.html">오버레이 · 상태 · 본문</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ex-lnb-cap">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+    </nav>
+
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main">
+
+      <h1 class="ex-h1">내비게이션 · 탭<span class="ver">ggc-components.css v2.0 · §12~15</span></h1>
+      <p class="ex-lede">
+        페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션. 화면 안에서 <b>"내가 어디 있고 어디로 갈 수 있는가"</b>를
+        말하는 요소들이다. 탭의 키보드 동작(화살표 · Home · End)은
+        <code class="ex-inline">ggc-behaviors.js</code> 가 준다 — 이 페이지에서 <kbd class="ex-inline">Tab</kbd> 으로
+        탭에 들어가 화살표를 눌러 보라.
+      </p>
+
+      <!-- ============================================================ 페이지 헤더 -->
+      <section class="ex-section">
+        <h2>페이지 헤더 <span class="cls">.ggc-page-head</span></h2>
+        <p>브레드크럼 + 제목 + 메타 + <b>주 액션 하나</b>. archetypes 의 "헤더 제목부 2형" 이다 —
+          Monitor 첫 화면만 인사말형(<code class="ex-inline">--greeting</code>)을 쓰고 나머지는
+          경로형이다. 메타에는 기관 맥락(제N대 · 제NNN회 · 소관)을 적는다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-head">
+          <div class="ggc-page-head">
+            <nav class="ggc-breadcrumb" aria-label="현재 경로">
+              <ol>
+                <li><a href="#main">홈</a></li>
+                <li><a href="#main">의안</a></li>
+                <li aria-current="page">의안 목록</li>
+              </ol>
+            </nav>
+            <div class="row">
+              <div>
+                <h1 class="title">의안 목록</h1>
+                <p class="meta">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
+              </div>
+              <div class="actions">
+                <button class="ggc-btn ggc-btn--secondary" type="button">엑셀 내려받기</button>
+                <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ggc-page-head ggc-page-head--greeting" style="margin-top:var(--ggc-space-6);margin-bottom:0">
+            <div class="row">
+              <div>
+                <h1 class="title">이○○님, 오늘 처리할 검토보고서 3건이 있습니다</h1>
+                <p class="meta">정책지원관 · 기획재정위원회 · 2026-08-29 (금)</p>
+              </div>
+              <div class="actions">
+                <button class="ggc-btn ggc-btn--primary" type="button">＋ 검토보고서 작성</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-head"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 브레드크럼 -->
+      <section class="ex-section">
+        <h2>브레드크럼 <span class="cls">.ggc-breadcrumb</span></h2>
+        <p>KRDS 구조 그대로 — <code class="ex-inline">&lt;nav aria-label="현재 경로"&gt;&lt;ol&gt;</code>.
+          마지막 항목은 링크가 아니라 <code class="ex-inline">aria-current="page"</code> 텍스트다.
+          구분자는 CSS 가 그린다 — 마크업에 "/" 나 "›" 를 적으면 스크린리더가 읽는다.</p>
+        <div class="ex-demo" id="d-bc">
+          <nav class="ggc-breadcrumb" aria-label="현재 경로">
+            <ol>
+              <li><a href="#main">홈</a></li>
+              <li><a href="#main">입법지원</a></li>
+              <li><a href="#main">조례초안</a></li>
+              <li aria-current="page">경기도 청년 기본 조례 일부개정조례안</li>
+            </ol>
+          </nav>
+        </div>
+        <details class="ex-reveal" data-src="#d-bc"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 탭 -->
+      <section class="ex-section">
+        <h2>탭 <span class="cls">.ggc-tabs · .ggc-tablist · .ggc-tab · .ggc-tabpanel</span></h2>
+        <p><code class="ex-inline">role="tablist" / tab / tabpanel</code> + <code class="ex-inline">aria-selected</code> +
+          <code class="ex-inline">aria-controls</code>. 선택 탭만 <code class="ex-inline">tabindex=0</code> 이고
+          나머지는 -1 이라, <kbd class="ex-inline">Tab</kbd> 한 번으로 탭 묶음을 지나 본문으로 간다.
+          선택 표시는 색 + 하단 2px 선 둘 다다. 탭 안 건수는 <code class="ex-inline">.count</code>.</p>
+        <div class="ex-demo" id="d-tabs">
+          <div class="ggc-tabs">
+            <div class="ggc-tablist" role="tablist" aria-label="의안 정보">
+              <button class="ggc-tab" role="tab" id="tb1" aria-selected="true" aria-controls="tp1" type="button">개요</button>
+              <button class="ggc-tab" role="tab" id="tb2" aria-selected="false" aria-controls="tp2" tabindex="-1" type="button">심사 경과 <span class="count">3</span></button>
+              <button class="ggc-tab" role="tab" id="tb3" aria-selected="false" aria-controls="tp3" tabindex="-1" type="button">첨부 문서 <span class="count">7</span></button>
+              <button class="ggc-tab" role="tab" id="tb4" aria-selected="false" aria-controls="tp4" tabindex="-1" type="button">감사 이력</button>
+            </div>
+            <div class="ggc-tabpanel" role="tabpanel" id="tp1" aria-labelledby="tb1">
+              <div class="ggc-table-wrap">
+                <table class="ggc-table ggc-table--kv">
+                  <tbody>
+                    <tr><th scope="row">의안번호</th><td>BILL-2026-0417</td></tr>
+                    <tr><th scope="row">제안자</th><td>○○○ 의원 외 12인 <span class="ggc-badge ggc-badge--role-member">의원</span></td></tr>
+                    <tr><th scope="row">소관위원회</th><td>기획재정위원회</td></tr>
+                    <tr><th scope="row">접수일</th><td>2026-08-25</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="ggc-tabpanel" role="tabpanel" id="tp2" aria-labelledby="tb2" hidden>
+              <div class="ggc-list-row" style="border-top:none;padding-left:0;padding-right:0">
+                <div class="body"><div class="title">위원회 회부</div><div class="meta">2026-08-26 · 의장</div></div>
+                <div class="end"><span class="ggc-badge ggc-badge--approved">✓ 완료</span></div>
+              </div>
+              <div class="ggc-list-row" style="padding-left:0;padding-right:0">
+                <div class="body"><div class="title">전문위원 검토보고</div><div class="meta">2026-08-28 · 정책지원관 이○○</div></div>
+                <div class="end"><span class="ggc-badge ggc-badge--pending">◷ 검토</span></div>
+              </div>
+              <div class="ggc-list-row" style="padding-left:0;padding-right:0">
+                <div class="body"><div class="title">상임위원회 심사</div><div class="meta">예정 · 제380회 제2차</div></div>
+                <div class="end"><span class="ggc-badge ggc-badge--recess">○ 대기</span></div>
+              </div>
+            </div>
+            <div class="ggc-tabpanel" role="tabpanel" id="tp3" aria-labelledby="tb3" hidden>
+              <p style="margin:0;font-size:13.5px;color:var(--ggc-text-muted)">첨부 문서 7건 — 의안 원문 · 비용추계서 · 검토보고서 초안 · 관련 법령 4건</p>
+            </div>
+            <div class="ggc-tabpanel" role="tabpanel" id="tp4" aria-labelledby="tb4" hidden>
+              <p style="margin:0;font-size:13.5px;color:var(--ggc-text-muted)">2026-08-25 14:32 접수 (사무처 김○○) · 2026-08-26 09:10 회부 (의장)</p>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-tabs"><summary>마크업</summary><pre class="ex-code"></pre></details>
+
+        <div class="ex-sub">카드 안 탭 — 카드 헤더 아래에 붙으면 좌우 패딩이 카드에 맞춰진다</div>
+        <div class="ex-demo ex-demo--bg" id="d-tabs-card">
+          <div class="ggc-card">
+            <div class="ggc-card-head">
+              <div><div class="title">회기별 처리 현황</div><div class="sub">제12대</div></div>
+            </div>
+            <div class="ggc-tabs">
+              <div class="ggc-tablist" role="tablist" aria-label="회기">
+                <button class="ggc-tab" role="tab" id="tc1" aria-selected="true" aria-controls="tpc1" type="button">제380회</button>
+                <button class="ggc-tab" role="tab" id="tc2" aria-selected="false" aria-controls="tpc2" tabindex="-1" type="button">제379회</button>
+                <button class="ggc-tab" role="tab" id="tc3" aria-selected="false" aria-controls="tpc3" tabindex="-1" type="button">제378회</button>
+              </div>
+              <div class="ggc-tabpanel" role="tabpanel" id="tpc1" aria-labelledby="tc1">
+                <div class="ggc-stat-grid ggc-stat-grid--3">
+                  <div class="ggc-stat"><div class="label-row"><span class="label">접수</span></div><div class="value">147<span class="unit">건</span></div></div>
+                  <div class="ggc-stat"><div class="label-row"><span class="label">가결</span></div><div class="value">118<span class="unit">건</span></div></div>
+                  <div class="ggc-stat"><div class="label-row"><span class="label">계속심사</span></div><div class="value">21<span class="unit">건</span></div></div>
+                </div>
+              </div>
+              <div class="ggc-tabpanel" role="tabpanel" id="tpc2" aria-labelledby="tc2" hidden>
+                <p style="margin:0;font-size:13.5px;color:var(--ggc-text-muted)">제379회 임시회 — 접수 62건 · 가결 55건 · 계속심사 4건</p>
+              </div>
+              <div class="ggc-tabpanel" role="tabpanel" id="tpc3" aria-labelledby="tc3" hidden>
+                <p style="margin:0;font-size:13.5px;color:var(--ggc-text-muted)">제378회 임시회 — 접수 48건 · 가결 41건 · 계속심사 3건</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-tabs-card"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 페이지네이션 -->
+      <section class="ex-section">
+        <h2>페이지네이션 <span class="cls">.ggc-pagination</span></h2>
+        <p>KRDS 구조 — 이전/다음 + 페이지 링크 + 생략(…) + 현재. 현재 페이지는
+          <code class="ex-inline">aria-current="page"</code> 와 화면 밖 텍스트 "현재 페이지" 를 갖는다.
+          <b>페이지네이션 없이 전량 렌더하지 않는다</b>(Explore). 기본 20건, 좌측 요약은 <code class="ex-inline">.summary</code>.</p>
+        <div class="ex-demo" id="d-pg">
+          <nav class="ggc-pagination" aria-label="페이지">
+            <span class="summary">총 147건 · 2 / 8쪽</span>
+            <a class="nav" href="#main">← 이전</a>
+            <ol class="pages">
+              <li><a href="#main">1</a></li>
+              <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>2</a></li>
+              <li><a href="#main">3</a></li>
+              <li><a href="#main">4</a></li>
+              <li><a href="#main">5</a></li>
+              <li><span class="gap" aria-hidden="true">…</span></li>
+              <li><a href="#main">8</a></li>
+            </ol>
+            <a class="nav" href="#main">다음 →</a>
+          </nav>
+          <nav class="ggc-pagination" aria-label="페이지 (첫 쪽)" style="margin-top:var(--ggc-space-5)">
+            <a class="nav" href="#main" aria-disabled="true" tabindex="-1">← 이전</a>
+            <ol class="pages">
+              <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>1</a></li>
+              <li><a href="#main">2</a></li>
+              <li><a href="#main">3</a></li>
+            </ol>
+            <a class="nav" href="#main">다음 →</a>
+          </nav>
+        </div>
+        <details class="ex-reveal" data-src="#d-pg"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v2.0
+    </div>
+  </footer>
+</div>
+
+<script src="../ggc-behaviors.js"></script>
+<script src="examples.js"></script>
+</body>
+</html>

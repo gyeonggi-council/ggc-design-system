@@ -5,6 +5,19 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 3 — Tier 1 P0 컴포넌트 (2026-08-29)
+
+- `ggc-components.css` §12~§24 신설: `.ggc-page-head` `.ggc-breadcrumb` `.ggc-tabs` `.ggc-pagination`
+  `.ggc-select` `.ggc-check/.ggc-radio/.ggc-chip` `.ggc-alert` `.ggc-modal(<dialog>)` `.ggc-actionbar`
+  `.ggc-spinner` `.ggc-skeleton` `.ggc-prose` `.ggc-sr` + 고대비 보강. 마크업·ARIA 는 KRDS 컴포넌트 HTML,
+  CSS 는 토큰으로 재구현. 이미지 자산 0, 새 색 0
+- `design/ggc-behaviors.js` 신설 — 탭(roving tabindex·화살표) · 모달(showModal·포커스 복귀·배경 클릭) ·
+  LNB drawer. 외부 파일 1개, 인라인 0, 의존성 0
+- 갤러리 3쪽 신설(`components-forms` · `components-nav` · `components-overlay`), 전 쪽 LNB 갱신,
+  합본 생성기가 9쪽 + behaviors.js 를 담음
+- `check_design.py` D6 inventory: `components.tsv` ↔ CSS 양방향 대조(있음 행 미정의 FAIL, 표 누락 계열 WARN)
+- `components.tsv`: 12종 예정 → 있음
+
 ### Phase 2 — DESIGN.md 생성기 (2026-08-29)
 
 - `design/components.tsv` 신설 — 컴포넌트 인벤토리 정본(현행 17 + 예정 30). 문서·DESIGN.md·

@@ -302,3 +302,7 @@ body { margin: 0; }
   white-space: nowrap;
   border: 0;
 }
+
+/* 갤러리 GNB 의 drawer 토글 — LNB 가 drawer 로 접히는 ≤900px 에서만 보인다 (v2.0) */
+.ex-only-narrow { display: none; }
+@media (max-width: 900px) { .ex-only-narrow { display: flex; margin-left: var(--ggc-space-3); } }

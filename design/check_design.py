@@ -683,6 +683,60 @@ def check_generated():
     return warns
 
 
+INVENTORY = os.path.join(HERE, "components.tsv")
+CANON_PUBLIC = os.path.join(HERE, "ggc-public.css")   # Phase 4 에서 생긴다 — 없으면 건너뛴다
+
+
+def css_classes(css):
+    """주석을 뺀 CSS 에서 .ggc-* 클래스 이름 전부."""
+    return set(re.findall(r"\.(ggc-[a-z][\w-]*)", "\n".join(strip_comments(css))))
+
+
+def check_inventory(tokens, comps):
+    """components.tsv 의 '있음' 행이 실제 CSS 에 정의돼 있는지, CSS 의 컴포넌트 계열이
+    표에 빠져 있지 않은지 양방향으로 본다. 표는 문서·DESIGN.md·레지스트리가 읽는 원천이라
+    실물과 어긋나면 셋이 한꺼번에 거짓말을 한다."""
+    if not os.path.exists(INVENTORY):
+        print("D6 WARN  inventory components.tsv 가 없다")
+        return 0
+    defined = css_classes(tokens) | css_classes(comps) | css_classes(read(CANON_PUBLIC))
+    fails, rows, listed = 0, [], set()
+    for line in read(INVENTORY).splitlines():
+        if not line.strip() or line.startswith("#"):
+            continue
+        p = line.split("\t")
+        if len(p) < 9:
+            continue
+        rows.append(p)
+    for p in rows:
+        cid, tier1, status = p[0], p[2], p[7]
+        names = re.findall(r"\.(ggc-[a-z][\w-]*)", tier1)
+        listed.update(names)
+        if status != "있음":
+            continue
+        missing = [n for n in names if n not in defined]
+        if missing:
+            print(f"D6 FAIL  inventory {cid:<14} 상태 '있음' 인데 CSS 에 없다: "
+                  + ", ".join("." + m for m in missing))
+            fails += 1
+    # 역방향 — CSS 의 계열(두 번째 토막)이 표 어디에도 없으면 WARN
+    families_listed = {n.split("-")[1] for n in listed if "-" in n}
+    families_css = {}
+    for n in defined:
+        parts = n.split("-")
+        if len(parts) >= 2:
+            families_css.setdefault(parts[1], set()).add(n)
+    orphan = sorted(f for f in families_css if f not in families_listed
+                    and f not in ("sr",))          # .ggc-sr 는 유틸리티라 컴포넌트가 아니다
+    if orphan:
+        print("D6 WARN  inventory CSS 에는 있고 표에는 없는 계열: "
+              + ", ".join(f"{f}({len(families_css[f])})" for f in orphan))
+    if not fails:
+        n_have = sum(1 for p in rows if p[7] == "있음")
+        print(f"D6 INFO  inventory 있음 {n_have}종 전부 CSS 에 정의됨 · 표 {len(rows)}행")
+    return fails
+
+
 def check_canon():
     print("=== D6 CANON — 정본 자체 검사 ===")
     tokens = read(CANON_TOKENS)
@@ -776,6 +830,9 @@ def check_canon():
         fails += bad
         if not bad:
             print(f"D6 INFO  profile   {pname:<8} {len(pv)}종 덮어씀 — 전부 치수 토큰")
+
+    print("\n--- 컴포넌트 인벤토리 (components.tsv <-> CSS) ---")
+    fails += check_inventory(tokens, comps)
 
     print("\n--- 브랜드 자산 정본 ---")
     dist = os.path.join(CANON_BRAND, "dist")
