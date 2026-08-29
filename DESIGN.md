@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (e5dded11) -->
+<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (1127a9b1) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -138,12 +138,14 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 페이지 헤더 (제목 · 메타 · 주 액션) | `.ggc-page-head` | `ggc-page-head` | work | P1 | 있음 |
 | 스피너 | `.ggc-spinner .ggc-spinner-block` | `spinner` | both | P1 | 있음 |
 | 스켈레톤 | `.ggc-skeleton` | `skeleton` | both | P1 | 있음 |
-| 마스트헤드 (정부 공식 사이트 띠) | `.ggc-masthead` | `ggc-masthead` | public | P0 | 예정 |
-| 아이덴티파이어 (기관 식별 띠) | `.ggc-identifier` | `ggc-identifier` | public | P0 | 예정 |
-| 대민 헤더 + 주 메뉴 | `.ggc-header .ggc-main-menu` | `ggc-public-header` | public | P0 | 예정 |
-| 대민 푸터 | `.ggc-footer--public` | `ggc-public-footer` | public | P0 | 예정 |
-| 사이드 내비게이션 (대민) | `.ggc-side-nav` | `ggc-side-nav` | public | P1 | 예정 |
-| 구조화 목록 | `.ggc-structured-list` | `ggc-structured-list` | public | P1 | 예정 |
+| 대민 페이지 컨테이너 · 페이지 타이틀 | `.ggc-public .ggc-public-main(--side) .ggc-page-title .ggc-h2` | `ggc-public-layout` | public | P0 | 있음 |
+| 대민 메인 히어로 (안내 · 통합검색 · 바로가기) | `.ggc-hero` | `ggc-hero` | public | P1 | 있음 |
+| 마스트헤드 (정부 공식 사이트 띠) | `.ggc-masthead` | `ggc-masthead` | public | P0 | 있음 |
+| 아이덴티파이어 (기관 식별 띠) | `.ggc-identifier` | `ggc-identifier` | public | P0 | 있음 |
+| 대민 헤더 + 주 메뉴 + 통합검색 | `.ggc-header .ggc-main-menu` | `ggc-public-header` | public | P0 | 있음 |
+| 대민 푸터 | `.ggc-footer--public` | `ggc-public-footer` | public | P0 | 있음 |
+| 사이드 내비게이션 (대민) | `.ggc-side-nav` | `ggc-side-nav` | public | P1 | 있음 |
+| 구조화 목록 | `.ggc-structured-list` | `ggc-structured-list` | public | P1 | 있음 |
 | 토글 스위치 | `.ggc-switch` | `switch` | both | P1 | 예정 |
 | 토스트 | `.ggc-toast-region .ggc-toast` | `toast` | both | P1 | 예정 |
 | 아코디언 / 디스클로저 | `.ggc-accordion (<details>)` | `accordion` | both | P1 | 예정 |

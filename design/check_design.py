@@ -39,6 +39,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CANON_TOKENS = os.path.join(HERE, "ggc-tokens.css")
 CANON_COMPONENTS = os.path.join(HERE, "ggc-components.css")
 CANON_BRAND = os.path.join(HERE, "brand")
+CANON_PUBLIC = os.path.join(HERE, "ggc-public.css")
+# 정본 파일 집합 (v2.0) — D1 은 이 이름의 사본 전부를 바이트 대조하고, D2·D5 는 사본을 건너뛴다.
+CANON_FILES = ("ggc-tokens.css", "ggc-components.css", "ggc-public.css",
+               "ggc-fonts.css", "ggc-behaviors.js")
+# 프로필별로 기대하는 공통 셸 (D3). 대민은 계약 §9 — 업무 GNB/LNB 를 쓰지 않는다.
+SHELL_EXPECT = {
+    "work":   (("ggc-utility-bar", "유틸리티 바"), ("ggc-footer", "공통 푸터")),
+    "public": (("ggc-skip-link", "스킵 링크"), ("ggc-masthead", "마스트헤드"),
+               ("ggc-footer--public", "공개 푸터"), ("ggc-identifier", "아이덴티파이어")),
+}
+PUBLIC_MARK = 'data-ggc-profile="public"'
 CONTRACT_DOC = os.path.normpath(os.path.join(HERE, "..", "docs", "contract.md"))
 
 SCAN_EXT = {".css", ".scss", ".sass", ".less", ".tsx", ".jsx", ".ts", ".js",
@@ -136,7 +147,7 @@ def md5(path):
 def build_allowset():
     """정본 CSS 2개에서 매 실행 시 파생한다. 사본을 만들지 않는다."""
     allow, rgba_bases = set(UNIVERSAL), set()
-    for p in (CANON_TOKENS, CANON_COMPONENTS):
+    for p in (CANON_TOKENS, CANON_COMPONENTS, CANON_PUBLIC):
         text = read(p)
         for h in HEX_RE.findall(text):
             allow.add(norm_hex(h))
@@ -337,13 +348,23 @@ class Report:
 
 
 # ---------------------------------------------------------------- 서비스 검사
-def find_token_copies(root):
+def find_token_copies(root, name="ggc-tokens.css"):
     hits = []
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
-        if "ggc-tokens.css" in filenames:
-            hits.append(os.path.join(dirpath, "ggc-tokens.css"))
+        if name in filenames:
+            hits.append(os.path.join(dirpath, name))
     return hits
+
+
+def md5_lf(path):
+    """줄끝을 LF 로 정규화한 md5 — Windows 사본(CRLF)이 정본(LF)과 내용이 같으면 같다고 본다.
+    .gitattributes 가 LF 를 고정하지만, 수동 복사·편집기 저장이 CRLF 를 만들 수 있다."""
+    try:
+        with open(path, "rb") as f:
+            return hashlib.md5(f.read().replace(b"\r\n", b"\n")).hexdigest()
+    except OSError:
+        return None
 
 
 def classify(root):
@@ -392,7 +413,7 @@ def linked_css_blob(files, root):
     return "\n".join(out)
 
 
-def check_service(root, aa_mode="observe", verbose=True):
+def check_service(root, aa_mode="observe", verbose=True, profile=None):
     root = os.path.abspath(root)
     name = os.path.basename(root.rstrip(os.sep))
     rep = Report(name)
@@ -413,19 +434,24 @@ def check_service(root, aa_mode="observe", verbose=True):
                 (os.path.relpath(f, root), m.group(2).strip()))
 
     # --- D1 TOKENS-COPY --------------------------------------------------
-    copies = find_token_copies(root)
-    canon_md5 = md5(CANON_TOKENS)
-    if copies:
-        for c in copies:
+    # v2.0: 토큰뿐 아니라 컴포넌트·대민 셸·폰트·동작 파일 사본도 전부 대조한다.
+    any_copy = False
+    for name in CANON_FILES:
+        canon_path = os.path.join(HERE, name)
+        if not os.path.exists(canon_path):
+            continue
+        canon_md5 = md5_lf(canon_path)
+        for c in find_token_copies(root, name):
+            any_copy = True
             rel = os.path.relpath(c, root)
-            if md5(c) == canon_md5:
-                rep.add("D1", "INFO", "copy", rel, "정본과 바이트 동일")
+            if md5_lf(c) == canon_md5:
+                rep.add("D1", "INFO", "copy", rel, "정본과 동일")
             else:
                 rep.add("D1", "FAIL", "copy", rel,
                         "정본과 다르다 — 정본에서 다시 복사할 것 "
                         "(값을 바꿔야 한다면 정본을 먼저 고친다)")
-    else:
-        rep.add("D1", "INFO", "copy", "-", "토큰 파일 없음 (인라인형/독자형)")
+    if not any_copy:
+        rep.add("D1", "INFO", "copy", "-", "정본 사본 없음 (인라인형/독자형)")
 
     # --- D2 PALETTE ------------------------------------------------------
     for f in files:
@@ -457,16 +483,31 @@ def check_service(root, aa_mode="observe", verbose=True):
     # 셸 검사는 **마크업**을 본다. 토큰/컴포넌트 CSS 는 클래스를 *정의*할 뿐이라
     # 여기 포함하면 파일을 복사한 것만으로 "셸이 있다" 는 오탐이 난다.
     markup = "".join(read(f) for f in files
-                     if os.path.basename(f) not in ("ggc-tokens.css",
-                                                    "ggc-components.css"))
+                     if os.path.basename(f) not in CANON_FILES)
 
     # --- D3 SHELL --------------------------------------------------------
-    for cls, label in (("ggc-utility-bar", "유틸리티 바"),
-                       ("ggc-footer", "공통 푸터")):
-        if cls in markup:
-            rep.add("D3", "INFO", "shell", "-", f"{label} 있음")
+    # 프로필 판정: --profile 로 강제하거나, 마크업 파일마다 data-ggc-profile="public" 유무를 본다.
+    # 전부 대민이면 public, 전부 아니면 work, 섞였으면 둘 다 검사한다(갤러리처럼 두 셸이 한 폴더에 있을 때).
+    html_files = [f for f in files if os.path.splitext(f)[1].lower() in {".html", ".htm", ".jsp", ".vue", ".tsx", ".jsx"}]
+    if profile in ("work", "public"):
+        profiles = [profile]
+    else:
+        flags = [PUBLIC_MARK in read(f) for f in html_files]
+        if flags and all(flags):
+            profiles = ["public"]
+        elif any(flags):
+            profiles = ["work", "public"]
         else:
-            rep.add("D3", "WARN", "shell", "-", f"{label} 없음 (공통 셸 3종)")
+            profiles = ["work"]
+    for pname in profiles:
+        for cls, label in SHELL_EXPECT[pname]:
+            if cls in markup:
+                rep.add("D3", "INFO", "shell", pname, f"{label} 있음")
+            else:
+                rep.add("D3", "WARN", "shell", pname, f"{label} 없음 ({pname} 공통 셸)")
+    if "public" in profiles and ("ggc-gnb" in markup or "ggc-lnb" in markup) and profiles == ["public"]:
+        rep.add("D3", "FAIL", "shell", "public",
+                "대민 화면에 업무 GNB/LNB 셸이 있다 — 계약 §9 (두 프로필을 섞지 않는다)")
 
     entry = [f for f in files if os.path.splitext(f)[1].lower()
              in {".html", ".htm", ".jsp", ".tsx", ".jsx", ".vue"}]
@@ -537,7 +578,7 @@ def check_service(root, aa_mode="observe", verbose=True):
         # ggc-tokens.css 의 전역 :focus-visible 이 이미 모든 요소에 제공한다.
         # 파일 단위로만 보면 ggc-components.css 를 채택한 서비스가 전부 FAIL 이 된다
         # (2026-08-22 ggc_kb 가 첫 채택자로 드러났다). 정본 자체는 D6 가 본다.
-        if os.path.basename(f) in ("ggc-tokens.css", "ggc-components.css"):
+        if os.path.basename(f) in CANON_FILES:
             continue
         rel = os.path.relpath(f, root)
         text = read(f)
@@ -555,7 +596,7 @@ def check_service(root, aa_mode="observe", verbose=True):
         # 정본 사본은 건너뛴다 — D6 가 올바른 전경/배경 쌍으로 이미 검증한다.
         # 여기서 보면 유틸리티 바(어두운 배경 위 밝은 글자)를 흰 배경 기준으로
         # 잘못 재서 없는 위반을 만들어 낸다.
-        if os.path.basename(f) in ("ggc-tokens.css", "ggc-components.css"):
+        if os.path.basename(f) in CANON_FILES:
             continue
         rel = os.path.relpath(f, root)
         for i, line in enumerate(strip_comments(strip_doc_text(read(f))), 1):
@@ -684,7 +725,6 @@ def check_generated():
 
 
 INVENTORY = os.path.join(HERE, "components.tsv")
-CANON_PUBLIC = os.path.join(HERE, "ggc-public.css")   # Phase 4 에서 생긴다 — 없으면 건너뛴다
 
 
 def css_classes(css):
@@ -885,6 +925,8 @@ def main():
     ap.add_argument("--canon", action="store_true", help="정본 자체 검사")
     ap.add_argument("--all", action="store_true", help="ggc-services 전체")
     ap.add_argument("--aa", default="observe", choices=["observe", "enforce"])
+    ap.add_argument("--profile", choices=["work", "public"],
+                    help="D3 셸 기대를 강제한다 (기본: 마크업의 data-ggc-profile 로 판정)")
     a = ap.parse_args()
 
     if a.canon:
@@ -903,7 +945,7 @@ def main():
             p = os.path.join(base, d)
             if not os.path.isdir(p) or d.startswith("_") or d.startswith("."):
                 continue
-            rep, kind = check_service(p, a.aa)
+            rep, kind = check_service(p, a.aa, profile=a.profile)
             rows.append((d, kind, rep.fails(), rep.warns()))
             bad += rep.fails()
         print("\n=== 전수 요약 ===")
@@ -915,7 +957,7 @@ def main():
 
     if not a.target:
         ap.error("서비스 경로가 필요하다 (또는 --canon / --all)")
-    rep, _ = check_service(a.target, a.aa)
+    rep, _ = check_service(a.target, a.aa, profile=a.profile)
     sys.exit(1 if (rep.fails() and a.gate) else 0)
 
 

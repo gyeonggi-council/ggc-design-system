@@ -7,6 +7,8 @@
  *   ① 탭      role="tab" 의 aria-selected · tabindex(roving) · 패널 hidden · 화살표/Home/End
  *   ② 모달    <dialog>.showModal() · data-ggc-modal-open / -close · 배경 클릭 · 포커스 복귀
  *   ③ drawer  ≤900px 에서 .ggc-lnb[data-open] · ESC · 바깥 클릭
+ *   ④ 대민 메뉴 .ggc-main-menu[data-open](모바일 패널) · [data-ggc-submenu] aria-expanded ·
+ *             [data-ggc-search-toggle] 통합검색 패널  (ggc-public.css, v2.0)
  *
  * 외부 파일 하나, 인라인 0 — eGovFrame CSP(unsafe-inline 금지)에서도 그대로 붙는다.
  * 의존성 0. React 서비스는 이 파일 대신 Tier 2 레지스트리 컴포넌트를 쓴다.
@@ -165,7 +167,75 @@
     if (nav && nav.getAttribute("data-open") === "true") setDrawer(false);
   });
 
+  /* ------------------------------------------ ④ 대민 주 메뉴 · 통합검색 (ggc-public.css) */
+  function mainMenu() { return document.querySelector(".ggc-main-menu"); }
+
+  function setMenu(open) {
+    var nav = mainMenu();
+    if (!nav) return;
+    if (open) nav.setAttribute("data-open", "true"); else nav.removeAttribute("data-open");
+    if (open) document.documentElement.setAttribute("data-ggc-menu-active", "");
+    else document.documentElement.removeAttribute("data-ggc-menu-active");
+    document.querySelectorAll("[data-ggc-menu-toggle]").forEach(function (b) {
+      b.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    if (open) {
+      var first = nav.querySelector(".head .close, a, button");
+      if (first) first.focus();
+    }
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest) return;
+    var toggle = e.target.closest("[data-ggc-menu-toggle]");
+    if (toggle) {
+      e.preventDefault();
+      var nav = mainMenu();
+      var open = !(nav && nav.getAttribute("data-open") === "true");
+      setMenu(open);
+      if (!open && toggle.closest(".ggc-main-menu")) {
+        var outer = document.querySelector(".ggc-header [data-ggc-menu-toggle]");
+        if (outer) outer.focus();
+      }
+      return;
+    }
+    /* 2단 펼침 — 모바일 아코디언. PC 에서는 hover/focus-within 이 CSS 로 열지만
+       aria-expanded 도 같이 옮겨 키보드·터치에서 상태가 맞게 한다 */
+    var sub = e.target.closest("[data-ggc-submenu]");
+    if (sub) {
+      e.preventDefault();
+      var on = sub.getAttribute("aria-expanded") === "true";
+      sub.closest(".depth1") && sub.closest(".depth1").querySelectorAll("[data-ggc-submenu]").forEach(function (b) {
+        b.setAttribute("aria-expanded", "false");
+      });
+      sub.setAttribute("aria-expanded", on ? "false" : "true");
+      return;
+    }
+    var search = e.target.closest("[data-ggc-search-toggle]");
+    if (search) {
+      e.preventDefault();
+      var panel = document.getElementById(search.getAttribute("aria-controls") || "") ||
+        document.querySelector(".ggc-header .site-search");
+      if (!panel) return;
+      var isOpen = panel.getAttribute("data-open") === "true";
+      if (isOpen) panel.removeAttribute("data-open"); else panel.setAttribute("data-open", "true");
+      search.setAttribute("aria-expanded", isOpen ? "false" : "true");
+      if (!isOpen) { var inp = panel.querySelector("input"); if (inp) inp.focus(); }
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    var nav = mainMenu();
+    if (nav && nav.getAttribute("data-open") === "true") {
+      setMenu(false);
+      var outer = document.querySelector(".ggc-header [data-ggc-menu-toggle]");
+      if (outer) outer.focus();
+    }
+  });
+
   /* ------------------------------------------------------------------ 공개 */
+  GGC.toggleMenu = function () { var nav = mainMenu(); setMenu(!(nav && nav.getAttribute("data-open") === "true")); };
   GGC.initTabs = initTabs;
   GGC.initModals = initModals;
   GGC.openModal = openModal;

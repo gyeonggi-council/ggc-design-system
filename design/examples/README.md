@@ -15,6 +15,7 @@
 | `dashboard.html` | Monitor archetype 실물 화면 |
 | `wizard.html` | Configure archetype 실물 화면 |
 | `login.html` | **QR 로그인 화면** — 전 시스템 공통 입구. 상태 6종 · 화면 안 3단계 안내 |
+| `public/index.html` · `list.html` · `detail.html` · `form.html` | **대민(공개) 실물 화면 4쪽** (v2.0) — `<html data-ggc-profile="public">` + `ggc-public.css`. 메인 · 의안 검색 · 의안 상세 · 의견 제출. 업무 셸과 다르므로 합본에는 들어가지 않는다 |
 
 ## 이 갤러리의 규칙 — 값을 옮겨 적지 않는다
 

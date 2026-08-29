@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko" data-ggc-profile="public">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>의견 제출 — 경기도의회 의정정보 누리집 (예제)</title>
+<link rel="icon" href="../../brand/dist/favicon-32.png">
+<link rel="stylesheet" href="../../ggc-tokens.css">
+<link rel="stylesheet" href="../../ggc-components.css">
+<link rel="stylesheet" href="../../ggc-public.css">
+</head>
+<body class="ggc-public">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-masthead"><div class="inner"><span class="flag" aria-hidden="true"></span><span class="text">이 누리집은 대한민국 공식 전자정부 누리집입니다.</span></div></div>
+
+<header class="ggc-header">
+  <div class="utility"><div class="inner"><ul><li><a href="#main">로그인</a></li><li><a href="#main">회원가입</a></li><li><a href="#main" lang="en">ENGLISH</a></li></ul></div></div>
+  <div class="branding">
+    <div class="inner">
+      <a class="logo" href="index.html"><img src="../../brand/dist/assembly-mark.png" alt=""><span class="org">경기도의회</span><span class="svc">의정정보 누리집</span></a>
+      <div class="actions">
+        <button class="action search" type="button" data-ggc-search-toggle aria-expanded="false" aria-controls="site-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span class="label">통합검색</span>
+        </button>
+        <button class="action menu" type="button" data-ggc-menu-toggle aria-expanded="false" aria-controls="main-menu"><span class="bars" aria-hidden="true"></span> 전체메뉴</button>
+      </div>
+    </div>
+  </div>
+  <div class="site-search" id="site-search">
+    <form class="inner" role="search" action="list.html">
+      <label for="site-q" class="ggc-sr">누리집 통합검색</label>
+      <input id="site-q" type="search" placeholder="의안명 · 의원명 · 회의록 검색">
+      <button class="ggc-btn ggc-btn--primary" type="submit">검색</button>
+    </form>
+  </div>
+  <nav class="ggc-main-menu" id="main-menu" aria-label="주 메뉴">
+    <div class="inner">
+      <div class="head">전체메뉴 <button class="close" type="button" data-ggc-menu-toggle aria-label="메뉴 닫기">✕</button></div>
+      <ul class="depth1">
+        <li><button type="button" aria-expanded="false" aria-controls="mm-1" data-ggc-submenu>의회소개</button>
+          <ul class="depth2" id="mm-1"><li><a href="#main">의장 인사말</a></li><li><a href="#main">의회 연혁</a></li><li><a href="#main">조직과 기능</a></li><li><a href="#main">찾아오시는 길</a></li></ul></li>
+        <li><a href="#main">의원소개</a></li>
+        <li><button type="button" aria-expanded="false" aria-controls="mm-3" data-ggc-submenu>의안정보</button>
+          <ul class="depth2" id="mm-3"><li><a href="list.html">의안 검색</a></li><li><a href="#main">조례 현황</a></li><li><a href="#main">의안 통계</a></li></ul></li>
+        <li><button type="button" aria-expanded="false" aria-controls="mm-4" data-ggc-submenu>회의정보</button>
+          <ul class="depth2" id="mm-4"><li><a href="#main">회의 일정</a></li><li><a href="#main">회의록</a></li><li><a href="#main">인터넷 방송</a></li></ul></li>
+        <li><button type="button" aria-expanded="false" aria-controls="mm-5" data-ggc-submenu aria-current="page">도민참여</button>
+          <ul class="depth2" id="mm-5"><li><a href="#main">정책제안</a></li><li><a href="#main">청원</a></li><li><a href="form.html" aria-current="page">의견 제출</a></li><li><a href="#main">방청 신청</a></li></ul></li>
+        <li><a href="#main">알림</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="ggc-public-main">
+  <div class="inner" style="max-width:920px">
+
+    <div class="ggc-page-title">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로"><ol><li><a href="index.html">홈</a></li><li><a href="#main">도민참여</a></li><li aria-current="page">의견 제출</li></ol></nav>
+      <h1>의견 제출</h1>
+      <p class="desc">입법예고 중인 조례안이나 도정 현안에 대한 의견을 제출합니다. 접수된 의견은 소관 상임위원회 심사 자료로 제공되며, 처리 결과는 이메일로 안내합니다.</p>
+    </div>
+
+    <div class="ggc-wizard" style="margin-bottom:var(--ggc-space-7)">
+      <div class="ggc-wizard-step is-current" aria-current="step">
+        <div class="track"><span class="line"></span><span class="dot">1</span><span class="line"></span></div>
+        <div class="meta"><div class="label">의견 작성</div></div>
+      </div>
+      <div class="ggc-wizard-step">
+        <div class="track"><span class="line"></span><span class="dot">2</span><span class="line"></span></div>
+        <div class="meta"><div class="label">내용 확인</div></div>
+      </div>
+      <div class="ggc-wizard-step">
+        <div class="track"><span class="line"></span><span class="dot">3</span><span class="line"></span></div>
+        <div class="meta"><div class="label">접수 완료</div></div>
+      </div>
+    </div>
+
+    <form action="form.html" novalidate>
+      <div class="ggc-card ggc-card--pad">
+        <h2 class="ggc-h2" style="font-size:19px;margin:0 0 var(--ggc-space-5)">제출자 정보</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--ggc-space-4)">
+          <div class="ggc-field">
+            <label for="name">성명 <span class="req">*</span></label>
+            <input id="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="ggc-field">
+            <label for="tel">연락처 <span class="req">*</span></label>
+            <input id="tel" type="tel" autocomplete="tel" placeholder="010-0000-0000" required>
+            <span class="hint">처리 결과 안내가 필요할 때만 연락합니다</span>
+          </div>
+          <div class="ggc-field">
+            <label for="email">이메일 <span class="req">*</span></label>
+            <input id="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="ggc-field">
+            <label for="region">거주 시·군</label>
+            <div class="ggc-select"><select id="region"><option value="">선택</option><option>수원시</option><option>고양시</option><option>용인시</option><option>성남시</option><option>그 외</option></select></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ggc-card ggc-card--pad" style="margin-top:var(--ggc-space-5)">
+        <h2 class="ggc-h2" style="font-size:19px;margin:0 0 var(--ggc-space-5)">의견 내용</h2>
+        <fieldset class="ggc-check-group" style="margin-bottom:var(--ggc-space-5)">
+          <legend>의견 유형 <span style="color:var(--ggc-danger)">*</span></legend>
+          <label class="ggc-radio"><input type="radio" name="kind" checked><span class="box"></span><span class="text">입법예고 조례안 의견</span></label>
+          <label class="ggc-radio"><input type="radio" name="kind"><span class="box"></span><span class="text">도정 현안 의견</span></label>
+          <label class="ggc-radio"><input type="radio" name="kind"><span class="box"></span><span class="text">누리집 이용 불편</span></label>
+        </fieldset>
+        <div class="ggc-field" style="margin-bottom:var(--ggc-space-4)">
+          <label for="bill">관련 의안</label>
+          <div class="ggc-select"><select id="bill"><option>2026-0417 경기도 청년 기본 조례 일부개정조례안</option><option>2026-0412 경기도 지방보조금 관리 조례 전부개정조례안</option><option value="">해당 없음</option></select></div>
+          <span class="hint">입법예고 중인 의안만 목록에 나옵니다</span>
+        </div>
+        <div class="ggc-field" style="margin-bottom:var(--ggc-space-4)">
+          <label for="title">제목 <span class="req">*</span></label>
+          <input id="title" type="text" maxlength="100" required>
+        </div>
+        <div class="ggc-field is-error" style="margin-bottom:var(--ggc-space-4)">
+          <label for="body">내용 <span class="req">*</span></label>
+          <textarea id="body" rows="8" required aria-describedby="body-err" placeholder="조문 번호를 적어 주시면 검토가 빠릅니다. 예: 안 제10조 위원 정수"></textarea>
+          <span class="error" id="body-err">내용을 20자 이상 적어야 접수됩니다 — 현재 0자</span>
+        </div>
+        <div class="ggc-field">
+          <label for="file">첨부 파일</label>
+          <input id="file" type="file" accept=".pdf,.hwp,.hwpx,.docx" style="height:auto;padding:10px 14px">
+          <span class="hint">PDF · HWP · HWPX · DOCX, 10MB 이하 1개</span>
+        </div>
+      </div>
+
+      <div class="ggc-card ggc-card--pad" style="margin-top:var(--ggc-space-5)">
+        <h2 class="ggc-h2" style="font-size:19px;margin:0 0 var(--ggc-space-3)">개인정보 수집·이용 동의</h2>
+        <div class="ggc-prose" style="font-size:14px;margin-bottom:var(--ggc-space-4)">
+          <p>경기도의회는 「개인정보 보호법」 제15조에 따라 의견 처리와 결과 안내를 위해 성명 · 연락처 · 이메일을 수집하며, 접수일부터 3년간 보관 후 파기합니다. 동의하지 않으면 의견을 제출할 수 없습니다.</p>
+        </div>
+        <label class="ggc-check"><input type="checkbox" required><span class="box"></span><span class="text">개인정보 수집·이용에 동의합니다. <span class="sub">필수 — 동의하지 않으면 접수되지 않습니다</span></span></label>
+      </div>
+
+      <div class="ggc-alert" role="status" style="margin-top:var(--ggc-space-5)">
+        <span class="icon" aria-hidden="true">ⓘ</span>
+        <div class="body"><p>접수 후 <b>7일 이내</b>에 소관 부서가 배정되고, 처리 결과는 배정일부터 14일 이내에 이메일로 안내합니다. 접수번호로 <a href="#main">처리 현황</a>을 확인하실 수 있습니다.</p></div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:var(--ggc-space-2);margin-top:var(--ggc-space-6)">
+        <a class="ggc-btn ggc-btn--secondary ggc-btn--lg" href="index.html">취소</a>
+        <button class="ggc-btn ggc-btn--primary ggc-btn--lg" type="submit">다음 — 내용 확인</button>
+      </div>
+    </form>
+
+  </div>
+</main>
+
+<footer class="ggc-footer ggc-footer--public">
+  <div class="quick"><div class="inner"><a href="#main">경기도</a><a href="#main">국회</a><a href="#main">행정안전부</a><a href="#main">국가법령정보센터</a><a href="#main">시·군의회</a></div></div>
+  <div class="inner main">
+    <div class="info"><p class="org">경기도의회</p><p class="addr">(16508) 경기도 수원시 팔달구 효원로 1</p><p class="tel"><strong>대표전화 031-8008-7000</strong><span>(평일 09:00~18:00)</span></p></div>
+    <div class="links"><a href="#main">찾아오시는 길</a><a href="#main">이용안내</a><a href="#main">직원 검색</a></div>
+  </div>
+  <div class="bottom"><div class="inner">
+    <div class="menu"><a class="point" href="#main">개인정보처리방침</a><a href="#main">저작권 정책</a><a href="#main">웹 접근성 안내</a></div>
+    <div class="ggc-identifier"><span class="logo" aria-hidden="true"></span><span class="text">이 누리집은 경기도의회 누리집입니다.</span></div>
+    <p class="copy">© 경기도의회. All rights reserved.</p>
+  </div></div>
+</footer>
+
+<script src="../../ggc-behaviors.js"></script>
+</body>
+</html>

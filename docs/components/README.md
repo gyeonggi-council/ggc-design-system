@@ -24,7 +24,21 @@
 | 스켈레톤 `.ggc-skeleton` | [skeleton.md](skeleton.md) | components-overlay | 있음 |
 | 문서 본문 `.ggc-prose` | [prose.md](prose.md) | components-overlay | 있음 |
 | 버튼 · 배지 · 태그 · 카드 · 통계 · 행 리스트 · 표 · 폼 필드 · 위저드 · 셸 · QR 로그인 | (Phase 6 에서 작성) | [components](../../design/examples/components.html) · dashboard · wizard · login | 있음 |
-| 대민 셸 (masthead · identifier · 공개 헤더/푸터) | (Phase 4) | — | 예정 |
+
+## 대민 셸 — `design/ggc-public.css` (대민 전용)
+
+| 컴포넌트 | 문서 | 갤러리 | 상태 |
+|---|---|---|---|
+| 마스트헤드 `.ggc-masthead` | [masthead.md](masthead.md) | [public/index](../../design/examples/public/index.html) | 있음 |
+| 헤더 · 주 메뉴 · 통합검색 `.ggc-header` `.ggc-main-menu` | [public-header.md](public-header.md) | public/index | 있음 |
+| 공개 푸터 `.ggc-footer--public` | [public-footer.md](public-footer.md) | public/index | 있음 |
+| 아이덴티파이어 `.ggc-identifier` | [identifier.md](identifier.md) | public/index | 있음 |
+| 사이드 내비 `.ggc-side-nav` | [side-nav.md](side-nav.md) | [public/list](../../design/examples/public/list.html) | 있음 |
+| 구조화 목록 `.ggc-structured-list` | [structured-list.md](structured-list.md) | public/index | 있음 |
+| 페이지 타이틀 · 히어로 · 본문 컨테이너 | [guides/public-shell.md](../guides/public-shell.md) | public/* | 있음 |
+
+업무/대민 판정과 차이는 [guides/profiles.md](../guides/profiles.md), 대민 화면 6종의 슬롯 처방은
+[skills/ggc-design/references/public-patterns.md](../../skills/ggc-design/references/public-patterns.md).
 
 ## 동작 — `design/ggc-behaviors.js`
 

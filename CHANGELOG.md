@@ -5,6 +5,20 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 4 — 대민 프로필 + 공개 셸 (2026-08-29)
+
+- `design/ggc-public.css` 신설 — 마스트헤드 · 헤더(유틸리티·브랜딩·통합검색) · 주 메뉴(PC 드롭다운/모바일 패널) ·
+  본문 컨테이너·페이지 타이틀·히어로 · 사이드 내비(`<details>`) · 구조화 목록 · 공개 푸터 + 아이덴티파이어 ·
+  반응형 · 고대비 · 인쇄. KRDS 마크업·ARIA, 색은 기관 CI. 이미지 자산 0(국가 상징은 서비스 슬롯)
+- `ggc-behaviors.js` ④ 대민 메뉴 패널 · 2단 아코디언 · 통합검색 토글
+- `ggc-components.css` §0 **box-sizing 잠금** — 정본이 서비스 리셋에 기대던 결함 수정(대민 갤러리에서 실측)
+- `check_design.py`: D1 이 정본 5파일(tokens · components · public · fonts · behaviors) 사본을 LF 정규화 md5 로 대조,
+  D3 프로필 분기(마크업 자동 판정 · `--profile`), 대민 화면의 업무 GNB/LNB 는 FAIL, 허용집합에 public css 포함
+- 갤러리 `examples/public/` 4쪽(메인 · 의안 검색 · 의안 상세 · 의견 제출), 업무 갤러리 LNB 에 링크
+- 문서: `docs/guides/profiles.md` · `public-shell.md`, `docs/components/` 대민 6종, 스킬 참조 `profiles.md` ·
+  `public-patterns.md`, `domain-language.md` 대민 어휘 절
+- 검증: 4쪽 접근성 린트(h1·alt·라벨·랜드마크·스킵·버튼 이름·id 중복) · 5폭 오버플로 0 · 모바일 메뉴/검색 동작 · 콘솔 오류 0
+
 ### Phase 3 — Tier 1 P0 컴포넌트 (2026-08-29)
 
 - `ggc-components.css` §12~§24 신설: `.ggc-page-head` `.ggc-breadcrumb` `.ggc-tabs` `.ggc-pagination`

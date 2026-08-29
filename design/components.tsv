@@ -34,12 +34,14 @@ breadcrumb	브레드크럼	.ggc-breadcrumb	breadcrumb	KRDS breadcrumb · archety
 page-head	페이지 헤더 (제목 · 메타 · 주 액션)	.ggc-page-head	ggc-page-head	archetypes 슬롯 1·2	work	P1	있음	3
 spinner	스피너	.ggc-spinner .ggc-spinner-block	spinner	KRDS spinner · .ggc-qr-spinner 일반화	both	P1	있음	3
 skeleton	스켈레톤	.ggc-skeleton	skeleton	갤러리 로딩 예시	both	P1	있음	3
-masthead	마스트헤드 (정부 공식 사이트 띠)	.ggc-masthead	ggc-masthead	KRDS masthead	public	P0	예정	4
-identifier	아이덴티파이어 (기관 식별 띠)	.ggc-identifier	ggc-identifier	KRDS identifier	public	P0	예정	4
-public-header	대민 헤더 + 주 메뉴	.ggc-header .ggc-main-menu	ggc-public-header	KRDS header · main_menu_pc/mobile	public	P0	예정	4
-public-footer	대민 푸터	.ggc-footer--public	ggc-public-footer	KRDS footer	public	P0	예정	4
-side-nav	사이드 내비게이션 (대민)	.ggc-side-nav	ggc-side-nav	KRDS side_navigation	public	P1	예정	4
-structured-list	구조화 목록	.ggc-structured-list	ggc-structured-list	KRDS structured_list	public	P1	예정	4
+public-layout	대민 페이지 컨테이너 · 페이지 타이틀	.ggc-public .ggc-public-main(--side) .ggc-page-title .ggc-h2	ggc-public-layout	KRDS 레이아웃 (contents 1200 + 24×2) · page title	public	P0	있음	4
+hero	대민 메인 히어로 (안내 · 통합검색 · 바로가기)	.ggc-hero	ggc-hero	KRDS 메인 검색 영역	public	P1	있음	4
+masthead	마스트헤드 (정부 공식 사이트 띠)	.ggc-masthead	ggc-masthead	KRDS masthead	public	P0	있음	4
+identifier	아이덴티파이어 (기관 식별 띠)	.ggc-identifier	ggc-identifier	KRDS identifier	public	P0	있음	4
+public-header	대민 헤더 + 주 메뉴 + 통합검색	.ggc-header .ggc-main-menu	ggc-public-header	KRDS header · main_menu_pc/mobile	public	P0	있음	4
+public-footer	대민 푸터	.ggc-footer--public	ggc-public-footer	KRDS footer	public	P0	있음	4
+side-nav	사이드 내비게이션 (대민)	.ggc-side-nav	ggc-side-nav	KRDS side_navigation	public	P1	있음	4
+structured-list	구조화 목록	.ggc-structured-list	ggc-structured-list	KRDS structured_list	public	P1	있음	4
 switch	토글 스위치	.ggc-switch	switch	KRDS toggle_switch	both	P1	예정	9
 toast	토스트	.ggc-toast-region .ggc-toast	toast	자체 (KRDS 없음)	both	P1	예정	9
 accordion	아코디언 / 디스클로저	.ggc-accordion (<details>)	accordion	KRDS accordion/disclosure	both	P1	예정	9

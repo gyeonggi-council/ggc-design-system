@@ -51,6 +51,17 @@
  * ⚠ --ggc-focus-ring 을 여기서 .15 로 덮어쓰고 있었다. 계약 §3 은 .20 이므로
  *   그 오버라이드는 계약 위반이었다. 삭제했고 토큰 정의를 그대로 쓴다.
  * --------------------------------------------------------------------------- */
+/* box-sizing — 이 정본은 border-box 를 전제한다(높이 44px 입력에 1px 테두리가 **포함**된다).
+ * 서비스 리셋이 없어도 깨지지 않게 여기서 잠근다. 셸 컨테이너 아래 전부 + ggc- 요소 자신 +
+ * 클래스 없는 폼 컨트롤. (v2.0 — 대민 갤러리가 리셋 없이 열리자 입력이 50px 로, .inner 가
+ * 패딩만큼 넘쳤다. 정본이 남의 리셋에 기대고 있었던 것이다.) */
+.ggc-shell, .ggc-shell *, .ggc-shell *::before, .ggc-shell *::after,
+.ggc-page, .ggc-page *, .ggc-page *::before, .ggc-page *::after,
+.ggc-public, .ggc-public *, .ggc-public *::before, .ggc-public *::after,
+[class*="ggc-"], [class*="ggc-"]::before, [class*="ggc-"]::after,
+.ggc-field input, .ggc-field select, .ggc-field textarea,
+.ggc-select select, .ggc-search input, .ggc-modal * { box-sizing: border-box; }
+
 :root {
   /* --ggc-text-body 는 v2.0 에서 토큰 파일로 승격됐다 — 여기서 정의하지 않는다 */
   --ggc-btn-shadow: var(--ggc-shadow-primary);   /* 토큰 승격분 별칭 */
