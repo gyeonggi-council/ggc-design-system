@@ -5,6 +5,15 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 2 — DESIGN.md 생성기 (2026-08-29)
+
+- `design/components.tsv` 신설 — 컴포넌트 인벤토리 정본(현행 17 + 예정 30). 문서·DESIGN.md·
+  레지스트리 lint 의 단일 원천
+- `tools/build-design-md.py` 신설 — 루트 `DESIGN.md`(Claude Design 가져오기용 9절 구조)를
+  토큰 CSS·인벤토리에서 생성. 대비비는 `check_design.contrast()` 재사용. `--check` 지원
+- `check_design.py` D6 gen: `DESIGN.md` 신선도 검사 등록(경로 해석을 design/ 기준 상대로 일반화)
+- README: 「Claude Design 에서 쓰기」 절
+
 ### Phase 1 — 토큰 v2.0 + 프로필 (2026-08-29) ⚠ D1
 
 - `ggc-tokens.css` v2.0: 신설 `--ggc-space-8~11`, `--ggc-text-body` 승격, 컨트롤 치수·밀도·폭 토큰

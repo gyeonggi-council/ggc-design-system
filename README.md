@@ -74,6 +74,8 @@ npm 워크스페이스·사설 레지스트리가 0건이다. React 컴포넌트
 | `design/check_design.py` | **검사기** — `diff -q` 를 대체하는 6종 검사 |
 | `design/brand/` | 파비콘 세트 · 의회 마크 · stdlib 전용 생성기 · 배포 매핑표 |
 | **`design/examples/`** | **예제 갤러리 5쪽** — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
+| `design/components.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 |
+| `DESIGN.md` | **생성물** — Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (`tools/build-design-md.py`) |
 | `skills/ggc-design/` | **디자인 가이드 본문** — 화면 처방·스택별 착지점·리스킨·검증 |
 | `docs/contract.md` | 단일 디자인 계약 (AUTHORITATIVE) |
 | `docs/krds-alignment.md` | **KRDS 정렬** — 무엇을 따르고 무엇을 오버라이드하는가 |
@@ -158,6 +160,23 @@ v1.2 가 AA 를 통과하는 값 중 **디자인 원본에 가장 가까운 집�
 
 전부 실측 대조해 [docs/krds-alignment.md](docs/krds-alignment.md) 에 적었다.
 **정부 표준 완전 준수를 주장하지 않는다.**
+
+## Claude Design 에서 쓰기
+
+시안은 Claude Design(claude.ai/design)에서, 반영은 이 저장소의 토큰·컴포넌트로 한다.
+시안이 처음부터 의회 디자인으로 나오게 하려면 **디자인 시스템을 먼저 가져온다** —
+둘 중 하나면 된다.
+
+1. Claude Design 의 「디자인 시스템 가져오기」에 이 저장소 URL 을 붙인다. 루트의
+   [`DESIGN.md`](DESIGN.md) 를 읽는다.
+2. 또는 `DESIGN.md` 파일을 「Create new design system → Add assets」에 올린다.
+
+`DESIGN.md` 는 **생성물**이다 — 값은 `design/ggc-tokens.css` 에서, 컴포넌트 목록은
+`design/components.tsv` 에서 온다. 손으로 고치지 않는다. 토큰이나 인벤토리가 바뀌면
+`python tools/build-design-md.py` 로 다시 만들고, 낡으면 `check_design.py --canon` 이 잡는다.
+
+> Claude Design 산출물을 그대로 배포하지 않는다. 시안 코드에는 외부 CDN 참조나 규약 밖
+> 색이 섞일 수 있다 — `skills/ggc-design/references/porting.md` 의 역변환 규칙대로 옮긴다.
 
 ## 이 저장소의 지위
 

@@ -644,38 +644,40 @@ def check_asset_map(services_root=None):
 
 # ---------------------------------------------------------------- 정본 검사
 GENERATED = [
-    # 생성 스크립트                산출물                        용도
-    ("build-preview.py", "preview-palette.svg",
+    # 생성 스크립트 (design/ 기준 상대경로)   산출물 (design/ 기준)          용도
+    ("examples/build-preview.py", "examples/preview-palette.svg",
      "README 팔레트 미리보기 (GitHub 웹은 HTML 을 렌더하지 않는다)"),
-    ("build-standalone.py", "examples-standalone.html",
+    ("examples/build-standalone.py", "examples/examples-standalone.html",
      "링크 하나로 여는 갤러리 합본 (URL 로 공유되는 판)"),
+    ("../tools/build-design-md.py", "../DESIGN.md",
+     "Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (v2.0)"),
 ]
 
 
 def check_generated():
-    """design/examples/ 의 생성물이 정본보다 낡았는지 본다.
+    """정본에서 만들어지는 생성물이 정본보다 낡았는지 본다.
 
-    둘 다 정본에서 만들어지고, **낡으면 조용히 정본과 다른 것을 보여 준다.**
-    특히 합본은 URL 로 공유되므로 낡은 채로 남에게 나갈 수 있다 —
-    생성물이 조용히 낡는 것이 이 저장소가 통째로 막으려는 실패 그 자체다."""
+    전부 정본에서 만들어지고, **낡으면 조용히 정본과 다른 것을 보여 준다.**
+    합본은 URL 로 공유되고 DESIGN.md 는 Claude Design 이 읽으므로 낡은 채로 남에게 나갈
+    수 있다 — 생성물이 조용히 낡는 것이 이 저장소가 통째로 막으려는 실패 그 자체다."""
     warns = 0
     for script, artifact, why in GENERATED:
-        sp = os.path.join(HERE, "examples", script)
-        ap = os.path.join(HERE, "examples", artifact)
+        sp = os.path.normpath(os.path.join(HERE, script))
+        ap = os.path.normpath(os.path.join(HERE, artifact))
+        cmd = os.path.relpath(sp, os.path.dirname(HERE)).replace(os.sep, "/")
+        name = os.path.basename(artifact)
         if not os.path.exists(sp):
             continue
         if not os.path.exists(ap):
-            print("D6 WARN  gen       %s 가 없다 — "
-                  "python design/examples/%s" % (artifact, script))
+            print("D6 WARN  gen       %s 가 없다 — python %s" % (name, cmd))
             warns += 1
             continue
         r = subprocess.run([sys.executable, sp, "--check"],
                            capture_output=True, text=True, encoding="utf-8")
         if r.returncode == 0:
-            print("D6 INFO  gen       %-26s 정본과 일치" % artifact)
+            print("D6 INFO  gen       %-26s 정본과 일치" % name)
         else:
-            print("D6 WARN  gen       %-26s 정본보다 낡았다 — "
-                  "python design/examples/%s" % (artifact, script))
+            print("D6 WARN  gen       %-26s 정본보다 낡았다 — python %s" % (name, cmd))
             print("                   용도: %s" % why)
             warns += 1
     return warns
