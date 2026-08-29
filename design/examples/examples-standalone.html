@@ -15,13 +15,27 @@
 <style>
 /* ---- design/ggc-tokens.css (정본) ---------------------------------------- */
 /* =============================================================================
- * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v1.2 (2026-08-22)
- * 근거: docs/03-공통디자인가이드.md · docs/23-…-단일디자인-계약.md (AUTHORITATIVE)
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v2.0 (2026-08-29)
+ * 근거: docs/contract.md (AUTHORITATIVE) · 구판 가이드는 archive/03-공통디자인가이드.md
  * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
  *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
  *       (v1.0 의 KRDS 기본 파랑 #246BEB 는 폐기. #256ef4 도 마찬가지다)
  * 사용: 각 앱이 이 파일을 복사(또는 값 이식)해 자체 스타일의 최상단에 둔다.
+ *       대민(공개) 화면은 <html data-ggc-profile="public"> 을 붙인다 — 그 외에는 같다.
  * 검사: python design/check_design.py --canon   /   --gate <서비스>
+ *
+ * ── v2.0 에서 바뀐 것 (프로필 층 신설 — 색은 하나도 바뀌지 않았다) ────────────────
+ * 업무용과 대민용이 **같은 토큰 파일 하나**를 쓴다. 기본(속성 없음)이 업무 프로필이라
+ * v1.2 소비자는 아무것도 바꾸지 않아도 렌더가 같다. 대민 화면은 <html data-ggc-profile="public">
+ * 으로 켜며, 그 블록은 **치수(컨트롤 높이·글자 크기·셀 패딩·컨테이너 폭)만** 바꾼다.
+ * 색·포커스·서체·간격 스케일은 프로필이 건드릴 수 없다(검사기 D6 가 허용 목록으로 막는다).
+ *
+ *   신설  --ggc-space-8~11          KRDS gap 다음 스텝(40/48/64/80) — 사이 값 발명 금지
+ *   승격  --ggc-text-body           컴포넌트 레이어에 있던 본문 단락색을 토큰으로 (값 동일)
+ *   신설  --ggc-control-h* · --ggc-input-h · --ggc-search-h · --ggc-*-font   컨트롤 치수
+ *   신설  --ggc-cell-pad · --ggc-row-pad · --ggc-card-pad · --ggc-container-max   밀도·폭
+ *         (전부 컴포넌트 레이어의 실측 리터럴을 그대로 옮겼다 — 리팩터 전후 렌더 동일)
+ *   신설  [data-ggc-profile="public"] 블록 — 값은 KRDS 토큰(1rem=10px)에서 기계적으로 옮김
  *
  * ── v1.2 에서 바뀐 것 (WCAG AA 보정) ─────────────────────────────────────────
  * v1.1 은 자기 자신이 AA 미달이었다. 경기도의회는 공공기관이라 KWCAG 2.2(4.5:1)가
@@ -69,6 +83,9 @@
    *   정본 최다 사용색이라 삭제하지 않고 역할만 강등했다. */
   --ggc-text-faint: #8a94a3;
 
+  /* 카드 안 긴 본문 단락 — 흰 위 10.23:1. v2.0 에서 컴포넌트 레이어로부터 승격(값 동일) */
+  --ggc-text-body: #3a4150;
+
   /* --- 중립 면·선 --- */
   --ggc-border:        #e6ebf1;  /* 카드 테두리 */
   --ggc-border-strong: #d5dce5;  /* 버튼 테두리, 강조 구분 */
@@ -106,6 +123,11 @@
   --ggc-space-5: 20px;
   --ggc-space-6: 24px;
   --ggc-space-7: 32px;
+  /* v2.0 확장 — KRDS gap 의 다음 스텝(40·48·64·80). 사이 값을 발명하지 않는다 */
+  --ggc-space-8: 40px;
+  --ggc-space-9: 48px;
+  --ggc-space-10: 64px;
+  --ggc-space-11: 80px;
 
   /* --- 형태 --- */
   --ggc-radius:    10px;   /* 버튼·입력 */
@@ -122,6 +144,52 @@
   --ggc-lnb-w: 256px;
   --ggc-main-max: 1320px;        /* 대시보드 */
   --ggc-main-max-wide: 1360px;   /* 기타 업무 화면 */
+
+  /* --- 컨트롤 치수·밀도·폭 (v2.0 — 프로필이 조정하는 유일한 층) ---
+   * 값은 컴포넌트 레이어의 실측 리터럴을 그대로 옮긴 것이다(리팩터 전후 렌더 동일).
+   * 대민 프로필은 아래 [data-ggc-profile="public"] 블록에서 **이 이름들만** 덮어쓴다. */
+  --ggc-control-h-sm:    34px;      /* .ggc-btn--sm */
+  --ggc-control-h:       42px;      /* .ggc-btn */
+  --ggc-control-h-lg:    46px;      /* .ggc-btn--lg */
+  --ggc-input-h:         44px;      /* .ggc-field input/select · .ggc-btn--dashed */
+  --ggc-search-h:        40px;      /* .ggc-search */
+  --ggc-control-font:    13.5px;    /* 버튼·입력 글자 */
+  --ggc-control-font-sm: 13px;
+  --ggc-control-font-lg: 14px;
+  --ggc-label-font:      13px;      /* 폼 라벨 */
+  --ggc-table-font:      13px;      /* .ggc-table */
+  --ggc-cell-pad:        11px 10px; /* th · td */
+  --ggc-row-pad:         15px 22px; /* .ggc-list-row */
+  --ggc-card-pad:        18px 22px; /* .ggc-card--pad */
+  --ggc-container-max:   1280px;    /* 유틸리티 바 · 푸터 inner */
+}
+
+/* =============================================================================
+ * 대민 프로필 — <html data-ggc-profile="public"> (v2.0, 2026-08-29)
+ *
+ * 대민(공개) 화면은 KRDS 패턴을 따르되 색은 기관 CI 를 유지한다(사용자 결정).
+ * 그래서 이 블록에는 **치수만** 있다 — 색·포커스·서체·간격 토큰은 여기 올 수 없다.
+ * 값은 KRDS 토큰(html{font-size:62.5%} → 1rem=10px)에서 기계적으로 옮겼다:
+ *   높이   size-height-6/7/8 = 40/48/56        글자   body.small/medium/large = 15/17/19
+ *   표     tbody padding-5/6 = 12/16 · label.medium = 17
+ *   행·카드 padding-7/8 = 20/24                컨테이너 contents 1200 + 24×2 = 1248
+ * 속성은 서브트리에도 붙는다 — 업무 화면 안의 도민 안내 구역만 켤 수 있다.
+ * ============================================================================= */
+[data-ggc-profile="public"] {
+  --ggc-control-h-sm:    40px;
+  --ggc-control-h:       48px;
+  --ggc-control-h-lg:    56px;
+  --ggc-input-h:         48px;
+  --ggc-search-h:        48px;
+  --ggc-control-font:    17px;
+  --ggc-control-font-sm: 15px;
+  --ggc-control-font-lg: 19px;
+  --ggc-label-font:      17px;
+  --ggc-table-font:      17px;
+  --ggc-cell-pad:        12px 16px;
+  --ggc-row-pad:         20px 24px;
+  --ggc-card-pad:        24px 24px;
+  --ggc-container-max:   1248px;
 }
 
 /* --- 공통 포커스 규칙 (계약 §3) ---
@@ -186,7 +254,7 @@
   line-height: 1;
 }
 .ggc-utility-bar .inner {
-  max-width: 1280px; margin: 0 auto; padding: 8px 16px;
+  max-width: var(--ggc-container-max); margin: 0 auto; padding: 8px 16px;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
 }
 .ggc-utility-bar .brand { color: #fff; font-weight: 700; text-decoration: none; letter-spacing: -0.2px; }
@@ -227,12 +295,12 @@
   font-family: var(--ggc-font); font-size: 12px;
   border-top: 1px solid var(--ggc-border);
 }
-.ggc-footer .inner { max-width: 1280px; margin: 0 auto; padding: 16px; }
+.ggc-footer .inner { max-width: var(--ggc-container-max); margin: 0 auto; padding: 16px; }
 
 /* ---- design/ggc-components.css (정본) ------------------------------------ */
 /* =============================================================================
- * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v1.2 (2026-08-22)
- * 전제: design/ggc-tokens.css v1.2 를 먼저 로드할 것 (--ggc-* 변수 의존)
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v2.0 (2026-08-29)
+ * 전제: design/ggc-tokens.css v2.0 을 먼저 로드할 것 (--ggc-* 변수 의존)
  * 출처: Claude Design 산출물(.dc.html) 실측 추출
  *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
  *   정본 2  design_경기도의회_의정지원_플랫폼/조례초안 작성 위저드.dc.html
@@ -258,6 +326,13 @@
  *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
  *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
  *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ *
+ * -- v2.0 에서 바뀐 것 -------------------------------------------------------
+ *   값 불변 리팩터 — 컨트롤 높이·글자 크기·셀/행/카드 패딩·컨테이너 폭 리터럴을
+ *   토큰 v2.0 의 같은 값 토큰(--ggc-control-h* · --ggc-input-h · --ggc-cell-pad …)으로
+ *   치환했다. **렌더 결과는 바이트 수준으로 같다**(갤러리 6쪽 × 2폭 계산 스타일 해시 대조).
+ *   이 치환이 있어야 <html data-ggc-profile="public"> 이 대민 밀도로 바꿀 자리가 생긴다.
+ *   --ggc-text-body 는 토큰으로 승격돼 여기서 정의하지 않는다.
  * ============================================================================= */
 
 /* --- 0. 컴포넌트 레이어 전용 값 ---------------------------------------------
@@ -270,7 +345,7 @@
  *   그 오버라이드는 계약 위반이었다. 삭제했고 토큰 정의를 그대로 쓴다.
  * --------------------------------------------------------------------------- */
 :root {
-  --ggc-text-body: #3a4150;       /* 본문 단락(카드 안 긴 글) — 흰 위 10.23:1 */
+  /* --ggc-text-body 는 v2.0 에서 토큰 파일로 승격됐다 — 여기서 정의하지 않는다 */
   --ggc-btn-shadow: var(--ggc-shadow-primary);   /* 토큰 승격분 별칭 */
 
   /* v1.0 이름 호환 별칭 — 기존 사본이 깨지지 않게 남긴다. 새 코드는 오른쪽을 쓴다 */
@@ -293,12 +368,12 @@
   -webkit-font-smoothing: antialiased;
 }
 .ggc-page-main {
-  max-width: 1320px;            /* 위저드 화면은 1360px — 필요 시 .ggc-page-main--wide */
+  max-width: var(--ggc-main-max);   /* 위저드 화면은 --wide(1360) — 필요 시 .ggc-page-main--wide */
   min-width: 0;
   padding: 26px 32px 48px;
   margin: 0 auto;
 }
-.ggc-page-main--wide { max-width: 1360px; }
+.ggc-page-main--wide { max-width: var(--ggc-main-max-wide); }
 @media (max-width: 768px) {
   .ggc-page-main { padding: 18px 16px 40px; }  /* 모바일 축소(경비정산 화면 폭 350px 기준 파생) */
 }
@@ -315,7 +390,7 @@
   border-radius: 16px;
   overflow: hidden;
 }
-.ggc-card--pad { padding: 18px 22px; overflow: visible; }  /* 리스트가 아닌 자유 본문 카드 */
+.ggc-card--pad { padding: var(--ggc-card-pad); overflow: visible; }  /* 리스트가 아닌 자유 본문 카드 */
 
 /* .ggc-card-head — 제목 + 우측 액션 슬롯
  * 출처: 대시보드.dc.html 섹션 헤더(padding:18px 22px 14px; h2 16px/800/-0.02em #131722;
@@ -588,7 +663,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 15px 22px;
+  padding: var(--ggc-row-pad);
   border-top: 1px solid var(--ggc-hairline);
   font-family: var(--ggc-font);
 }
@@ -664,12 +739,12 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 42px;
+  height: var(--ggc-control-h);
   padding: 0 18px;
   border-radius: 10px;
   border: 1px solid transparent;
   font-family: var(--ggc-font);
-  font-size: 13.5px;
+  font-size: var(--ggc-control-font);
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
@@ -709,11 +784,11 @@
  * (1.5px dashed #cdd5df · bg #fafbfd · hover 시 브랜드 테두리·글자) */
 .ggc-btn--dashed {
   width: 100%;
-  height: 44px;
+  height: var(--ggc-input-h);
   border: 1.5px dashed #cdd5df;
   background: var(--ggc-surface-hover);
   color: var(--ggc-text-muted);
-  font-size: 13.5px;
+  font-size: var(--ggc-control-font);
   font-weight: 600;
 }
 .ggc-btn--dashed:hover:not(:disabled) {
@@ -722,8 +797,8 @@
   background: #f6f9fd;
 }
 
-.ggc-btn--sm { height: 34px; padding: 0 14px; border-radius: 8px; font-size: 13px; }
-.ggc-btn--lg { height: 46px; padding: 0 20px; border-radius: 11px; font-size: 14px; }
+.ggc-btn--sm { height: var(--ggc-control-h-sm); padding: 0 14px; border-radius: 8px; font-size: var(--ggc-control-font-sm); }
+.ggc-btn--lg { height: var(--ggc-control-h-lg); padding: 0 20px; border-radius: 11px; font-size: var(--ggc-control-font-lg); }
 .ggc-btn--block { width: 100%; }
 
 /* =============================================================================
@@ -735,19 +810,19 @@
  * ============================================================================= */
 .ggc-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--ggc-font); }
 .ggc-field > label {
-  font-size: 13px;
+  font-size: var(--ggc-label-font);
   font-weight: 700;
   color: var(--ggc-text-soft);
 }
 .ggc-field > label .req { color: var(--ggc-danger); margin-left: 2px; }
 .ggc-field input,
 .ggc-field select {
-  height: 44px;
+  height: var(--ggc-input-h);
   border: 1px solid var(--ggc-border-strong);
   border-radius: 10px;
   padding: 0 14px;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: var(--ggc-control-font);
   color: var(--ggc-text);
   background: var(--ggc-surface);
   outline: none;
@@ -758,7 +833,7 @@
   border-radius: 10px;
   padding: 10px 14px;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: var(--ggc-control-font);
   line-height: 1.6;
   color: var(--ggc-text);
   background: var(--ggc-surface);
@@ -791,7 +866,7 @@
   width: 100%;
   border-collapse: collapse;
   font-family: var(--ggc-font);
-  font-size: 13px;
+  font-size: var(--ggc-table-font);
 }
 .ggc-table thead tr {
   border-top: 2px solid var(--ggc-primary-deep);
@@ -799,13 +874,13 @@
 }
 .ggc-table th {
   text-align: left;
-  padding: 11px 10px;
+  padding: var(--ggc-cell-pad);
   font-weight: 700;
   color: var(--ggc-text-soft);
   white-space: nowrap;
 }
 .ggc-table td {
-  padding: 11px 10px;
+  padding: var(--ggc-cell-pad);
   color: var(--ggc-text-body);
   border-bottom: 1px solid var(--ggc-hairline);
 }
@@ -900,7 +975,7 @@
 /* 검색 — 계약 §2: 300x40, --ggc-control-bg, r10 */
 .ggc-search {
   display: flex; align-items: center; gap: var(--ggc-space-2);
-  height: 40px; width: 300px; min-width: 120px;
+  height: var(--ggc-search-h); width: 300px; min-width: 120px;
   padding: 0 12px;
   background: var(--ggc-control-bg);
   border: 1px solid var(--ggc-shell-border);
@@ -1998,7 +2073,7 @@ body {
     </main>
       <main class="ggc-shell-main" data-page="tokens" hidden>
 
-      <h1 class="ex-h1">토큰 · 팔레트<span class="ver">ggc-tokens.css v1.2</span></h1>
+      <h1 class="ex-h1">토큰 · 팔레트<span class="ver">ggc-tokens.css v2.0</span></h1>
       <p class="ex-lede">
         아래 <b>모든 색값과 대비비는 이 페이지가 열릴 때 브라우저가 계산한 것</b>이다.
         마크업에는 토큰 <b>이름</b>만 있고 숫자가 하나도 없다 —
@@ -2074,7 +2149,7 @@ body {
 
       <!-- ==================================================== 중립 -->
       <section class="ex-section">
-        <h2>중립 텍스트 램프 <span class="cls">4단 + 비텍스트 1</span></h2>
+        <h2>중립 텍스트 램프 <span class="cls">4단 + 본문 단락 1 + 비텍스트 1</span></h2>
         <p>네 단 전부 <b>흰 배경과 페이지 배경 양쪽</b>에서 AA 를 넘고 단조성이 유지된다.
           아래 두 번째 대비값이 페이지 배경 <code class="ex-inline">--ggc-bg</code> 위 값이다.</p>
         <div class="ex-grid">
@@ -2082,6 +2157,7 @@ body {
           <div class="ex-swatch" data-token="--ggc-text"        data-on="--ggc-surface,--ggc-bg" data-use="본문"></div>
           <div class="ex-swatch" data-token="--ggc-text-muted"  data-on="--ggc-surface,--ggc-bg" data-use="보조 · 라벨 · 표 헤더"></div>
           <div class="ex-swatch" data-token="--ggc-text-subtle" data-on="--ggc-surface,--ggc-bg" data-use="메타 · 시각 · 힌트"></div>
+          <div class="ex-swatch" data-token="--ggc-text-body"   data-on="--ggc-surface" data-use="카드 안 긴 본문 단락 · 표 td (v2.0 승격)"></div>
           <div class="ex-swatch" data-token="--ggc-text-faint"  data-on="--ggc-surface" data-min="3"
                data-use="⚠ 텍스트 아님. 아이콘 stroke · 구분 · 장식 전용"></div>
         </div>
@@ -2164,10 +2240,11 @@ body {
 
       <!-- ==================================================== 간격 -->
       <section class="ex-section">
-        <h2>간격 <span class="cls">--ggc-space-1 ~ -7</span></h2>
+        <h2>간격 <span class="cls">--ggc-space-1 ~ -11</span></h2>
         <p>v1.1 에는 간격 토큰이 아예 없어 각 서비스가 px 를 직접 썼다.
-          아래는 디자인 원본 실측 최빈값이고, KRDS <code class="ex-inline">semantic.gap</code> 의
-          부분집합과 일치한다.</p>
+          1~7 은 디자인 원본 실측 최빈값이고, KRDS <code class="ex-inline">semantic.gap</code> 의
+          부분집합과 일치한다. v2.0 의 8~11 은 <b>KRDS 의 다음 스텝</b>(40·48·64·80)을 그대로
+          가져왔다 — 사이 값을 발명하지 않는다.</p>
         <div class="ex-demo">
           <div class="ex-scale">
             <div class="item" data-size="--ggc-space-1"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
@@ -2177,6 +2254,10 @@ body {
             <div class="item" data-size="--ggc-space-5"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
             <div class="item" data-size="--ggc-space-6"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
             <div class="item" data-size="--ggc-space-7"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-8"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-9"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-10"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
+            <div class="item" data-size="--ggc-space-11"><span class="key"></span><span class="bar"></span><span class="px"></span></div>
           </div>
         </div>
       </section>
@@ -2244,6 +2325,85 @@ body {
           원본은 <code>@media</code> 0건이고 시안이 전부 1440 데스크톱이다.
           계약 §2 를 근거로 <b>여기서 1회 정의해 공통으로 고정</b>했다.
           창을 좁혀 보면 동작을 확인할 수 있다.</p>
+        </div>
+      </section>
+
+      <!-- ==================================================== 프로필 (v2.0) -->
+      <section class="ex-section" id="profile">
+        <h2>컨트롤 치수 · 밀도 · 대민 프로필 <span class="cls">v2.0 · 계약 §9</span></h2>
+        <p>업무용과 대민용이 <b>같은 토큰 파일 하나</b>를 쓴다. 기본(속성 없음)이 업무 프로필이고,
+          대민 화면은 <code class="ex-inline">&lt;html data-ggc-profile="public"&gt;</code> 한 줄로 켠다.
+          프로필이 바꾸는 것은 <b>아래 치수뿐</b>이다 — 색·포커스·서체·간격은 건드리지 못한다
+          (검사기 D6 가 허용 목록으로 막는다). 대민 값은 KRDS 토큰에서 기계적으로 옮겼다.</p>
+        <div class="ex-demo ex-row">
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ex-profile-toggle aria-pressed="false">대민 프로필 켜 보기</button>
+          <span style="font-size:12.5px;color:var(--ggc-text-subtle)">누르면 이 페이지 전체가 대민 치수로 바뀌고, 아래 표의 값이 즉시 따라 바뀐다. 색 스와치와 대비비는 그대로다.</span>
+        </div>
+        <div class="ex-demo">
+          <div class="ggc-table-wrap">
+            <table class="ggc-table ggc-table--kv">
+              <thead><tr><th scope="col">토큰</th><th scope="col">무엇</th><th scope="col">지금 값</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">--ggc-control-h-sm</th><td>버튼 sm 높이</td><td class="num" data-var="--ggc-control-h-sm"></td></tr>
+                <tr><th scope="row">--ggc-control-h</th><td>버튼 기본 높이</td><td class="num" data-var="--ggc-control-h"></td></tr>
+                <tr><th scope="row">--ggc-control-h-lg</th><td>버튼 lg 높이</td><td class="num" data-var="--ggc-control-h-lg"></td></tr>
+                <tr><th scope="row">--ggc-input-h</th><td>입력 · 셀렉트 · 점선 버튼 높이</td><td class="num" data-var="--ggc-input-h"></td></tr>
+                <tr><th scope="row">--ggc-search-h</th><td>검색창 높이</td><td class="num" data-var="--ggc-search-h"></td></tr>
+                <tr><th scope="row">--ggc-control-font</th><td>버튼 · 입력 글자</td><td class="num" data-var="--ggc-control-font"></td></tr>
+                <tr><th scope="row">--ggc-control-font-sm</th><td>버튼 sm 글자</td><td class="num" data-var="--ggc-control-font-sm"></td></tr>
+                <tr><th scope="row">--ggc-control-font-lg</th><td>버튼 lg 글자</td><td class="num" data-var="--ggc-control-font-lg"></td></tr>
+                <tr><th scope="row">--ggc-label-font</th><td>폼 라벨 글자</td><td class="num" data-var="--ggc-label-font"></td></tr>
+                <tr><th scope="row">--ggc-table-font</th><td>표 글자</td><td class="num" data-var="--ggc-table-font"></td></tr>
+                <tr><th scope="row">--ggc-cell-pad</th><td>표 th · td 패딩</td><td class="num" data-var="--ggc-cell-pad"></td></tr>
+                <tr><th scope="row">--ggc-row-pad</th><td>행 리스트 패딩</td><td class="num" data-var="--ggc-row-pad"></td></tr>
+                <tr><th scope="row">--ggc-card-pad</th><td>자유 본문 카드 패딩</td><td class="num" data-var="--ggc-card-pad"></td></tr>
+                <tr><th scope="row">--ggc-container-max</th><td>유틸리티 바 · 푸터 inner 폭</td><td class="num" data-var="--ggc-container-max"></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="ex-sub">같은 마크업이 프로필에 따라 어떻게 달라지는가</div>
+        <div class="ex-demo ex-demo--flow">
+          <div class="ex-row">
+            <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button">＋ 의안 등록 (sm)</button>
+            <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+            <button class="ggc-btn ggc-btn--secondary ggc-btn--lg" type="button">임시저장 (lg)</button>
+          </div>
+          <div class="ggc-field" style="max-width:360px">
+            <label for="pf-q">의안명 <span class="req">*</span></label>
+            <input id="pf-q" type="text" placeholder="예: 경기도 청년 기본 조례 일부개정조례안">
+            <div class="hint">공포된 명칭 그대로 적는다</div>
+          </div>
+          <div class="ggc-card">
+            <div class="ggc-list-row">
+              <div class="body">
+                <div class="title">경기도 청년 기본 조례 일부개정조례안</div>
+                <div class="meta">기획재정위원회 · 2026-08-25 접수</div>
+              </div>
+              <div class="end"><span class="ggc-badge ggc-badge--pending">◷ 검토</span></div>
+            </div>
+            <div class="ggc-list-row">
+              <div class="body">
+                <div class="title">경기도 지방보조금 관리 조례 전부개정조례안</div>
+                <div class="meta">행정안전위원회 · 2026-08-22 접수</div>
+              </div>
+              <div class="end"><span class="ggc-badge ggc-badge--approved">✓ 의결</span></div>
+            </div>
+          </div>
+          <div class="ggc-table-wrap">
+            <table class="ggc-table">
+              <thead><tr><th scope="col">접수번호</th><th scope="col">의안명</th><th scope="col">소관</th><th scope="col" class="num">경과일</th></tr></thead>
+              <tbody>
+                <tr><td>2026-0417</td><td>경기도 청년 기본 조례 일부개정조례안</td><td>기획재정</td><td class="num">5</td></tr>
+                <tr><td>2026-0412</td><td>경기도 지방보조금 관리 조례 전부개정조례안</td><td>행정안전</td><td class="num">8</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="ex-note ex-note--warn">
+          <p><b>두 프로필을 한 화면에 섞지 않는다</b>(계약 §9). 대민 셸(masthead · identifier ·
+          공개 헤더/푸터)은 별도 파일 <code class="ex-inline">ggc-public.css</code> 가 담당하며,
+          이 갤러리의 GNB/LNB 셸은 업무 전용이다 — 토글은 치수만 보여 주는 미리보기다.</p>
         </div>
       </section>
 
@@ -3319,6 +3479,8 @@ body {
  *   ② paintSwatches() getComputedStyle 로 토큰 **실측값**을 읽어 스와치와
  *                     대비비를 채운다. → 갤러리가 정본을 배신할 수 없고,
  *                     고대비(prefers-contrast) 를 켜면 숫자가 즉시 따라 바뀐다.
+ *   ③ bindProfileToggle() <html data-ggc-profile="public"> 을 켜고 끈다(v2.0).
+ *                     값은 토큰 파일의 프로필 블록에서 오고 여기는 속성만 바꾼다.
  *
  * 정본이 두 달간 문서와 어긋나 있던 원인이 "값을 옮겨 적은 것" 이었다.
  * 갤러리는 그 실패를 반복하지 않는다.
@@ -3469,6 +3631,37 @@ body {
       if (bar) { bar.style.width = "120px"; bar.style.height = "44px"; bar.style.borderRadius = val; }
       if (px) px.textContent = val;
     });
+
+    /* 임의 토큰의 실측값 — 치수 토큰처럼 색도 막대도 아닌 값을 글자로 보여 준다.
+       프로필을 켜면 같은 이름의 값이 바뀌므로 토글 뒤에 다시 돈다. */
+    document.querySelectorAll("[data-var]").forEach(function (el) {
+      el.textContent = readVar(el.getAttribute("data-var")) || "—";
+    });
+  }
+
+  /* ------------------------------------------------------ ③ 프로필 미리보기 */
+
+  /* <html data-ggc-profile="public"> 을 켜고 끈다. 값은 토큰 파일의 프로필 블록에서
+     오고 여기는 속성 하나만 바꾼다 — 갤러리가 값을 알 필요가 없다. */
+  function bindProfileToggle() {
+    document.querySelectorAll("[data-ex-profile-toggle]").forEach(function (btn) {
+      var root = document.documentElement;
+      function render() {
+        var on = root.getAttribute("data-ggc-profile") === "public";
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        btn.textContent = on ? "업무 프로필로 되돌리기" : "대민 프로필 켜 보기";
+      }
+      btn.addEventListener("click", function () {
+        if (root.getAttribute("data-ggc-profile") === "public") {
+          root.removeAttribute("data-ggc-profile");
+        } else {
+          root.setAttribute("data-ggc-profile", "public");
+        }
+        render();
+        paintSwatches();
+      });
+      render();
+    });
   }
 
   /* --------------------------------------------------------------- 현재 페이지 */
@@ -3485,6 +3678,7 @@ body {
     revealMarkup();
     paintSwatches();
     markCurrentNav();
+    bindProfileToggle();
   }
 
   if (document.readyState === "loading") {

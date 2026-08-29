@@ -49,6 +49,7 @@
 - text-muted `#4A5566`
 - text-subtle `#5A6577`
 - text-faint `#8A94A3` — **비텍스트 전용**(아이콘·구분·장식). 텍스트에 쓰지 않는다
+- text-body `#3A4150` — 카드 안 긴 본문 단락(흰 위 10.23:1). v2.0 에서 컴포넌트 레이어로부터 승격
 - border `#E6EBF1` · border-strong `#D5DCE5`
 - shell-border `#E2E7EE`
 - bg `#EEF1F5`
@@ -155,3 +156,22 @@ KRDS 의 `mode-high-contrast` 는 밝은 글자(`text.bolder #E6E8EA` 등)를 �
 9. Excel에 변경 파일·테스트·스크린샷·잔여 위험 기록
 
 소스 존재, 빌드 성공, `worker_done`, 조건부 적합만으로 완료 처리하지 않는다.
+
+## 9. 프로필 — 업무용과 대민용 (v2.0, 2026-08-29)
+
+한 토큰 파일이 두 프로필을 담는다. **기본(속성 없음)이 업무 프로필**이라 이 계약의 §2~§8 은
+그대로 업무 프로필의 규칙이다.
+
+- **대민(공개) 화면**은 `<html data-ggc-profile="public">` 으로 켠다. 서브트리에도 붙는다.
+- 프로필이 덮어쓸 수 있는 것은 **치수뿐**이다 — 컨트롤 높이(`--ggc-control-h*` ·
+  `--ggc-input-h` · `--ggc-search-h`), 컨트롤·라벨·표 글자 크기(`--ggc-*-font`),
+  셀·행·카드 패딩(`--ggc-cell-pad` · `--ggc-row-pad` · `--ggc-card-pad`), 컨테이너 폭
+  (`--ggc-container-max`). 검사기 D6 가 이 허용 목록으로 강제한다.
+- **색·포커스·서체·간격 스케일·상태색은 프로필이 건드리지 못한다.** 대민도 기관 CI 네이비이며
+  (2026-08-29 사용자 결정), 상태색은 §3-1 과 `docs/krds-alignment.md §2` 의 결정을 그대로 따른다.
+- 대민 프로필의 값은 **KRDS 토큰에서 기계적으로 옮긴다**(`html{font-size:62.5%}` 기준
+  1rem=10px). 손으로 적은 값은 없다. 출처는 `design/ggc-tokens.css` 의 프로필 블록 주석.
+- 대민 셸(masthead · identifier · 공개 헤더/주 메뉴 · 공개 푸터 · skip-link)은 KRDS 마크업·ARIA
+  구조를 따르고 `design/ggc-public.css` 가 담당한다. 업무 셸(§2 GNB/LNB)은 대민에 쓰지 않는다.
+- 두 프로필을 **한 화면에 섞지 않는다.** 예외는 업무 화면 안의 도민 안내 구역처럼 명확히
+  경계 지어진 서브트리뿐이다.

@@ -1,6 +1,6 @@
 /* =============================================================================
- * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v1.2 (2026-08-22)
- * 전제: design/ggc-tokens.css v1.2 를 먼저 로드할 것 (--ggc-* 변수 의존)
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v2.0 (2026-08-29)
+ * 전제: design/ggc-tokens.css v2.0 을 먼저 로드할 것 (--ggc-* 변수 의존)
  * 출처: Claude Design 산출물(.dc.html) 실측 추출
  *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
  *   정본 2  design_경기도의회_의정지원_플랫폼/조례초안 작성 위저드.dc.html
@@ -26,6 +26,13 @@
  *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
  *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
  *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ *
+ * -- v2.0 에서 바뀐 것 -------------------------------------------------------
+ *   값 불변 리팩터 — 컨트롤 높이·글자 크기·셀/행/카드 패딩·컨테이너 폭 리터럴을
+ *   토큰 v2.0 의 같은 값 토큰(--ggc-control-h* · --ggc-input-h · --ggc-cell-pad …)으로
+ *   치환했다. **렌더 결과는 바이트 수준으로 같다**(갤러리 6쪽 × 2폭 계산 스타일 해시 대조).
+ *   이 치환이 있어야 <html data-ggc-profile="public"> 이 대민 밀도로 바꿀 자리가 생긴다.
+ *   --ggc-text-body 는 토큰으로 승격돼 여기서 정의하지 않는다.
  * ============================================================================= */
 
 /* --- 0. 컴포넌트 레이어 전용 값 ---------------------------------------------
@@ -38,7 +45,7 @@
  *   그 오버라이드는 계약 위반이었다. 삭제했고 토큰 정의를 그대로 쓴다.
  * --------------------------------------------------------------------------- */
 :root {
-  --ggc-text-body: #3a4150;       /* 본문 단락(카드 안 긴 글) — 흰 위 10.23:1 */
+  /* --ggc-text-body 는 v2.0 에서 토큰 파일로 승격됐다 — 여기서 정의하지 않는다 */
   --ggc-btn-shadow: var(--ggc-shadow-primary);   /* 토큰 승격분 별칭 */
 
   /* v1.0 이름 호환 별칭 — 기존 사본이 깨지지 않게 남긴다. 새 코드는 오른쪽을 쓴다 */
@@ -61,12 +68,12 @@
   -webkit-font-smoothing: antialiased;
 }
 .ggc-page-main {
-  max-width: 1320px;            /* 위저드 화면은 1360px — 필요 시 .ggc-page-main--wide */
+  max-width: var(--ggc-main-max);   /* 위저드 화면은 --wide(1360) — 필요 시 .ggc-page-main--wide */
   min-width: 0;
   padding: 26px 32px 48px;
   margin: 0 auto;
 }
-.ggc-page-main--wide { max-width: 1360px; }
+.ggc-page-main--wide { max-width: var(--ggc-main-max-wide); }
 @media (max-width: 768px) {
   .ggc-page-main { padding: 18px 16px 40px; }  /* 모바일 축소(경비정산 화면 폭 350px 기준 파생) */
 }
@@ -83,7 +90,7 @@
   border-radius: 16px;
   overflow: hidden;
 }
-.ggc-card--pad { padding: 18px 22px; overflow: visible; }  /* 리스트가 아닌 자유 본문 카드 */
+.ggc-card--pad { padding: var(--ggc-card-pad); overflow: visible; }  /* 리스트가 아닌 자유 본문 카드 */
 
 /* .ggc-card-head — 제목 + 우측 액션 슬롯
  * 출처: 대시보드.dc.html 섹션 헤더(padding:18px 22px 14px; h2 16px/800/-0.02em #131722;
@@ -356,7 +363,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 15px 22px;
+  padding: var(--ggc-row-pad);
   border-top: 1px solid var(--ggc-hairline);
   font-family: var(--ggc-font);
 }
@@ -432,12 +439,12 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 42px;
+  height: var(--ggc-control-h);
   padding: 0 18px;
   border-radius: 10px;
   border: 1px solid transparent;
   font-family: var(--ggc-font);
-  font-size: 13.5px;
+  font-size: var(--ggc-control-font);
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
@@ -477,11 +484,11 @@
  * (1.5px dashed #cdd5df · bg #fafbfd · hover 시 브랜드 테두리·글자) */
 .ggc-btn--dashed {
   width: 100%;
-  height: 44px;
+  height: var(--ggc-input-h);
   border: 1.5px dashed #cdd5df;
   background: var(--ggc-surface-hover);
   color: var(--ggc-text-muted);
-  font-size: 13.5px;
+  font-size: var(--ggc-control-font);
   font-weight: 600;
 }
 .ggc-btn--dashed:hover:not(:disabled) {
@@ -490,8 +497,8 @@
   background: #f6f9fd;
 }
 
-.ggc-btn--sm { height: 34px; padding: 0 14px; border-radius: 8px; font-size: 13px; }
-.ggc-btn--lg { height: 46px; padding: 0 20px; border-radius: 11px; font-size: 14px; }
+.ggc-btn--sm { height: var(--ggc-control-h-sm); padding: 0 14px; border-radius: 8px; font-size: var(--ggc-control-font-sm); }
+.ggc-btn--lg { height: var(--ggc-control-h-lg); padding: 0 20px; border-radius: 11px; font-size: var(--ggc-control-font-lg); }
 .ggc-btn--block { width: 100%; }
 
 /* =============================================================================
@@ -503,19 +510,19 @@
  * ============================================================================= */
 .ggc-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--ggc-font); }
 .ggc-field > label {
-  font-size: 13px;
+  font-size: var(--ggc-label-font);
   font-weight: 700;
   color: var(--ggc-text-soft);
 }
 .ggc-field > label .req { color: var(--ggc-danger); margin-left: 2px; }
 .ggc-field input,
 .ggc-field select {
-  height: 44px;
+  height: var(--ggc-input-h);
   border: 1px solid var(--ggc-border-strong);
   border-radius: 10px;
   padding: 0 14px;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: var(--ggc-control-font);
   color: var(--ggc-text);
   background: var(--ggc-surface);
   outline: none;
@@ -526,7 +533,7 @@
   border-radius: 10px;
   padding: 10px 14px;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: var(--ggc-control-font);
   line-height: 1.6;
   color: var(--ggc-text);
   background: var(--ggc-surface);
@@ -559,7 +566,7 @@
   width: 100%;
   border-collapse: collapse;
   font-family: var(--ggc-font);
-  font-size: 13px;
+  font-size: var(--ggc-table-font);
 }
 .ggc-table thead tr {
   border-top: 2px solid var(--ggc-primary-deep);
@@ -567,13 +574,13 @@
 }
 .ggc-table th {
   text-align: left;
-  padding: 11px 10px;
+  padding: var(--ggc-cell-pad);
   font-weight: 700;
   color: var(--ggc-text-soft);
   white-space: nowrap;
 }
 .ggc-table td {
-  padding: 11px 10px;
+  padding: var(--ggc-cell-pad);
   color: var(--ggc-text-body);
   border-bottom: 1px solid var(--ggc-hairline);
 }
@@ -668,7 +675,7 @@
 /* 검색 — 계약 §2: 300x40, --ggc-control-bg, r10 */
 .ggc-search {
   display: flex; align-items: center; gap: var(--ggc-space-2);
-  height: 40px; width: 300px; min-width: 120px;
+  height: var(--ggc-search-h); width: 300px; min-width: 120px;
   padding: 0 12px;
   background: var(--ggc-control-bg);
   border: 1px solid var(--ggc-shell-border);

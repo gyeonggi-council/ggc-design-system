@@ -14,6 +14,7 @@ check_design.py — 경기도의회 공통 디자인 드리프트 검사기
                     토큰 우회가 아니다. 세면 자체 호스팅을 요구해 놓고 그 선언을 벌하게 된다.
   D5 A11Y         대체 없는 outline:none 0 · :focus-visible 존재 · 대비
   D6 CANON        정본 자체 검사 — 계약 문서 <-> 토큰 CSS <-> 컴포넌트 CSS
+                  · 프로필 블록([data-ggc-profile])이 치수 토큰만 덮어쓰는가 (v2.0)
 
 락파일을 만들지 않는다. 허용집합은 매 실행 시 정본 CSS 에서 파생한다 —
 락파일은 "정본과 같아야 하는 파일" 을 하나 더 만드는 것이고, 그게 지금 문제의 형태다.
@@ -242,6 +243,58 @@ def base_root_vars(css):
             for m in re.finditer(r"--ggc-([\w-]+):\s*(#[0-9a-fA-F]{3,8})",
                                  css[j:k]):
                 out.setdefault(m.group(1).lower(), norm_hex(m.group(2)))
+            i = k + 1
+            continue
+        i += 1
+    return out
+
+
+# 프로필 블록이 덮어쓸 수 있는 토큰 — 치수만이다. 색·포커스·서체·간격 이름이 여기
+# 없으므로 프로필이 그것을 건드리면 D6 가 FAIL 로 잡는다(계약 §9).
+PROFILE_VARS = {
+    "control-h-sm", "control-h", "control-h-lg", "input-h", "search-h",
+    "control-font", "control-font-sm", "control-font-lg", "label-font",
+    "table-font", "cell-pad", "row-pad", "card-pad", "container-max",
+}
+PROFILE_NAMES = ("public",)
+
+
+def profile_vars(css, name):
+    """최상위 `[data-ggc-profile="<name>"]` 블록의 --ggc-* 선언을 (값 그대로) 돌려준다.
+
+    base_root_vars 가 :root 만 읽는 것과 짝이다 — 프로필 블록은 기본값이 아니므로
+    그쪽 파서에 섞이지 않고, 여기서 따로 읽어 허용 목록과 대조한다."""
+    out = {}
+    marker = f'[data-ggc-profile="{name}"]'
+    # 주석을 먼저 지운다 — 파일 머리말이 이 선택자를 **설명**하는데, 그 문장을 블록
+    # 시작으로 잡으면 뒤따르는 :root 전체를 프로필로 읽는다(2026-08-29 실제로 그랬다).
+    css = "\n".join(strip_comments(css))
+    i, n, depth = 0, len(css), 0
+    while i < n:
+        ch = css[i]
+        if ch == "{":
+            depth += 1
+            i += 1
+            continue
+        if ch == "}":
+            depth = max(0, depth - 1)
+            i += 1
+            continue
+        if depth == 0 and css.startswith(marker, i):
+            j = css.find("{", i)
+            if j < 0:
+                break
+            k, d = j, 0
+            while k < n:
+                if css[k] == "{":
+                    d += 1
+                elif css[k] == "}":
+                    d -= 1
+                    if d == 0:
+                        break
+                k += 1
+            for m in re.finditer(r"--ggc-([\w-]+):\s*([^;]+);", css[j:k]):
+                out.setdefault(m.group(1).lower(), m.group(2).strip())
             i = k + 1
             continue
         i += 1
@@ -697,6 +750,30 @@ def check_canon():
     if "text-faint" in tok_vals:
         print(f"D6 INFO  aa        --ggc-text-faint  {tok_vals['text-faint']}"
               f"  비텍스트 전용(3:1 대상) — 텍스트에 쓰지 않는다")
+
+    print("\n--- 프로필 블록 (치수만 덮어쓴다 — 계약 §9) ---")
+    base_names = set(re.findall(r"--ggc-([\w-]+):", tokens))
+    for pname in PROFILE_NAMES:
+        pv = profile_vars(tokens, pname)
+        if not pv:
+            print(f"D6 WARN  profile   [data-ggc-profile=\"{pname}\"] 블록이 없다")
+            warns += 1
+            continue
+        bad = 0
+        for k, v in sorted(pv.items()):
+            if k not in PROFILE_VARS:
+                print(f"D6 FAIL  profile   {pname}: --ggc-{k} 는 프로필이 바꿀 수 없는 토큰이다"
+                      f" (허용: 치수 {len(PROFILE_VARS)}종)")
+                bad += 1
+            elif HEX_RE.search(v) or RGBA_RE.search(v):
+                print(f"D6 FAIL  profile   {pname}: --ggc-{k} 값에 색이 있다 ({v})")
+                bad += 1
+            elif k not in base_names:
+                print(f"D6 WARN  profile   {pname}: --ggc-{k} 의 기본값이 :root 에 없다")
+                warns += 1
+        fails += bad
+        if not bad:
+            print(f"D6 INFO  profile   {pname:<8} {len(pv)}종 덮어씀 — 전부 치수 토큰")
 
     print("\n--- 브랜드 자산 정본 ---")
     dist = os.path.join(CANON_BRAND, "dist")

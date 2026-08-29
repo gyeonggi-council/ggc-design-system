@@ -1,0 +1,12 @@
+# 줄끝을 LF 로 고정한다 — D1(토큰 사본 바이트 동일)이 OS 와 무관하게 성립해야 한다.
+# Windows 의 core.autocrlf=true 로 clone 해도 이 파일이 이긴다.
+* text=auto eol=lf
+
+# 바이너리
+*.woff2 binary
+*.png   binary
+*.ico   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.pdf   binary

@@ -5,6 +5,20 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 1 — 토큰 v2.0 + 프로필 (2026-08-29) ⚠ D1
+
+- `ggc-tokens.css` v2.0: 신설 `--ggc-space-8~11`, `--ggc-text-body` 승격, 컨트롤 치수·밀도·폭 토큰
+  14종(`--ggc-control-h*` `--ggc-input-h` `--ggc-search-h` `--ggc-*-font` `--ggc-cell-pad`
+  `--ggc-row-pad` `--ggc-card-pad` `--ggc-container-max`), **`[data-ggc-profile="public"]` 대민 블록**
+  (값은 KRDS 토큰에서 기계적으로 옮김). **색은 하나도 바뀌지 않았다**
+- `ggc-components.css` v2.0: 리터럴 → 토큰 값-불변 리팩터. 갤러리 6쪽 × 2폭 계산 스타일 해시
+  리팩터 전후 12/12 일치 실측. `--ggc-text-body` 정의는 토큰으로 이동
+- `check_design.py` D6: 프로필 블록 검사 — 허용 목록(치수 14종) 밖 토큰·색 값이 있으면 FAIL
+- `docs/contract.md` §9 프로필 조항 신설, §3 에 `text-body` 색인 추가
+- `.gitattributes` 로 줄끝 LF 고정 (OS 무관 D1)
+- `docs/migration/v1.2-to-v2.md` 신설
+- 갤러리 `tokens.html`: 신설 토큰 절 + 대민 프로필 미리보기 토글
+
 ### Phase 0 — 정본화 (2026-08-29)
 
 - **이 저장소를 정본으로 승격.** 상위 플랫폼 저장소(`ggc_ai_platform`) 경로 의존을 전부 제거
