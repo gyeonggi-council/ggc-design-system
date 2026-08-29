@@ -269,8 +269,11 @@ body { margin: 0; }
 /* --- 링크 기본 — 계약 §3: 링크에 밑줄 --------------------------------------
  * ⚠ 범위를 **산문 컨테이너로 한정**한다. 처음에 `.ex-body a:not(...)` 로 넓게 잡았더니
  *   특정도가 캔온의 `.ggc-utility-bar nav a.active` 를 이겨 **활성 링크 글자가
- *   배경과 같은 색이 되어 사라졌다.** 갤러리 CSS 가 셸을 덮으면 안 된다. */
-.ex-body :is(.ex-lede, .ex-note, .ex-section > p, .ex-demo) a {
+ *   배경과 같은 색이 되어 사라졌다.** 갤러리 CSS 가 셸을 덮으면 안 된다.
+ * ⚠ 그리고 전체를 `:where()` 로 감싸 특정도를 (0,0,1) 로 둔다 — `:is()` 였을 때
+ *   `.ggc-pagination a[aria-current]` 를 이겨 현재 쪽 숫자가 네이비 위 네이비로 사라졌다
+ *   (2026-08-29). 갤러리 규칙은 어떤 컴포넌트 규칙에도 져야 한다. */
+:where(.ex-body :is(.ex-lede, .ex-note, .ex-section > p, .ex-demo)) a {
   color: var(--ggc-primary);
   text-underline-offset: 2px;
 }
