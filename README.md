@@ -4,6 +4,10 @@
 검사기**다. 11개 프런트엔드(Next 14/15/16 · React 18/19 · Vite · JSP/Tiles · Jinja2 ·
 FastAPI · 정적 HTML)가 이 한 벌을 소비한다.
 
+**현재 판: v2.0.0** (2026-08-30) — 업무·대민 프로필(단일 토큰), Tier 1 컴포넌트 48종,
+Tier 2 shadcn 레지스트리 47항목, 스킬 v2, CI. v1.2 소비자는
+[docs/migration/v1.2-to-v2.md](docs/migration/v1.2-to-v2.md) 대로 정본 5파일을 재복사한다(⚠ D1).
+
 ![경기도의회 공통 디자인 시스템 팔레트](design/examples/preview-palette.svg)
 
 > 위 그림은 **정본에서 생성된 것**이다(`design/examples/build-preview.py`).
@@ -19,13 +23,16 @@ FastAPI · 정적 HTML)가 이 한 벌을 소비한다.
 | 페이지 | 무엇을 보나 |
 |---|---|
 | [`index.html`](design/examples/index.html) | 개요 · 3분 도입 · 관통 원칙 · 접근성 |
-| [`tokens.html`](design/examples/tokens.html) | 색 · 타이포 · 간격 · 형태 · 포커스 **전수**, 대비비 실측 |
-| [`components.html`](design/examples/components.html) | 버튼 · 배지 · 카드 · 통계 · 행리스트 · 표 · 폼 · 위저드 · 빈상태 3종 |
-| [`dashboard.html`](design/examples/dashboard.html) | Monitor archetype 이 실물 업무 화면으로 조립된 모습 |
-| [`wizard.html`](design/examples/wizard.html) | Configure archetype — 스텝퍼 3형 · 폼 · 오류 상태 |
+| [`tokens.html`](design/examples/tokens.html) | 색 · 타이포 · 간격 · 형태 · 포커스 **전수**, 대비비 실측, 대민 프로필 토글 |
+| [`components.html`](design/examples/components.html) | 버튼 · 배지 · 카드 · 통계 · 행리스트 · 표 · 폼 · 위저드 · 상태 3종 |
+| [`components-forms.html`](design/examples/components-forms.html) | 셀렉트 · 체크/라디오/칩 · 스위치 · 날짜 · 파일 업로드 · 리스트박스 |
+| [`components-nav.html`](design/examples/components-nav.html) | 페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 · 아코디언 · 메뉴 · 링크 · 목차 |
+| [`components-overlay.html`](design/examples/components-overlay.html) | 알림 · 토스트 · 모달 · 툴팁 · 스피너 · 스켈레톤 · 빈 상태 · 액션바 |
+| [`dashboard.html`](design/examples/dashboard.html) · [`wizard.html`](design/examples/wizard.html) · [`login.html`](design/examples/login.html) | 실물 업무 화면 — Monitor · Configure · QR 로그인 |
+| [`public/index.html`](design/examples/public/index.html) 외 4쪽 | **대민 셸** — 마스트헤드 · 헤더 · 주 메뉴 · 공개 푸터 · 아이덴티파이어 (KRDS 패턴 + 기관 CI) |
 
 **파일 하나로 열고 싶으면** `design/examples/examples-standalone.html` 을 쓴다 —
-5쪽과 정본 CSS·JS·의회 마크를 한 파일에 인라인한 **생성물**(약 195KB)이고
+업무 갤러리 9쪽과 정본 CSS·JS·의회 마크를 한 파일에 인라인한 **생성물**(약 430KB)이고
 **외부 요청이 0** 이라 망분리 환경과 오프라인에서도 그대로 뜬다. 링크로 공유할 때 쓴다.
 손으로 고치지 말 것 — `build-standalone.py` 가 정본에서 다시 만든다.
 
@@ -47,12 +54,14 @@ FastAPI · 정적 HTML)가 이 한 벌을 소비한다.
 ## 빠른 시작
 
 ```bash
-# 1. 토큰을 복사한다. 손으로 옮겨 적지 않는다 — 바이트 동일이어야 검사가 성립한다
-cp design/ggc-tokens.css <서비스>/<정적루트>/ggc-tokens.css
+# 1. 정본 파일을 복사한다. 손으로 옮겨 적지 않는다 — 바이트 동일이어야 검사가 성립한다
+#    (토큰은 필수, 나머지는 쓰는 만큼. 대민 화면이면 ggc-public.css 까지)
+cp design/ggc-tokens.css design/ggc-components.css design/ggc-behaviors.js <서비스>/<정적루트>/
 
 # 2. 자기 스타일보다 먼저 로드한다. 순서가 곧 우선순위다
 #    <link rel="stylesheet" href="ggc-tokens.css">
-#    <link rel="stylesheet" href="app.css">
+#    <link rel="stylesheet" href="ggc-components.css">
+#    <link rel="stylesheet" href="app.css">   +   <script src="ggc-behaviors.js" defer>
 
 # 3. 브랜드 자산을 복사한다 (대상 경로는 design/brand/ASSET-MAP.tsv 가 고정)
 cp design/brand/dist/favicon-32.png <서비스>/<정적루트>/
@@ -60,6 +69,8 @@ cp design/brand/dist/favicon-32.png <서비스>/<정적루트>/
 # 4. 검사한다
 python design/check_design.py --report <서비스경로>
 ```
+
+대민(공개) 화면은 `<html data-ggc-profile="public">` 한 줄로 KRDS 치수가 켜진다 — 마크업은 같다.
 
 **패키지가 아니라 복사다.** 프런트가 7종이라 CSS 커스텀 프로퍼티가 최소공배수이고,
 npm 워크스페이스·사설 레지스트리가 0건이다.
@@ -78,13 +89,13 @@ npx shadcn add @ggc/ggc-style -y      # 토큰 파일 + 테마 매핑 + UI 23종
 
 | 경로 | 무엇 |
 |---|---|
-| `design/ggc-tokens.css` | **토큰 정본 v1.2** — 색·타이포·간격·형태·포커스·셸 치수 |
-| `design/ggc-components.css` | 컴포넌트 v1.1 — 셸(GNB/LNB)·카드·버튼·표·폼·위저드·반응형 |
+| `design/ggc-tokens.css` | **토큰 정본 v2.0** — 색·타이포·간격·형태·포커스·셸·컨트롤 치수 + 대민 프로필 블록 |
+| `design/ggc-components.css` | 컴포넌트 v2.0 — 셸·카드·버튼·표·폼·위저드부터 §12~§35(탭·모달·토스트·스위치·리스트박스 등)까지, 인벤토리 48종 |
 | `design/ggc-fonts.css` + `design/fonts/` | **폰트 정본 v1.0** — @font-face 하나와 가변 woff2 하나. 두 파일을 같은 폴더에 나란히 두고 토큰보다 먼저 링크한다 |
 | `design/check_design.py` | **검사기** — `diff -q` 를 대체하는 6종 검사 |
 | `design/brand/` | 파비콘 세트 · 의회 마크 · stdlib 전용 생성기 · 배포 매핑표 |
-| **`design/examples/`** | **예제 갤러리 5쪽** — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
-| `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v2.0**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·메뉴) |
+| **`design/examples/`** | **예제 갤러리 13쪽**(업무 9 + 대민 4) — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
+| `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v2.0**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·대민 메뉴·토스트·드롭다운·파일·툴팁·리스트박스·목차) |
 | `design/components.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 |
 | `registry.json` · `registry/ggc/` · `public/r/` | **Tier 2 shadcn 레지스트리** — 소스(tsx) · 빌드 산출물(JSON, 서빙 대상). 검사는 `tools/check-registry.py` |
 | `DESIGN.md` | **생성물** — Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (`tools/build-design-md.py`) |
@@ -213,8 +224,11 @@ v1.2 가 AA 를 통과하는 값 중 **디자인 원본에 가장 가까운 집�
 2026-08-26 에 이력을 **orphan 커밋 하나로 재생성**해 public 으로 전환했다(「공개판」).
 서비스 소스·k8s 매니페스트·DB 스키마는 애초에 들어 있지 않고, 예제 갤러리의
 의안명·숫자·이름·날짜는 전부 가상이다(위원회 이름만 공개 정보, 사람 이름은 `이○○` 마스킹).
-인프라 주소는 `27.96.x.x` 형태로 마스킹돼 있고, `.gitignore` 가
+인프라 주소는 마스킹돼 있고, `.gitignore` 가
 `.env`·`*.pem`·`*.key`·`*-jwk.json`·`.mcp.json`·kubeconfig 를 막는다.
+
+2026-08-30 에 과거 blob 에 남아 있던 원문 IP 를 `git filter-repo` 로 **전체 이력에서 치환**하고
+전 브랜치를 다시 밀었다(커밋 해시가 그때 전부 바뀌었다). 그 이전 해시를 참조하는 외부 기록은 낡은 것이다.
 
 공개 상태에서 계속 지킬 것 —
 - **마스킹을 되돌리는 커밋을 만들지 않는다.** `python tools/check-links.py` 가
