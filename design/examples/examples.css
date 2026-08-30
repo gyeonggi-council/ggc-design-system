@@ -269,20 +269,16 @@ body { margin: 0; }
 /* --- 링크 기본 — 계약 §3: 링크에 밑줄 --------------------------------------
  * ⚠ 범위를 **산문 컨테이너로 한정**한다. 처음에 `.ex-body a:not(...)` 로 넓게 잡았더니
  *   특정도가 캔온의 `.ggc-utility-bar nav a.active` 를 이겨 **활성 링크 글자가
- *   배경과 같은 색이 되어 사라졌다.** 갤러리 CSS 가 셸을 덮으면 안 된다. */
-.ex-body :is(.ex-lede, .ex-note, .ex-section > p, .ex-demo) a {
+ *   배경과 같은 색이 되어 사라졌다.** 갤러리 CSS 가 셸을 덮으면 안 된다.
+ * ⚠ 그리고 전체를 `:where()` 로 감싸 특정도를 (0,0,1) 로 둔다 — `:is()` 였을 때
+ *   `.ggc-pagination a[aria-current]` 를 이겨 현재 쪽 숫자가 네이비 위 네이비로 사라졌다
+ *   (2026-08-29). 갤러리 규칙은 어떤 컴포넌트 규칙에도 져야 한다. */
+:where(.ex-body :is(.ex-lede, .ex-note, .ex-section > p, .ex-demo)) a {
   color: var(--ggc-primary);
   text-underline-offset: 2px;
 }
 
-/* --- LNB 안 현재 페이지 표시 ------------------------------------------------ */
-.ggc-lnb .ex-lnb-cap {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--ggc-text-faint);
-  padding: 0 var(--ggc-space-3) var(--ggc-space-2);
-}
+/* LNB 캡션은 정본 .ggc-lnb-group 을 쓴다 (v2.0 — 갤러리 전용 클래스가 셸 마크업에 섞이지 않게) */
 
 /* --- 반응형 ---------------------------------------------------------------- */
 @media (max-width: 900px) {
@@ -302,3 +298,11 @@ body { margin: 0; }
   white-space: nowrap;
   border: 0;
 }
+
+/* 갤러리 GNB 의 drawer 토글 — LNB 가 drawer 로 접히는 ≤900px 에서만 보인다 (v2.0) */
+.ex-only-narrow { display: none; }
+@media (max-width: 900px) { .ex-only-narrow { display: flex; margin-left: var(--ggc-space-3); } }
+
+/* 페이지 내 내비 데모 — 넓으면 본문 + 목차 2열, ≤1024 는 목차가 가로 칩(§34)이 되므로 1열 */
+.ex-ipn-grid { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: var(--ggc-space-6); }
+@media (max-width: 1024px) { .ex-ipn-grid { display: flex; flex-direction: column-reverse; } }

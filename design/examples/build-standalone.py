@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""build-standalone.py — 갤러리 5쪽을 **자기완결 단일 HTML** 로 합친다.
+"""build-standalone.py — 갤러리 9쪽을 **자기완결 단일 HTML** 로 합친다.
 
 왜 필요한가 — `design/examples/` 는 정본을 상대경로로 링크하고 파일이 열두 개라,
 "링크 하나로 열어 보게 해 달라" 는 요청에 답할 수 없다. 이 스크립트가 정본 CSS·JS·
@@ -34,6 +34,9 @@ PAGES = [
     ("index",      "index.html",      "개요",               "공통 디자인 시스템"),
     ("tokens",     "tokens.html",     "토큰 · 팔레트",       "공통 디자인 시스템"),
     ("components", "components.html", "컴포넌트 카탈로그",    "공통 디자인 시스템"),
+    ("forms",      "components-forms.html",   "폼 컨트롤",            "공통 디자인 시스템"),
+    ("nav",        "components-nav.html",     "내비게이션 · 탭",       "공통 디자인 시스템"),
+    ("overlay",    "components-overlay.html", "오버레이 · 상태 · 본문", "공통 디자인 시스템"),
     ("dashboard",  "dashboard.html",  "대시보드 · Monitor",  "의정지원 플랫폼"),
     ("wizard",     "wizard.html",     "위저드 · Configure",  "조례 초안 작성"),
     ("login",      "login.html",      "QR 로그인 · Entry",   "공통 디자인 시스템"),
@@ -52,7 +55,7 @@ CLAIM_NEW = """        <p><b>지금 보고 있는 이 페이지가 예제다.</b
 
 STANDALONE_NOTE = """
       <div class="ex-note ex-note--warn">
-        <p><b>이 파일은 생성물이다.</b> 갤러리 5쪽과 정본 CSS·JS·브랜드 자산을
+        <p><b>이 파일은 생성물이다.</b> 갤러리 9쪽과 정본 CSS·JS·브랜드 자산을
         한 파일로 합친 것이고, <code>design/examples/build-standalone.py</code> 가
         정본에서 다시 만든다. <b>직접 고치지 말 것</b> — 다음 생성에서 덮어써진다.</p>
         <p>저장소의 원본 갤러리는 정본을 <b>상대경로로 직접 링크</b>해 사본을 두지 않는다.
@@ -103,7 +106,7 @@ def build():
     for key, _fn, label, _svc in PAGES:
         if key == "dashboard":
             lnb_rows.append('      <div class="ggc-lnb-divider"></div>')
-            lnb_rows.append('      <div class="ex-lnb-cap">실물 화면</div>')
+            lnb_rows.append('      <div class="ggc-lnb-group">실물 화면</div>')
         lnb_rows.append(
             '      <a class="ggc-lnb-item" href="#%s" data-page="%s">%s</a>'
             % (key, key, label))
@@ -121,6 +124,7 @@ def build():
         "@@TOKENS@@": read(os.path.join(DESIGN, "ggc-tokens.css")),
         "@@COMPONENTS@@": read(os.path.join(DESIGN, "ggc-components.css")),
         "@@EXAMPLES_CSS@@": read(os.path.join(HERE, "examples.css")),
+        "@@BEHAVIORS_JS@@": read(os.path.join(DESIGN, "ggc-behaviors.js")),
         "@@EXAMPLES_JS@@": read(os.path.join(HERE, "examples.js")),
         "@@MARK@@": mark,
         "@@LNB@@": "\n".join(lnb_rows),
@@ -142,8 +146,8 @@ SHELL = """<meta charset="utf-8">
   생성물이다. design/examples/build-standalone.py 가 정본에서 만든다.
   직접 고치지 말 것 — 다음 생성에서 덮어써진다.
 
-  담긴 것: ggc-tokens.css v1.2 · ggc-components.css v1.1 · examples.css ·
-  examples.js · 의회 마크(data URI) · 갤러리 5쪽의 본문.
+  담긴 것: ggc-tokens.css v2.0 · ggc-components.css v2.0 · ggc-behaviors.js ·
+  examples.css · examples.js · 의회 마크(data URI) · 갤러리 9쪽의 본문.
   외부 요청 0 — 망분리 환경과 오프라인에서도 그대로 열린다.
 
   <meta charset> 을 반드시 첫 줄에 둔다. 이 파일은 <head> 없이 쓰이므로,
@@ -212,7 +216,7 @@ body {
 
   <div class="ggc-shell-body">
     <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
-      <div class="ex-lnb-cap">갤러리</div>
+      <div class="ggc-lnb-group">갤러리</div>
 @@LNB@@
     </nav>
 
@@ -222,12 +226,16 @@ body {
   <footer class="ggc-footer">
     <div class="inner">
       경기도의회 의정정보시스템 · 공통 디자인 시스템 예제 갤러리 (합본) ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v1.2 ·
-      <code style="font-family:var(--ggc-font-mono)">ggc-components.css</code> v1.2
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v2.0 ·
+      <code style="font-family:var(--ggc-font-mono)">ggc-components.css</code> v2.0
     </div>
   </footer>
 </div>
 
+<script>
+/* ---- design/ggc-behaviors.js (정본) ------------------------------------- */
+@@BEHAVIORS_JS@@
+</script>
 <script>
 @@EXAMPLES_JS@@
 </script>

@@ -1,0 +1,8 @@
+{
+  "name": "ggc-design",
+  "version": "2.0.0",
+  "description": "경기도의회 공통 디자인 시스템 — 업무/대민 프로필, Tier 1 CSS · Tier 2 shadcn 레지스트리, 검사기(check_design.py)와 함께 화면을 조립·검증하는 스킬",
+  "author": { "name": "경기도의회 의회사무처" },
+  "repository": "https://github.com/gyeonggi-council/ggc-design-system",
+  "keywords": ["design-system", "krds", "shadcn", "gyeonggi-council"]
+}

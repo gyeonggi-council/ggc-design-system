@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-search",
+  "title": "GNB 검색",
+  "description": "300×40(--ggc-search-h) 검색 상자 — 아이콘 + 입력 + 단축키 kbd(≤900 숨김). placeholder 를 유일한 라벨로 쓰지 않도록 aria-label 이 필수다.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/blocks/ggc-search/ggc-search.tsx",
+      "content": "import * as React from \"react\"\nimport { SearchIcon } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* GNB 검색 — ggc-components.css §9 .ggc-search. 300×40(--ggc-search-h) · ≤900 에서 flex-1, kbd 숨김.\n * ⚠ placeholder 를 유일한 라벨로 쓰지 않는다(정본 §9) — aria-label 이 필수 prop 이다. */\nfunction SearchBox({\n  className,\n  shortcut,\n  ...props\n}: React.ComponentProps<\"input\"> & { \"aria-label\": string; shortcut?: React.ReactNode }) {\n  return (\n    <div data-slot=\"search\" className={cn(\"flex h-(--ggc-search-h) w-[300px] min-w-[120px] items-center gap-2 rounded-(--ggc-radius) border border-(--ggc-shell-border) bg-(--ggc-control-bg) px-3 max-[900px]:w-auto max-[900px]:min-w-0 max-[900px]:flex-1\", className)}>\n      <SearchIcon aria-hidden=\"true\" strokeWidth={2.2} className=\"size-[15px] shrink-0 text-(--ggc-text-faint)\" />\n      <input data-slot=\"search-input\" type=\"search\" className=\"w-full min-w-0 border-none bg-transparent text-[13.5px] text-foreground placeholder:text-(--ggc-text-subtle)\" {...props} />\n      {shortcut && (\n        <kbd data-slot=\"search-kbd\" className=\"shrink-0 font-mono text-[11px] text-(--ggc-text-subtle) max-[900px]:hidden\">\n          {shortcut}\n        </kbd>\n      )}\n    </div>\n  )\n}\n\nexport { SearchBox }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:block"
+}

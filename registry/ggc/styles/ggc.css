@@ -1,0 +1,61 @@
+/* registry/ggc/styles/ggc.css — 레지스트리 빌드용 스타일시트 (소비자에게 복사되지 않는다).
+ * 소비 프로젝트의 globals.css 가 어떤 모습이어야 하는지의 **참고본**이다:
+ *   ① 첫 줄에 토큰 정본 @import   ② tailwind   ③ ggc-theme 항목이 넣어 주는 :root 매핑 + @theme inline
+ * 값(hex)은 여기에도 없다. */
+@import "../../../design/ggc-tokens.css";
+@import "tailwindcss";
+
+:root {
+  --background: var(--ggc-bg);
+  --foreground: var(--ggc-text);
+  --card: var(--ggc-surface);
+  --card-foreground: var(--ggc-text);
+  --popover: var(--ggc-surface);
+  --popover-foreground: var(--ggc-text);
+  --primary: var(--ggc-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--ggc-surface-inset);
+  --secondary-foreground: var(--ggc-primary-deep);
+  --muted: var(--ggc-control-bg);
+  --muted-foreground: var(--ggc-text-muted);
+  --accent: var(--ggc-primary-light);
+  --accent-foreground: var(--ggc-primary-deep);
+  --destructive: var(--ggc-danger);
+  --destructive-foreground: #ffffff;
+  --border: var(--ggc-border);
+  --input: var(--ggc-border-strong);
+  --ring: var(--ggc-primary);
+  --radius: var(--ggc-radius);
+}
+
+@theme inline {
+  --font-sans: var(--ggc-font);
+  --font-mono: var(--ggc-font-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: var(--ggc-radius-sm);
+  --radius-md: var(--ggc-radius);
+  --radius-lg: var(--ggc-radius-lg);
+  --radius-xl: 16px;
+}
+
+@layer base {
+  body { font-family: var(--ggc-font); background-color: var(--ggc-bg); color: var(--ggc-text); -webkit-font-smoothing: antialiased; }
+}

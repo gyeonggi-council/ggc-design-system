@@ -1,0 +1,528 @@
+/* =============================================================================
+ * ggc-public.css — 경기도의회 대민(공개) 셸 v2.0 (2026-08-29)
+ * 전제: ggc-tokens.css v2.0 → ggc-components.css v2.0 → 이 파일 순으로 로드.
+ *       문서 루트에 <html data-ggc-profile="public"> — 컨트롤·글자·밀도가 KRDS 치수가 된다.
+ * 근거: KRDS masthead · identifier · header · main_menu_pc/mobile · footer · side_navigation ·
+ *       structured_list 의 마크업·ARIA 구조를 따르고, 색은 기관 CI(--ggc-*)로 다시 썼다.
+ *       계약 §9: 대민 셸은 업무 GNB/LNB 를 쓰지 않는다. 두 프로필을 한 화면에 섞지 않는다.
+ *
+ * 셸 순서(위→아래):  .ggc-skip-link → .ggc-masthead → .ggc-header(유틸리티·브랜딩·.ggc-main-menu)
+ *                   → main.ggc-public-main → .ggc-footer.ggc-footer--public(안에 .ggc-identifier)
+ *
+ * 이미지 자산 0 — 마스트헤드·아이덴티파이어의 국가 상징(태극기)은 **서비스가 정부 제공 자산으로
+ * 채우는 슬롯**(.flag / .logo 안의 <img>)이다. 비워 두면 CSS 가 기관색 원으로 자리를 표시한다.
+ * ============================================================================= */
+
+/* --- 0. 페이지 --------------------------------------------------------------- */
+.ggc-public {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ggc-surface);
+  color: var(--ggc-text);
+  font-family: var(--ggc-font);
+  font-size: var(--ggc-control-font);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+}
+.ggc-public .inner {
+  width: 100%;
+  max-width: var(--ggc-container-max);
+  margin: 0 auto;
+  padding: 0 24px;              /* KRDS contents-padding-x-pc */
+}
+
+/* --- 1. .ggc-masthead — 공식 누리집 띠 (KRDS masthead) --------------------------
+ * 마크업:
+ *   <div class="ggc-masthead">
+ *     <div class="inner">
+ *       <span class="flag" aria-hidden="true"><img src="…/flag.svg" alt=""></span>
+ *       <span class="text">이 누리집은 대한민국 공식 전자정부 누리집입니다.</span>
+ *       <details class="more"><summary>안내</summary><p>공식 누리집 주소는 .go.kr 로 끝납니다 …</p></details>
+ *     </div>
+ *   </div> */
+.ggc-masthead {
+  background: var(--ggc-surface-inset);
+  border-bottom: 1px solid var(--ggc-border);
+  font-size: 13px;
+  color: var(--ggc-text-muted);
+}
+.ggc-masthead .inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  min-height: 36px;
+}
+.ggc-masthead .flag,
+.ggc-identifier .logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--ggc-primary);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.ggc-masthead .flag img,
+.ggc-identifier .logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ggc-masthead .flag:has(img),
+.ggc-identifier .logo:has(img) { background: none; border-radius: 0; width: auto; height: 18px; }
+.ggc-masthead .more { margin-left: auto; }
+.ggc-masthead .more summary {
+  cursor: pointer;
+  color: var(--ggc-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  list-style: none;
+  padding: 4px 6px;
+  border-radius: var(--ggc-radius-sm);
+}
+.ggc-masthead .more summary::-webkit-details-marker { display: none; }
+.ggc-masthead .more[open] summary { font-weight: 700; }
+.ggc-masthead .more p {
+  flex-basis: 100%;
+  margin: 4px 0 8px;
+  padding: 10px 12px;
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border);
+  color: var(--ggc-text-body);
+  line-height: 1.6;
+}
+.ggc-masthead .more[open] { flex-basis: 100%; display: flex; flex-wrap: wrap; margin-left: 0; }
+
+/* --- 2. .ggc-header — 유틸리티 · 브랜딩 · 주 메뉴 (KRDS header) ---------------------
+ * 마크업:
+ *   <header class="ggc-header">
+ *     <div class="utility"><div class="inner"><ul><li><a>로그인</a></li><li><a>회원가입</a></li><li><a lang="en">ENGLISH</a></li></ul></div></div>
+ *     <div class="branding"><div class="inner">
+ *       <a class="logo" href="/"><img src="…/assembly-mark.png" alt=""><span class="org">경기도의회</span><span class="svc">의정정보 누리집</span></a>
+ *       <div class="actions">
+ *         <button class="action" type="button" data-ggc-search-toggle aria-expanded="false" aria-controls="site-search">통합검색</button>
+ *         <button class="action menu" type="button" data-ggc-menu-toggle aria-expanded="false" aria-controls="main-menu">전체메뉴</button>
+ *       </div>
+ *     </div></div>
+ *     <nav class="ggc-main-menu" id="main-menu" aria-label="주 메뉴"> … §3 … </nav>
+ *   </header> */
+.ggc-header {
+  background: var(--ggc-surface);
+  border-bottom: 1px solid var(--ggc-shell-border);
+  position: relative;
+  z-index: 50;
+}
+.ggc-header .utility { border-bottom: 1px solid var(--ggc-hairline); font-size: 13px; }
+.ggc-header .utility .inner { display: flex; justify-content: flex-end; }
+.ggc-header .utility ul {
+  display: flex; align-items: center; gap: 0;
+  margin: 0; padding: 0; list-style: none;
+}
+.ggc-header .utility li + li::before {
+  content: ""; display: inline-block; width: 1px; height: 12px;
+  background: var(--ggc-border-strong); margin: 0 10px; vertical-align: -1px;
+}
+.ggc-header .utility a {
+  display: inline-block; padding: 8px 0;
+  color: var(--ggc-text-muted); text-decoration: none;
+}
+.ggc-header .utility a:hover { color: var(--ggc-primary); text-decoration: underline; }
+.ggc-header .branding .inner {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--ggc-space-5);
+  min-height: 88px;
+}
+.ggc-header .logo {
+  display: flex; align-items: center; gap: 12px;
+  color: inherit; text-decoration: none; min-width: 0;
+}
+.ggc-header .logo img { width: 48px; height: 48px; object-fit: contain; flex-shrink: 0; }
+.ggc-header .logo .org { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: var(--ggc-text-strong); white-space: nowrap; }
+.ggc-header .logo .svc { font-size: 15px; font-weight: 600; color: var(--ggc-primary); margin-left: 8px; white-space: nowrap; }
+.ggc-header .actions { display: flex; align-items: center; gap: var(--ggc-space-2); flex-shrink: 0; }
+.ggc-header .action {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: var(--ggc-control-h-sm);
+  padding: 0 12px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+  font-family: inherit; font-size: var(--ggc-control-font-sm); font-weight: 600;
+  color: var(--ggc-text); cursor: pointer;
+}
+.ggc-header .action:hover { background: var(--ggc-surface-inset); }
+.ggc-header .action.menu { display: none; }        /* 모바일에서만 */
+.ggc-header .action .bars {                          /* 햄버거 — CSS 로 그린다 */
+  display: inline-block; width: 16px; height: 2px; background: currentColor; position: relative;
+}
+.ggc-header .action .bars::before,
+.ggc-header .action .bars::after {
+  content: ""; position: absolute; left: 0; width: 16px; height: 2px; background: currentColor;
+}
+.ggc-header .action .bars::before { top: -5px; }
+.ggc-header .action .bars::after { top: 5px; }
+
+/* 통합검색 패널 — 브랜딩 아래에 접혀 있다 (data-ggc-search-toggle 이 연다) */
+.ggc-header .site-search { display: none; border-top: 1px solid var(--ggc-hairline); background: var(--ggc-surface-inset); }
+.ggc-header .site-search[data-open="true"] { display: block; }
+.ggc-header .site-search .inner { display: flex; gap: var(--ggc-space-2); padding-top: 14px; padding-bottom: 14px; }
+.ggc-header .site-search input {
+  flex: 1; min-width: 0;
+  height: var(--ggc-input-h);
+  padding: 0 16px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  font-family: inherit; font-size: var(--ggc-control-font);
+}
+
+/* --- 3. .ggc-main-menu — 주 메뉴 (KRDS main_menu_pc / mobile) -----------------------
+ * 마크업 (PC 는 hover/focus-within 으로 2단이 펼쳐지고, 모바일은 아코디언):
+ *   <nav class="ggc-main-menu" id="main-menu" aria-label="주 메뉴">
+ *     <div class="inner">
+ *       <ul class="depth1">
+ *         <li><button type="button" aria-expanded="false" aria-controls="mm-1" data-ggc-submenu>의회소개</button>
+ *           <ul class="depth2" id="mm-1"><li><a href="…">의장 인사말</a></li>…</ul></li>
+ *         <li><a href="…">의원 소개</a></li>                      ← 하위 없는 항목
+ *         <li><a href="…" aria-current="page">의안정보</a></li>
+ *       </ul>
+ *     </div>
+ *   </nav>
+ * 모바일(≤900)에서는 nav 전체가 오른쪽에서 나오는 패널이 되고 data-ggc-menu-toggle 이 연다. */
+.ggc-main-menu { background: var(--ggc-surface); border-top: 1px solid var(--ggc-hairline); }
+.ggc-main-menu .depth1 {
+  display: flex; align-items: stretch; gap: 0;
+  margin: 0; padding: 0; list-style: none;
+}
+.ggc-main-menu .depth1 > li { position: relative; }
+.ggc-main-menu .depth1 > li > a,
+.ggc-main-menu .depth1 > li > button {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 56px;
+  padding: 0 20px;
+  border: none; background: none;
+  border-bottom: 3px solid transparent;
+  font-family: inherit; font-size: 17px; font-weight: 700;
+  color: var(--ggc-text-strong); text-decoration: none; cursor: pointer;
+  white-space: nowrap;
+}
+.ggc-main-menu .depth1 > li > button::after {
+  content: ""; width: 6px; height: 6px; margin-top: -3px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+.ggc-main-menu .depth1 > li:hover > a,
+.ggc-main-menu .depth1 > li:hover > button,
+.ggc-main-menu .depth1 > li:focus-within > a,
+.ggc-main-menu .depth1 > li:focus-within > button,
+.ggc-main-menu .depth1 > li > [aria-current],
+.ggc-main-menu .depth1 > li > [aria-expanded="true"] {
+  color: var(--ggc-primary-deep);
+  border-bottom-color: var(--ggc-primary);
+}
+.ggc-main-menu .depth2 {
+  display: none;
+  position: absolute; left: 0; top: 100%; z-index: 60;
+  min-width: 220px;
+  margin: 0; padding: 8px 0; list-style: none;
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border);
+  border-radius: 0 0 var(--ggc-radius-lg) var(--ggc-radius-lg);
+  box-shadow: 0 12px 32px rgba(20, 30, 50, 0.12);
+}
+.ggc-main-menu .depth1 > li:hover > .depth2,
+.ggc-main-menu .depth1 > li:focus-within > .depth2,
+.ggc-main-menu .depth1 > li > [aria-expanded="true"] + .depth2 { display: block; }
+.ggc-main-menu .depth2 a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 15px; font-weight: 500;
+  color: var(--ggc-text); text-decoration: none;
+}
+.ggc-main-menu .depth2 a:hover,
+.ggc-main-menu .depth2 a:focus-visible { background: var(--ggc-primary-light); color: var(--ggc-primary-deep); }
+.ggc-main-menu .depth2 a[aria-current] { font-weight: 700; color: var(--ggc-primary-deep); }
+.ggc-main-menu .head { display: none; }             /* 모바일 패널 머리 (닫기 버튼) */
+
+/* --- 4. .ggc-public-main — 본문 컨테이너 ------------------------------------------
+ *   <main class="ggc-public-main" id="main"><div class="inner"> … </div></main>
+ *   사이드 내비와 함께: <div class="inner ggc-public-main--side"><nav class="ggc-side-nav">…</nav><div class="content">…</div></div> */
+.ggc-public-main { flex: 1; padding: var(--ggc-space-8) 0 var(--ggc-space-10); }
+.ggc-public-main--side {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: var(--ggc-space-8);
+  align-items: start;
+}
+.ggc-public-main--side > .content { min-width: 0; }   /* 표가 컬럼을 밀어내지 않게 — 넓은 표는 .ggc-table-wrap 안에서 스크롤 */
+
+/* 페이지 타이틀 — KRDS page title: 브레드크럼 위, h1 + 설명 */
+.ggc-page-title { margin-bottom: var(--ggc-space-7); }
+.ggc-page-title .ggc-breadcrumb { margin-bottom: var(--ggc-space-3); }
+.ggc-page-title h1 {
+  margin: 0;
+  font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.3;
+  color: var(--ggc-text-strong);
+}
+.ggc-page-title .desc { margin: 10px 0 0; font-size: 17px; color: var(--ggc-text-muted); }
+.ggc-public h2.ggc-h2 {
+  margin: var(--ggc-space-8) 0 var(--ggc-space-4);
+  font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: var(--ggc-text-strong);
+}
+.ggc-public h2.ggc-h2:first-child { margin-top: 0; }
+
+/* 히어로 — 메인 첫 화면: 안내 문구 + 통합검색 + 바로가기 (KRDS 메인 검색 영역 성격) */
+.ggc-hero {
+  background: var(--ggc-primary-light);
+  border-bottom: 1px solid var(--ggc-border);
+  padding: var(--ggc-space-9) 0;
+}
+.ggc-hero .title { margin: 0 0 var(--ggc-space-3); font-size: 28px; font-weight: 800; letter-spacing: -0.03em; color: var(--ggc-text-strong); }
+.ggc-hero .lead { margin: 0 0 var(--ggc-space-6); font-size: 17px; color: var(--ggc-text-muted); }
+.ggc-hero form { display: flex; gap: var(--ggc-space-2); max-width: 720px; }
+.ggc-hero form input {
+  flex: 1; min-width: 0;
+  height: 56px;
+  padding: 0 20px;
+  border: 2px solid var(--ggc-primary);
+  border-radius: var(--ggc-radius);
+  font-family: inherit; font-size: 17px;
+  background: var(--ggc-surface);
+}
+.ggc-hero form .ggc-btn { height: 56px; padding: 0 24px; }
+.ggc-hero .quick { display: flex; flex-wrap: wrap; gap: var(--ggc-space-2); margin-top: var(--ggc-space-5); }
+.ggc-hero .quick a {
+  display: inline-flex; align-items: center;
+  height: var(--ggc-control-h-sm);
+  padding: 0 14px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: 999px;
+  background: var(--ggc-surface);
+  font-size: var(--ggc-control-font-sm); font-weight: 600;
+  color: var(--ggc-primary-deep); text-decoration: none;
+}
+.ggc-hero .quick a:hover { border-color: var(--ggc-primary); background: var(--ggc-surface); }
+
+/* --- 5. .ggc-side-nav — 사이드 내비게이션 (KRDS side_navigation) ------------------
+ * 마크업 (2단은 <details> 라 JS 0):
+ *   <nav class="ggc-side-nav" aria-label="의안정보 메뉴">
+ *     <h2 class="title">의안정보</h2>
+ *     <ul>
+ *       <li><a href="…" aria-current="page">의안 검색</a></li>
+ *       <li><details open><summary>의안 통계</summary><ul><li><a href="…">회기별</a></li></ul></details></li>
+ *     </ul>
+ *   </nav> */
+.ggc-side-nav {
+  position: sticky; top: var(--ggc-space-5);
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-lg);
+  overflow: hidden;
+  background: var(--ggc-surface);
+}
+.ggc-side-nav .title {
+  margin: 0;
+  padding: 20px 20px;
+  background: var(--ggc-primary);
+  color: #fff;
+  font-size: 19px; font-weight: 800; letter-spacing: -0.02em;
+}
+.ggc-side-nav ul { margin: 0; padding: 0; list-style: none; }
+.ggc-side-nav > ul > li { border-top: 1px solid var(--ggc-hairline); }
+.ggc-side-nav a,
+.ggc-side-nav summary {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  font-size: 15px; font-weight: 600;
+  color: var(--ggc-text); text-decoration: none; cursor: pointer;
+  list-style: none;
+}
+.ggc-side-nav summary::-webkit-details-marker { display: none; }
+.ggc-side-nav summary::after {
+  content: ""; width: 7px; height: 7px;
+  border-right: 2px solid var(--ggc-text-faint); border-bottom: 2px solid var(--ggc-text-faint);
+  transform: rotate(45deg); margin-top: -3px;
+}
+.ggc-side-nav details[open] > summary::after { transform: rotate(-135deg); margin-top: 3px; }
+.ggc-side-nav a:hover, .ggc-side-nav summary:hover { background: var(--ggc-surface-inset); }
+.ggc-side-nav a[aria-current] { background: var(--ggc-primary-light); color: var(--ggc-primary-deep); font-weight: 700; box-shadow: inset 3px 0 0 var(--ggc-primary); }
+.ggc-side-nav details ul { background: var(--ggc-surface-inset); border-top: 1px solid var(--ggc-hairline); padding: 6px 0; }
+.ggc-side-nav details ul a { padding: 9px 20px 9px 32px; font-size: 14px; font-weight: 500; }
+
+/* --- 6. .ggc-structured-list — 구조화 목록 (KRDS structured_list) ------------------
+ * 마크업:
+ *   <ul class="ggc-structured-list">
+ *     <li class="item">
+ *       <div class="top"><span class="ggc-badge ggc-badge--session">● 접수 중</span></div>
+ *       <a class="text" href="…"><p class="title">2026년 도민 정책제안 공모</p><p class="desc">…최대 3줄</p>
+ *         <p class="date"><strong>신청 기간</strong><span>2026-09-01 ~ 2026-09-30</span></p></a>
+ *       <div class="tags"><span class="ggc-tag">정책제안</span></div>
+ *       <div class="btn"><a class="ggc-btn ggc-btn--secondary" href="…">신청하기</a></div>
+ *     </li>
+ *   </ul> */
+.ggc-structured-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--ggc-space-5);
+  margin: 0; padding: 0; list-style: none;
+}
+.ggc-structured-list .item {
+  display: flex; flex-direction: column; gap: var(--ggc-space-3);
+  padding: var(--ggc-card-pad);
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-lg);
+  background: var(--ggc-surface);
+}
+.ggc-structured-list .text { color: inherit; text-decoration: none; flex: 1; }
+.ggc-structured-list .text:hover .title { color: var(--ggc-primary); text-decoration: underline; }
+.ggc-structured-list .title { margin: 0 0 6px; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--ggc-text-strong); }
+.ggc-structured-list .desc {
+  margin: 0 0 10px; font-size: 15px; color: var(--ggc-text-muted);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ggc-structured-list .date { margin: 0; font-size: 14px; color: var(--ggc-text-subtle); display: flex; gap: 8px; flex-wrap: wrap; }
+.ggc-structured-list .date strong { color: var(--ggc-text-muted); }
+.ggc-structured-list .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.ggc-structured-list .btn { display: flex; gap: var(--ggc-space-2); }
+
+/* --- 7. .ggc-footer--public — 공개 푸터 (KRDS footer) + .ggc-identifier ---------------
+ * 마크업:
+ *   <footer class="ggc-footer ggc-footer--public">
+ *     <div class="quick"><div class="inner"><a href="…">경기도</a><a href="…">국회</a>…</div></div>
+ *     <div class="inner main">
+ *       <div class="info">
+ *         <p class="org">경기도의회</p>
+ *         <p class="addr">(16508) 경기도 수원시 팔달구 효원로 1</p>
+ *         <p class="tel"><strong>대표전화 031-8008-7000</strong><span>(평일 09:00~18:00)</span></p>
+ *       </div>
+ *       <div class="links"><a href="…">찾아오시는 길</a><a href="…">이용안내</a></div>
+ *     </div>
+ *     <div class="bottom"><div class="inner">
+ *       <div class="menu"><a class="point" href="…">개인정보처리방침</a><a href="…">저작권 정책</a><a href="…">웹 접근성 안내</a></div>
+ *       <p class="copy">© 경기도의회. All rights reserved.</p>
+ *       <div class="ggc-identifier"><span class="logo" aria-hidden="true"></span><span class="text">이 누리집은 경기도의회 누리집입니다.</span></div>
+ *     </div></div>
+ *   </footer> */
+.ggc-footer--public {
+  margin-top: auto;
+  background: var(--ggc-surface-inset);
+  border-top: 1px solid var(--ggc-border);
+  font-size: 14px;
+  color: var(--ggc-text-muted);
+}
+.ggc-footer--public .quick { background: var(--ggc-surface); border-bottom: 1px solid var(--ggc-border); }
+.ggc-footer--public .quick .inner { display: flex; flex-wrap: wrap; gap: 0 var(--ggc-space-6); }
+.ggc-footer--public .quick a { display: inline-block; padding: 12px 0; color: var(--ggc-text-muted); text-decoration: none; font-weight: 600; }
+.ggc-footer--public .quick a:hover { color: var(--ggc-primary); text-decoration: underline; }
+.ggc-footer--public .inner.main {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--ggc-space-5);
+  padding-top: var(--ggc-space-7); padding-bottom: var(--ggc-space-7);
+}
+.ggc-footer--public .info p { margin: 0 0 4px; }
+.ggc-footer--public .info .org { font-size: 17px; font-weight: 800; color: var(--ggc-text-strong); margin-bottom: 8px; }
+.ggc-footer--public .info .tel strong { color: var(--ggc-text); margin-right: 6px; }
+.ggc-footer--public .links { display: flex; flex-wrap: wrap; gap: var(--ggc-space-4); align-content: flex-start; }
+.ggc-footer--public .links a { color: var(--ggc-text); text-decoration: underline; text-underline-offset: 2px; font-weight: 600; }
+.ggc-footer--public .bottom { border-top: 1px solid var(--ggc-border); }
+.ggc-footer--public .bottom .inner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ggc-space-3) var(--ggc-space-5);
+  padding-top: 16px; padding-bottom: 16px;
+}
+.ggc-footer--public .menu { display: flex; flex-wrap: wrap; gap: 0 var(--ggc-space-4); }
+.ggc-footer--public .menu a { color: var(--ggc-text-muted); text-decoration: none; }
+.ggc-footer--public .menu a:hover { text-decoration: underline; }
+.ggc-footer--public .menu a.point { color: var(--ggc-danger); font-weight: 700; }   /* 개인정보처리방침은 강조 — KRDS 관례 */
+.ggc-footer--public .copy { margin: 0; font-size: 13px; color: var(--ggc-text-subtle); flex-basis: 100%; }
+.ggc-identifier {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--ggc-text-muted);
+}
+.ggc-identifier .text { white-space: nowrap; }
+
+/* --- 8. 반응형 ------------------------------------------------------------------ */
+@media (max-width: 900px) {
+  .ggc-public .inner { padding: 0 16px; }
+  .ggc-header .utility { display: none; }
+  .ggc-header .branding .inner { min-height: 64px; }
+  .ggc-header .logo img { width: 36px; height: 36px; }
+  .ggc-header .logo .org { font-size: 18px; }
+  .ggc-header .logo .svc { display: none; }
+  .ggc-header .action.menu { display: inline-flex; }
+  .ggc-header .action.search .label { display: none; }
+
+  /* 주 메뉴 → 오른쪽 패널 (KRDS main_menu_mobile) */
+  .ggc-main-menu {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 70;
+    width: min(360px, 88vw);
+    border-top: none; border-left: 1px solid var(--ggc-border);
+    box-shadow: -8px 0 24px rgba(20, 30, 50, 0.12);
+    transform: translateX(100%);
+    transition: transform 0.18s ease;
+    overflow-y: auto;
+  }
+  .ggc-main-menu[data-open="true"] { transform: translateX(0); }
+  .ggc-main-menu .inner { padding: 0; }
+  .ggc-main-menu .head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid var(--ggc-border);
+    font-weight: 800; font-size: 17px; color: var(--ggc-text-strong);
+  }
+  .ggc-main-menu .head .close {
+    width: 40px; height: 40px; border: none; background: none;
+    font-size: 20px; color: var(--ggc-text-muted); cursor: pointer; border-radius: var(--ggc-radius-sm);
+  }
+  .ggc-main-menu .depth1 { flex-direction: column; }
+  .ggc-main-menu .depth1 > li { border-bottom: 1px solid var(--ggc-hairline); }
+  .ggc-main-menu .depth1 > li > a,
+  .ggc-main-menu .depth1 > li > button {
+    width: 100%; height: auto; min-height: 52px; padding: 12px 16px;
+    justify-content: space-between; border-bottom: none; white-space: normal; text-align: left;
+  }
+  .ggc-main-menu .depth1 > li > button::after { transform: rotate(45deg); }
+  .ggc-main-menu .depth1 > li > [aria-expanded="true"]::after { transform: rotate(-135deg); }
+  .ggc-main-menu .depth1 > li:hover > a,
+  .ggc-main-menu .depth1 > li:focus-within > a,
+  .ggc-main-menu .depth1 > li:hover > button,
+  .ggc-main-menu .depth1 > li:focus-within > button { border-bottom-color: transparent; }
+  .ggc-main-menu .depth2 {
+    position: static; display: none;
+    min-width: 0; border: none; border-radius: 0; box-shadow: none;
+    background: var(--ggc-surface-inset); padding: 4px 0;
+  }
+  .ggc-main-menu .depth1 > li:hover > .depth2,
+  .ggc-main-menu .depth1 > li:focus-within > .depth2 { display: none; }   /* 모바일은 클릭(aria-expanded)으로만 */
+  .ggc-main-menu .depth1 > li > [aria-expanded="true"] + .depth2 { display: block; }
+  .ggc-main-menu .depth2 a { padding: 10px 16px 10px 28px; }
+  html[data-ggc-menu-active] { overflow: hidden; }
+
+  .ggc-public-main { padding: var(--ggc-space-6) 0 var(--ggc-space-8); }
+  .ggc-public-main--side { grid-template-columns: minmax(0, 1fr); gap: var(--ggc-space-5); }
+  .ggc-side-nav { position: static; }
+  .ggc-page-title h1 { font-size: 24px; }
+  .ggc-hero { padding: var(--ggc-space-7) 0; }
+  .ggc-hero .title { font-size: 22px; }
+  .ggc-hero form { flex-direction: column; }
+  .ggc-hero form .ggc-btn { width: 100%; }
+  .ggc-footer--public .inner.main { flex-direction: column; }
+  .ggc-footer--public .quick .inner { gap: 0 var(--ggc-space-4); }
+}
+
+/* --- 9. 고대비 ------------------------------------------------------------------ */
+@media (forced-colors: active) {
+  .ggc-masthead, .ggc-header, .ggc-main-menu, .ggc-footer--public, .ggc-side-nav, .ggc-structured-list .item { border: 1px solid; }
+  .ggc-masthead .flag, .ggc-identifier .logo { border: 1px solid; }
+  .ggc-main-menu .depth1 > li > [aria-current],
+  .ggc-main-menu .depth2 a[aria-current],
+  .ggc-side-nav a[aria-current] { outline: 2px solid Highlight; outline-offset: -2px; }
+  .ggc-side-nav .title { border-bottom: 1px solid; }
+  .ggc-hero form input { border: 2px solid; }
+}
+@media (prefers-contrast: more) {
+  .ggc-masthead, .ggc-header { border-color: var(--ggc-border-strong); }
+  .ggc-main-menu .depth2, .ggc-side-nav, .ggc-structured-list .item { border-color: var(--ggc-border-strong); }
+}
+
+/* --- 10. 인쇄 — 공문·안내문은 출력된다 (domain-language "인쇄를 가정한다") --------------- */
+@media print {
+  .ggc-masthead, .ggc-header, .ggc-footer--public .quick, .ggc-footer--public .links, .ggc-side-nav, .ggc-skip-link { display: none !important; }
+  .ggc-public-main--side { grid-template-columns: 1fr; }
+  .ggc-public { font-size: 12pt; color: #000; }
+}

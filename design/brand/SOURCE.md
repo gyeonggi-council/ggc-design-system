@@ -86,7 +86,7 @@
 ## 재현
 
 ```bash
-cd /d/260712_경기도의회_시스템구축/design/brand
+cd <저장소>/design/brand
 python build-brand-assets.py          # dist/ 재생성
 python build-brand-assets.py --check  # MANIFEST 대조만
 ```

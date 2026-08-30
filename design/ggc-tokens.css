@@ -1,11 +1,25 @@
 /* =============================================================================
- * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v1.2 (2026-08-22)
- * 근거: docs/03-공통디자인가이드.md · docs/23-…-단일디자인-계약.md (AUTHORITATIVE)
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v2.0 (2026-08-29)
+ * 근거: docs/contract.md (AUTHORITATIVE) · 구판 가이드는 archive/03-공통디자인가이드.md
  * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
  *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
  *       (v1.0 의 KRDS 기본 파랑 #246BEB 는 폐기. #256ef4 도 마찬가지다)
  * 사용: 각 앱이 이 파일을 복사(또는 값 이식)해 자체 스타일의 최상단에 둔다.
+ *       대민(공개) 화면은 <html data-ggc-profile="public"> 을 붙인다 — 그 외에는 같다.
  * 검사: python design/check_design.py --canon   /   --gate <서비스>
+ *
+ * ── v2.0 에서 바뀐 것 (프로필 층 신설 — 색은 하나도 바뀌지 않았다) ────────────────
+ * 업무용과 대민용이 **같은 토큰 파일 하나**를 쓴다. 기본(속성 없음)이 업무 프로필이라
+ * v1.2 소비자는 아무것도 바꾸지 않아도 렌더가 같다. 대민 화면은 <html data-ggc-profile="public">
+ * 으로 켜며, 그 블록은 **치수(컨트롤 높이·글자 크기·셀 패딩·컨테이너 폭)만** 바꾼다.
+ * 색·포커스·서체·간격 스케일은 프로필이 건드릴 수 없다(검사기 D6 가 허용 목록으로 막는다).
+ *
+ *   신설  --ggc-space-8~11          KRDS gap 다음 스텝(40/48/64/80) — 사이 값 발명 금지
+ *   승격  --ggc-text-body           컴포넌트 레이어에 있던 본문 단락색을 토큰으로 (값 동일)
+ *   신설  --ggc-control-h* · --ggc-input-h · --ggc-search-h · --ggc-*-font   컨트롤 치수
+ *   신설  --ggc-cell-pad · --ggc-row-pad · --ggc-card-pad · --ggc-container-max   밀도·폭
+ *         (전부 컴포넌트 레이어의 실측 리터럴을 그대로 옮겼다 — 리팩터 전후 렌더 동일)
+ *   신설  [data-ggc-profile="public"] 블록 — 값은 KRDS 토큰(1rem=10px)에서 기계적으로 옮김
  *
  * ── v1.2 에서 바뀐 것 (WCAG AA 보정) ─────────────────────────────────────────
  * v1.1 은 자기 자신이 AA 미달이었다. 경기도의회는 공공기관이라 KWCAG 2.2(4.5:1)가
@@ -53,6 +67,9 @@
    *   정본 최다 사용색이라 삭제하지 않고 역할만 강등했다. */
   --ggc-text-faint: #8a94a3;
 
+  /* 카드 안 긴 본문 단락 — 흰 위 10.23:1. v2.0 에서 컴포넌트 레이어로부터 승격(값 동일) */
+  --ggc-text-body: #3a4150;
+
   /* --- 중립 면·선 --- */
   --ggc-border:        #e6ebf1;  /* 카드 테두리 */
   --ggc-border-strong: #d5dce5;  /* 버튼 테두리, 강조 구분 */
@@ -90,6 +107,11 @@
   --ggc-space-5: 20px;
   --ggc-space-6: 24px;
   --ggc-space-7: 32px;
+  /* v2.0 확장 — KRDS gap 의 다음 스텝(40·48·64·80). 사이 값을 발명하지 않는다 */
+  --ggc-space-8: 40px;
+  --ggc-space-9: 48px;
+  --ggc-space-10: 64px;
+  --ggc-space-11: 80px;
 
   /* --- 형태 --- */
   --ggc-radius:    10px;   /* 버튼·입력 */
@@ -106,6 +128,52 @@
   --ggc-lnb-w: 256px;
   --ggc-main-max: 1320px;        /* 대시보드 */
   --ggc-main-max-wide: 1360px;   /* 기타 업무 화면 */
+
+  /* --- 컨트롤 치수·밀도·폭 (v2.0 — 프로필이 조정하는 유일한 층) ---
+   * 값은 컴포넌트 레이어의 실측 리터럴을 그대로 옮긴 것이다(리팩터 전후 렌더 동일).
+   * 대민 프로필은 아래 [data-ggc-profile="public"] 블록에서 **이 이름들만** 덮어쓴다. */
+  --ggc-control-h-sm:    34px;      /* .ggc-btn--sm */
+  --ggc-control-h:       42px;      /* .ggc-btn */
+  --ggc-control-h-lg:    46px;      /* .ggc-btn--lg */
+  --ggc-input-h:         44px;      /* .ggc-field input/select · .ggc-btn--dashed */
+  --ggc-search-h:        40px;      /* .ggc-search */
+  --ggc-control-font:    13.5px;    /* 버튼·입력 글자 */
+  --ggc-control-font-sm: 13px;
+  --ggc-control-font-lg: 14px;
+  --ggc-label-font:      13px;      /* 폼 라벨 */
+  --ggc-table-font:      13px;      /* .ggc-table */
+  --ggc-cell-pad:        11px 10px; /* th · td */
+  --ggc-row-pad:         15px 22px; /* .ggc-list-row */
+  --ggc-card-pad:        18px 22px; /* .ggc-card--pad */
+  --ggc-container-max:   1280px;    /* 유틸리티 바 · 푸터 inner */
+}
+
+/* =============================================================================
+ * 대민 프로필 — <html data-ggc-profile="public"> (v2.0, 2026-08-29)
+ *
+ * 대민(공개) 화면은 KRDS 패턴을 따르되 색은 기관 CI 를 유지한다(사용자 결정).
+ * 그래서 이 블록에는 **치수만** 있다 — 색·포커스·서체·간격 토큰은 여기 올 수 없다.
+ * 값은 KRDS 토큰(html{font-size:62.5%} → 1rem=10px)에서 기계적으로 옮겼다:
+ *   높이   size-height-6/7/8 = 40/48/56        글자   body.small/medium/large = 15/17/19
+ *   표     tbody padding-5/6 = 12/16 · label.medium = 17
+ *   행·카드 padding-7/8 = 20/24                컨테이너 contents 1200 + 24×2 = 1248
+ * 속성은 서브트리에도 붙는다 — 업무 화면 안의 도민 안내 구역만 켤 수 있다.
+ * ============================================================================= */
+[data-ggc-profile="public"] {
+  --ggc-control-h-sm:    40px;
+  --ggc-control-h:       48px;
+  --ggc-control-h-lg:    56px;
+  --ggc-input-h:         48px;
+  --ggc-search-h:        48px;
+  --ggc-control-font:    17px;
+  --ggc-control-font-sm: 15px;
+  --ggc-control-font-lg: 19px;
+  --ggc-label-font:      17px;
+  --ggc-table-font:      17px;
+  --ggc-cell-pad:        12px 16px;
+  --ggc-row-pad:         20px 24px;
+  --ggc-card-pad:        24px 24px;
+  --ggc-container-max:   1248px;
 }
 
 /* --- 공통 포커스 규칙 (계약 §3) ---
@@ -170,7 +238,7 @@
   line-height: 1;
 }
 .ggc-utility-bar .inner {
-  max-width: 1280px; margin: 0 auto; padding: 8px 16px;
+  max-width: var(--ggc-container-max); margin: 0 auto; padding: 8px 16px;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
 }
 .ggc-utility-bar .brand { color: #fff; font-weight: 700; text-decoration: none; letter-spacing: -0.2px; }
@@ -211,4 +279,4 @@
   font-family: var(--ggc-font); font-size: 12px;
   border-top: 1px solid var(--ggc-border);
 }
-.ggc-footer .inner { max-width: 1280px; margin: 0 auto; padding: 16px; }
+.ggc-footer .inner { max-width: var(--ggc-container-max); margin: 0 auto; padding: 16px; }

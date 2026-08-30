@@ -62,7 +62,17 @@ python design/check_design.py --report <서비스경로>
 ```
 
 **패키지가 아니라 복사다.** 프런트가 7종이라 CSS 커스텀 프로퍼티가 최소공배수이고,
-npm 워크스페이스·사설 레지스트리가 0건이다. React 컴포넌트는 공유하지 않는다.
+npm 워크스페이스·사설 레지스트리가 0건이다.
+
+React · Next · Vite + Tailwind v4 프로젝트는 **Tier 2 — shadcn 레지스트리**로 같은 것을 복사 설치한다
+(v2.0). npm 배포가 아니라 `public/r/*.json` 정적 파일이며, 색은 전부 `var(--ggc-*)` 라 값의 원천은 그대로 토큰 파일 하나다.
+
+```bash
+# components.json 의 registries 에 "@ggc": "<서빙주소>/public/r/{name}.json" 을 넣고
+npx shadcn add @ggc/ggc-style -y      # 토큰 파일 + 테마 매핑 + UI 23종
+```
+
+절차와 손으로 하는 셋(토큰 @import · 폰트 복사 · .dark 삭제)은 [docs/quickstart/react-tier2.md](docs/quickstart/react-tier2.md).
 
 ## 무엇이 들어 있나
 
@@ -74,21 +84,23 @@ npm 워크스페이스·사설 레지스트리가 0건이다. React 컴포넌트
 | `design/check_design.py` | **검사기** — `diff -q` 를 대체하는 6종 검사 |
 | `design/brand/` | 파비콘 세트 · 의회 마크 · stdlib 전용 생성기 · 배포 매핑표 |
 | **`design/examples/`** | **예제 갤러리 5쪽** — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
-| `skills/2ggc-design/` | **디자인 가이드 본문** — 화면 처방·스택별 착지점·리스킨·검증 |
-| `docs/23-…-단일디자인-계약.md` | 상위 계약 (AUTHORITATIVE) |
+| `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v2.0**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·메뉴) |
+| `design/components.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 |
+| `registry.json` · `registry/ggc/` · `public/r/` | **Tier 2 shadcn 레지스트리** — 소스(tsx) · 빌드 산출물(JSON, 서빙 대상). 검사는 `tools/check-registry.py` |
+| `DESIGN.md` | **생성물** — Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (`tools/build-design-md.py`) |
+| `skills/ggc-design/` | **디자인 가이드 본문** — 화면 처방·스택별 착지점·리스킨·검증 |
+| `docs/contract.md` | 단일 디자인 계약 (AUTHORITATIVE) |
 | `docs/krds-alignment.md` | **KRDS 정렬** — 무엇을 따르고 무엇을 오버라이드하는가 |
 
 ## 가이드 읽는 순서
 
 0. **[design/examples/index.html](design/examples/index.html)** — 먼저 눈으로 본다.
    글로 읽기 전에 무엇이 나오는지 알면 나머지가 훨씬 빨리 읽힌다
-1. **[skills/ggc-design/SKILL.md](skills/ggc-design/SKILL.md)** — 전체 절차
-2. [references/contract.md](skills/ggc-design/references/contract.md) — 바꾸면 안 되는 것
-3. [references/archetypes.md](skills/ggc-design/references/archetypes.md) — 화면을 무엇으로 어떤 순서로
-4. [references/porting.md](skills/ggc-design/references/porting.md) — 스택별 착지점과 함정
-5. [references/brand-assets.md](skills/ggc-design/references/brand-assets.md) — 파비콘·마크
-6. [references/reskin.md](skills/ggc-design/references/reskin.md) — 가동 중 서비스 수렴
-7. [references/verify.md](skills/ggc-design/references/verify.md) — 검증과 복귀 지점
+1. **[docs/README.md](docs/README.md)** — 사람용 문서 진입: 내 스택의 5단계 quickstart · 업무/대민 판정 · 컴포넌트 찾기
+2. **[skills/ggc-design/SKILL.md](skills/ggc-design/SKILL.md)** — Claude Code 스킬 (전체 절차 · 결정 트리 · 완료 체크리스트).
+   설치는 `bash tools/install-skill.sh` — 링크라 복사본이 생기지 않는다
+3. [docs/contract.md](docs/contract.md) — AUTHORITATIVE 계약
+4. [skills/ggc-design/references/](skills/ggc-design/references/) — contract · profiles · archetypes · public-patterns · components · porting · registry · verify
 
 ## 검사기
 
@@ -97,6 +109,7 @@ python design/check_design.py --canon                 # 정본 자체 (문서↔
 python design/check_design.py --report <서비스경로>    # 판정만
 python design/check_design.py --gate   <서비스경로>    # FAIL 이면 exit 1
 python design/check_design.py --all    <서비스루트>    # 전수 요약
+bash tools/check-all.sh                                # 이 저장소 자체 전수 (CI 가 도는 것과 같다)
 ```
 
 | ID | 검사 | 왜 필요했나 |
@@ -106,7 +119,8 @@ python design/check_design.py --all    <서비스루트>    # 전수 요약
 | D3 | 로드 순서 · 공통 셸 · 파비콘 | 순서 역전은 "왜 색이 안 먹지" 로만 나타난다 |
 | D4 | 외부 폰트 CDN 0 | 망분리에서 깨진다 |
 | D5 | `:focus-visible` · 대체 없는 `outline:none` · 대비 | |
-| D6 | **정본 자체** — 계약 문서 ↔ 토큰 ↔ 컴포넌트 ↔ 생성물 | 갭이 두 달간 안 보였다 |
+| D6 | **정본 자체** — 계약 문서 ↔ 토큰 ↔ 컴포넌트 ↔ 인벤토리 ↔ 생성물 · 프로필 블록 | 갭이 두 달간 안 보였다 |
+| D7 | Tier 2 소비 프로젝트 — 토큰 `@import` · `:root` 매핑이 전부 `var(--ggc-*)` · 다크 팔레트 없음 | 값을 두 번 적는 순간 갈라진다 |
 
 검사기는 **설명을 위반으로 세지 않는다.** 주석과 HTML `<code>`/`<pre>` 본문은 스캔에서
 제외한다 — 그러지 않으면 “`#256ef4` 는 폐기값” 이라고 적는 순간 그 문장이 FAIL 이 되어
@@ -159,61 +173,55 @@ v1.2 가 AA 를 통과하는 값 중 **디자인 원본에 가장 가까운 집�
 전부 실측 대조해 [docs/krds-alignment.md](docs/krds-alignment.md) 에 적었다.
 **정부 표준 완전 준수를 주장하지 않는다.**
 
+## Claude Design 에서 쓰기
+
+시안은 Claude Design(claude.ai/design)에서, 반영은 이 저장소의 토큰·컴포넌트로 한다.
+시안이 처음부터 의회 디자인으로 나오게 하려면 **디자인 시스템을 먼저 가져온다** —
+둘 중 하나면 된다.
+
+1. Claude Design 의 「디자인 시스템 가져오기」에 이 저장소 URL 을 붙인다. 루트의
+   [`DESIGN.md`](DESIGN.md) 를 읽는다.
+2. 또는 `DESIGN.md` 파일을 「Create new design system → Add assets」에 올린다.
+
+`DESIGN.md` 는 **생성물**이다 — 값은 `design/ggc-tokens.css` 에서, 컴포넌트 목록은
+`design/components.tsv` 에서 온다. 손으로 고치지 않는다. 토큰이나 인벤토리가 바뀌면
+`python tools/build-design-md.py` 로 다시 만들고, 낡으면 `check_design.py --canon` 이 잡는다.
+
+> Claude Design 산출물을 그대로 배포하지 않는다. 시안 코드에는 외부 CDN 참조나 규약 밖
+> 색이 섞일 수 있다 — `skills/ggc-design/references/porting.md` 의 역변환 규칙대로 옮긴다.
+
 ## 이 저장소의 지위
 
-**정본은 상위 플랫폼 저장소(`ggc_ai_platform`)의 `design/` 과
-`plugins/ggc-deploy/skills/2ggc-design/` 이다.** 여기는 **공유용 배포판**이다 —
-서비스 소스와 배포 파이프라인이 그쪽에 있어 작업이 거기서 일어난다.
+**이 저장소가 정본이다** (2026-08-29 승격). 값의 유일한 원천은 `design/ggc-tokens.css` 이고,
+모든 서비스 사본·문서·생성물이 여기서 파생한다. 과거에는 상위 플랫폼 저장소
+(`ggc_ai_platform`)가 정본이고 여기가 공유용 배포판이었다 — 그 시기의 동기화 도구와
+구판 문서는 [`archive/`](archive/) 에 보존돼 있다.
 
-**Claude Design 의 「경기도의회 공통 디자인 시스템」 프로젝트도 정본이 아니다.**
-그쪽은 시안·프로토타입을 만들기 위한 **파생판**이고, 값이 갈리면 이 저장소(정확히는
-상위 플랫폼 저장소)가 이긴다. 그쪽에서 새로 만들어진 것이 생기면 **로컬 정본으로
-역수입한 뒤** 여기로 내려온다 — 반대 방향으로 흐르지 않는다. 검사기와 배포 파이프라인이
-전부 로컬 경로를 보고, 망분리된 서버는 claude.ai 에 접근하지 못하기 때문이다.
+**브랜드 아이덴티티는 여기가 아니다.** CI 원본 색 · 로고 파생 · PPT 템플릿 · 열람용 가이드 사이트는
+별도 저장소 `ggc-design-guide` 가 정본이다(2026-08-30 결정). 이 저장소는 그 색을 **구현 토큰**
+(`design/ggc-tokens.css`)으로 갖고, 두 저장소의 값이 갈리면 그쪽의 `tools/check_drift.py` 가 잡는다.
+브랜드 색을 바꾸는 결정은 그쪽에서 나고 여기로 내려온다.
 
-이 프로젝트는 네트워크 구성도에서 이미 같은 모델을 쓴다(정본 하나 + 공유용 생성물).
-두 벌이 갈라지지 않게 `tools/sync-from-platform.sh` 가 복사와 드리프트 검출을 한다.
+**Claude Design 의 「경기도의회 공통 디자인 시스템」 프로젝트는 정본이 아니다.**
+그쪽은 시안·프로토타입을 만들기 위한 **파생판**이고, 값이 갈리면 이 저장소가 이긴다.
+그쪽에서 새로 만들어진 것이 생기면 **이 저장소에 먼저 반영한 뒤** 쓴다 —
+반대 방향으로 흐르지 않는다. 검사기가 이 저장소의 파일만 정본으로 보고,
+망분리된 서버는 claude.ai 에 접근하지 못하기 때문이다.
 
-```bash
-bash tools/sync-from-platform.sh          # 정본에서 복사
-bash tools/sync-from-platform.sh --check  # 갈라졌는지만 확인 (복사 안 함)
-```
+## 공개 이력과 남은 주의점
 
-## 공개 전환 전 확인할 것
+2026-08-26 에 이력을 **orphan 커밋 하나로 재생성**해 public 으로 전환했다(「공개판」).
+서비스 소스·k8s 매니페스트·DB 스키마는 애초에 들어 있지 않고, 예제 갤러리의
+의안명·숫자·이름·날짜는 전부 가상이다(위원회 이름만 공개 정보, 사람 이름은 `이○○` 마스킹).
+인프라 주소는 `27.96.x.x` 형태로 마스킹돼 있고, `.gitignore` 가
+`.env`·`*.pem`·`*.key`·`*-jwk.json`·`.mcp.json`·kubeconfig 를 막는다.
 
-지금은 **private** 이다. public 으로 돌리면 되돌릴 수 없으므로(색인·포크) 아래를 먼저 본다.
-
-이미 되어 있는 것 —
-- 인프라 주소는 **마스킹**돼 있다. `27.96.x.x` 처럼 나오는 것이 그것이고,
-  치환 목록은 상위 저장소의 `redaction-map.json` **shared 규약과 동일**하다.
-  `tools/sync-from-platform.sh` 가 **복사할 때마다 다시 마스킹**하므로 되살아나지 않는다.
-- `.gitignore` 가 `.env`·`*.pem`·`*.key`·`*-jwk.json`·`.mcp.json`·kubeconfig 를 막는다.
-- 서비스 소스·k8s 매니페스트·DB 스키마는 **애초에 들어 있지 않다.** 상위 저장소에 있다.
-- 예제 갤러리의 의안명·숫자·이름·날짜는 **전부 가상**이다. 위원회 이름만 실제 상임위
-  명칭(공개 정보)이고, 사람 이름은 `이○○` 처럼 마스킹된 형태만 쓴다.
-- 개인키·API 키·토큰·JWT·비밀번호 대입: **현재 트리와 전체 이력 모두 0건**(2026-08-25 재확인).
-
-⛔ **아직 남아 있는 것 — 이것이 해소되기 전에는 public 으로 돌리면 안 된다** —
-- **과거 커밋에 공인 IP 원문이 살아 있다.** 마스킹은 2026-08-22 `3e0430b` 에서 적용됐고
-  현재 트리는 깨끗하지만, 그 이전 커밋 `5f1e82f` 의 blob 4개에 원문이 그대로 있다:
-  `skills/ggc-design/references/{verify,reskin,brand-assets}.md` · `design/brand/SOURCE.md`.
-  **GitHub 은 public 전환 시 과거 커밋도 함께 열린다** — 트리에서 지워도 `git log` 에 남는다.
-  해소하려면 이력을 다시 써야 한다(`git filter-repo` 로 치환 후 force push, 또는 orphan
-  커밋 하나로 재시작). 미병합 원격 브랜치 `claude/uiux-improvement-methods-*` 도 같은
-  이력을 공유하므로 함께 처리한다.
-- 확인 명령 — 트리가 아니라 **이력**을 본다:
-  ```bash
-  git rev-list --all --objects | awk '{print $1}' | sort -u | while read o; do
-    [ "$(git cat-file -t $o)" = blob ] && git cat-file -p $o | grep -aIn '<내부IP>'
-  done
-  ```
-
-공개 전에 사람이 판단할 것 —
-- **의회 마크의 대외 사용 범위.** 기관 CI 자산이다. 저장소가 공개되면 누구나 받아 쓴다.
-- **`docs/23` 계약 문서**에 시스템 목록과 화면 구성이 들어 있다. 대외 공개가 맞는지.
-- **가로조합 로고 3판·축약 로고·슬로건은 이 저장소에 아직 넣지 않았다.** 로컬 정본에
-  편입하는 것과 별개로, 기관 CI 의 대외 배포 판단이 나기 전까지 공유용 판에서는 보류한다.
-  특히 슬로건은 신영복 선생 캘리그래피 기반이라 마크와는 별개의 판단이 필요하다.
+공개 상태에서 계속 지킬 것 —
+- **마스킹을 되돌리는 커밋을 만들지 않는다.** `python tools/check-links.py` 가
+  절대경로(`D:\`·`/d/…`)와 원문 IP 패턴을 문서·코드 전반에서 잡는다.
+- **의회 마크 외의 CI 자산은 넣지 않는다.** 가로조합 로고 3판·축약 로고·슬로건은
+  기관의 대외 배포 판단이 나기 전까지 보류한다(슬로건은 신영복 선생 캘리그래피 기반이라
+  마크와 별개의 판단이 필요하다).
 
 ## 라이선스·자산
 

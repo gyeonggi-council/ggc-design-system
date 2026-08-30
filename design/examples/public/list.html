@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko" data-ggc-profile="public">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>의안 검색 — 경기도의회 의정정보 누리집 (예제)</title>
+<link rel="icon" href="../../brand/dist/favicon-32.png">
+<link rel="stylesheet" href="../../ggc-tokens.css">
+<link rel="stylesheet" href="../../ggc-components.css">
+<link rel="stylesheet" href="../../ggc-public.css">
+</head>
+<body class="ggc-public">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-masthead">
+  <div class="inner">
+    <span class="flag" aria-hidden="true"></span>
+    <span class="text">이 누리집은 대한민국 공식 전자정부 누리집입니다.</span>
+  </div>
+</div>
+
+<header class="ggc-header">
+  <div class="utility"><div class="inner"><ul><li><a href="#main">로그인</a></li><li><a href="#main">회원가입</a></li><li><a href="#main" lang="en">ENGLISH</a></li></ul></div></div>
+  <div class="branding">
+    <div class="inner">
+      <a class="logo" href="index.html"><img src="../../brand/dist/assembly-mark.png" alt=""><span class="org">경기도의회</span><span class="svc">의정정보 누리집</span></a>
+      <div class="actions">
+        <button class="action search" type="button" data-ggc-search-toggle aria-expanded="false" aria-controls="site-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span class="label">통합검색</span>
+        </button>
+        <button class="action menu" type="button" data-ggc-menu-toggle aria-expanded="false" aria-controls="main-menu"><span class="bars" aria-hidden="true"></span> 전체메뉴</button>
+      </div>
+    </div>
+  </div>
+  <div class="site-search" id="site-search">
+    <form class="inner" role="search" action="list.html">
+      <label for="site-q" class="ggc-sr">누리집 통합검색</label>
+      <input id="site-q" type="search" placeholder="의안명 · 의원명 · 회의록 검색">
+      <button class="ggc-btn ggc-btn--primary" type="submit">검색</button>
+    </form>
+  </div>
+  <nav class="ggc-main-menu" id="main-menu" aria-label="주 메뉴">
+    <div class="inner">
+      <div class="head">전체메뉴 <button class="close" type="button" data-ggc-menu-toggle aria-label="메뉴 닫기">✕</button></div>
+      <ul class="depth1">
+        <li><button type="button" aria-expanded="false" aria-controls="mm-1" data-ggc-submenu>의회소개</button>
+          <ul class="depth2" id="mm-1"><li><a href="#main">의장 인사말</a></li><li><a href="#main">의회 연혁</a></li><li><a href="#main">조직과 기능</a></li><li><a href="#main">찾아오시는 길</a></li></ul></li>
+        <li><a href="#main">의원소개</a></li>
+        <li><button type="button" aria-expanded="false" aria-controls="mm-3" data-ggc-submenu aria-current="page">의안정보</button>
+          <ul class="depth2" id="mm-3"><li><a href="list.html" aria-current="page">의안 검색</a></li><li><a href="#main">조례 현황</a></li><li><a href="#main">의안 통계</a></li></ul></li>
+        <li><button type="button" aria-expanded="false" aria-controls="mm-4" data-ggc-submenu>회의정보</button>
+          <ul class="depth2" id="mm-4"><li><a href="#main">회의 일정</a></li><li><a href="#main">회의록</a></li><li><a href="#main">인터넷 방송</a></li></ul></li>
+        <li><button type="button" aria-expanded="false" aria-controls="mm-5" data-ggc-submenu>도민참여</button>
+          <ul class="depth2" id="mm-5"><li><a href="#main">정책제안</a></li><li><a href="#main">청원</a></li><li><a href="form.html">의견 제출</a></li><li><a href="#main">방청 신청</a></li></ul></li>
+        <li><a href="#main">알림</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="ggc-public-main">
+  <div class="inner ggc-public-main--side">
+
+    <nav class="ggc-side-nav" aria-label="의안정보 메뉴">
+      <h2 class="title">의안정보</h2>
+      <ul>
+        <li><a href="list.html" aria-current="page">의안 검색</a></li>
+        <li><a href="#main">조례 현황</a></li>
+        <li><details open><summary>의안 통계</summary><ul><li><a href="#main">회기별 처리 현황</a></li><li><a href="#main">위원회별 현황</a></li><li><a href="#main">의원별 발의 현황</a></li></ul></details></li>
+        <li><a href="#main">의안 처리 절차 안내</a></li>
+      </ul>
+    </nav>
+
+    <div class="content">
+      <div class="ggc-page-title">
+        <nav class="ggc-breadcrumb" aria-label="현재 경로"><ol><li><a href="index.html">홈</a></li><li><a href="#main">의안정보</a></li><li aria-current="page">의안 검색</li></ol></nav>
+        <h1>의안 검색</h1>
+        <p class="desc">제12대 경기도의회에 접수된 의안을 검색합니다. 의안명 · 의안번호 · 제안자로 찾을 수 있습니다.</p>
+      </div>
+
+      <form class="ggc-card ggc-card--pad" action="list.html" aria-label="의안 검색 조건">
+        <div style="display:flex;flex-wrap:wrap;gap:var(--ggc-space-3);align-items:flex-end">
+          <div class="ggc-field" style="flex:1 1 260px">
+            <label for="q">의안명 · 의안번호</label>
+            <input id="q" type="search" value="청년" placeholder="예: 청년 기본 조례">
+          </div>
+          <div class="ggc-field" style="flex:0 1 200px">
+            <label for="c">소관위원회</label>
+            <div class="ggc-select"><select id="c"><option>전체</option><option selected>기획재정위원회</option><option>경제노동위원회</option><option>행정안전위원회</option></select></div>
+          </div>
+          <div class="ggc-field" style="flex:0 1 180px">
+            <label for="s">처리 상태</label>
+            <div class="ggc-select"><select id="s"><option>전체</option><option>접수</option><option>심사 중</option><option>의결</option></select></div>
+          </div>
+          <button class="ggc-btn ggc-btn--primary" type="submit">검색</button>
+          <a class="ggc-btn ggc-btn--ghost" href="list.html">초기화</a>
+        </div>
+        <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2);margin-top:var(--ggc-space-4)">
+          <legend class="ggc-sr">의안 종류</legend>
+          <label class="ggc-chip"><input type="checkbox" checked><span class="text">조례안</span></label>
+          <label class="ggc-chip"><input type="checkbox" checked><span class="text">동의안</span></label>
+          <label class="ggc-chip"><input type="checkbox"><span class="text">결의안</span></label>
+          <label class="ggc-chip"><input type="checkbox"><span class="text">건의안</span></label>
+          <label class="ggc-chip"><input type="checkbox"><span class="text">청원</span></label>
+        </fieldset>
+      </form>
+
+      <p style="margin:var(--ggc-space-5) 0 var(--ggc-space-3);font-size:15px;color:var(--ggc-text-muted)">
+        검색 결과 <b style="color:var(--ggc-text-strong)">총 4건</b> · "청년" · 기획재정위원회 · 조례안 · 동의안
+      </p>
+
+      <div class="ggc-table-wrap">
+        <table class="ggc-table">
+          <caption class="ggc-sr">의안 검색 결과</caption>
+          <thead>
+            <tr><th scope="col">의안번호</th><th scope="col">의안명</th><th scope="col">제안자</th><th scope="col">소관위원회</th><th scope="col">접수일</th><th scope="col">상태</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2026-0417</td><td><a href="detail.html">경기도 청년 기본 조례 일부개정조례안</a></td><td>○○○ 의원 외 12인</td><td>기획재정위원회</td><td>2026-08-25</td><td><span class="ggc-badge ggc-badge--pending">◷ 심사 중</span></td></tr>
+            <tr><td>2026-0391</td><td><a href="#main">경기도 청년 주거 지원 조례안</a></td><td>○○○ 의원 외 8인</td><td>기획재정위원회</td><td>2026-07-14</td><td><span class="ggc-badge ggc-badge--approved">✓ 원안가결</span></td></tr>
+            <tr><td>2026-0362</td><td><a href="#main">경기도 청년 창업 지원에 관한 조례 일부개정조례안</a></td><td>경기도지사</td><td>기획재정위원회</td><td>2026-06-30</td><td><span class="ggc-badge ggc-badge--approved">✓ 수정가결</span></td></tr>
+            <tr><td>2026-0288</td><td><a href="#main">경기도 청년정책조정위원회 위원 위촉 동의안</a></td><td>경기도지사</td><td>기획재정위원회</td><td>2026-05-12</td><td><span class="ggc-badge ggc-badge--approved">✓ 동의</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <nav class="ggc-pagination" aria-label="페이지" style="margin-top:var(--ggc-space-6)">
+        <span class="summary">총 4건 · 1 / 1쪽</span>
+        <a class="nav" href="#main" aria-disabled="true" tabindex="-1">← 이전</a>
+        <ol class="pages"><li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>1</a></li></ol>
+        <a class="nav" href="#main" aria-disabled="true" tabindex="-1">다음 →</a>
+      </nav>
+
+      <div class="ggc-alert" role="status" style="margin-top:var(--ggc-space-7)">
+        <span class="icon" aria-hidden="true">§</span>
+        <div class="body"><p>의안 처리 단계는 <b>접수 → 위원회 회부 → 심사 → 본회의 의결 → 이송 · 공포</b> 순입니다. 각 단계의 뜻은 <a href="#main">의안 처리 절차 안내</a>에서 보실 수 있습니다.</p></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="ggc-footer ggc-footer--public">
+  <div class="quick"><div class="inner"><a href="#main">경기도</a><a href="#main">국회</a><a href="#main">행정안전부</a><a href="#main">국가법령정보센터</a><a href="#main">시·군의회</a></div></div>
+  <div class="inner main">
+    <div class="info"><p class="org">경기도의회</p><p class="addr">(16508) 경기도 수원시 팔달구 효원로 1</p><p class="tel"><strong>대표전화 031-8008-7000</strong><span>(평일 09:00~18:00)</span></p></div>
+    <div class="links"><a href="#main">찾아오시는 길</a><a href="#main">이용안내</a><a href="#main">직원 검색</a></div>
+  </div>
+  <div class="bottom"><div class="inner">
+    <div class="menu"><a class="point" href="#main">개인정보처리방침</a><a href="#main">저작권 정책</a><a href="#main">웹 접근성 안내</a></div>
+    <div class="ggc-identifier"><span class="logo" aria-hidden="true"></span><span class="text">이 누리집은 경기도의회 누리집입니다.</span></div>
+    <p class="copy">© 경기도의회. All rights reserved.</p>
+  </div></div>
+</footer>
+
+<script src="../../ggc-behaviors.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-stepper",
+  "title": "스텝퍼 / 위저드",
+  "description": "완료 · 현재 · 대기. 현재 단계는 색과 형태 둘 다.",
+  "files": [
+    {
+      "path": "registry/ggc/blocks/ggc-stepper/ggc-stepper.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 스텝퍼 — ggc-components.css §4 (가로형). 완료 = success ✓ · 현재 = primary + 포커스 링 · 대기 = 중립.\n * 현재 단계는 색과 형태(링·굵기) 둘 다로 표시한다 — 색 단독 금지. */\ntype StepState = \"done\" | \"current\" | \"todo\"\n\nfunction Stepper({ className, ...props }: React.ComponentProps<\"ol\">) {\n  return <ol data-slot=\"stepper\" className={cn(\"m-0 flex list-none p-0\", className)} {...props} />\n}\n\nfunction Step({\n  className,\n  state = \"todo\",\n  index,\n  label,\n  sub,\n  ...props\n}: React.ComponentProps<\"li\"> & { state?: StepState; index: number; label: React.ReactNode; sub?: React.ReactNode }) {\n  return (\n    <li data-slot=\"step\" data-state={state} aria-current={state === \"current\" ? \"step\" : undefined} className={cn(\"flex flex-1 flex-col items-center text-center\", className)} {...props}>\n      <div className=\"flex w-full items-center\">\n        <span className={cn(\"h-0.5 flex-1\", state === \"todo\" ? \"bg-border\" : \"bg-(--ggc-success)\")} />\n        <span\n          className={cn(\n            \"flex size-[38px] shrink-0 items-center justify-center rounded-full border-2 text-[15px] font-bold\",\n            state === \"done\" && \"border-(--ggc-success) bg-(--ggc-success) text-white\",\n            state === \"current\" && \"border-primary bg-primary text-white shadow-(--ggc-focus-ring) forced-colors:outline forced-colors:outline-2 forced-colors:outline-[Highlight]\",\n            state === \"todo\" && \"border-input bg-card text-(--ggc-text-subtle)\"\n          )}\n        >\n          {state === \"done\" ? \"✓\" : index}\n        </span>\n        <span className={cn(\"h-0.5 flex-1\", state === \"done\" ? \"bg-(--ggc-success)\" : \"bg-border\")} />\n      </div>\n      <div className=\"mt-2 px-1\">\n        <div className={cn(\"text-[13px] font-bold\", state === \"current\" ? \"text-(--ggc-primary-deep)\" : state === \"done\" ? \"text-foreground\" : \"text-(--ggc-text-subtle)\")}>{label}</div>\n        {sub && <div className=\"mt-0.5 text-[11.5px] text-(--ggc-text-subtle)\">{sub}</div>}\n      </div>\n    </li>\n  )\n}\n\nexport { Stepper, Step }\nexport type { StepState }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:block"
+}

@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>폼 컨트롤 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+</head>
+<body class="ex-body">
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <button class="ggc-icon-btn ex-only-narrow" type="button" data-ggc-drawer-toggle aria-expanded="false" aria-controls="lnb" aria-label="메뉴 열기">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">공통 디자인 시스템</span>
+      </span>
+    </a>
+    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <label for="q" class="ggc-sr">컴포넌트 검색</label>
+      <input id="q" type="search" placeholder="컴포넌트 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
+        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" id="lnb" aria-label="예제 목록">
+      <div class="ggc-lnb-group">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html">개요</a>
+      <a class="ggc-lnb-item" href="tokens.html">토큰 · 팔레트</a>
+      <a class="ggc-lnb-item" href="components.html">컴포넌트 카탈로그</a>
+      <a class="ggc-lnb-item" href="components-forms.html">폼 컨트롤</a>
+      <a class="ggc-lnb-item" href="components-nav.html">내비게이션 · 탭</a>
+      <a class="ggc-lnb-item" href="components-overlay.html">오버레이 · 상태 · 본문</a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ggc-lnb-group">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html">대시보드 · Monitor</a>
+      <a class="ggc-lnb-item" href="wizard.html">위저드 · Configure</a>
+      <a class="ggc-lnb-item" href="login.html">QR 로그인 · Entry</a>
+      <a class="ggc-lnb-item" href="public/index.html">대민 셸 · Public</a>
+    </nav>
+
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main">
+
+      <h1 class="ex-h1">폼 컨트롤<span class="ver">ggc-components.css v2.0 · §16~17 · §24 · §27~28 · §32</span></h1>
+      <p class="ex-lede">
+        셀렉트 · 체크박스 · 라디오 · 칩 · 토글 스위치 · 날짜 · 파일 업로드 · 리스트박스. 리스트박스만 빼고 전부
+        <b>네이티브 input 위에 CSS 만 얹은 것</b>이라 키보드·스크린리더·폼 전송이 브라우저 그대로 동작한다.
+        이미지 자산이 없다 — 화살표와 체크 표시는 CSS 가 그린다. 마크업 구조와 ARIA 는 KRDS 컴포넌트를 따랐다.
+      </p>
+
+      <div class="ex-note">
+        <p><b>대민 프로필에서는 이 컨트롤들이 KRDS 치수(48px · 17px)로 커진다.</b>
+        <code>&lt;html data-ggc-profile="public"&gt;</code> 한 줄이며, 마크업은 같다.
+        <a href="tokens.html#profile">토큰 페이지의 토글</a>로 확인할 수 있다.</p>
+      </div>
+
+      <!-- ============================================================ 셀렉트 -->
+      <section class="ex-section">
+        <h2>셀렉트 <span class="cls">.ggc-select</span></h2>
+        <p>네이티브 <code class="ex-inline">&lt;select&gt;</code> 를 <code class="ex-inline">.ggc-select</code> 로
+          감싸면 화살표가 붙고 높이가 <code class="ex-inline">--ggc-input-h</code> 를 따른다.
+          <code class="ex-inline">.ggc-field</code> 안에서는 감싸기만 하면 라벨·힌트·오류가 그대로 붙는다.
+          커스텀 리스트박스(검색·다중 선택)는 별도 컴포넌트(P2)다 — 항목이 20개 이하면 네이티브가 낫다.</p>
+        <div class="ex-demo" id="d-select">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label for="s1">소관위원회 <span class="req">*</span></label>
+              <div class="ggc-select">
+                <select id="s1">
+                  <option>기획재정위원회</option>
+                  <option>경제노동위원회</option>
+                  <option>문화체육관광위원회</option>
+                  <option>보건복지위원회</option>
+                </select>
+              </div>
+              <span class="hint">회부 시 소관위원회는 의장이 결정한다</span>
+            </div>
+            <div class="ggc-field is-error">
+              <label for="s2">처리 결과 <span class="req">*</span></label>
+              <div class="ggc-select">
+                <select id="s2" aria-describedby="s2e">
+                  <option value="">선택</option>
+                  <option>원안가결</option>
+                  <option>수정가결</option>
+                  <option>부결</option>
+                </select>
+              </div>
+              <span class="error" id="s2e">처리 결과를 선택해야 의결 처리가 된다</span>
+            </div>
+            <div class="ggc-field">
+              <label for="s3">회기</label>
+              <div class="ggc-select">
+                <select id="s3" disabled>
+                  <option>제380회 (정례회)</option>
+                </select>
+              </div>
+              <span class="hint">진행 중인 회기로 고정된다</span>
+            </div>
+          </div>
+          <div class="ex-row" style="margin-top:var(--ggc-space-4)">
+            <span style="font-size:12.5px;color:var(--ggc-text-subtle)">인라인 · 소형 (표 상단 정렬·페이지 크기 같은 보조 선택)</span>
+            <div class="ggc-select ggc-select--sm ggc-select--inline">
+              <label for="s4" class="ggc-sr">정렬</label>
+              <select id="s4"><option>최근 접수순</option><option>의안번호순</option><option>경과일순</option></select>
+            </div>
+            <div class="ggc-select ggc-select--sm ggc-select--inline">
+              <label for="s5" class="ggc-sr">페이지 크기</label>
+              <select id="s5"><option>20건</option><option>50건</option><option>100건</option></select>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-select"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 체크·라디오 -->
+      <section class="ex-section">
+        <h2>체크박스 · 라디오 <span class="cls">.ggc-check · .ggc-radio · .ggc-check-group</span></h2>
+        <p><code class="ex-inline">&lt;label&gt;</code> 이 input 을 감싼다 — <code class="ex-inline">for/id</code>
+          짝 없이도 클릭 영역과 접근 가능한 이름이 붙는다. 묶음은 <code class="ex-inline">&lt;fieldset&gt;</code> +
+          <code class="ex-inline">&lt;legend&gt;</code> 다(스크린리더가 그룹 이름을 읽는다).
+          선택 표시는 <b>배경색 + 체크 기호</b> 둘 다이며, 고대비에서는 시스템 색으로 복원된다.</p>
+        <div class="ex-demo" id="d-check">
+          <fieldset class="ggc-check-group">
+            <legend>표시할 상태</legend>
+            <label class="ggc-check"><input type="checkbox" checked><span class="box"></span><span class="text">접수</span></label>
+            <label class="ggc-check"><input type="checkbox" checked><span class="box"></span><span class="text">심사 중</span></label>
+            <label class="ggc-check"><input type="checkbox"><span class="box"></span><span class="text">의결</span></label>
+            <label class="ggc-check"><input type="checkbox" disabled><span class="box"></span><span class="text">폐기 (권한 없음)</span></label>
+            <label class="ggc-check"><input type="checkbox" disabled checked><span class="box"></span><span class="text">보관</span></label>
+          </fieldset>
+          <fieldset class="ggc-check-group ggc-check-group--column" style="margin-top:var(--ggc-space-5)">
+            <legend>심사 결과</legend>
+            <label class="ggc-radio"><input type="radio" name="r1" checked><span class="box"></span><span class="text">원안가결<span class="sub">제안된 내용 그대로 가결한다</span></span></label>
+            <label class="ggc-radio"><input type="radio" name="r1"><span class="box"></span><span class="text">수정가결<span class="sub">수정안을 첨부해야 한다 — 다음 단계에서 입력</span></span></label>
+            <label class="ggc-radio"><input type="radio" name="r1"><span class="box"></span><span class="text">계속심사</span></label>
+            <label class="ggc-radio"><input type="radio" name="r1" disabled><span class="box"></span><span class="text">부결<span class="sub">위원장 권한으로만 선택할 수 있다</span></span></label>
+          </fieldset>
+        </div>
+        <details class="ex-reveal" data-src="#d-check"><summary>마크업</summary><pre class="ex-code"></pre></details>
+        <div class="ex-note ex-note--warn">
+          <p><b>비활성 항목에는 이유를 적는다.</b> "왜 못 고르는가" 가 화면에 없으면 담당자는 오류로 본다.
+          <code>.sub</code> 슬롯이 그 자리다. 색만 흐리게 하는 것으로 끝내지 않는다.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================ 칩 -->
+      <section class="ex-section">
+        <h2>칩 <span class="cls">.ggc-chip</span></h2>
+        <p>Explore 화면의 <b>필터 스트립</b>에 쓴다. 안에 든 input 이 checkbox 면 다중 선택,
+          radio 면 단일 선택이다. 선택은 색 + 테두리 + <b>✓ 기호</b>로 표시한다.
+          결과 요약("총 N건")과 함께 둬야 필터가 무엇을 걸렀는지 보인다.</p>
+        <div class="ex-demo" id="d-chip">
+          <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2)">
+            <legend>소관위원회 (복수)</legend>
+            <label class="ggc-chip"><input type="checkbox" checked><span class="text">기획재정</span></label>
+            <label class="ggc-chip"><input type="checkbox"><span class="text">경제노동</span></label>
+            <label class="ggc-chip"><input type="checkbox" checked><span class="text">문화체육관광</span></label>
+            <label class="ggc-chip"><input type="checkbox"><span class="text">보건복지</span></label>
+            <label class="ggc-chip"><input type="checkbox"><span class="text">건설교통</span></label>
+            <label class="ggc-chip"><input type="checkbox" disabled><span class="text">운영</span></label>
+          </fieldset>
+          <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2);margin-top:var(--ggc-space-4)">
+            <legend>기간 (택일)</legend>
+            <label class="ggc-chip"><input type="radio" name="p" checked><span class="text">이번 회기</span></label>
+            <label class="ggc-chip"><input type="radio" name="p"><span class="text">최근 30일</span></label>
+            <label class="ggc-chip"><input type="radio" name="p"><span class="text">제12대 전체</span></label>
+          </fieldset>
+        </div>
+        <details class="ex-reveal" data-src="#d-chip"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 토글 스위치 -->
+      <section class="ex-section">
+        <h2>토글 스위치 <span class="cls">.ggc-switch</span></h2>
+        <p><b>즉시 적용되는</b> 켬/끔(알림 수신 · 공개 여부 · 자동 저장)에만 쓴다 — 저장 버튼을 눌러야
+          반영되는 선택은 체크박스다. <code class="ex-inline">role="switch"</code> 라 스크린리더가 켬/끔으로 읽고,
+          화면에는 색 + 손잡이 위치 + <code class="ex-inline">.state</code> 문구 셋으로 구분한다.</p>
+        <div class="ex-demo" id="d-switch">
+          <div class="ex-row" style="gap:var(--ggc-space-6)">
+            <label class="ggc-switch"><input type="checkbox" role="switch" checked><span class="track"></span><span class="text">회부 알림 <span class="state"></span></span></label>
+            <label class="ggc-switch"><input type="checkbox" role="switch"><span class="track"></span><span class="text">일정 알림 <span class="state"></span></span></label>
+            <label class="ggc-switch"><input type="checkbox" role="switch" disabled><span class="track"></span><span class="text">긴급 공지 (필수 수신)</span></label>
+            <label class="ggc-switch"><input type="checkbox" role="switch" disabled checked><span class="track"></span><span class="text">보안 로그</span></label>
+          </div>
+          <div class="ggc-card" style="margin-top:var(--ggc-space-5);max-width:480px">
+            <div class="ggc-card-head"><div><div class="title">공개 설정</div><div class="sub">저장 없이 즉시 반영된다</div></div></div>
+            <div style="padding:6px 22px 14px;display:flex;flex-direction:column;gap:var(--ggc-space-3)">
+              <label class="ggc-switch ggc-switch--row"><input type="checkbox" role="switch" checked><span class="track"></span><span class="text">검토보고서 공개 <span class="state"></span></span></label>
+              <label class="ggc-switch ggc-switch--row"><input type="checkbox" role="switch"><span class="track"></span><span class="text">회의록 초안 공개 <span class="state"></span></span></label>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-switch"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 날짜 -->
+      <section class="ex-section">
+        <h2>날짜 입력 <span class="cls">.ggc-date · .ggc-date-range</span></h2>
+        <p>네이티브 <code class="ex-inline">&lt;input type="date"&gt;</code> 다 — 달력 · 키보드(화살표로 년/월/일) · 스크린리더를
+          브라우저가 준다. <code class="ex-inline">min/max</code> 로 회기 범위를 잠근다. 힌트에 서버 형식(YYYY-MM-DD)을 적는다 —
+          브라우저 표시 형식과 다르다. 커스텀 달력(범위 하이라이트 · 회기 표시)은 예정 항목이다.</p>
+        <div class="ex-demo" id="d-date">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label for="dt1">접수일 <span class="req">*</span></label>
+              <div class="ggc-date"><input id="dt1" type="date" value="2026-08-25" min="2026-08-01" max="2026-09-12"></div>
+              <span class="hint">회기(2026-08-01 ~ 09-12) 안의 날짜만 (YYYY-MM-DD)</span>
+            </div>
+            <div class="ggc-field is-error">
+              <label for="dt2">심사 기한 <span class="req">*</span></label>
+              <div class="ggc-date"><input id="dt2" type="date" aria-describedby="dt2e"></div>
+              <span class="error" id="dt2e">회부일 이후 30일 안의 날짜여야 한다 — 「회의규칙」 제42조</span>
+            </div>
+            <div class="ggc-field">
+              <label for="dt3">의결일</label>
+              <div class="ggc-date"><input id="dt3" type="date" disabled></div>
+              <span class="hint">의결 처리 뒤 자동 기록된다</span>
+            </div>
+          </div>
+          <fieldset class="ggc-date-range" style="margin-top:var(--ggc-space-5);max-width:420px">
+            <legend>회기 기간</legend>
+            <div class="ggc-date"><label class="ggc-sr" for="dt-from">시작일</label><input id="dt-from" type="date" value="2026-08-01"></div>
+            <span class="sep" aria-hidden="true">~</span>
+            <div class="ggc-date"><label class="ggc-sr" for="dt-to">종료일</label><input id="dt-to" type="date" value="2026-09-12"></div>
+          </fieldset>
+        </div>
+        <details class="ex-reveal" data-src="#d-date"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 파일 -->
+      <section class="ex-section">
+        <h2>파일 업로드 <span class="cls">.ggc-file · .ggc-file-list</span></h2>
+        <p>선택 버튼 + 끌어놓기 영역 + 선택한 파일 목록(KRDS file_upload). input 은 시각적으로만 숨겨 <kbd class="ex-inline">Tab</kbd> 으로
+          도달하고 <kbd class="ex-inline">Enter</kbd> 로 열린다. 목록과 삭제는 <code class="ex-inline">ggc-behaviors.js</code> 가 채우고
+          삭제를 <code class="ex-inline">input.files</code> 에 되돌린다 — 폼 전송이 목록과 같다. 허용 형식 · 크기 · 개수를 <b>미리</b> 적는다.</p>
+        <div class="ex-demo" id="d-file">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label for="fu1">첨부 문서</label>
+              <div class="ggc-file" data-ggc-file data-ggc-file-max="5">
+                <div class="drop">
+                  <label class="cta" for="fu1">
+                    <input id="fu1" type="file" multiple accept=".hwp,.hwpx,.pdf" aria-describedby="fu1-h">
+                    <span class="ggc-btn ggc-btn--secondary ggc-btn--sm">파일 선택</span>
+                    <span class="or">또는 여기에 끌어놓기</span>
+                  </label>
+                  <span class="rule" id="fu1-h">HWP · HWPX · PDF, 파일당 20MB 까지, 최대 5개</span>
+                </div>
+                <ul class="ggc-file-list" aria-label="선택한 파일"></ul>
+              </div>
+            </div>
+            <div class="ggc-field">
+              <label for="fu2">이미 올린 파일 (서버 목록 + 한 줄형)</label>
+              <div class="ggc-file ggc-file--compact" data-ggc-file>
+                <div class="drop">
+                  <label class="cta" for="fu2">
+                    <input id="fu2" type="file" accept=".pdf" aria-describedby="fu2-h">
+                    <span class="ggc-btn ggc-btn--secondary ggc-btn--sm">파일 선택</span>
+                    <span class="or">또는 끌어놓기</span>
+                  </label>
+                  <span class="rule" id="fu2-h">PDF 1개</span>
+                </div>
+                <ul class="ggc-file-list" aria-label="올린 파일">
+                  <li><span class="name">검토보고서_청년기본조례_v2.hwpx</span><span class="size">184KB</span><button class="remove" type="button" aria-label="검토보고서_청년기본조례_v2.hwpx 삭제">✕</button></li>
+                  <li class="is-error"><span class="name">비용추계서.xlsx</span><span class="size">2.1MB</span><button class="remove" type="button" aria-label="비용추계서.xlsx 삭제">✕</button><span class="error">허용되지 않는 형식이다 — HWP · PDF 만 올릴 수 있다</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-file"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 리스트박스 -->
+      <section class="ex-section">
+        <h2>커스텀 리스트박스 <span class="cls">.ggc-listbox</span></h2>
+        <p>네이티브 셀렉트로 안 되는 것 — 항목에 <b>부제</b>가 있거나, <b>검색 필터</b>가 필요하거나, 항상 펼쳐 보여야 하거나, <b>다중 선택</b>일 때.
+          목록은 포커스 하나(<code class="ex-inline">tabindex=0</code>) + <code class="ex-inline">aria-activedescendant</code> 이며
+          <kbd class="ex-inline">↑</kbd><kbd class="ex-inline">↓</kbd> · <kbd class="ex-inline">Home</kbd> · <kbd class="ex-inline">End</kbd> · 앞글자 입력으로 움직인다.
+          단일 선택은 선택이 포커스를 따라가고(네이티브와 같다), 다중은 <kbd class="ex-inline">Space</kbd> 로 토글한다.</p>
+        <div class="ex-demo" id="d-listbox">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label id="lb1-l" for="lb1-f">소관위원회 <span class="req">*</span></label>
+              <div class="ggc-listbox" data-ggc-listbox>
+                <input class="filter" id="lb1-f" type="search" placeholder="위원회 검색" aria-controls="lb1" autocomplete="off">
+                <ul id="lb1" role="listbox" aria-labelledby="lb1-l" tabindex="0">
+                  <li role="option" aria-selected="true" data-value="planning"><span class="text">기획재정위원회</span><span class="sub">위원 13명</span></li>
+                  <li role="option" aria-selected="false" data-value="economy"><span class="text">경제노동위원회</span><span class="sub">위원 12명</span></li>
+                  <li role="option" aria-selected="false" data-value="culture"><span class="text">문화체육관광위원회</span><span class="sub">위원 11명</span></li>
+                  <li role="option" aria-selected="false" data-value="welfare"><span class="text">보건복지위원회</span><span class="sub">위원 12명</span></li>
+                  <li role="option" aria-selected="false" data-value="construction"><span class="text">건설교통위원회</span><span class="sub">위원 13명</span></li>
+                  <li role="option" aria-selected="false" data-value="steering" aria-disabled="true"><span class="text">의회운영위원회</span><span class="sub">회부 대상 아님</span></li>
+                </ul>
+                <p class="none" hidden>일치하는 위원회가 없다</p>
+                <input type="hidden" name="committee" value="planning">
+              </div>
+              <span class="hint">필터에서 ↓ 를 누르면 목록으로 간다</span>
+            </div>
+            <div class="ggc-field">
+              <label id="lb2-l">참석 의원 (복수)</label>
+              <div class="ggc-listbox" data-ggc-listbox>
+                <ul id="lb2" role="listbox" aria-labelledby="lb2-l" aria-multiselectable="true" tabindex="0">
+                  <li role="option" aria-selected="true"><span class="text">김○○ 의원</span><span class="sub">위원장</span></li>
+                  <li role="option" aria-selected="true"><span class="text">이○○ 의원</span><span class="sub">부위원장</span></li>
+                  <li role="option" aria-selected="false"><span class="text">박○○ 의원</span></li>
+                  <li role="option" aria-selected="false"><span class="text">최○○ 의원</span></li>
+                  <li role="option" aria-selected="false"><span class="text">정○○ 의원</span><span class="sub">출장</span></li>
+                </ul>
+                <input type="hidden" name="attendees" value="김○○ 의원,이○○ 의원">
+              </div>
+              <span class="hint">Space 로 토글 · 선택은 ✓ 와 왼쪽 띠로 표시</span>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-listbox"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 조립 -->
+      <section class="ex-section">
+        <h2>조립 — Explore 필터 스트립 <span class="cls">.ggc-card + .ggc-search + .ggc-select + .ggc-chip</span></h2>
+        <p>archetypes 의 Explore 슬롯 2·3 이다. 검색 → 선택 → 칩 → 결과 요약 → 초기화 순으로 읽힌다.
+          기본 필터는 <b>내 소관 · 처리 대기</b>이고, 빈 결과는 "필터 때문인지 데이터가 없는 건지"를
+          문구로 가른다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-filter">
+          <div class="ggc-card ggc-card--pad">
+            <div class="ex-row" style="align-items:flex-end;gap:var(--ggc-space-3)">
+              <div class="ggc-field" style="flex:1 1 260px">
+                <label for="f-q">의안명 · 의안번호</label>
+                <input id="f-q" type="search" placeholder="예: 청년 기본 조례">
+              </div>
+              <div class="ggc-field" style="flex:0 1 200px">
+                <label for="f-c">소관위원회</label>
+                <div class="ggc-select"><select id="f-c"><option>내 소관</option><option>전체</option><option>기획재정위원회</option></select></div>
+              </div>
+              <div class="ggc-field" style="flex:0 1 180px">
+                <label for="f-s">처리 상태</label>
+                <div class="ggc-select"><select id="f-s"><option>처리 대기</option><option>전체</option><option>의결</option></select></div>
+              </div>
+              <button class="ggc-btn ggc-btn--primary" type="button">검색</button>
+              <button class="ggc-btn ggc-btn--ghost" type="button">초기화</button>
+            </div>
+            <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2);margin-top:var(--ggc-space-4)">
+              <legend class="ggc-sr">의안 종류</legend>
+              <label class="ggc-chip"><input type="checkbox" checked><span class="text">조례안</span></label>
+              <label class="ggc-chip"><input type="checkbox" checked><span class="text">동의안</span></label>
+              <label class="ggc-chip"><input type="checkbox"><span class="text">결의안</span></label>
+              <label class="ggc-chip"><input type="checkbox"><span class="text">건의안</span></label>
+              <label class="ggc-chip"><input type="checkbox"><span class="text">청원</span></label>
+            </fieldset>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:var(--ggc-space-4);padding-top:var(--ggc-space-3);border-top:1px solid var(--ggc-hairline);font-size:12.5px;color:var(--ggc-text-subtle)">
+              <span>총 <b style="color:var(--ggc-text-strong)">21건</b> · 내 소관 · 처리 대기 · 조례안 · 동의안</span>
+              <span>정렬: 최근 접수순</span>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-filter"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v2.0
+    </div>
+  </footer>
+</div>
+
+<script src="../ggc-behaviors.js"></script>
+<script src="examples.js"></script>
+</body>
+</html>

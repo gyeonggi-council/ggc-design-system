@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "table",
+  "title": "표",
+  "description": "thead 상단 2px primary-deep · 행 구분 hairline · .num 우정렬 tabular-nums.",
+  "files": [
+    {
+      "path": "registry/ggc/ui/table.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 표 — ggc-components.css §8. thead 상단 2px primary-deep · 행 구분 hairline · 합계행 인셋.\n * 숫자 칸은 <TableCell num> — 우정렬 + tabular-nums. 넓은 표는 래퍼가 가로 스크롤한다. */\nfunction Table({ className, ...props }: React.ComponentProps<\"table\">) {\n  return (\n    <div data-slot=\"table-container\" className=\"relative w-full overflow-x-auto\">\n      <table data-slot=\"table\" className={cn(\"w-full border-collapse text-(length:--ggc-table-font)\", className)} {...props} />\n    </div>\n  )\n}\n\nfunction TableHeader({ className, ...props }: React.ComponentProps<\"thead\">) {\n  return <thead data-slot=\"table-header\" className={cn(\"[&_tr]:border-t-2 [&_tr]:border-t-(--ggc-primary-deep) [&_tr]:border-b [&_tr]:border-b-(--ggc-shell-border)\", className)} {...props} />\n}\n\nfunction TableBody({ className, ...props }: React.ComponentProps<\"tbody\">) {\n  return <tbody data-slot=\"table-body\" className={className} {...props} />\n}\n\nfunction TableFooter({ className, ...props }: React.ComponentProps<\"tfoot\">) {\n  return <tfoot data-slot=\"table-footer\" className={cn(\"border-t-2 border-t-(--ggc-primary-deep) bg-(--ggc-surface-inset) font-extrabold text-(--ggc-text-strong) [&_td]:border-b-0 [&_td]:py-[13px] forced-colors:border-t-2\", className)} {...props} />\n}\n\nfunction TableRow({ className, ...props }: React.ComponentProps<\"tr\">) {\n  return <tr data-slot=\"table-row\" className={cn(\"transition-colors hover:bg-(--ggc-row-hover) data-[state=selected]:bg-(--ggc-primary-light)\", className)} {...props} />\n}\n\nfunction TableHead({ className, num, ...props }: React.ComponentProps<\"th\"> & { num?: boolean }) {\n  return <th data-slot=\"table-head\" className={cn(\"p-(--ggc-cell-pad) text-left align-middle font-bold whitespace-nowrap text-(--ggc-text-muted)\", num && \"text-right tabular-nums\", className)} {...props} />\n}\n\nfunction TableCell({ className, num, ...props }: React.ComponentProps<\"td\"> & { num?: boolean }) {\n  return <td data-slot=\"table-cell\" className={cn(\"border-b border-(--ggc-hairline) p-(--ggc-cell-pad) align-middle text-(--ggc-text-body)\", num && \"text-right tabular-nums\", className)} {...props} />\n}\n\nfunction TableCaption({ className, ...props }: React.ComponentProps<\"caption\">) {\n  return <caption data-slot=\"table-caption\" className={cn(\"sr-only\", className)} {...props} />\n}\n\nexport { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

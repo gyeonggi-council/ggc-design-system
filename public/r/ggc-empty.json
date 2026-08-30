@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-empty",
+  "title": "빈 상태",
+  "description": "무엇이 없는지 · 왜 없는지 · 다음 행동 — 레이아웃만 정본이고 문구·행동은 화면이 정한다.",
+  "files": [
+    {
+      "path": "registry/ggc/blocks/ggc-empty/ggc-empty.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 빈 상태 — ggc-components.css §31. 레이아웃만 정본(ADR 0006) — 문구·행동은 화면이 정한다.\n * 제목 = 무엇이 없는지 · 설명 = 왜 없는지(필터 때문인지 데이터가 없는지) · 행동 = 다음에 할 일.\n * 카드 · 표 본문 · 탭 패널 어디에나 들어간다 — 자기 테두리가 없다. */\nfunction Empty({\n  className,\n  icon,\n  title,\n  desc,\n  actions,\n  variant,\n  compact = false,\n  ...props\n}: Omit<React.ComponentProps<\"div\">, \"title\"> & {\n  icon?: React.ReactNode\n  title: React.ReactNode\n  desc?: React.ReactNode\n  actions?: React.ReactNode\n  variant?: \"error\"\n  compact?: boolean\n}) {\n  const error = variant === \"error\"\n  return (\n    <div\n      data-slot=\"empty\"\n      data-variant={variant}\n      className={cn(\n        \"flex flex-col items-center gap-1.5 px-5 py-10 text-center text-(--ggc-text-muted)\",\n        compact && \"gap-1 px-4 py-5\",\n        className\n      )}\n      {...props}\n    >\n      {icon != null && (\n        <span\n          data-slot=\"empty-icon\"\n          aria-hidden=\"true\"\n          className={cn(\n            \"mb-1.5 inline-flex size-11 items-center justify-center rounded-full bg-(--ggc-surface-inset) text-xl text-(--ggc-text-faint) forced-colors:border\",\n            error && \"bg-(--ggc-danger-tint) text-(--ggc-danger)\",\n            compact && \"size-9 text-base\"\n          )}\n        >\n          {icon}\n        </span>\n      )}\n      <p data-slot=\"empty-title\" className={cn(\"m-0 text-[14.5px] font-bold text-(--ggc-text-strong)\", error && \"text-(--ggc-danger)\")}>\n        {title}\n      </p>\n      {desc != null && (\n        <p data-slot=\"empty-desc\" className=\"m-0 max-w-[440px] text-[13px] leading-[1.6] text-(--ggc-text-muted)\">{desc}</p>\n      )}\n      {actions != null && (\n        <div data-slot=\"empty-actions\" className=\"mt-3 flex flex-wrap justify-center gap-2\">{actions}</div>\n      )}\n    </div>\n  )\n}\n\nexport { Empty }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:block"
+}

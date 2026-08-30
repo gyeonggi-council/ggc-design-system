@@ -9,6 +9,8 @@
  *   ② paintSwatches() getComputedStyle 로 토큰 **실측값**을 읽어 스와치와
  *                     대비비를 채운다. → 갤러리가 정본을 배신할 수 없고,
  *                     고대비(prefers-contrast) 를 켜면 숫자가 즉시 따라 바뀐다.
+ *   ③ bindProfileToggle() <html data-ggc-profile="public"> 을 켜고 끈다(v2.0).
+ *                     값은 토큰 파일의 프로필 블록에서 오고 여기는 속성만 바꾼다.
  *
  * 정본이 두 달간 문서와 어긋나 있던 원인이 "값을 옮겨 적은 것" 이었다.
  * 갤러리는 그 실패를 반복하지 않는다.
@@ -159,6 +161,54 @@
       if (bar) { bar.style.width = "120px"; bar.style.height = "44px"; bar.style.borderRadius = val; }
       if (px) px.textContent = val;
     });
+
+    /* 임의 토큰의 실측값 — 치수 토큰처럼 색도 막대도 아닌 값을 글자로 보여 준다.
+       프로필을 켜면 같은 이름의 값이 바뀌므로 토글 뒤에 다시 돈다. */
+    document.querySelectorAll("[data-var]").forEach(function (el) {
+      el.textContent = readVar(el.getAttribute("data-var")) || "—";
+    });
+  }
+
+  /* ------------------------------------------------------ ③ 프로필 미리보기 */
+
+  /* <html data-ggc-profile="public"> 을 켜고 끈다. 값은 토큰 파일의 프로필 블록에서
+     오고 여기는 속성 하나만 바꾼다 — 갤러리가 값을 알 필요가 없다. */
+  function bindProfileToggle() {
+    document.querySelectorAll("[data-ex-profile-toggle]").forEach(function (btn) {
+      var root = document.documentElement;
+      function render() {
+        var on = root.getAttribute("data-ggc-profile") === "public";
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        btn.textContent = on ? "업무 프로필로 되돌리기" : "대민 프로필 켜 보기";
+      }
+      btn.addEventListener("click", function () {
+        if (root.getAttribute("data-ggc-profile") === "public") {
+          root.removeAttribute("data-ggc-profile");
+        } else {
+          root.setAttribute("data-ggc-profile", "public");
+        }
+        render();
+        paintSwatches();
+      });
+      render();
+    });
+  }
+
+  /* ------------------------------------------------- ④ 토스트 데모 (action 있는 것) */
+
+  /* 선언형(data-ggc-toast)은 behaviors.js 가 처리한다. action 콜백이 있는 예시만 여기서 만든다 */
+  function bindToastDemo() {
+    document.querySelectorAll("[data-ex-toast-undo]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (!window.GGC || !window.GGC.toast) return;
+        window.GGC.toast({
+          title: "의안 3건을 보관함으로 옮겼다", icon: "▣",
+          action: { label: "실행 취소", onClick: function () {
+            window.GGC.toast({ title: "되돌렸다 — 목록으로 돌아왔다", variant: "info" });
+          } }
+        });
+      });
+    });
   }
 
   /* --------------------------------------------------------------- 현재 페이지 */
@@ -175,6 +225,8 @@
     revealMarkup();
     paintSwatches();
     markCurrentNav();
+    bindProfileToggle();
+    bindToastDemo();
   }
 
   if (document.readyState === "loading") {

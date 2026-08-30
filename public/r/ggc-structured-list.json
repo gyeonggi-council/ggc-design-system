@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-structured-list",
+  "title": "구조화 목록 (대민)",
+  "description": "공모·접수·방청 카드 격자 — 배지 + 제목 + 설명(3줄) + 기간 + 행동. 업무 화면 목록은 표.",
+  "registryDependencies": [
+    "@ggc/ggc-tokens"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/blocks/ggc-structured-list/ggc-structured-list.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 구조화 목록 — ggc-public.css §6. 공모·접수·방청 카드 격자 — 제목 + 설명(최대 3줄) + 기간 + 행동.\n * 300px 최소 폭으로 자동 접힌다(390 에서 1열). 업무 화면의 목록은 표다. */\n\nfunction StructuredList({ className, ...props }: React.ComponentProps<\"ul\">) {\n  return <ul data-slot=\"structured-list\" className={cn(\"m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-(--ggc-space-5) p-0\", className)} {...props} />\n}\n\nfunction StructuredItem({\n  className,\n  badge,\n  href,\n  title,\n  desc,\n  dateLabel,\n  date,\n  tags,\n  actions,\n  ...props\n}: React.ComponentProps<\"li\"> & {\n  badge?: React.ReactNode\n  href?: string\n  title: React.ReactNode\n  desc?: React.ReactNode\n  dateLabel?: React.ReactNode\n  date?: React.ReactNode\n  tags?: React.ReactNode\n  actions?: React.ReactNode\n}) {\n  const Text = href ? \"a\" : \"div\"\n  return (\n    <li data-slot=\"structured-item\" className={cn(\"flex flex-col gap-(--ggc-space-3) rounded-(--ggc-radius-lg) border border-border bg-card p-(--ggc-card-pad) forced-colors:border\", className)} {...props}>\n      {badge && <div data-slot=\"structured-item-top\">{badge}</div>}\n      <Text {...(href ? { href } : {})} className=\"group/text flex-1 text-inherit no-underline\">\n        <p className={cn(\"m-0 mb-1.5 text-[19px] font-bold tracking-[-0.02em] text-(--ggc-text-strong)\", href && \"group-hover/text:text-primary group-hover/text:underline\")}>{title}</p>\n        {desc && <p className=\"m-0 mb-2.5 line-clamp-3 text-[15px] text-(--ggc-text-muted)\">{desc}</p>}\n        {date && (\n          <p className=\"m-0 flex flex-wrap gap-2 text-sm text-(--ggc-text-subtle)\">\n            {dateLabel && <strong className=\"font-bold text-(--ggc-text-muted)\">{dateLabel}</strong>}\n            <span>{date}</span>\n          </p>\n        )}\n      </Text>\n      {tags && <div data-slot=\"structured-item-tags\" className=\"flex flex-wrap gap-1\">{tags}</div>}\n      {actions && <div data-slot=\"structured-item-actions\" className=\"flex gap-(--ggc-space-2)\">{actions}</div>}\n    </li>\n  )\n}\n\nexport { StructuredList, StructuredItem }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:block"
+}

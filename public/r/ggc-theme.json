@@ -1,0 +1,65 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-theme",
+  "title": "GGC 테마 — shadcn 변수를 --ggc-* 토큰으로 매핑",
+  "description": "shadcn 의 --primary · --background · --radius 등을 전부 var(--ggc-*) 로 돌린다. 값(hex)은 하나도 없다 — 값은 ggc-tokens.css 한 곳에만 산다. 다크 팔레트는 없다(계약 §3).",
+  "registryDependencies": [
+    "@ggc/ggc-tokens"
+  ],
+  "cssVars": {
+    "theme": {
+      "font-sans": "var(--ggc-font)",
+      "font-mono": "var(--ggc-font-mono)"
+    },
+    "light": {
+      "background": "var(--ggc-bg)",
+      "foreground": "var(--ggc-text)",
+      "card": "var(--ggc-surface)",
+      "card-foreground": "var(--ggc-text)",
+      "popover": "var(--ggc-surface)",
+      "popover-foreground": "var(--ggc-text)",
+      "primary": "var(--ggc-primary)",
+      "primary-foreground": "#ffffff",
+      "secondary": "var(--ggc-surface-inset)",
+      "secondary-foreground": "var(--ggc-primary-deep)",
+      "muted": "var(--ggc-control-bg)",
+      "muted-foreground": "var(--ggc-text-muted)",
+      "accent": "var(--ggc-primary-light)",
+      "accent-foreground": "var(--ggc-primary-deep)",
+      "destructive": "var(--ggc-danger)",
+      "destructive-foreground": "#ffffff",
+      "border": "var(--ggc-border)",
+      "input": "var(--ggc-border-strong)",
+      "ring": "var(--ggc-primary)",
+      "radius": "var(--ggc-radius)",
+      "chart-1": "var(--ggc-primary)",
+      "chart-2": "var(--ggc-info)",
+      "chart-3": "var(--ggc-success)",
+      "chart-4": "var(--ggc-warning)",
+      "chart-5": "var(--ggc-danger)",
+      "sidebar": "var(--ggc-surface)",
+      "sidebar-foreground": "var(--ggc-text)",
+      "sidebar-primary": "var(--ggc-primary)",
+      "sidebar-primary-foreground": "#ffffff",
+      "sidebar-accent": "var(--ggc-primary-light)",
+      "sidebar-accent-foreground": "var(--ggc-primary-deep)",
+      "sidebar-border": "var(--ggc-shell-border)",
+      "sidebar-ring": "var(--ggc-primary)"
+    }
+  },
+  "css": {
+    "@layer base": {
+      "body": {
+        "font-family": "var(--ggc-font)",
+        "background-color": "var(--ggc-bg)",
+        "color": "var(--ggc-text)",
+        "-webkit-font-smoothing": "antialiased"
+      },
+      "a": {
+        "text-underline-offset": "2px"
+      }
+    }
+  },
+  "docs": "radius 단계는 토큰을 직접 쓴다 — Tailwind 유틸 rounded-(--ggc-radius) / rounded-(--ggc-radius-sm) / rounded-(--ggc-radius-lg). 다크 모드 변수를 만들지 않는다(계약 §3-2).",
+  "type": "registry:theme"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "accordion",
+  "title": "아코디언",
+  "description": "카드형 묶음 — 테두리 하나 + 항목 사이 구분선. 정말 접어도 되는 내용에만.",
+  "dependencies": [
+    "radix-ui",
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/ui/accordion.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { ChevronDownIcon } from \"lucide-react\"\nimport { Accordion as AccordionPrimitive } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 아코디언 — ggc-components.css §26 카드형. 정말 접어도 되는 내용에만(FAQ · 고급 검색 · 근거 조문) —\n * 필수 입력·오류를 접어 두지 않는다. Root 가 묶음(테두리 하나) · Item 사이 hairline 구분선.\n * type=\"single\" collapsible 이 §26 의 배타 열림(같은 name)과 같다. */\nfunction Accordion({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {\n  return (\n    <AccordionPrimitive.Root\n      data-slot=\"accordion\"\n      className={cn(\"rounded-(--ggc-radius-lg) border border-border bg-card forced-colors:border-[CanvasText]\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction AccordionItem({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Item>) {\n  return (\n    <AccordionPrimitive.Item\n      data-slot=\"accordion-item\"\n      /* 모서리는 Root 의 radius 를 물려받는다 — 첫 항목 위, 마지막 닫힌 항목 아래(§26 group 과 동일) */\n      className={cn(\"border-t border-(--ggc-hairline) first:rounded-t-[inherit] first:border-t-0 last:data-[state=closed]:rounded-b-[inherit]\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction AccordionTrigger({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {\n  return (\n    <AccordionPrimitive.Header className=\"flex rounded-[inherit]\">\n      <AccordionPrimitive.Trigger\n        data-slot=\"accordion-trigger\"\n        className={cn(\n          \"flex flex-1 cursor-pointer items-center gap-3 rounded-[inherit] px-[18px] py-[14px] text-left text-(length:--ggc-control-font) font-bold text-(--ggc-text-strong) transition-colors outline-none hover:bg-(--ggc-row-hover) focus-visible:shadow-(--ggc-focus-ring) [&[data-state=open]>svg]:rotate-180\",\n          className\n        )}\n        {...props}\n      >\n        {children}\n        <ChevronDownIcon className=\"ml-auto size-4 shrink-0 text-(--ggc-text-muted) transition-transform\" />\n      </AccordionPrimitive.Trigger>\n    </AccordionPrimitive.Header>\n  )\n}\n\nfunction AccordionContent({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {\n  return (\n    <AccordionPrimitive.Content data-slot=\"accordion-content\" className=\"overflow-hidden\" {...props}>\n      <div className={cn(\"px-[18px] pt-0.5 pb-[18px] text-[13.5px] leading-[1.7] text-(--ggc-text-body) [&>:first-child]:mt-0 [&>:last-child]:mb-0\", className)}>\n        {children}\n      </div>\n    </AccordionPrimitive.Content>\n  )\n}\n\nexport { Accordion, AccordionItem, AccordionTrigger, AccordionContent }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

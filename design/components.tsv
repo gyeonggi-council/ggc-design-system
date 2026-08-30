@@ -1,0 +1,58 @@
+# components.tsv — 컴포넌트 인벤토리 정본 (v2.0)
+#
+# 문서(docs/components/README.md)·DESIGN.md·레지스트리 lint 가 전부 이 표를 읽는다.
+# 표를 고치면 생성물을 다시 만든다: python tools/build-design-md.py
+#
+# id	이름	Tier1 클래스	Tier2 레지스트리 항목	근거	프로필	우선순위	상태	단계
+# 상태: 있음 = 정본 CSS 에 정의됨 · 부분 = 일부만 · 예정 = 아직 없음(단계 열 참조)
+# 프로필: work = 업무 전용 · public = 대민 전용 · both = 공용
+shell-work	업무 셸 (GNB + LNB + 본문)	.ggc-shell .ggc-gnb .ggc-lnb .ggc-shell-main(--wide/--split) .ggc-scroll	ggc-shell	기존 §9	work	P0	있음	1
+utility-bar	유틸리티 바	.ggc-utility-bar	ggc-utility-bar	토큰 파일	both	P0	있음	1
+footer	푸터 (업무)	.ggc-footer	ggc-footer	토큰 파일	work	P0	있음	1
+skip-link	스킵 링크	.ggc-skip-link	(ggc-shell 포함)	기존 §10 · KRDS skip_link	both	P0	있음	1
+button	버튼	.ggc-btn (--primary --secondary --ghost --dashed --sm --lg --block)	button	기존 §6 · KRDS button	both	P0	있음	1
+icon-button	아이콘 버튼	.ggc-icon-btn	button (icon)	기존 §9	both	P1	있음	1
+badge	배지 (상태 · 역할)	.ggc-badge (--session --meeting --recess --approved --pending --rejected --paid · --role-member/-staff/-policy/-other)	badge	토큰 파일 · KRDS badge	both	P0	있음	1
+tag	태그	.ggc-tag (--primary --info --success --warning --danger)	badge (tag)	기존 §5 · KRDS tag	both	P1	있음	1
+card	카드	.ggc-card .ggc-card--pad .ggc-card-head(--band) .ggc-card-foot(--center --inset)	card	기존 §2	both	P0	있음	1
+stat	통계 타일 (KPI)	.ggc-stat-grid .ggc-stat	ggc-stat	기존 §3	work	P0	있음	1
+list-row	행 리스트	.ggc-list-row (.sev-bar)	ggc-list-row	기존 §5	work	P1	있음	1
+table	표	.ggc-table-wrap .ggc-table (--flat --kv .num tr.total)	table	기존 §8 · KRDS table	both	P0	있음	1
+field	폼 필드 (라벨 · 입력 · 힌트 · 오류)	.ggc-field (.hint .error .is-error)	input label textarea form-field	기존 §7 · KRDS text_input/textarea	both	P0	있음	1
+search	검색창	.ggc-search	ggc-search	기존 §9	work	P1	있음	1
+stepper	스텝퍼 / 위저드	.ggc-wizard (--vertical) .ggc-wizard-mini	ggc-stepper	기존 §4 · KRDS step_indicator	both	P0	있음	1
+qr-login	QR 로그인 블록	.ggc-qr .ggc-login	ggc-qr-login	기존 §11	work	P1	있음	1
+prose	본문 조판	.ggc-prose	ggc-prose	기존 §10 (확폭 캡만)	both	P1	있음	3
+actionbar	하단 스티키 액션바	.ggc-actionbar	ggc-actionbar	archetypes Configure 슬롯 5	work	P0	있음	3
+modal	모달 / 다이얼로그	.ggc-modal (<dialog>)	dialog alert-dialog	KRDS modal	both	P0	있음	3
+tabs	탭	.ggc-tabs .ggc-tablist .ggc-tab .ggc-tabpanel	tabs	KRDS tab	both	P0	있음	3
+select	셀렉트 (네이티브)	.ggc-select	select	KRDS select	both	P0	있음	3
+check-radio	체크박스 · 라디오 · 칩	.ggc-check .ggc-radio .ggc-check-group(--column) .ggc-chip	checkbox radio-group	KRDS checkbox/radio/chip	both	P0	있음	3
+alert	알림 / 콜아웃	.ggc-alert (--info --success --warning --danger)	alert	KRDS critical_alerts · .ggc-qr-callout 일반화	both	P0	있음	3
+pagination	페이지네이션	.ggc-pagination	pagination	KRDS pagination	both	P0	있음	3
+breadcrumb	브레드크럼	.ggc-breadcrumb	breadcrumb	KRDS breadcrumb · archetypes 헤더 2형	both	P0	있음	3
+page-head	페이지 헤더 (제목 · 메타 · 주 액션)	.ggc-page-head	ggc-page-head	archetypes 슬롯 1·2	work	P1	있음	3
+spinner	스피너	.ggc-spinner .ggc-spinner-block	spinner	KRDS spinner · .ggc-qr-spinner 일반화	both	P1	있음	3
+skeleton	스켈레톤	.ggc-skeleton	skeleton	갤러리 로딩 예시	both	P1	있음	3
+public-layout	대민 페이지 컨테이너 · 페이지 타이틀	.ggc-public .ggc-public-main(--side) .ggc-page-title .ggc-h2	ggc-public-layout	KRDS 레이아웃 (contents 1200 + 24×2) · page title	public	P0	있음	4
+hero	대민 메인 히어로 (안내 · 통합검색 · 바로가기)	.ggc-hero	ggc-hero	KRDS 메인 검색 영역	public	P1	있음	4
+masthead	마스트헤드 (정부 공식 사이트 띠)	.ggc-masthead	ggc-masthead	KRDS masthead	public	P0	있음	4
+identifier	아이덴티파이어 (기관 식별 띠)	.ggc-identifier	ggc-identifier	KRDS identifier	public	P0	있음	4
+public-header	대민 헤더 + 주 메뉴 + 통합검색	.ggc-header .ggc-main-menu	ggc-public-header	KRDS header · main_menu_pc/mobile	public	P0	있음	4
+public-footer	대민 푸터	.ggc-footer--public	ggc-public-footer	KRDS footer	public	P0	있음	4
+side-nav	사이드 내비게이션 (대민)	.ggc-side-nav	ggc-side-nav	KRDS side_navigation	public	P1	있음	4
+structured-list	구조화 목록	.ggc-structured-list	ggc-structured-list	KRDS structured_list	public	P1	있음	4
+switch	토글 스위치	.ggc-switch (--row)	switch	KRDS toggle_switch	both	P1	있음	9
+toast	토스트	.ggc-toast-region .ggc-toast (--success --warning --danger --info)	toast	자체 (KRDS 없음)	both	P1	있음	9
+accordion	아코디언 / 디스클로저	.ggc-accordion .ggc-accordion-group (<details>, --flush)	accordion	KRDS accordion/disclosure	both	P1	있음	9
+date	날짜 입력 (네이티브)	.ggc-date .ggc-date-range (--inline)	input (date)	KRDS date_input	both	P1	있음	9
+file-upload	파일 업로드	.ggc-file .ggc-file-list (--compact)	ggc-file-upload	KRDS file_upload	both	P1	있음	9
+menu	드롭다운 메뉴	.ggc-menu (<details>, --end --up)	dropdown-menu	shadcn (KRDS 없음)	both	P1	있음	9
+link	링크	.ggc-link (--external --download --quiet --strong)	—	KRDS link	both	P1	있음	9
+empty	빈 상태	.ggc-empty (--error --compact)	ggc-empty	components.html 조립 예시 · ADR 0006	both	P1	있음	9
+listbox	커스텀 리스트박스 (항상 보이는 목록 · 필터 · 다중)	.ggc-listbox	listbox	KRDS select_* 목록부	both	P2	있음	9
+tooltip	툴팁	.ggc-tooltip-wrap .ggc-tooltip (--bottom --start --end)	tooltip	KRDS tooltip	both	P2	있음	9
+in-page-nav	페이지 내 내비게이션	.ggc-in-page-nav	—	KRDS in_page_navigation	both	P2	있음	9
+text-list	텍스트 목록	.ggc-text-list (--dash --check --none --tight)	—	KRDS text_list	both	P2	있음	9
+combobox	콤보박스 (입력 + 팝업 목록)	.ggc-combobox	combobox	KRDS select_* · shadcn combobox	both	P2	예정	10
+calendar	커스텀 달력 (범위 · 회기 표시)	.ggc-calendar	calendar	KRDS calendar	both	P2	예정	10

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "title": "텍스트 영역",
+  "files": [
+    {
+      "path": "registry/ggc/ui/textarea.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Textarea({ className, ...props }: React.ComponentProps<\"textarea\">) {\n  return (\n    <textarea\n      data-slot=\"textarea\"\n      className={cn(\n        \"flex min-h-[72px] w-full rounded-(--ggc-radius) border border-input bg-card px-[14px] py-2.5 text-(length:--ggc-control-font) leading-relaxed text-foreground outline-none transition-[border-color,box-shadow] placeholder:text-(--ggc-text-subtle) disabled:cursor-default disabled:bg-(--ggc-control-bg)\",\n        \"focus-visible:border-primary focus-visible:shadow-(--ggc-focus-ring) aria-invalid:border-destructive\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Textarea }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
