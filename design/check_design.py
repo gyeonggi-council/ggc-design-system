@@ -861,7 +861,7 @@ def check_inventory(tokens, comps):
     return fails
 
 
-def check_canon():
+def check_canon(strict=False):
     print("=== D6 CANON — 정본 자체 검사 ===")
     tokens = read(CANON_TOKENS)
     comps = read(CANON_COMPONENTS)
@@ -996,7 +996,9 @@ def check_canon():
     print(f"\n--- D6 CANON  FAIL {fails} · WARN {warns}")
     if warns and not fails:
         print("    WARN 은 정본 개정으로만 해소된다(사용자 결정). 서비스가 할 일이 아니다.")
-    return 1 if fails else 0
+        if strict:
+            print("    --strict: 정본 저장소 자체 검사에서는 WARN 도 실패다 (생성물 낡음 · 계약 불일치는 이 저장소가 고칠 일)")
+    return 1 if fails or (strict and warns) else 0
 
 
 # ---------------------------------------------------------------------- main
@@ -1011,10 +1013,12 @@ def main():
     ap.add_argument("--aa", default="observe", choices=["observe", "enforce"])
     ap.add_argument("--profile", choices=["work", "public"],
                     help="D3 셸 기대를 강제한다 (기본: 마크업의 data-ggc-profile 로 판정)")
+    ap.add_argument("--strict", action="store_true",
+                    help="--canon 에서 WARN 도 exit 1 (정본 저장소 CI 용)")
     a = ap.parse_args()
 
     if a.canon:
-        sys.exit(check_canon())
+        sys.exit(check_canon(strict=a.strict))
 
     if a.all:
         base = a.target or SERVICES_ROOT

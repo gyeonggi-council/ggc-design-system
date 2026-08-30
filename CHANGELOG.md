@@ -5,6 +5,12 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 8 — CI (2026-08-30)
+
+- `tools/check-all.sh` — 정본(D6) · 갤러리 업무/대민(D1~D5) · 문서 링크 · Tier 2 레지스트리(R1~R5) 전수. Python 만 필요
+- `.github/workflows/check.yml` — push · PR 마다 check-all + `npx shadcn build` 재빌드 diff(산출물 신선도)
+- 실증: DESIGN.md 를 의도적으로 낡게 만들면 check-all 이 실패한다
+
 ### Phase 6 — 사람용 문서 (2026-08-30)
 
 - `docs/README.md` 독자별 진입, `docs/quickstart/` 스택별 5단계 7종(정적 HTML · Jinja2 · FastAPI · JSP/Tiles · Vite React · Next · React Tier 2)

@@ -109,6 +109,7 @@ python design/check_design.py --canon                 # 정본 자체 (문서↔
 python design/check_design.py --report <서비스경로>    # 판정만
 python design/check_design.py --gate   <서비스경로>    # FAIL 이면 exit 1
 python design/check_design.py --all    <서비스루트>    # 전수 요약
+bash tools/check-all.sh                                # 이 저장소 자체 전수 (CI 가 도는 것과 같다)
 ```
 
 | ID | 검사 | 왜 필요했나 |
