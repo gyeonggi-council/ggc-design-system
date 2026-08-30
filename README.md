@@ -62,7 +62,17 @@ python design/check_design.py --report <서비스경로>
 ```
 
 **패키지가 아니라 복사다.** 프런트가 7종이라 CSS 커스텀 프로퍼티가 최소공배수이고,
-npm 워크스페이스·사설 레지스트리가 0건이다. React 컴포넌트는 공유하지 않는다.
+npm 워크스페이스·사설 레지스트리가 0건이다.
+
+React · Next · Vite + Tailwind v4 프로젝트는 **Tier 2 — shadcn 레지스트리**로 같은 것을 복사 설치한다
+(v2.0). npm 배포가 아니라 `public/r/*.json` 정적 파일이며, 색은 전부 `var(--ggc-*)` 라 값의 원천은 그대로 토큰 파일 하나다.
+
+```bash
+# components.json 의 registries 에 "@ggc": "<서빙주소>/public/r/{name}.json" 을 넣고
+npx shadcn add @ggc/ggc-style -y      # 토큰 파일 + 테마 매핑 + UI 17종
+```
+
+절차와 손으로 하는 셋(토큰 @import · 폰트 복사 · .dark 삭제)은 [docs/quickstart/react-tier2.md](docs/quickstart/react-tier2.md).
 
 ## 무엇이 들어 있나
 
@@ -74,7 +84,9 @@ npm 워크스페이스·사설 레지스트리가 0건이다. React 컴포넌트
 | `design/check_design.py` | **검사기** — `diff -q` 를 대체하는 6종 검사 |
 | `design/brand/` | 파비콘 세트 · 의회 마크 · stdlib 전용 생성기 · 배포 매핑표 |
 | **`design/examples/`** | **예제 갤러리 5쪽** — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
+| `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v2.0**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·메뉴) |
 | `design/components.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 |
+| `registry.json` · `registry/ggc/` · `public/r/` | **Tier 2 shadcn 레지스트리** — 소스(tsx) · 빌드 산출물(JSON, 서빙 대상). 검사는 `tools/check-registry.py` |
 | `DESIGN.md` | **생성물** — Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (`tools/build-design-md.py`) |
 | `skills/ggc-design/` | **디자인 가이드 본문** — 화면 처방·스택별 착지점·리스킨·검증 |
 | `docs/contract.md` | 단일 디자인 계약 (AUTHORITATIVE) |

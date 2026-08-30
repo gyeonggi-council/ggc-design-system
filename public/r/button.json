@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "title": "버튼",
+  "description": "primary · secondary · ghost · dashed · destructive. 높이는 --ggc-control-h* (프로필을 따른다). primary 만 그림자.",
+  "dependencies": [
+    "radix-ui",
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/ui/button.tsx",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { Slot } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 경기도의회 버튼 — ggc-components.css §6 과 같은 모습.\n * 높이·글자는 --ggc-control-h* / --ggc-control-font* 토큰이라 대민 프로필에서 자동으로 커진다.\n * primary 만 그림자(--ggc-shadow-primary). 색은 전부 토큰 — hex 없음. */\nconst buttonVariants = cva(\n  \"inline-flex shrink-0 items-center justify-center gap-2 rounded-(--ggc-radius) border border-transparent font-bold whitespace-nowrap transition-[background-color,border-color,color] outline-none focus-visible:border-primary focus-visible:shadow-(--ggc-focus-ring) disabled:pointer-events-none disabled:opacity-45 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-primary text-primary-foreground shadow-(--ggc-shadow-primary) hover:bg-(--ggc-primary-dark) active:bg-(--ggc-primary-deep)\",\n        secondary: \"border-(--ggc-border-strong) bg-card text-(--ggc-primary-deep) hover:bg-(--ggc-surface-inset)\",\n        ghost: \"bg-transparent text-(--ggc-primary-deep) hover:bg-(--ggc-primary-light)\",\n        dashed: \"w-full border-[1.5px] border-dashed border-(--ggc-border-strong) bg-(--ggc-row-hover) font-semibold text-(--ggc-text-muted) hover:border-primary hover:text-(--ggc-primary-deep)\",\n        destructive: \"bg-destructive text-destructive-foreground hover:opacity-90\",\n        link: \"text-primary underline underline-offset-2 hover:text-(--ggc-primary-dark)\",\n      },\n      size: {\n        default: \"h-(--ggc-control-h) px-[18px] text-(length:--ggc-control-font)\",\n        sm: \"h-(--ggc-control-h-sm) rounded-[8px] px-[14px] text-(length:--ggc-control-font-sm)\",\n        lg: \"h-(--ggc-control-h-lg) rounded-[11px] px-5 text-(length:--ggc-control-font-lg)\",\n        icon: \"size-(--ggc-control-h) rounded-(--ggc-radius)\",\n        \"icon-sm\": \"size-(--ggc-control-h-sm) rounded-[8px]\",\n      },\n    },\n    defaultVariants: { variant: \"default\", size: \"default\" },\n  }\n)\n\nfunction Button({\n  className,\n  variant = \"default\",\n  size = \"default\",\n  asChild = false,\n  ...props\n}: React.ComponentProps<\"button\"> &\n  VariantProps<typeof buttonVariants> & { asChild?: boolean }) {\n  const Comp = asChild ? Slot.Root : \"button\"\n  return (\n    <Comp\n      data-slot=\"button\"\n      data-variant={variant}\n      data-size={size}\n      className={cn(buttonVariants({ variant, size, className }))}\n      {...props}\n    />\n  )\n}\n\nexport { Button, buttonVariants }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

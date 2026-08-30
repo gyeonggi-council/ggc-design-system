@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "breadcrumb",
+  "title": "브레드크럼",
+  "dependencies": [
+    "radix-ui",
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/ui/breadcrumb.tsx",
+      "content": "import * as React from \"react\"\nimport { ChevronRight } from \"lucide-react\"\nimport { Slot } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 브레드크럼 — ggc-components.css §13 (KRDS). 마지막 항목은 링크가 아니라 aria-current=\"page\" 텍스트. */\nfunction Breadcrumb({ ...props }: React.ComponentProps<\"nav\">) {\n  return <nav aria-label=\"현재 경로\" data-slot=\"breadcrumb\" {...props} />\n}\n\nfunction BreadcrumbList({ className, ...props }: React.ComponentProps<\"ol\">) {\n  return <ol data-slot=\"breadcrumb-list\" className={cn(\"m-0 flex flex-wrap items-center gap-x-1 gap-y-0.5 p-0 text-[12.5px] break-words text-(--ggc-text-subtle)\", className)} {...props} />\n}\n\nfunction BreadcrumbItem({ className, ...props }: React.ComponentProps<\"li\">) {\n  return <li data-slot=\"breadcrumb-item\" className={cn(\"inline-flex items-center gap-1\", className)} {...props} />\n}\n\nfunction BreadcrumbLink({ asChild, className, ...props }: React.ComponentProps<\"a\"> & { asChild?: boolean }) {\n  const Comp = asChild ? Slot.Root : \"a\"\n  return <Comp data-slot=\"breadcrumb-link\" className={cn(\"rounded-(--ggc-radius-sm) px-1 -mx-1 py-0.5 text-(--ggc-text-muted) no-underline transition-colors hover:text-primary hover:underline\", className)} {...props} />\n}\n\nfunction BreadcrumbPage({ className, ...props }: React.ComponentProps<\"span\">) {\n  return <span data-slot=\"breadcrumb-page\" aria-current=\"page\" className={cn(\"font-semibold text-foreground\", className)} {...props} />\n}\n\nfunction BreadcrumbSeparator({ children, className, ...props }: React.ComponentProps<\"li\">) {\n  return (\n    <li data-slot=\"breadcrumb-separator\" role=\"presentation\" aria-hidden=\"true\" className={cn(\"[&>svg]:size-3 text-(--ggc-text-faint)\", className)} {...props}>\n      {children ?? <ChevronRight />}\n    </li>\n  )\n}\n\nexport { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

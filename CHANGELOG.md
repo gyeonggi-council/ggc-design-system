@@ -5,6 +5,21 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 7 — Tier 2 shadcn 레지스트리 (2026-08-29)
+
+- `registry.json` + `registry/ggc/` 25항목: `ggc-tokens`(정본 사본, registry:file) · `ggc-theme`(shadcn 변수 → `var(--ggc-*)`,
+  hex 0 · dark 없음) · `ggc-style`(한 번에 착지) · UI 17종(button · badge/tag · card · input/field · label · textarea ·
+  select · checkbox · radio-group · dialog · tabs · alert · breadcrumb · pagination · table · skeleton · spinner) ·
+  블록 5종(ggc-shell · ggc-stat · ggc-stepper · ggc-actionbar · ggc-page-head). shadcn v4 관례(`radix-ui` · `data-slot` ·
+  함수 컴포넌트), 치수는 `--ggc-control-h*` 등 토큰이라 대민 프로필을 따른다
+- `public/r/*.json` 빌드 산출물 커밋(서빙 대상). `npx shadcn build registry.json -o public/r`
+- `tools/check-registry.py` 신설(R1 산출물 · R2 신선도 · R3 색 리터럴 · R4 테마 매핑 · R5 인벤토리), D6 gen 에 등록
+- `check_design.py` **D7 REGISTRY** 신설 — `components.json` 이 있는 프로젝트에서 @ggc 등록 · 토큰 import · `:root` 매핑이
+  전부 `var(--ggc-*)` 인지 · `.dark` 팔레트 유무
+- 문서: `docs/quickstart/react-tier2.md`, 스킬 참조 `registry.md`, README
+- 실증: Vite + Tailwind v4 + shadcn 4.19 소비자 프로젝트에서 `init -t vite -b radix -p nova` → `add @ggc/ggc-style` → 빌드 →
+  계산 스타일 27/27 일치(버튼 42/#3C5D93/10px · 입력 44 · 표 13 · 대민 토글 48/17), `check_design --gate` D1·D7 PASS
+
 ### Phase 4 — 대민 프로필 + 공개 셸 (2026-08-29)
 
 - `design/ggc-public.css` 신설 — 마스트헤드 · 헤더(유틸리티·브랜딩·통합검색) · 주 메뉴(PC 드롭다운/모바일 패널) ·

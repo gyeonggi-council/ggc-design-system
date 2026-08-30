@@ -27,6 +27,7 @@ check_design.py — 경기도의회 공통 디자인 드리프트 검사기
 """
 import os
 import re
+import json
 import subprocess
 import sys
 import argparse
@@ -306,6 +307,39 @@ def profile_vars(css, name):
                 k += 1
             for m in re.finditer(r"--ggc-([\w-]+):\s*([^;]+);", css[j:k]):
                 out.setdefault(m.group(1).lower(), m.group(2).strip())
+            i = k + 1
+            continue
+        i += 1
+    return out
+
+
+def top_level_block_decls(css, selector):
+    """최상위 `selector { … }` 블록(들)의 `--이름: 값` 선언을 돌려준다. css 는 주석을 뺀 상태여야 한다.
+    @theme · @media 안은 보지 않는다(깊이 0 만)."""
+    out, i, n, depth = {}, 0, len(css), 0
+    while i < n:
+        ch = css[i]
+        if ch == "{":
+            depth += 1; i += 1; continue
+        if ch == "}":
+            depth = max(0, depth - 1); i += 1; continue
+        if depth == 0 and css.startswith(selector, i) and (i == 0 or css[i - 1] in " \n\t}"):
+            j = css.find("{", i)
+            if j < 0:
+                break
+            head = css[i:j].strip()
+            if head != selector:            # ":root, .x" 같은 복합 선택자는 건너뛴다
+                i = j + 1
+                continue
+            k, d = j, 0
+            while k < n:
+                if css[k] == "{": d += 1
+                elif css[k] == "}":
+                    d -= 1
+                    if d == 0: break
+                k += 1
+            for m in re.finditer(r"--([\w-]+)\s*:\s*([^;]+);", css[j:k]):
+                out.setdefault(m.group(1), m.group(2).strip())
             i = k + 1
             continue
         i += 1
@@ -612,6 +646,53 @@ def check_service(root, aa_mode="observe", verbose=True, profile=None):
                 rep.add("D5", level, "aa", f"{rel}:{i}",
                         f"{m.group(1)}  흰 {cw:.2f}:1 · 페이지bg {cb:.2f}:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)")
 
+    # --- D7 REGISTRY (Tier 2 소비 프로젝트만) ------------------------------
+    # components.json 이 있으면 shadcn 프로젝트다. 테마 매핑이 값을 복제하지 않았는지,
+    # 토큰 파일을 실제로 import 하는지, 다크 팔레트를 만들지 않았는지 본다.
+    cj = os.path.join(root, "components.json")
+    if os.path.exists(cj):
+        rep.counts.setdefault("D7", {"FAIL": 0, "WARN": 0, "INFO": 0})
+        try:
+            conf = json.loads(read(cj))
+        except ValueError:
+            conf = {}
+            rep.add("D7", "FAIL", "config", "components.json", "JSON 을 읽을 수 없다")
+        regs = conf.get("registries") or {}
+        if any(k.startswith("@ggc") for k in regs):
+            rep.add("D7", "INFO", "registry", "components.json", "@ggc 레지스트리 등록됨")
+        else:
+            rep.add("D7", "WARN", "registry", "components.json",
+                    "registries 에 @ggc 가 없다 — 항목을 URL/경로로 직접 추가했다면 무시")
+        css_rel = (conf.get("tailwind") or {}).get("css") or ""
+        css_path = os.path.join(root, css_rel) if css_rel else ""
+        css = read(css_path) if css_path and os.path.exists(css_path) else ""
+        if not css:
+            rep.add("D7", "WARN", "css", css_rel or "-", "tailwind.css 경로의 파일을 읽지 못했다")
+        else:
+            if "ggc-tokens.css" in css:
+                rep.add("D7", "INFO", "tokens", css_rel, "ggc-tokens.css 를 import 한다")
+            else:
+                rep.add("D7", "FAIL", "tokens", css_rel,
+                        "ggc-tokens.css 를 import 하지 않는다 — 첫 줄에 @import 를 둘 것")
+            stripped = "\n".join(strip_comments(css))
+            # 최상위 :root 블록의 shadcn 변수만 본다 — @theme inline 의 `--primary: var(--primary)` 는
+            # 유틸리티 매핑이지 값이 아니다. .dark 는 아래서 따로 WARN 한다.
+            root_decls = top_level_block_decls(stripped, ":root")
+            for k, v in root_decls.items():
+                if k not in ("primary", "background", "foreground", "border", "ring",
+                             "destructive", "accent", "muted", "card", "input", "secondary"):
+                    continue
+                universal_white = v.startswith("#") and norm_hex(v) in UNIVERSAL
+                if not (v.startswith("var(--ggc-") or universal_white):
+                    rep.add("D7", "FAIL", "theme", css_rel,
+                            f"--{k}: {v[:40]} — var(--ggc-*) 가 아니다(값 복제)")
+            if not root_decls:
+                rep.add("D7", "WARN", "theme", css_rel, ":root 에 shadcn 변수 매핑이 없다 — @ggc/ggc-theme 를 추가할 것")
+            elif not any(rep_line[0] == "D7" and rep_line[1] == "FAIL" for rep_line in rep.lines):
+                rep.add("D7", "INFO", "theme", css_rel, f":root 매핑 {len(root_decls)}종 전부 var(--ggc-*)")
+            if top_level_block_decls(stripped, ".dark") or re.search(r"@media\s*\(prefers-color-scheme:\s*dark\)[^{]*\{[^}]*--primary", stripped):
+                rep.add("D7", "WARN", "dark", css_rel, "다크 팔레트(.dark)가 정의돼 있다 — 지울 것. 계약 §3-2 (다크모드 비범위)")
+
     if verbose:
         print(f"\n=== [{name}] {kind} ===")
         rep.dump()
@@ -692,6 +773,8 @@ GENERATED = [
      "링크 하나로 여는 갤러리 합본 (URL 로 공유되는 판)"),
     ("../tools/build-design-md.py", "../DESIGN.md",
      "Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (v2.0)"),
+    ("../tools/check-registry.py", "../public/r",
+     "Tier 2 레지스트리 산출물 (npx shadcn build) — 소스와 어긋나면 소비자가 낡은 컴포넌트를 받는다"),
 ]
 
 

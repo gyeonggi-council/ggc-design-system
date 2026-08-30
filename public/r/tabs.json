@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tabs",
+  "title": "탭",
+  "description": "밑줄형(KRDS line). 선택은 색 + 2px 선.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/ui/tabs.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Tabs as TabsPrimitive } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 탭 — ggc-components.css §14 (KRDS line). 선택 표시는 색 + 하단 2px 선 둘 다. Radix 가 roving tabindex · 화살표를 준다. */\nfunction Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Root>) {\n  return <TabsPrimitive.Root data-slot=\"tabs\" className={cn(\"flex flex-col\", className)} {...props} />\n}\n\nfunction TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {\n  return (\n    <TabsPrimitive.List\n      data-slot=\"tabs-list\"\n      className={cn(\"flex gap-1 overflow-x-auto border-b border-input [scrollbar-width:none] [&::-webkit-scrollbar]:hidden\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction TabsTrigger({ className, count, children, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger> & { count?: React.ReactNode }) {\n  return (\n    <TabsPrimitive.Trigger\n      data-slot=\"tabs-trigger\"\n      className={cn(\n        \"-mb-px inline-flex items-center gap-1 border-b-2 border-transparent bg-transparent px-[14px] py-2.5 text-(length:--ggc-control-font) leading-tight font-semibold whitespace-nowrap text-(--ggc-text-muted) transition-colors outline-none hover:bg-(--ggc-row-hover) hover:text-foreground focus-visible:shadow-(--ggc-focus-ring) data-[state=active]:border-primary data-[state=active]:font-bold data-[state=active]:text-(--ggc-primary-deep) forced-colors:data-[state=active]:outline forced-colors:data-[state=active]:outline-2 forced-colors:data-[state=active]:outline-[Highlight]\",\n        className\n      )}\n      {...props}\n    >\n      {children}\n      {count !== undefined && <span className=\"ml-1 text-[11.5px] font-semibold text-(--ggc-text-subtle) group-data-[state=active]:text-primary\">{count}</span>}\n    </TabsPrimitive.Trigger>\n  )\n}\n\nfunction TabsContent({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Content>) {\n  return <TabsPrimitive.Content data-slot=\"tabs-content\" className={cn(\"pt-5 outline-none\", className)} {...props} />\n}\n\nexport { Tabs, TabsList, TabsTrigger, TabsContent }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

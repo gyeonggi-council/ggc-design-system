@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-style",
+  "title": "GGC 스타일 — 한 번에 착지",
+  "description": "npx shadcn init @ggc/ggc-style 한 번으로 토큰 파일 · 테마 · P0 컴포넌트가 들어온다.",
+  "dependencies": [
+    "radix-ui",
+    "class-variance-authority",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils",
+    "@ggc/ggc-tokens",
+    "@ggc/ggc-theme",
+    "@ggc/button",
+    "@ggc/badge",
+    "@ggc/card",
+    "@ggc/input",
+    "@ggc/label",
+    "@ggc/textarea",
+    "@ggc/select",
+    "@ggc/checkbox",
+    "@ggc/radio-group",
+    "@ggc/dialog",
+    "@ggc/tabs",
+    "@ggc/alert",
+    "@ggc/breadcrumb",
+    "@ggc/pagination",
+    "@ggc/table",
+    "@ggc/skeleton",
+    "@ggc/spinner"
+  ],
+  "type": "registry:style"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-page-head",
+  "title": "페이지 헤더",
+  "description": "브레드크럼 + 제목 + 메타 + 주 액션 하나.",
+  "registryDependencies": [
+    "@ggc/breadcrumb"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/blocks/ggc-page-head/ggc-page-head.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 페이지 헤더 — ggc-components.css §12. 브레드크럼(children 앞) + 제목 + 메타 + 주 액션 하나.\n * Monitor 첫 화면만 greeting — \"{이름}님, 오늘 처리할 {업무} {N}건이 있습니다\". */\nfunction PageHead({\n  className,\n  breadcrumb,\n  title,\n  meta,\n  actions,\n  greeting = false,\n  ...props\n}: React.ComponentProps<\"div\"> & { breadcrumb?: React.ReactNode; title: React.ReactNode; meta?: React.ReactNode; actions?: React.ReactNode; greeting?: boolean }) {\n  return (\n    <div data-slot=\"page-head\" className={cn(\"mb-5 flex flex-col gap-2\", className)} {...props}>\n      {breadcrumb}\n      <div className=\"flex flex-wrap items-end justify-between gap-4\">\n        <div>\n          <h1 className={cn(\"m-0 leading-[1.3] font-extrabold text-(--ggc-text-strong)\", greeting ? \"text-[17px] tracking-[-0.03em]\" : \"text-lg tracking-[-0.02em]\")}>{title}</h1>\n          {meta && <p className=\"m-0 mt-[3px] text-[12.5px] text-(--ggc-text-subtle)\">{meta}</p>}\n        </div>\n        {actions && <div className=\"flex shrink-0 items-center gap-2\">{actions}</div>}\n      </div>\n    </div>\n  )\n}\n\nexport { PageHead }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:block"
+}

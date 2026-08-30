@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "title": "배지 · 태그",
+  "description": "알약형 상태 배지(회기·결재·역할) + 사각 태그. 색 단독 금지 — 텍스트·기호를 함께.",
+  "dependencies": [
+    "radix-ui",
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/ui/badge.tsx",
+      "content": "import * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { Slot } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 상태 배지(알약) — ggc-tokens.css 의 .ggc-badge 와 같은 7 상태 + 역할 4종.\n * ⚠ 색 단독 금지 — 항상 텍스트·기호(✓ ◷ ✕ ● ◆ ○)를 함께 넣는다. 고대비에서 테두리가 붙는다. */\nconst badgeVariants = cva(\n  \"inline-flex w-fit shrink-0 items-center justify-center gap-1 rounded-full px-2 py-1 text-xs font-semibold leading-none whitespace-nowrap forced-colors:border forced-colors:border-current [&>svg]:size-3\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-(--ggc-primary-light-strong) text-primary\",\n        session: \"bg-(--ggc-info-tint) text-(--ggc-info)\",\n        meeting: \"bg-(--ggc-success-tint) text-(--ggc-success)\",\n        recess: \"bg-(--ggc-hairline) text-(--ggc-text-subtle)\",\n        approved: \"bg-(--ggc-success-tint) text-(--ggc-success)\",\n        pending: \"bg-(--ggc-warning-tint) text-(--ggc-warning)\",\n        rejected: \"bg-(--ggc-danger-tint) text-(--ggc-danger)\",\n        paid: \"bg-(--ggc-primary-light-strong) text-primary\",\n        \"role-member\": \"bg-(--ggc-role-member-tint) text-(--ggc-role-member)\",\n        \"role-staff\": \"bg-(--ggc-role-staff-tint) text-(--ggc-role-staff)\",\n        \"role-policy\": \"bg-(--ggc-role-policy-tint) text-(--ggc-role-policy)\",\n        \"role-other\": \"bg-(--ggc-role-other-tint) text-(--ggc-role-other)\",\n      },\n    },\n    defaultVariants: { variant: \"default\" },\n  }\n)\n\nfunction Badge({\n  className,\n  variant = \"default\",\n  asChild = false,\n  ...props\n}: React.ComponentProps<\"span\"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {\n  const Comp = asChild ? Slot.Root : \"span\"\n  return <Comp data-slot=\"badge\" data-variant={variant} className={cn(badgeVariants({ variant }), className)} {...props} />\n}\n\n/* 태그(사각) — 분류·출처. 상태 배지와 모양을 다르게 두어 한 화면에서 두 뜻이 섞이지 않게 한다. */\nconst tagVariants = cva(\n  \"inline-flex items-center gap-1 rounded-(--ggc-radius-sm) px-2 py-0.5 text-[10.5px] font-bold leading-[1.4] whitespace-nowrap forced-colors:border forced-colors:border-current\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-(--ggc-control-bg) text-(--ggc-text-muted)\",\n        primary: \"bg-(--ggc-primary-light) text-(--ggc-primary-deep)\",\n        info: \"bg-(--ggc-info-tint) text-(--ggc-info)\",\n        success: \"bg-(--ggc-success-tint) text-(--ggc-success)\",\n        warning: \"bg-(--ggc-warning-tint) text-(--ggc-warning)\",\n        danger: \"bg-(--ggc-danger-tint) text-(--ggc-danger)\",\n      },\n    },\n    defaultVariants: { variant: \"default\" },\n  }\n)\n\nfunction Tag({ className, variant = \"default\", ...props }: React.ComponentProps<\"span\"> & VariantProps<typeof tagVariants>) {\n  return <span data-slot=\"tag\" data-variant={variant} className={cn(tagVariants({ variant }), className)} {...props} />\n}\n\nexport { Badge, badgeVariants, Tag, tagVariants }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
