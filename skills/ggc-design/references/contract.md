@@ -12,12 +12,15 @@
 
 | 무엇 | 어디 |
 |---|---|
-| **토큰 정본** | `design\ggc-tokens.css` (v1.2) |
-| **컴포넌트 정본** | `design\ggc-components.css` (v1.1) |
+| **토큰 정본** | `design\ggc-tokens.css` (v2.0 — 업무 기본값 + `[data-ggc-profile="public"]` 대민 블록) |
+| **컴포넌트 정본** | `design\ggc-components.css` (v2.0, §1~§24) · `design\ggc-behaviors.js` (탭·모달·drawer·대민 메뉴) |
+| **대민 셸 정본** | `design\ggc-public.css` (v2.0 — 마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어·사이드 내비·구조화 목록) |
 | **폰트 정본** | `design\ggc-fonts.css` (v1.0) + `design\fonts\` — @font-face 하나와 woff2 하나. **두 파일을 같은 폴더에 나란히** 복사하고 토큰보다 먼저 링크한다. 재생성은 `fonts\build-font.py` |
 | **브랜드 자산 정본** | `design\brand\dist\` + `design\brand\ASSET-MAP.tsv` |
-| **검사기** | `design\check_design.py` (`check-design.sh` 는 래퍼) |
-| **예제 갤러리** | `design\examples\index.html` — 빌드 없이 열린다. 토큰 전수·컴포넌트 카탈로그·실물 화면 2종 |
+| **컴포넌트 인벤토리** | `design\components.tsv` — 문서·DESIGN.md·레지스트리가 읽는 단일 원천 |
+| **Tier 2 레지스트리** | `registry.json` · `registry\ggc\` (소스) · `public\r\` (빌드 산출물, 서빙 대상) |
+| **검사기** | `design\check_design.py` (D1~D7) · `tools\check-registry.py` · `tools\check-links.py` |
+| **예제 갤러리** | `design\examples\index.html` — 빌드 없이 열린다. 업무 9쪽 + 대민 4쪽(`examples\public\`) |
 | **단일디자인 계약** | `docs\contract.md` — **AUTHORITATIVE** |
 | 공통 가이드 (구판) | `archive\03-공통디자인가이드.md` |
 | 505줄 실측 문서 · 디자인 원본 8개(`*.dc.html`) · KRDS 원본(토큰 JSON·컴포넌트 HTML 22개) | 플랫폼 저장소(비공개) 자산 — **이 저장소에는 없다.** 필요하면 담당자에게 요청 |
@@ -38,6 +41,9 @@
 | 형태 | `--ggc-radius` `-sm` `-lg` `--ggc-shadow` `--ggc-shadow-primary` | 버튼 / 배지 / 카드 / 기본 / primary 버튼 |
 | 포커스 | `--ggc-focus-ring` | 계약 §3 |
 | 셸 치수 | `--ggc-gnb-h` `--ggc-lnb-w` `--ggc-main-max` `--ggc-main-max-wide` | 64 / 256 / 1320 / 1360 |
+| 컨트롤·밀도 (v2.0, **프로필이 바꾸는 유일한 층**) | `--ggc-control-h-sm` `-h` `-h-lg` · `--ggc-input-h` `--ggc-search-h` · `--ggc-control-font(-sm/-lg)` `--ggc-label-font` `--ggc-table-font` · `--ggc-cell-pad` `--ggc-row-pad` `--ggc-card-pad` · `--ggc-container-max` | 업무 기본값 = 현행 실측, 대민 = KRDS 치수. 값은 토큰 파일 |
+| 간격 확장 (v2.0) | `--ggc-space-8` ~ `-11` | 40 / 48 / 64 / 80 (KRDS 다음 스텝) |
+| 본문 단락 (v2.0 승격) | `--ggc-text-body` | 카드 안 긴 글 · 표 td |
 
 **상태 배지는 색 단독에 의존하지 않는다** — 항상 텍스트나 아이콘을 함께 둔다.
 배지 7종 전부가 AA 미달이던 시기가 있었고(2026-08-22 v1.2 로 해소), 그때 병기 규칙이
@@ -108,7 +114,7 @@ JSP/Tiles · Jinja2 · FastAPI+StaticFiles(마운트 2형) · 정적 HTML.
   "고치지는 않되 늘리지도 않는다."
 - **`enforce`** — 4.5:1 미만 전량 FAIL.
 
-모드는 `state.json.design.aa_mode` 에 남고 검사기 출력에도 찍힌다.
+모드는 `<서비스>/docs/design-decisions.md` 에 남고 검사기 출력에도 찍힌다.
 **부분 준수를 완전 준수로 적지 않기 위한 장치다.**
 
 ## 고대비

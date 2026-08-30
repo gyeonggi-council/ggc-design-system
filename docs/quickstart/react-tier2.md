@@ -22,7 +22,9 @@
 }
 ```
 
-레지스트리는 `public/r/*.json` 정적 파일이다. 서버가 필요 없다 — 어디에 올려도 `{name}.json` 이 열리면 된다.
+레지스트리는 `public/r/*.json` 정적 파일이다 — 어떤 정적 웹서버에 올려도 `{name}.json` 이 열리면 된다.
+**`file://` 와 절대 경로는 shadcn CLI 4.19 가 지원하지 않는다**("not implemented yet", 2026-08-29 실측).
+내부망에서는 clone 한 저장소 루트에서 `python -m http.server 8765` 같은 정적 서버를 띄우고 그 주소를 쓴다.
 
 ## 2. 한 번에 착지
 

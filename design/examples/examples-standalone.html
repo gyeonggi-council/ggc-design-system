@@ -2564,14 +2564,7 @@ body { margin: 0; }
   text-underline-offset: 2px;
 }
 
-/* --- LNB 안 현재 페이지 표시 ------------------------------------------------ */
-.ggc-lnb .ex-lnb-cap {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--ggc-text-faint);
-  padding: 0 var(--ggc-space-3) var(--ggc-space-2);
-}
+/* LNB 캡션은 정본 .ggc-lnb-group 을 쓴다 (v2.0 — 갤러리 전용 클래스가 셸 마크업에 섞이지 않게) */
 
 /* --- 반응형 ---------------------------------------------------------------- */
 @media (max-width: 900px) {
@@ -2651,7 +2644,7 @@ body {
 
   <div class="ggc-shell-body">
     <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
-      <div class="ex-lnb-cap">갤러리</div>
+      <div class="ggc-lnb-group">갤러리</div>
       <a class="ggc-lnb-item" href="#index" data-page="index">개요</a>
       <a class="ggc-lnb-item" href="#tokens" data-page="tokens">토큰 · 팔레트</a>
       <a class="ggc-lnb-item" href="#components" data-page="components">컴포넌트 카탈로그</a>
@@ -2659,7 +2652,7 @@ body {
       <a class="ggc-lnb-item" href="#nav" data-page="nav">내비게이션 · 탭</a>
       <a class="ggc-lnb-item" href="#overlay" data-page="overlay">오버레이 · 상태 · 본문</a>
       <div class="ggc-lnb-divider"></div>
-      <div class="ex-lnb-cap">실물 화면</div>
+      <div class="ggc-lnb-group">실물 화면</div>
       <a class="ggc-lnb-item" href="#dashboard" data-page="dashboard">대시보드 · Monitor</a>
       <a class="ggc-lnb-item" href="#wizard" data-page="wizard">위저드 · Configure</a>
       <a class="ggc-lnb-item" href="#login" data-page="login">QR 로그인 · Entry</a>
@@ -3388,7 +3381,7 @@ body {
         <div class="ex-demo" id="d-table">
           <div class="ggc-table-wrap">
             <table class="ggc-table">
-              <caption class="ex-sr">위원회별 의안 처리 현황</caption>
+              <caption class="ggc-sr">위원회별 의안 처리 현황</caption>
               <thead>
                 <tr>
                   <th scope="col">위원회</th>
@@ -3556,7 +3549,7 @@ body {
                 </div>
               </div>
               <div class="ggc-card-foot ggc-card-foot--inset ggc-card-foot--center">
-                <span class="ex-sr">목록을 불러오는 중이다</span>
+                <span class="ggc-sr">목록을 불러오는 중이다</span>
                 <span style="font-size:12px;color:var(--ggc-text-subtle)" aria-hidden="true">불러오는 중…</span>
               </div>
             </div>
@@ -3634,11 +3627,11 @@ body {
           <div class="ex-row" style="margin-top:var(--ggc-space-4)">
             <span style="font-size:12.5px;color:var(--ggc-text-subtle)">인라인 · 소형 (표 상단 정렬·페이지 크기 같은 보조 선택)</span>
             <div class="ggc-select ggc-select--sm ggc-select--inline">
-              <label for="s4" class="ex-sr">정렬</label>
+              <label for="s4" class="ggc-sr">정렬</label>
               <select id="s4"><option>최근 접수순</option><option>의안번호순</option><option>경과일순</option></select>
             </div>
             <div class="ggc-select ggc-select--sm ggc-select--inline">
-              <label for="s5" class="ex-sr">페이지 크기</label>
+              <label for="s5" class="ggc-sr">페이지 크기</label>
               <select id="s5"><option>20건</option><option>50건</option><option>100건</option></select>
             </div>
           </div>
@@ -4289,7 +4282,7 @@ body {
             </div>
             <div class="ggc-table-wrap" style="padding:0 var(--ggc-space-5) var(--ggc-space-5)">
               <table class="ggc-table">
-                <caption class="ex-sr">위원회별 의안 처리 현황</caption>
+                <caption class="ggc-sr">위원회별 의안 처리 현황</caption>
                 <thead>
                   <tr>
                     <th scope="col">위원회</th>
@@ -4394,7 +4387,7 @@ body {
             </div>
             <div class="ggc-table-wrap" style="margin-top:var(--ggc-space-4)">
               <table class="ggc-table ggc-table--flat">
-                <caption class="ex-sr">예산 심사 계수조정 요약</caption>
+                <caption class="ggc-sr">예산 심사 계수조정 요약</caption>
                 <thead><tr><th scope="col">구분</th><th scope="col" class="num">금액(백만원)</th></tr></thead>
                 <tbody>
                   <tr><td>제출액</td><td class="num">1,284,000</td></tr>

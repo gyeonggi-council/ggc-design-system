@@ -1,10 +1,11 @@
-# 스택별 착지점 · DC 원본 역변환
+# 스택별 착지점 · DC 원본 역변환 (Tier 1)
 
 ## 삽입 지점은 7종이다 (6종이 아니다)
 
 FastAPI + StaticFiles 가 **마운트 지점에 따라 둘로 갈린다** — 이걸 놓치면 href 가 404 난다.
+"서비스" 열은 2026-08 시점 플랫폼의 실제 사례다 — 같은 스택이면 같은 자리에 넣는다.
 
-| # | 스택 | 서비스 | 토큰·CSS 를 어디에 | href 형태 |
+| # | 스택 | 서비스 (사례) | 토큰·CSS 를 어디에 | href 형태 |
 |---|---|---|---|---|
 | 1 | **Next App Router** | `ggc-poc-web` · `ggc_ai_hr` · `ggc_mobile_login` · `ggc-ai-live-transcribe` | `app/globals.css` 최상단 `@import` 또는 `layout.tsx` import | **파일 관례** (아래) |
 | 2 | **Vite + React** | `award_office` | `src/index.css` 최상단 | `/` 기준 (`public/`) |
@@ -116,16 +117,17 @@ href 를 자동으로 재작성**하므로, 소스에 `/award` 를 직접 쓰면
 ## 폰트
 
 **자체 호스팅 `Pretendard GOV`.** 외부 CDN 금지 — 망분리에서 깨진다.
-이미 서브셋 파일을 가진 서비스가 있으니 거기서 가져온다:
+**가져오는 곳은 정본 하나뿐이다** — `$ROOT/design/ggc-fonts.css` + `$ROOT/design/fonts/PretendardGOVVariable.subset.woff2`.
+두 파일을 `<정적루트>/fonts/` 에 나란히 두고 토큰보다 먼저 링크한다. 다른 서비스의 `PretendardGOV-*.subset.woff2`(정적 3벌)를
+복사하지 않는다 — 800 굵기가 700 과 같게 그려진다.
 
-```
-ggc_ai_hr/src/app/fonts/PretendardGOV-{Regular,Medium,Bold}.subset.woff2
-ggc-ai-live-transcribe/frontend/src/fonts/PretendardGOV-*.subset.woff2
-```
+넣지 않으면 토큰의 폴백 체인(Pretendard → Noto Sans KR → Malgun Gothic → system-ui)이 동작한다 —
+PoC 단계에서는 그것으로 충분하다. **CDN 으로 때우지만 않으면 된다.**
 
-`<정적루트>/fonts/` 에 두고 `@font-face` 를 자기 CSS 에 선언한다.
-넣지 않으면 토큰의 폴백 체인(Pretendard → Noto Sans KR → Malgun Gothic → system-ui)이
-동작한다 — PoC 단계에서는 그것으로 충분하다. **CDN 으로 때우지만 않으면 된다.**
-
-> 원본은 jsDelivr 의 Pretendard v1.3.9 를 쓴다. 자간이 GOV 판과 미세하게 달라
+> Claude Design 원본은 jsDelivr 의 Pretendard v1.3.9 를 쓴다. 자간이 GOV 판과 미세하게 달라
 > 줄바꿈이 어긋날 수 있다. 원본과 픽셀 단위로 같지 않은 것은 의도된 결과다.
+
+## Tier 2 (React · Next · Vite + Tailwind v4)
+
+위 표의 1·2 스택이 Tailwind v4 를 쓰면 CSS 복사 대신 `references/registry.md` 를 따른다 — 토큰 파일은 레지스트리가 복사하고,
+컴포넌트는 tsx 로 들어온다. 파비콘·폰트 착지는 이 문서의 규칙이 그대로 적용된다.

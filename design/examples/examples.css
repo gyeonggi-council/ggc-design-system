@@ -278,14 +278,7 @@ body { margin: 0; }
   text-underline-offset: 2px;
 }
 
-/* --- LNB 안 현재 페이지 표시 ------------------------------------------------ */
-.ggc-lnb .ex-lnb-cap {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--ggc-text-faint);
-  padding: 0 var(--ggc-space-3) var(--ggc-space-2);
-}
+/* LNB 캡션은 정본 .ggc-lnb-group 을 쓴다 (v2.0 — 갤러리 전용 클래스가 셸 마크업에 섞이지 않게) */
 
 /* --- 반응형 ---------------------------------------------------------------- */
 @media (max-width: 900px) {

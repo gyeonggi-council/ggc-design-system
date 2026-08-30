@@ -5,6 +5,15 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 5 — 스킬 v2 (2026-08-29)
+
+- `skills/ggc-design/SKILL.md` 재작성 — 독립 실행(`$ROOT` 탐색 규칙), 결정 트리(프로필 → Tier → 셸 → 화면 → 컴포넌트 → 검증),
+  7문항 결정 대화, 기록은 `<서비스>/docs/design-decisions.md` · 증거는 `docs/design-evidence/`.
+  `/1ggc-deploy` · `state.json` · `G-DESIGN` 결합 제거
+- 참조 신설 `components.md`(과업 → 클래스 색인) · `profiles.md` · `public-patterns.md` · `registry.md`, 개정 `contract.md`
+  (정본 위치·토큰 색인 v2.0) · `verify.md`(검사 7종·증거 파일) · `porting.md`(폰트 정본·Tier 2) · `domain-language.md` · `archetypes.md`
+- `tools/install-skill.sh`(링크 설치) · `.claude-plugin/plugin.json`(플러그인 매니페스트)
+
 ### Phase 7 — Tier 2 shadcn 레지스트리 (2026-08-29)
 
 - `registry.json` + `registry/ggc/` 25항목: `ggc-tokens`(정본 사본, registry:file) · `ggc-theme`(shadcn 변수 → `var(--ggc-*)`,

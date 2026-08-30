@@ -106,7 +106,7 @@ def build():
     for key, _fn, label, _svc in PAGES:
         if key == "dashboard":
             lnb_rows.append('      <div class="ggc-lnb-divider"></div>')
-            lnb_rows.append('      <div class="ex-lnb-cap">실물 화면</div>')
+            lnb_rows.append('      <div class="ggc-lnb-group">실물 화면</div>')
         lnb_rows.append(
             '      <a class="ggc-lnb-item" href="#%s" data-page="%s">%s</a>'
             % (key, key, label))
@@ -216,7 +216,7 @@ body {
 
   <div class="ggc-shell-body">
     <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
-      <div class="ex-lnb-cap">갤러리</div>
+      <div class="ggc-lnb-group">갤러리</div>
 @@LNB@@
     </nav>
 

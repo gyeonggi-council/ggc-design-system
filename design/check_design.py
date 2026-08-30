@@ -470,12 +470,12 @@ def check_service(root, aa_mode="observe", verbose=True, profile=None):
     # --- D1 TOKENS-COPY --------------------------------------------------
     # v2.0: 토큰뿐 아니라 컴포넌트·대민 셸·폰트·동작 파일 사본도 전부 대조한다.
     any_copy = False
-    for name in CANON_FILES:
-        canon_path = os.path.join(HERE, name)
+    for canon_name in CANON_FILES:            # ⚠ `name` 은 서비스 이름이다 — 덮어쓰지 않는다
+        canon_path = os.path.join(HERE, canon_name)
         if not os.path.exists(canon_path):
             continue
         canon_md5 = md5_lf(canon_path)
-        for c in find_token_copies(root, name):
+        for c in find_token_copies(root, canon_name):
             any_copy = True
             rel = os.path.relpath(c, root)
             if md5_lf(c) == canon_md5:
@@ -551,7 +551,8 @@ def check_service(root, aa_mode="observe", verbose=True, profile=None):
         if ti < 0:
             continue
         for other in re.finditer(r"""href=["'][^"']*?([\w.-]+\.css)""", text):
-            if other.group(1) == "ggc-tokens.css":
+            # 폰트 정본은 토큰보다 **먼저** 와야 한다(토큰이 그 서체 이름을 쓴다) — 위반이 아니다
+            if other.group(1) in ("ggc-tokens.css", "ggc-fonts.css"):
                 continue
             if other.start() < ti:
                 rep.add("D3", "FAIL", "order", os.path.relpath(f, root),
@@ -789,7 +790,7 @@ def check_generated():
         sp = os.path.normpath(os.path.join(HERE, script))
         ap = os.path.normpath(os.path.join(HERE, artifact))
         cmd = os.path.relpath(sp, os.path.dirname(HERE)).replace(os.sep, "/")
-        name = os.path.basename(artifact)
+        name = os.path.relpath(ap, os.path.dirname(HERE)).replace(os.sep, "/")
         if not os.path.exists(sp):
             continue
         if not os.path.exists(ap):

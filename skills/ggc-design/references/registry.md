@@ -6,7 +6,7 @@
 ## 순서
 
 1. `components.json` 확인 — 없으면 `npx shadcn init -b radix -p nova -y` (새 프로젝트: `-t vite|next`, `--no-monorepo`).
-2. `registries` 에 `@ggc` 를 넣는다 — 내부망은 clone 한 저장소의 `public/r/{name}.json` 을 정적 서빙, 외부망은 GitHub raw **태그** URL.
+2. `registries` 에 `@ggc` 를 넣는다 — 내부망은 clone 한 저장소의 `public/r/{name}.json` 을 **정적 HTTP 로 서빙**(`python -m http.server 8765` 등), 외부망은 GitHub raw **태그** URL. `file://`·절대 경로는 CLI 4.19 미지원(실측).
 3. `npx shadcn add @ggc/ggc-style -y` — 토큰 파일 · 테마 매핑 · P0 UI 17종.
 4. 손으로 셋: ① `index.css`/`globals.css` **첫 줄**에 `@import "../styles/ggc-tokens.css";` ② 폰트 2파일을 `public/fonts/` 로 복사 + `<link>` ③ 프리셋의 `.dark {}` 블록과 Geist 폰트 import 삭제.
 5. 블록은 필요한 것만: `@ggc/ggc-shell` `ggc-stat` `ggc-stepper` `ggc-actionbar` `ggc-page-head`.
