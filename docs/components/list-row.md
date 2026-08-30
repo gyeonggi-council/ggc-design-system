@@ -39,7 +39,7 @@
 
 ## Tier 2
 
-`ggc-list-row` (Phase 9). 그전에는 `Card` 안에 flex 로 조립한다.
+`ggc-list-row`.
 
 ## 근거
 

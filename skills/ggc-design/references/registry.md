@@ -7,9 +7,9 @@
 
 1. `components.json` 확인 — 없으면 `npx shadcn init -b radix -p nova -y` (새 프로젝트: `-t vite|next`, `--no-monorepo`).
 2. `registries` 에 `@ggc` 를 넣는다 — 내부망은 clone 한 저장소의 `public/r/{name}.json` 을 **정적 HTTP 로 서빙**(`python -m http.server 8765` 등), 외부망은 GitHub raw **태그** URL. `file://`·절대 경로는 CLI 4.19 미지원(실측).
-3. `npx shadcn add @ggc/ggc-style -y` — 토큰 파일 · 테마 매핑 · P0 UI 17종.
+3. `npx shadcn add @ggc/ggc-style -y` — 토큰 파일 · 테마 매핑 · UI 23종(P0 17 + switch · accordion · dropdown-menu · tooltip · toast · listbox).
 4. 손으로 셋: ① `index.css`/`globals.css` **첫 줄**에 `@import "../styles/ggc-tokens.css";` ② 폰트 2파일을 `public/fonts/` 로 복사 + `<link>` ③ 프리셋의 `.dark {}` 블록과 Geist 폰트 import 삭제.
-5. 블록은 필요한 것만: `@ggc/ggc-shell` `ggc-stat` `ggc-stepper` `ggc-actionbar` `ggc-page-head`.
+5. 블록은 필요한 것만: 업무 `@ggc/ggc-shell` `ggc-stat` `ggc-stepper` `ggc-actionbar` `ggc-page-head` `ggc-list-row` `ggc-search` `ggc-utility-bar` `ggc-footer` `ggc-qr-login` `ggc-file-upload` `ggc-empty` `ggc-prose` · 대민 `ggc-masthead` `ggc-public-header` `ggc-public-layout` `ggc-hero` `ggc-side-nav` `ggc-structured-list` `ggc-public-footer` `ggc-identifier`.
 6. `python <저장소>/design/check_design.py --gate .` — D1 · D2 · D4 · D7 이 전부 PASS 여야 한다.
 
 ## 정본과의 관계
@@ -28,7 +28,7 @@
 - **hex 를 Tailwind 클래스에 적지 않는다** (`bg-[#3c5d93]`) — D2 FAIL. `bg-primary` 또는 `bg-(--ggc-primary)`.
 - **shadcn 기본 레지스트리의 같은 이름 항목**(`button`)을 섞지 않는다 — 무색 버튼이 들어온다. 항상 `@ggc/` 접두.
 - **Tailwind v3** 는 `bg-(--x)` 문법이 없다 — `bg-[var(--x)]` 로 바꾸거나 Tier 1 을 쓴다.
-- 대민 화면: `<html data-ggc-profile="public">` 만 붙이면 치수가 바뀐다. 대민 셸은 Tier 1 `ggc-public.css` 를 링크한다(Tier 2 블록은 Phase 9).
+- 대민 화면: `<html data-ggc-profile="public">` 만 붙이면 치수가 바뀐다. 대민 셸 블록은 `@ggc/ggc-masthead` `ggc-public-header` `ggc-public-layout` `ggc-hero` `ggc-side-nav` `ggc-structured-list` `ggc-public-footer` `ggc-identifier` — 정적 페이지 위주면 Tier 1 `ggc-public.css` 링크가 더 싸다.
 - React 18/19 겸용 — 컴포넌트는 `forwardRef` 없이 함수 컴포넌트(shadcn v4 관례). 18 에서도 동작한다.
 
 ## 레지스트리 자체를 고칠 때

@@ -51,7 +51,7 @@
 
 ## Tier 2
 
-`listbox` (Phase 9b). 콤보박스는 `combobox`(예정).
+`listbox`. 콤보박스는 `combobox`(예정).
 
 ## 근거
 

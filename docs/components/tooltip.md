@@ -47,7 +47,7 @@ hover/focus 가 유지되는 동안 보인다(persistent).
 
 ## Tier 2
 
-`tooltip` (Phase 9b) — Radix Tooltip.
+`tooltip` — Radix Tooltip.
 
 ## 근거
 

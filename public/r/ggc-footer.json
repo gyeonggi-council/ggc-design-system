@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-footer",
+  "title": "업무 푸터",
+  "description": "업무 화면 하단 한 줄 푸터(.ggc-footer + .inner 1280). 대민 푸터와 다르다.",
+  "registryDependencies": [
+    "@ggc/ggc-tokens"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/blocks/ggc-footer/ggc-footer.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 업무 푸터 — ggc-tokens.css .ggc-footer (+ .inner 1280). 대민 화면은 ggc-public-footer 를 쓴다. */\nfunction Footer({ className, children, ...props }: React.ComponentProps<\"footer\">) {\n  return (\n    <footer data-slot=\"footer\" className={cn(\"border-t border-border bg-background font-sans text-xs text-(--ggc-text-muted)\", className)} {...props}>\n      <div className=\"mx-auto max-w-(--ggc-container-max) p-4\">{children}</div>\n    </footer>\n  )\n}\n\nexport { Footer }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:block"
+}

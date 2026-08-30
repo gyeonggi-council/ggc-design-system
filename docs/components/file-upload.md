@@ -59,7 +59,7 @@
 
 ## Tier 2
 
-`ggc-file-upload` (Phase 9b).
+`ggc-file-upload`.
 
 ## 근거
 

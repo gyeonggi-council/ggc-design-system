@@ -47,7 +47,7 @@
 
 ## Tier 2
 
-`switch` (Phase 9b). Radix Switch + 같은 토큰.
+`switch`. Radix Switch + 같은 토큰.
 
 ## 근거
 

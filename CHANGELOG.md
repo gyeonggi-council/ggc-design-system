@@ -5,6 +5,21 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 9b — Tier 2 레지스트리 22항목 신설 (총 47) (2026-08-30)
+
+- UI 6종: `switch` · `accordion` · `dropdown-menu` · `tooltip`(Radix + 토큰) · `toast`(GGC.toast 와 같은 규칙의
+  React store — 3개 상한 · hover/focus 정지) · `listbox`(behaviors ⑨ 이식 — `aria-activedescendant` · 필터 · 다중)
+- 블록 16종: `ggc-empty` · `ggc-file-upload`(`input.files` 역동기화) · `ggc-prose` · `ggc-list-row` · `ggc-search` ·
+  `ggc-utility-bar` · `ggc-footer` · `ggc-qr-login` · **대민 셸 8종**(`ggc-masthead` · `ggc-identifier` ·
+  `ggc-public-header`(PC 드롭다운 · 모바일 패널 · 통합검색) · `ggc-public-footer` · `ggc-public-layout` ·
+  `ggc-hero` · `ggc-side-nav` · `ggc-structured-list`)
+- `ggc-style` 이 UI 23종을 한 번에 설치. 색 리터럴 0(hex 대신 토큰·별칭) — R3 통과,
+  **R5 WARN 0** — 인벤토리 '있음' 행 전부에 Tier 2 항목이 생겼다. check-registry 항목 47 · FAIL 0 · WARN 0
+- 실증: Vite + Tailwind v4 소비자에 22항목 `shadcn add` → `tsc -b` · `vite build` 통과, 헤드리스 Chrome 26/26 —
+  스위치 토글(40×22 · primary) · 토스트(polite · success 띠) · 메뉴 Esc · 툴팁 · 리스트박스 키보드/필터 ·
+  파일 목록/삭제 · 대민 셸 렌더 · 대민 프로필 48px · 콘솔 오류 0
+- 문서: 스킬 색인 · registry.md · react-tier2 의 "(Phase 9)" 예고를 실제 항목명으로 교체
+
 ### Phase 9a — Tier 1 P1·P2 컴포넌트 12종 (2026-08-30)
 
 - `ggc-components.css` §24~§35 신설: `.ggc-switch`(`role="switch"`) · `.ggc-toast(-region)` · `.ggc-accordion`(`<details>`,

@@ -63,7 +63,7 @@ cp <저장소>/design/ggc-fonts.css <저장소>/design/fonts/PretendardGOVVariab
 ## 4. 대민(공개) 화면이면
 
 `<html data-ggc-profile="public">` 한 줄. 버튼·입력·표가 KRDS 치수(48px · 17px)로 바뀌고 색은 그대로다.
-대민 셸(마스트헤드 · 헤더 · 공개 푸터)은 Tier 1 `ggc-public.css` 를 그대로 링크해 쓴다 — Tier 2 블록은 Phase 9.
+대민 셸도 블록으로 있다 — `@ggc/ggc-masthead` `ggc-public-header`(주 메뉴 · 모바일 패널 · 통합검색) `ggc-public-layout` `ggc-hero` `ggc-side-nav` `ggc-structured-list` `ggc-public-footer` `ggc-identifier`. 정적 페이지 위주라면 Tier 1 `ggc-public.css` 링크가 더 싸다.
 
 ## 5. 검사
 

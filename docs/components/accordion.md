@@ -51,7 +51,7 @@ summary 글자 `--ggc-control-font`(13.5 / 17). 패딩은 같다.
 
 ## Tier 2
 
-`accordion` (Phase 9b) — Radix Accordion.
+`accordion` — Radix Accordion.
 
 ## 근거
 

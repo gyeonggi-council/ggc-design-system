@@ -43,7 +43,7 @@
 
 ## Tier 2
 
-`ggc-qr-login` (Phase 9).
+`ggc-qr-login`.
 
 ## 근거
 

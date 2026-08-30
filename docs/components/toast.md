@@ -56,7 +56,7 @@ GGC.toast({ title: "발송하지 못했다", desc: "SMTP 421 · 14:35", variant:
 
 ## Tier 2
 
-`toast` (Phase 9b) — Radix Toast 대신 같은 DOM 을 만드는 훅.
+`toast` — Radix Toast 대신 같은 DOM 을 만드는 훅.
 
 ## 근거
 

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch",
+  "title": "토글 스위치",
+  "description": "즉시 적용되는 켬/끔. 트랙 40×22 · 켬은 primary + 손잡이 오른쪽.",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/ui/switch.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Switch as SwitchPrimitive } from \"radix-ui\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 토글 스위치 — ggc-components.css §24. 즉시 적용되는 켬/끔에만(제출로 반영되는 선택은 체크박스).\n * 트랙 40×22 · 손잡이 15px 흰 원. 켬/끔은 색 + 손잡이 위치 + 상태 문구 셋 — 색 단독 금지. 색은 전부 토큰. */\nfunction Switch({ className, ...props }: React.ComponentProps<typeof SwitchPrimitive.Root>) {\n  return (\n    <SwitchPrimitive.Root\n      data-slot=\"switch\"\n      className={cn(\n        \"peer inline-flex h-[22px] w-10 shrink-0 items-center rounded-full border-[1.5px] border-transparent bg-(--ggc-text-faint) transition-[background-color,border-color] outline-none focus-visible:border-(--ggc-primary-deep) focus-visible:shadow-(--ggc-focus-ring) disabled:cursor-default disabled:border-border disabled:bg-(--ggc-control-bg) data-[state=checked]:bg-primary disabled:data-[state=checked]:bg-(--ggc-text-faint) forced-colors:border-[CanvasText] forced-colors:bg-[Canvas] forced-colors:data-[state=checked]:border-[Highlight] forced-colors:data-[state=checked]:bg-[Highlight]\",\n        className\n      )}\n      {...props}\n    >\n      <SwitchPrimitive.Thumb\n        data-slot=\"switch-thumb\"\n        className=\"pointer-events-none block size-[15px] translate-x-0.5 rounded-full bg-card transition-transform data-[state=checked]:translate-x-[20px] data-[disabled]:bg-(--ggc-border-strong) data-[disabled]:data-[state=checked]:bg-card forced-colors:bg-[CanvasText] forced-colors:data-[state=checked]:bg-[HighlightText]\"\n      />\n    </SwitchPrimitive.Root>\n  )\n}\n\nexport { Switch }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

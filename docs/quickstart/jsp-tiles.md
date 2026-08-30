@@ -35,6 +35,6 @@ cp "$CANON/brand/dist/favicon-32.png" "$CANON/brand/dist/apple-touch-icon-180.pn
 python <저장소>/design/check_design.py --gate bims-web
 ```
 
-함정 — 기존 KRDS 번들(`krds.min.css`)을 통째로 쓰는 구조라면 `design/ggc-krds-bridge.css`(Phase 9) 대신 **KRDS 번들 뒤에 토큰을 로드**해
+함정 — 기존 KRDS 번들(`krds.min.css`)을 통째로 쓰는 구조라면 **KRDS 번들 뒤에 토큰을 로드**해
 `--krds-*` 를 덮지 말고 자기 CSS 에서 `--ggc-*` 를 쓰는 것이 안전하다. 업무 `/work/**` 와 대민 `/portal/**` 는 레이아웃 파일을 나눈다 —
 한 레이아웃에 두 프로필을 섞지 않는다(계약 §9). 기능 JSP 는 건드리지 않고 시각만 수렴한다(계약 §6).

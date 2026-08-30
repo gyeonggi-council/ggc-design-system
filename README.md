@@ -69,7 +69,7 @@ React · Next · Vite + Tailwind v4 프로젝트는 **Tier 2 — shadcn 레지�
 
 ```bash
 # components.json 의 registries 에 "@ggc": "<서빙주소>/public/r/{name}.json" 을 넣고
-npx shadcn add @ggc/ggc-style -y      # 토큰 파일 + 테마 매핑 + UI 17종
+npx shadcn add @ggc/ggc-style -y      # 토큰 파일 + 테마 매핑 + UI 23종
 ```
 
 절차와 손으로 하는 셋(토큰 @import · 폰트 복사 · .dark 삭제)은 [docs/quickstart/react-tier2.md](docs/quickstart/react-tier2.md).

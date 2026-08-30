@@ -9,7 +9,11 @@
       "title": "GGC 디자인 토큰 (정본 사본)",
       "description": "design/ggc-tokens.css 를 그대로 복사한다. 값의 유일한 원천이며 check_design.py D1 이 바이트 대조한다. globals.css 첫 줄에 @import 로 불러온다.",
       "files": [
-        { "path": "design/ggc-tokens.css", "type": "registry:file", "target": "~/styles/ggc-tokens.css" }
+        {
+          "path": "design/ggc-tokens.css",
+          "type": "registry:file",
+          "target": "~/styles/ggc-tokens.css"
+        }
       ],
       "docs": "globals.css(또는 index.css) **첫 줄**에  @import \"../styles/ggc-tokens.css\";  를 넣는다(@import 는 파일 선두여야 해서 CLI 가 넣지 못한다). 폰트는 저장소의 design/ggc-fonts.css + design/fonts/PretendardGOVVariable.subset.woff2 를 public/fonts/ 로 복사하고 토큰보다 먼저 링크한다. 검사: python <저장소>/design/check_design.py --gate ."
     },
@@ -18,7 +22,9 @@
       "type": "registry:theme",
       "title": "GGC 테마 — shadcn 변수를 --ggc-* 토큰으로 매핑",
       "description": "shadcn 의 --primary · --background · --radius 등을 전부 var(--ggc-*) 로 돌린다. 값(hex)은 하나도 없다 — 값은 ggc-tokens.css 한 곳에만 산다. 다크 팔레트는 없다(계약 §3).",
-      "registryDependencies": ["@ggc/ggc-tokens"],
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
       "cssVars": {
         "theme": {
           "font-sans": "var(--ggc-font)",
@@ -68,7 +74,9 @@
             "color": "var(--ggc-text)",
             "-webkit-font-smoothing": "antialiased"
           },
-          "a": { "text-underline-offset": "2px" }
+          "a": {
+            "text-underline-offset": "2px"
+          }
         }
       },
       "docs": "radius 단계는 토큰을 직접 쓴다 — Tailwind 유틸 rounded-(--ggc-radius) / rounded-(--ggc-radius-sm) / rounded-(--ggc-radius-lg). 다크 모드 변수를 만들지 않는다(계약 §3-2)."
@@ -80,71 +88,670 @@
       "description": "npx shadcn init @ggc/ggc-style 한 번으로 토큰 파일 · 테마 · P0 컴포넌트가 들어온다.",
       "registryDependencies": [
         "utils",
-        "@ggc/ggc-tokens", "@ggc/ggc-theme",
-        "@ggc/button", "@ggc/badge", "@ggc/card", "@ggc/input", "@ggc/label", "@ggc/textarea",
-        "@ggc/select", "@ggc/checkbox", "@ggc/radio-group", "@ggc/dialog", "@ggc/tabs", "@ggc/alert",
-        "@ggc/breadcrumb", "@ggc/pagination", "@ggc/table", "@ggc/skeleton", "@ggc/spinner"
+        "@ggc/ggc-tokens",
+        "@ggc/ggc-theme",
+        "@ggc/button",
+        "@ggc/badge",
+        "@ggc/card",
+        "@ggc/input",
+        "@ggc/label",
+        "@ggc/textarea",
+        "@ggc/select",
+        "@ggc/checkbox",
+        "@ggc/radio-group",
+        "@ggc/dialog",
+        "@ggc/tabs",
+        "@ggc/alert",
+        "@ggc/breadcrumb",
+        "@ggc/pagination",
+        "@ggc/table",
+        "@ggc/skeleton",
+        "@ggc/spinner",
+        "@ggc/accordion",
+        "@ggc/dropdown-menu",
+        "@ggc/listbox",
+        "@ggc/switch",
+        "@ggc/toast",
+        "@ggc/tooltip"
       ],
-      "dependencies": ["radix-ui", "class-variance-authority", "lucide-react"]
+      "dependencies": [
+        "radix-ui",
+        "class-variance-authority",
+        "lucide-react"
+      ]
     },
-
-    { "name": "button", "type": "registry:ui", "title": "버튼", "description": "primary · secondary · ghost · dashed · destructive. 높이는 --ggc-control-h* (프로필을 따른다). primary 만 그림자.",
-      "dependencies": ["radix-ui", "class-variance-authority"],
-      "files": [{ "path": "registry/ggc/ui/button.tsx", "type": "registry:ui" }] },
-    { "name": "badge", "type": "registry:ui", "title": "배지 · 태그", "description": "알약형 상태 배지(회기·결재·역할) + 사각 태그. 색 단독 금지 — 텍스트·기호를 함께.",
-      "dependencies": ["radix-ui", "class-variance-authority"],
-      "files": [{ "path": "registry/ggc/ui/badge.tsx", "type": "registry:ui" }] },
-    { "name": "card", "type": "registry:ui", "title": "카드", "description": "흰 면 · 1px 테두리 · radius 16 · 그림자 없음(계약 §2). 헤더·액션·본문·푸터.",
-      "files": [{ "path": "registry/ggc/ui/card.tsx", "type": "registry:ui" }] },
-    { "name": "input", "type": "registry:ui", "title": "입력", "description": "높이 --ggc-input-h · 1px border-strong · radius 10 · 공통 포커스 링.",
-      "files": [{ "path": "registry/ggc/ui/input.tsx", "type": "registry:ui" }] },
-    { "name": "label", "type": "registry:ui", "title": "라벨", "description": "폼 라벨 13px/700(--ggc-label-font). 필수 표시는 <Label required>.",
-      "dependencies": ["radix-ui"],
-      "files": [{ "path": "registry/ggc/ui/label.tsx", "type": "registry:ui" }] },
-    { "name": "textarea", "type": "registry:ui", "title": "텍스트 영역",
-      "files": [{ "path": "registry/ggc/ui/textarea.tsx", "type": "registry:ui" }] },
-    { "name": "select", "type": "registry:ui", "title": "셀렉트 (네이티브)", "description": "항목 20개 이하는 네이티브 <select>. 화살표는 CSS.",
-      "files": [{ "path": "registry/ggc/ui/select.tsx", "type": "registry:ui" }] },
-    { "name": "checkbox", "type": "registry:ui", "title": "체크박스", "description": "20px 상자 · 선택은 네이비 채움 + 흰 체크.",
-      "dependencies": ["radix-ui", "lucide-react"],
-      "files": [{ "path": "registry/ggc/ui/checkbox.tsx", "type": "registry:ui" }] },
-    { "name": "radio-group", "type": "registry:ui", "title": "라디오",
-      "dependencies": ["radix-ui"],
-      "files": [{ "path": "registry/ggc/ui/radio-group.tsx", "type": "registry:ui" }] },
-    { "name": "dialog", "type": "registry:ui", "title": "모달 · 다이얼로그", "description": "제목 · 본문 · 버튼 행. 파괴적 동작은 alert 모드(배경 클릭으로 닫히지 않음).",
-      "dependencies": ["radix-ui", "lucide-react"], "registryDependencies": ["@ggc/button"],
-      "files": [{ "path": "registry/ggc/ui/dialog.tsx", "type": "registry:ui" }] },
-    { "name": "tabs", "type": "registry:ui", "title": "탭", "description": "밑줄형(KRDS line). 선택은 색 + 2px 선.",
-      "dependencies": ["radix-ui"],
-      "files": [{ "path": "registry/ggc/ui/tabs.tsx", "type": "registry:ui" }] },
-    { "name": "alert", "type": "registry:ui", "title": "알림 · 콜아웃", "description": "info · success · warning · danger · banner. 기호 + 제목 + 문구.",
-      "dependencies": ["class-variance-authority"],
-      "files": [{ "path": "registry/ggc/ui/alert.tsx", "type": "registry:ui" }] },
-    { "name": "breadcrumb", "type": "registry:ui", "title": "브레드크럼",
-      "dependencies": ["radix-ui", "lucide-react"],
-      "files": [{ "path": "registry/ggc/ui/breadcrumb.tsx", "type": "registry:ui" }] },
-    { "name": "pagination", "type": "registry:ui", "title": "페이지네이션",
-      "dependencies": ["lucide-react"], "registryDependencies": ["@ggc/button"],
-      "files": [{ "path": "registry/ggc/ui/pagination.tsx", "type": "registry:ui" }] },
-    { "name": "table", "type": "registry:ui", "title": "표", "description": "thead 상단 2px primary-deep · 행 구분 hairline · .num 우정렬 tabular-nums.",
-      "files": [{ "path": "registry/ggc/ui/table.tsx", "type": "registry:ui" }] },
-    { "name": "skeleton", "type": "registry:ui", "title": "스켈레톤",
-      "files": [{ "path": "registry/ggc/ui/skeleton.tsx", "type": "registry:ui" }] },
-    { "name": "spinner", "type": "registry:ui", "title": "스피너", "description": "role=status + sr 텍스트. sm/기본/lg.",
-      "files": [{ "path": "registry/ggc/ui/spinner.tsx", "type": "registry:ui" }] },
-
-    { "name": "ggc-shell", "type": "registry:block", "title": "업무 셸", "description": "유틸리티 바 + GNB 64 + LNB 256 + 본문 1320/1360. 계약 §2. 대민 화면에는 쓰지 않는다.",
-      "registryDependencies": ["@ggc/ggc-tokens"],
-      "files": [{ "path": "registry/ggc/blocks/ggc-shell/ggc-shell.tsx", "type": "registry:component" }] },
-    { "name": "ggc-stat", "type": "registry:block", "title": "통계 타일 (KPI)", "description": "Monitor 첫 행. 정확히 4개.",
-      "files": [{ "path": "registry/ggc/blocks/ggc-stat/ggc-stat.tsx", "type": "registry:component" }] },
-    { "name": "ggc-stepper", "type": "registry:block", "title": "스텝퍼 / 위저드", "description": "완료 · 현재 · 대기. 현재 단계는 색과 형태 둘 다.",
-      "files": [{ "path": "registry/ggc/blocks/ggc-stepper/ggc-stepper.tsx", "type": "registry:component" }] },
-    { "name": "ggc-actionbar", "type": "registry:block", "title": "하단 스티키 액션바", "description": "Configure 슬롯 5. 임시저장 → 상신 순서 고정.",
-      "registryDependencies": ["@ggc/button"],
-      "files": [{ "path": "registry/ggc/blocks/ggc-actionbar/ggc-actionbar.tsx", "type": "registry:component" }] },
-    { "name": "ggc-page-head", "type": "registry:block", "title": "페이지 헤더", "description": "브레드크럼 + 제목 + 메타 + 주 액션 하나.",
-      "registryDependencies": ["@ggc/breadcrumb"],
-      "files": [{ "path": "registry/ggc/blocks/ggc-page-head/ggc-page-head.tsx", "type": "registry:component" }] }
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "버튼",
+      "description": "primary · secondary · ghost · dashed · destructive. 높이는 --ggc-control-h* (프로필을 따른다). primary 만 그림자.",
+      "dependencies": [
+        "radix-ui",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "배지 · 태그",
+      "description": "알약형 상태 배지(회기·결재·역할) + 사각 태그. 색 단독 금지 — 텍스트·기호를 함께.",
+      "dependencies": [
+        "radix-ui",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "카드",
+      "description": "흰 면 · 1px 테두리 · radius 16 · 그림자 없음(계약 §2). 헤더·액션·본문·푸터.",
+      "files": [
+        {
+          "path": "registry/ggc/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "입력",
+      "description": "높이 --ggc-input-h · 1px border-strong · radius 10 · 공통 포커스 링.",
+      "files": [
+        {
+          "path": "registry/ggc/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "라벨",
+      "description": "폼 라벨 13px/700(--ggc-label-font). 필수 표시는 <Label required>.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "텍스트 영역",
+      "files": [
+        {
+          "path": "registry/ggc/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "셀렉트 (네이티브)",
+      "description": "항목 20개 이하는 네이티브 <select>. 화살표는 CSS.",
+      "files": [
+        {
+          "path": "registry/ggc/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "체크박스",
+      "description": "20px 상자 · 선택은 네이비 채움 + 흰 체크.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "라디오",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "모달 · 다이얼로그",
+      "description": "제목 · 본문 · 버튼 행. 파괴적 동작은 alert 모드(배경 클릭으로 닫히지 않음).",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@ggc/button"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "탭",
+      "description": "밑줄형(KRDS line). 선택은 색 + 2px 선.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "알림 · 콜아웃",
+      "description": "info · success · warning · danger · banner. 기호 + 제목 + 문구.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "브레드크럼",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "페이지네이션",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@ggc/button"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "표",
+      "description": "thead 상단 2px primary-deep · 행 구분 hairline · .num 우정렬 tabular-nums.",
+      "files": [
+        {
+          "path": "registry/ggc/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "스켈레톤",
+      "files": [
+        {
+          "path": "registry/ggc/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "스피너",
+      "description": "role=status + sr 텍스트. sm/기본/lg.",
+      "files": [
+        {
+          "path": "registry/ggc/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "아코디언",
+      "description": "카드형 묶음 — 테두리 하나 + 항목 사이 구분선. 정말 접어도 되는 내용에만.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "드롭다운 메뉴",
+      "description": "더보기류 동작 묶음. 파괴적 항목은 danger + 말줄임 — 확인 모달이 뒤따른다.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "listbox",
+      "type": "registry:ui",
+      "title": "커스텀 리스트박스",
+      "description": "부제 · 검색 필터 · 다중 선택이 필요한 항상 보이는 목록 — aria-activedescendant 키보드 탐색, 선택은 배경 + 띠 + ✓.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/listbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "토글 스위치",
+      "description": "즉시 적용되는 켬/끔. 트랙 40×22 · 켬은 primary + 손잡이 오른쪽.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "토스트",
+      "description": "짧은 확인(저장됨 · 복사됨)용 오른쪽 아래 토스트 — 3개 상한 · 기본 5초 · action 8초 · hover/focus 동안 정지.",
+      "files": [
+        {
+          "path": "registry/ggc/ui/toast.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "툴팁",
+      "description": "보조 설명 전용 — 어두운 배경 12.5px · 최대 260px · 지연 0.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "ggc-shell",
+      "type": "registry:block",
+      "title": "업무 셸",
+      "description": "유틸리티 바 + GNB 64 + LNB 256 + 본문 1320/1360. 계약 §2. 대민 화면에는 쓰지 않는다.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-shell/ggc-shell.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-stat",
+      "type": "registry:block",
+      "title": "통계 타일 (KPI)",
+      "description": "Monitor 첫 행. 정확히 4개.",
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-stat/ggc-stat.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-stepper",
+      "type": "registry:block",
+      "title": "스텝퍼 / 위저드",
+      "description": "완료 · 현재 · 대기. 현재 단계는 색과 형태 둘 다.",
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-stepper/ggc-stepper.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-actionbar",
+      "type": "registry:block",
+      "title": "하단 스티키 액션바",
+      "description": "Configure 슬롯 5. 임시저장 → 상신 순서 고정.",
+      "registryDependencies": [
+        "@ggc/button"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-actionbar/ggc-actionbar.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-page-head",
+      "type": "registry:block",
+      "title": "페이지 헤더",
+      "description": "브레드크럼 + 제목 + 메타 + 주 액션 하나.",
+      "registryDependencies": [
+        "@ggc/breadcrumb"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-page-head/ggc-page-head.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-empty",
+      "type": "registry:block",
+      "title": "빈 상태",
+      "description": "무엇이 없는지 · 왜 없는지 · 다음 행동 — 레이아웃만 정본이고 문구·행동은 화면이 정한다.",
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-empty/ggc-empty.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-file-upload",
+      "type": "registry:block",
+      "title": "파일 업로드",
+      "description": "선택 버튼 + 끌어놓기 + 파일 목록(이름 · 크기 · 삭제) — maxFiles 상한, 삭제 버튼 이름에 파일명.",
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-file-upload/ggc-file-upload.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-footer",
+      "type": "registry:block",
+      "title": "업무 푸터",
+      "description": "업무 화면 하단 한 줄 푸터(.ggc-footer + .inner 1280). 대민 푸터와 다르다.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-footer/ggc-footer.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-hero",
+      "type": "registry:block",
+      "title": "히어로 (대민 메인)",
+      "description": "메인 첫 화면 전용 — 안내 문구 + 통합검색 + 바로가기 칩. 하위 페이지는 PageTitle 부터.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens",
+        "@ggc/input",
+        "@ggc/button"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-hero/ggc-hero.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-identifier",
+      "type": "registry:block",
+      "title": "아이덴티파이어 (대민)",
+      "description": "\"이 누리집은 {기관명} 누리집입니다.\" — 공개 푸터 .bottom 안. logo 는 정부 제공 자산 슬롯.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-identifier/ggc-identifier.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-list-row",
+      "type": "registry:block",
+      "title": "행 리스트",
+      "description": "카드 안 큐·최근 항목·결재 흐름 행(§5). 아이콘 40px + 제목 한 줄 말줄임 + 메타 + end 슬롯, 심각도는 좌측 5px 바. 열이 셋을 넘으면 표.",
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-list-row/ggc-list-row.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-masthead",
+      "type": "registry:block",
+      "title": "마스트헤드 (대민)",
+      "description": "공식 누리집 띠 — 문구 고정. 국가 상징은 flag 슬롯(정부 제공 자산), 비우면 기관색 원. 안내 접기는 <details>.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-masthead/ggc-masthead.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-prose",
+      "type": "registry:block",
+      "title": "문서 본문 조판",
+      "description": "조례 조문 · 검토보고서 같은 긴 글의 조판 — Typography 플러그인 없이 자손 셀렉터로 §23 을 이식.",
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-prose/ggc-prose.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-public-footer",
+      "type": "registry:block",
+      "title": "공개 푸터 (대민)",
+      "description": "관련 누리집 · 기관 정보(기관명·주소·대표전화 필수) · 하단 메뉴(개인정보처리방침 강조) · 아이덴티파이어 슬롯.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "docs": "identifier 슬롯에 @ggc/ggc-identifier 의 <Identifier> 를 둔다 — 검사기 D3 가 대민 화면에서 아이덴티파이어를 기대한다.",
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-public-footer/ggc-public-footer.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-public-header",
+      "type": "registry:block",
+      "title": "대민 헤더 · 주 메뉴",
+      "description": "유틸리티 · 브랜딩 · 통합검색 · 주 메뉴(1단 ≤6 · 2단 ≤8). PC 2단은 hover/focus-within, ≤900 은 오른쪽 패널 + 아코디언(한 번에 하나). 업무 GNB/LNB 와 섞지 않는다.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens",
+        "@ggc/input",
+        "@ggc/button"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-public-header/ggc-public-header.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-public-layout",
+      "type": "registry:block",
+      "title": "대민 본문 배치",
+      "description": "PublicPage(.ggc-public) · Inner(1248) · PublicMain(--side 240+본문 · bleed) · PageTitle · SectionTitle(.ggc-h2).",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "docs": "대민 치수는 <html data-ggc-profile=\"public\"> 이 켠다 — 컴포넌트는 토큰만 읽는다.",
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-public-layout/ggc-public-layout.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-qr-login",
+      "type": "registry:block",
+      "title": "QR 로그인 블록",
+      "description": "경기도의정포털 앱 QR 로그인(§11) — 9개 시스템 공통 입구. 상태 6종(idle·loading·showing·expired·unregistered·error)을 무대 높이 고정 + 덮개 하나로 전환. Login 셸(폭 440 캡) 포함.",
+      "registryDependencies": [
+        "@ggc/badge",
+        "@ggc/button",
+        "@ggc/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-qr-login/ggc-qr-login.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-search",
+      "type": "registry:block",
+      "title": "GNB 검색",
+      "description": "300×40(--ggc-search-h) 검색 상자 — 아이콘 + 입력 + 단축키 kbd(≤900 숨김). placeholder 를 유일한 라벨로 쓰지 않도록 aria-label 이 필수다.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-search/ggc-search.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-side-nav",
+      "type": "registry:block",
+      "title": "사이드 내비게이션 (대민)",
+      "description": "PublicMain side 슬롯의 왼쪽 메뉴. 2단은 <details> — JS 0. 현재 항목이 든 그룹은 열어 둔다.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-side-nav/ggc-side-nav.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-structured-list",
+      "type": "registry:block",
+      "title": "구조화 목록 (대민)",
+      "description": "공모·접수·방청 카드 격자 — 배지 + 제목 + 설명(3줄) + 기간 + 행동. 업무 화면 목록은 표.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-structured-list/ggc-structured-list.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ggc-utility-bar",
+      "type": "registry:block",
+      "title": "유틸리티 바",
+      "description": "모든 시스템 최상단 동일 노출 진네이비 띠(토큰 파일 정의). 브랜드 + 통합서비스 스위처 — 현재 시스템 active, 내부망 전용은 disabled.",
+      "registryDependencies": [
+        "@ggc/ggc-tokens"
+      ],
+      "files": [
+        {
+          "path": "registry/ggc/blocks/ggc-utility-bar/ggc-utility-bar.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
   ]
 }

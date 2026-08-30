@@ -48,7 +48,7 @@
 
 ## Tier 2
 
-`ggc-empty` (Phase 9b).
+`ggc-empty`.
 
 ## 근거
 

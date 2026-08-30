@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-utility-bar",
+  "title": "유틸리티 바",
+  "description": "모든 시스템 최상단 동일 노출 진네이비 띠(토큰 파일 정의). 브랜드 + 통합서비스 스위처 — 현재 시스템 active, 내부망 전용은 disabled.",
+  "registryDependencies": [
+    "@ggc/ggc-tokens"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/blocks/ggc-utility-bar/ggc-utility-bar.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 유틸리티 바 — ggc-tokens.css .ggc-utility-bar (모든 시스템 최상단 동일 노출).\n * 진네이비 띠 + inner 1280 + 통합서비스 스위처. 현재 시스템은 active, 내부망 전용은 disabled. */\nfunction UtilityBar({ className, brand, children, ...props }: React.ComponentProps<\"div\"> & { brand: React.ReactNode }) {\n  return (\n    <div data-slot=\"utility-bar\" className={cn(\"bg-(--ggc-primary-deep) font-sans text-[13px] leading-none text-primary-foreground/80\", className)} {...props}>\n      <div className=\"mx-auto flex max-w-(--ggc-container-max) items-center justify-between gap-3 px-4 py-2\">\n        <span data-slot=\"utility-brand\" className=\"font-bold tracking-[-0.2px] text-primary-foreground [&_a]:text-inherit [&_a]:no-underline\">{brand}</span>\n        <nav className=\"flex flex-wrap items-center gap-1\">{children}</nav>\n      </div>\n    </div>\n  )\n}\n\n/* nav .label — \"통합서비스\" 같은 묶음 라벨 */\nfunction UtilityLabel({ className, ...props }: React.ComponentProps<\"span\">) {\n  return <span data-slot=\"utility-label\" className={cn(\"mr-1 text-primary-foreground/60\", className)} {...props} />\n}\n\nfunction UtilityLink({ className, active, ...props }: React.ComponentProps<\"a\"> & { active?: boolean }) {\n  return (\n    <a\n      data-slot=\"utility-link\"\n      aria-current={active ? \"page\" : undefined}\n      className={cn(\n        \"rounded-(--ggc-radius-sm) px-2 py-[3px] no-underline transition-colors\",\n        active ? \"bg-primary font-semibold text-primary-foreground forced-colors:border\" : \"text-primary-foreground/80 hover:bg-primary-foreground/12 hover:text-primary-foreground\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\n/* nav .disabled — 링크가 아니다. 외부 배포본의 내부망 전용 항목(\"의사일정 (내부망)\") */\nfunction UtilityDisabled({ className, ...props }: React.ComponentProps<\"span\">) {\n  return <span data-slot=\"utility-disabled\" className={cn(\"cursor-default px-2 py-[3px] text-primary-foreground/50\", className)} {...props} />\n}\n\nexport { UtilityBar, UtilityLabel, UtilityLink, UtilityDisabled }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:block"
+}

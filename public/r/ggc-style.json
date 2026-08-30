@@ -28,7 +28,13 @@
     "@ggc/pagination",
     "@ggc/table",
     "@ggc/skeleton",
-    "@ggc/spinner"
+    "@ggc/spinner",
+    "@ggc/accordion",
+    "@ggc/dropdown-menu",
+    "@ggc/listbox",
+    "@ggc/switch",
+    "@ggc/toast",
+    "@ggc/tooltip"
   ],
   "type": "registry:style"
 }

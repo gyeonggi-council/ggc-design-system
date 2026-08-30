@@ -47,7 +47,7 @@
 
 ## Tier 2
 
-`dropdown-menu` (Phase 9b) — Radix DropdownMenu.
+`dropdown-menu` — Radix DropdownMenu.
 
 ## 근거
 
