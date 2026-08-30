@@ -96,13 +96,11 @@ npx shadcn add @ggc/ggc-style -y      # 토큰 파일 + 테마 매핑 + UI 17종
 
 0. **[design/examples/index.html](design/examples/index.html)** — 먼저 눈으로 본다.
    글로 읽기 전에 무엇이 나오는지 알면 나머지가 훨씬 빨리 읽힌다
-1. **[skills/ggc-design/SKILL.md](skills/ggc-design/SKILL.md)** — 전체 절차
-2. [references/contract.md](skills/ggc-design/references/contract.md) — 바꾸면 안 되는 것
-3. [references/archetypes.md](skills/ggc-design/references/archetypes.md) — 화면을 무엇으로 어떤 순서로
-4. [references/porting.md](skills/ggc-design/references/porting.md) — 스택별 착지점과 함정
-5. [references/brand-assets.md](skills/ggc-design/references/brand-assets.md) — 파비콘·마크
-6. [references/reskin.md](skills/ggc-design/references/reskin.md) — 가동 중 서비스 수렴
-7. [references/verify.md](skills/ggc-design/references/verify.md) — 검증과 복귀 지점
+1. **[docs/README.md](docs/README.md)** — 사람용 문서 진입: 내 스택의 5단계 quickstart · 업무/대민 판정 · 컴포넌트 찾기
+2. **[skills/ggc-design/SKILL.md](skills/ggc-design/SKILL.md)** — Claude Code 스킬 (전체 절차 · 결정 트리 · 완료 체크리스트).
+   설치는 `bash tools/install-skill.sh` — 링크라 복사본이 생기지 않는다
+3. [docs/contract.md](docs/contract.md) — AUTHORITATIVE 계약
+4. [skills/ggc-design/references/](skills/ggc-design/references/) — contract · profiles · archetypes · public-patterns · components · porting · registry · verify
 
 ## 검사기
 
@@ -120,7 +118,8 @@ python design/check_design.py --all    <서비스루트>    # 전수 요약
 | D3 | 로드 순서 · 공통 셸 · 파비콘 | 순서 역전은 "왜 색이 안 먹지" 로만 나타난다 |
 | D4 | 외부 폰트 CDN 0 | 망분리에서 깨진다 |
 | D5 | `:focus-visible` · 대체 없는 `outline:none` · 대비 | |
-| D6 | **정본 자체** — 계약 문서 ↔ 토큰 ↔ 컴포넌트 ↔ 생성물 | 갭이 두 달간 안 보였다 |
+| D6 | **정본 자체** — 계약 문서 ↔ 토큰 ↔ 컴포넌트 ↔ 인벤토리 ↔ 생성물 · 프로필 블록 | 갭이 두 달간 안 보였다 |
+| D7 | Tier 2 소비 프로젝트 — 토큰 `@import` · `:root` 매핑이 전부 `var(--ggc-*)` · 다크 팔레트 없음 | 값을 두 번 적는 순간 갈라진다 |
 
 검사기는 **설명을 위반으로 세지 않는다.** 주석과 HTML `<code>`/`<pre>` 본문은 스캔에서
 제외한다 — 그러지 않으면 “`#256ef4` 는 폐기값” 이라고 적는 순간 그 문장이 FAIL 이 되어

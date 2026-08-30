@@ -23,7 +23,16 @@
 | 스피너 `.ggc-spinner` | [spinner.md](spinner.md) | components-overlay | 있음 |
 | 스켈레톤 `.ggc-skeleton` | [skeleton.md](skeleton.md) | components-overlay | 있음 |
 | 문서 본문 `.ggc-prose` | [prose.md](prose.md) | components-overlay | 있음 |
-| 버튼 · 배지 · 태그 · 카드 · 통계 · 행 리스트 · 표 · 폼 필드 · 위저드 · 셸 · QR 로그인 | (Phase 6 에서 작성) | [components](../../design/examples/components.html) · dashboard · wizard · login | 있음 |
+| 버튼 `.ggc-btn` | [button.md](button.md) | [components](../../design/examples/components.html) | 있음 |
+| 배지 · 태그 `.ggc-badge` `.ggc-tag` | [badge.md](badge.md) | components | 있음 |
+| 카드 `.ggc-card` | [card.md](card.md) | components | 있음 |
+| 통계 타일 `.ggc-stat` | [stat.md](stat.md) | components · dashboard | 있음 |
+| 행 리스트 `.ggc-list-row` | [list-row.md](list-row.md) | components · dashboard | 있음 |
+| 표 `.ggc-table` | [table.md](table.md) | components | 있음 |
+| 폼 필드 `.ggc-field` | [field.md](field.md) | components · components-forms | 있음 |
+| 스텝퍼 · 위저드 `.ggc-wizard` | [stepper.md](stepper.md) | components · wizard | 있음 |
+| 업무 셸 (유틸리티 바 · GNB · LNB · 검색 · 푸터) | [shell.md](shell.md) | dashboard | 있음 |
+| QR 로그인 `.ggc-qr` | [qr-login.md](qr-login.md) | login | 있음 |
 
 ## 대민 셸 — `design/ggc-public.css` (대민 전용)
 

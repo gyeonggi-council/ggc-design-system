@@ -5,6 +5,14 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 6 — 사람용 문서 (2026-08-30)
+
+- `docs/README.md` 독자별 진입, `docs/quickstart/` 스택별 5단계 7종(정적 HTML · Jinja2 · FastAPI · JSP/Tiles · Vite React · Next · React Tier 2)
+- `docs/guides/` tokens · accessibility · fonts · brand-assets · layout-shell · behaviors-js (+ profiles · public-shell)
+- `docs/components/` 기존 컴포넌트 10종 문서(button · badge · card · stat · list-row · table · field · stepper · shell · qr-login) — 총 28종
+- `docs/decisions/` ADR 7건(상태색 CI 유지 · 고대비 · 프로필 단일 파일 · 복사 배포/Tier 2 · Radix+Tailwind v4 · 빈 상태 조립 · 브랜드 별도 저장소)
+- README 읽는 순서 갱신, 검사기 표에 D7
+
 ### Phase 5 — 스킬 v2 (2026-08-29)
 
 - `skills/ggc-design/SKILL.md` 재작성 — 독립 실행(`$ROOT` 탐색 규칙), 결정 트리(프로필 → Tier → 셸 → 화면 → 컴포넌트 → 검증),
