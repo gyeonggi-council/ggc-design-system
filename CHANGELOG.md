@@ -5,6 +5,23 @@
 
 ## [Unreleased] — v2 재구성
 
+### Phase 9a — Tier 1 P1·P2 컴포넌트 12종 (2026-08-30)
+
+- `ggc-components.css` §24~§35 신설: `.ggc-switch`(`role="switch"`) · `.ggc-toast(-region)` · `.ggc-accordion`(`<details>`,
+  `name` 배타) · `.ggc-date(-range)`(네이티브) · `.ggc-file` + `.ggc-file-list` · `.ggc-menu`(`<details>` + `role="menu"`) ·
+  `.ggc-link` · `.ggc-empty`(ADR 0006 — 레이아웃만) · `.ggc-listbox`(`aria-activedescendant`) · `.ggc-tooltip` ·
+  `.ggc-in-page-nav` · `.ggc-text-list`. §36 고대비 보강. **새 색 0 · 이미지 0** — 전부 토큰
+- `ggc-behaviors.js` ⑤~⑩: `GGC.toast()`(3개 상한 · hover/focus 중 정지 · `[data-ggc-toast]` 선언형) · 메뉴 키보드
+  (↑↓ Home End · ESC 복귀) · 파일 목록(삭제를 DataTransfer 로 `input.files` 에 되돌림) · 툴팁 ESC(WCAG 1.4.13) ·
+  리스트박스(단일 선택은 포커스 따라감 · 앞글자 · 필터) · 페이지 내 내비(스크롤 기준선 25% + 바닥 규칙 —
+  IntersectionObserver 띠 방식은 갱신을 건너뛰어 실측 후 폐기)
+- 갤러리 3쪽(forms · nav · overlay)에 12절 추가, components.html "세 상태" 를 `.ggc-empty` · `.ggc-skeleton` 실물로 교체
+- `docs/components/` 12쪽 신설(총 40종) · behaviors-js 가이드 · 스킬 `components.md` 색인 갱신 ·
+  TSV 있음 48종(예정: combobox · calendar)
+- 실증: 헤드리스 Chrome 48/48 PASS — 키보드(스위치 · 메뉴 · 리스트박스) · 토스트 상한/닫기/실행 취소 · 툴팁 ESC ·
+  파일 `input.files` 동기화 · 스크롤스파이 중간/바닥 · 3쪽 × 3폭 오버플로 0 · 콘솔 오류 0 · 대민 프로필 치수
+- ⚠ D1 — `ggc-components.css` · `ggc-behaviors.js` 바이트가 바뀌었다. 사본 재복사 필요(토큰 파일은 불변)
+
 ### Phase 8 — CI (2026-08-30)
 
 - `tools/check-all.sh` — 정본(D6) · 갤러리 업무/대민(D1~D5) · 문서 링크 · Tier 2 레지스트리(R1~R5) 전수. Python 만 필요

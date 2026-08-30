@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (1127a9b1) -->
+<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (97d40d06) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -146,18 +146,20 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 대민 푸터 | `.ggc-footer--public` | `ggc-public-footer` | public | P0 | 있음 |
 | 사이드 내비게이션 (대민) | `.ggc-side-nav` | `ggc-side-nav` | public | P1 | 있음 |
 | 구조화 목록 | `.ggc-structured-list` | `ggc-structured-list` | public | P1 | 있음 |
-| 토글 스위치 | `.ggc-switch` | `switch` | both | P1 | 예정 |
-| 토스트 | `.ggc-toast-region .ggc-toast` | `toast` | both | P1 | 예정 |
-| 아코디언 / 디스클로저 | `.ggc-accordion (<details>)` | `accordion` | both | P1 | 예정 |
-| 날짜 입력 | `.ggc-date` | `input (date) · calendar` | both | P1 | 예정 |
-| 파일 업로드 | `.ggc-file` | `ggc-file-upload` | both | P1 | 예정 |
-| 드롭다운 메뉴 | `.ggc-menu (<details>)` | `dropdown-menu` | both | P1 | 예정 |
-| 링크 | `.ggc-link` | `—` | both | P1 | 예정 |
-| 빈 상태 | `.ggc-empty (--error)` | `ggc-empty` | both | P1 | 예정 |
-| 커스텀 리스트박스 / 콤보박스 | `.ggc-listbox` | `select (radix) combobox` | both | P2 | 예정 |
-| 툴팁 | `.ggc-tooltip` | `tooltip` | both | P2 | 예정 |
-| 페이지 내 내비게이션 | `.ggc-in-page-nav` | `—` | public | P2 | 예정 |
-| 텍스트 목록 | `.ggc-text-list` | `—` | public | P2 | 예정 |
+| 토글 스위치 | `.ggc-switch (--row)` | `switch` | both | P1 | 있음 |
+| 토스트 | `.ggc-toast-region .ggc-toast (--success --warning --danger --info)` | `toast` | both | P1 | 있음 |
+| 아코디언 / 디스클로저 | `.ggc-accordion .ggc-accordion-group (<details>, --flush)` | `accordion` | both | P1 | 있음 |
+| 날짜 입력 (네이티브) | `.ggc-date .ggc-date-range (--inline)` | `input (date)` | both | P1 | 있음 |
+| 파일 업로드 | `.ggc-file .ggc-file-list (--compact)` | `ggc-file-upload` | both | P1 | 있음 |
+| 드롭다운 메뉴 | `.ggc-menu (<details>, --end --up)` | `dropdown-menu` | both | P1 | 있음 |
+| 링크 | `.ggc-link (--external --download --quiet --strong)` | `—` | both | P1 | 있음 |
+| 빈 상태 | `.ggc-empty (--error --compact)` | `ggc-empty` | both | P1 | 있음 |
+| 커스텀 리스트박스 (항상 보이는 목록 · 필터 · 다중) | `.ggc-listbox` | `listbox` | both | P2 | 있음 |
+| 툴팁 | `.ggc-tooltip-wrap .ggc-tooltip (--bottom --start --end)` | `tooltip` | both | P2 | 있음 |
+| 페이지 내 내비게이션 | `.ggc-in-page-nav` | `—` | both | P2 | 있음 |
+| 텍스트 목록 | `.ggc-text-list (--dash --check --none --tight)` | `—` | both | P2 | 있음 |
+| 콤보박스 (입력 + 팝업 목록) | `.ggc-combobox` | `combobox` | both | P2 | 예정 |
+| 커스텀 달력 (범위 · 회기 표시) | `.ggc-calendar` | `calendar` | both | P2 | 예정 |
 
 핵심 규칙:
 

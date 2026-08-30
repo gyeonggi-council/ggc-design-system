@@ -73,9 +73,9 @@
 
     <main class="ggc-shell-main ggc-shell-main--wide" id="main">
 
-      <h1 class="ex-h1">오버레이 · 상태 · 본문<span class="ver">ggc-components.css v2.0 · §18~23</span></h1>
+      <h1 class="ex-h1">오버레이 · 상태 · 본문<span class="ver">ggc-components.css v2.0 · §18~23 · §25 · §31 · §33</span></h1>
       <p class="ex-lede">
-        알림 · 모달 · 스피너 · 스켈레톤 · 문서 본문 · 하단 액션바. 모달은 네이티브
+        알림 · 토스트 · 모달 · 툴팁 · 스피너 · 스켈레톤 · 빈 상태 · 문서 본문 · 하단 액션바. 모달은 네이티브
         <code class="ex-inline">&lt;dialog&gt;</code> 라 포커스 가두기 · ESC · 배경 inert 를 브라우저가 준다.
         여닫기는 <code class="ex-inline">ggc-behaviors.js</code> 의 <code class="ex-inline">data-ggc-modal-open</code> /
         <code class="ex-inline">-close</code> 속성이다. 액션바는 이 페이지 맨 아래에 붙어 있다 — 스크롤해 보라.
@@ -123,6 +123,39 @@
           </div>
         </div>
         <details class="ex-reveal" data-src="#d-banner"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 토스트 -->
+      <section class="ex-section">
+        <h2>토스트 <span class="cls">.ggc-toast-region · .ggc-toast</span></h2>
+        <p><b>짧은 확인</b>(저장됨 · 복사됨 · 발송됨)에만 쓴다. 읽고 판단해야 하는 내용 — 오류 사유, 확인 질문 — 은 알림이나 모달이다.
+          영역은 <code class="ex-inline">role="status" aria-live="polite"</code> 하나이고 <code class="ex-inline">GGC.toast()</code> 가 채운다.
+          기본 5초, 실행 취소가 있으면 8초, 마우스·포커스가 있는 동안은 멈춘다. 한 번에 3개.</p>
+        <div class="ex-demo ex-row" id="d-toast">
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-toast="임시저장됨" data-ggc-toast-desc="14:32 · 자동 저장" data-ggc-toast-variant="success">저장 (success)</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-toast="의안번호를 복사했다" data-ggc-toast-variant="info">복사 (info)</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-toast="연계 서버 응답이 늦다" data-ggc-toast-desc="3초 뒤 다시 시도한다" data-ggc-toast-variant="warning">지연 (warning)</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-toast="발송하지 못했다" data-ggc-toast-desc="SMTP 421 · 14:35 — 잠시 뒤 다시" data-ggc-toast-variant="danger">실패 (danger)</button>
+          <button class="ggc-btn ggc-btn--primary" type="button" data-ex-toast-undo>보관 + 실행 취소</button>
+        </div>
+        <details class="ex-reveal" data-src="#d-toast"><summary>마크업</summary><pre class="ex-code"></pre></details>
+        <div class="ex-sub">토스트가 만드는 DOM — 아래는 정적으로 그린 것이다(영역 밖, 자리만 차지)</div>
+        <div class="ex-demo ex-demo--bg" id="d-toast-dom">
+          <div style="display:flex;flex-direction:column;gap:var(--ggc-space-2);max-width:400px">
+            <div class="ggc-toast ggc-toast--success" style="animation:none">
+              <span class="icon" aria-hidden="true">✓</span>
+              <div class="body"><b class="title">임시저장됨</b><span class="desc">14:32 · 자동 저장</span></div>
+              <button class="close" type="button" aria-label="닫기">✕</button>
+            </div>
+            <div class="ggc-toast" style="animation:none">
+              <span class="icon" aria-hidden="true">▣</span>
+              <div class="body"><b class="title">의안 3건을 보관함으로 옮겼다</b></div>
+              <button class="action" type="button">실행 취소</button>
+              <button class="close" type="button" aria-label="닫기">✕</button>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-toast-dom"><summary>마크업</summary><pre class="ex-code"></pre></details>
       </section>
 
       <!-- ============================================================ 모달 -->
@@ -205,6 +238,31 @@
         <details class="ex-reveal" data-src="#d-modal"><summary>마크업</summary><pre class="ex-code"></pre></details>
       </section>
 
+      <!-- ============================================================ 툴팁 -->
+      <section class="ex-section">
+        <h2>툴팁 <span class="cls">.ggc-tooltip-wrap · .ggc-tooltip</span></h2>
+        <p><b>보조 설명</b>에만 쓴다 — 아이콘 버튼의 이름 풀이, 약어, 잘린 값. 툴팁에만 있는 정보는 없는 정보다(터치 · 스크린리더).
+          hover 와 focus 에 CSS 만으로 보이고 <kbd class="ex-inline">Esc</kbd> 로 닫힌다(WCAG 1.4.13). 트리거에
+          <code class="ex-inline">aria-describedby</code> 를 둔다 — 단, 접근 가능한 이름이 이미 툴팁과 같으면 두지 않는다.</p>
+        <div class="ex-demo ex-row" id="d-tip" style="padding-top:var(--ggc-space-9)">
+          <span class="ggc-tooltip-wrap">
+            <button class="ggc-icon-btn" type="button" aria-label="회부" aria-describedby="tt1">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <span class="ggc-tooltip" role="tooltip" id="tt1">소관위원회로 회부한다 — 30일 심사 기한이 시작된다</span>
+          </span>
+          <span class="ggc-tooltip-wrap">
+            <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" aria-describedby="tt2">계속심사</button>
+            <span class="ggc-tooltip ggc-tooltip--bottom" role="tooltip" id="tt2">이번 회기에 결론을 내지 않고 다음 회기로 넘긴다</span>
+          </span>
+          <span class="ggc-tooltip-wrap">
+            <abbr tabindex="0" aria-describedby="tt3" style="font-size:13.5px;font-weight:600;color:var(--ggc-text);text-decoration:underline dotted;text-underline-offset:3px;cursor:help">KWCAG</abbr>
+            <span class="ggc-tooltip ggc-tooltip--start" role="tooltip" id="tt3">한국형 웹 콘텐츠 접근성 지침 2.2</span>
+          </span>
+        </div>
+        <details class="ex-reveal" data-src="#d-tip"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
       <!-- ============================================================ 스피너·스켈레톤 -->
       <section class="ex-section">
         <h2>스피너 · 스켈레톤 <span class="cls">.ggc-spinner · .ggc-skeleton</span></h2>
@@ -239,6 +297,45 @@
           </div>
         </div>
         <details class="ex-reveal" data-src="#d-skel"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 빈 상태 -->
+      <section class="ex-section">
+        <h2>빈 상태 <span class="cls">.ggc-empty</span></h2>
+        <p>레이아웃만 정본이다(ADR 0006) — 제목은 <b>무엇이 없는지</b>, 설명은 <b>왜 없는지</b>(필터 때문인지 데이터가 없는지),
+          행동은 <b>다음에 할 일</b>. 카드 · 표 본문 · 탭 패널 어디에나 들어가고 자기 테두리가 없다.
+          불러오지 못한 것은 <code class="ex-inline">--error</code> — 오류 코드와 시각을 남기고 "다시 시도" 를 둔다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-empty">
+          <div class="ex-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+            <div class="ggc-card">
+              <div class="ggc-card-head"><div><div class="title">처리 대기 의안</div><div class="sub">내 소관</div></div></div>
+              <div class="ggc-empty">
+                <span class="icon" aria-hidden="true">☰</span>
+                <p class="title">처리 대기 의안이 없다</p>
+                <p class="desc">필터 "내 소관 · 처리 대기" 에 해당하는 의안이 없다. 필터를 풀면 147건이다.</p>
+                <div class="actions"><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">필터 초기화</button></div>
+              </div>
+            </div>
+            <div class="ggc-card">
+              <div class="ggc-card-head"><div><div class="title">회의 일정</div><div class="sub">이번 주</div></div></div>
+              <div class="ggc-empty ggc-empty--error">
+                <span class="icon" aria-hidden="true">✕</span>
+                <p class="title">일정을 불러오지 못했다</p>
+                <p class="desc">의사일정 연계 응답 없음 (HTTP 504) · 2026-08-29 14:32. 연계 서버 점검 중일 수 있다.</p>
+                <div class="actions"><button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button">다시 시도</button><a class="ggc-btn ggc-btn--ghost ggc-btn--sm" href="#main">의사일정 바로가기</a></div>
+              </div>
+            </div>
+            <div class="ggc-card">
+              <div class="ggc-card-head"><div><div class="title">첨부 문서</div></div></div>
+              <div class="ggc-empty ggc-empty--compact">
+                <span class="icon" aria-hidden="true">＋</span>
+                <p class="title">첨부 문서가 없다</p>
+                <div class="actions"><button class="ggc-btn ggc-btn--dashed ggc-btn--sm" type="button">＋ 문서 첨부</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-empty"><summary>마크업</summary><pre class="ex-code"></pre></details>
       </section>
 
       <!-- ============================================================ 본문 -->

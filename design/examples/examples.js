@@ -194,6 +194,23 @@
     });
   }
 
+  /* ------------------------------------------------- ④ 토스트 데모 (action 있는 것) */
+
+  /* 선언형(data-ggc-toast)은 behaviors.js 가 처리한다. action 콜백이 있는 예시만 여기서 만든다 */
+  function bindToastDemo() {
+    document.querySelectorAll("[data-ex-toast-undo]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (!window.GGC || !window.GGC.toast) return;
+        window.GGC.toast({
+          title: "의안 3건을 보관함으로 옮겼다", icon: "▣",
+          action: { label: "실행 취소", onClick: function () {
+            window.GGC.toast({ title: "되돌렸다 — 목록으로 돌아왔다", variant: "info" });
+          } }
+        });
+      });
+    });
+  }
+
   /* --------------------------------------------------------------- 현재 페이지 */
 
   function markCurrentNav() {
@@ -209,6 +226,7 @@
     paintSwatches();
     markCurrentNav();
     bindProfileToggle();
+    bindToastDemo();
   }
 
   if (document.readyState === "loading") {

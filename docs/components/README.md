@@ -23,6 +23,18 @@
 | 스피너 `.ggc-spinner` | [spinner.md](spinner.md) | components-overlay | 있음 |
 | 스켈레톤 `.ggc-skeleton` | [skeleton.md](skeleton.md) | components-overlay | 있음 |
 | 문서 본문 `.ggc-prose` | [prose.md](prose.md) | components-overlay | 있음 |
+| 토글 스위치 `.ggc-switch` | [switch.md](switch.md) | components-forms | 있음 |
+| 날짜 입력 `.ggc-date` | [date.md](date.md) | components-forms | 있음 |
+| 파일 업로드 `.ggc-file` | [file-upload.md](file-upload.md) | components-forms | 있음 |
+| 커스텀 리스트박스 `.ggc-listbox` | [listbox.md](listbox.md) | components-forms | 있음 |
+| 아코디언 `.ggc-accordion` | [accordion.md](accordion.md) | components-nav | 있음 |
+| 드롭다운 메뉴 `.ggc-menu` | [menu.md](menu.md) | components-nav | 있음 |
+| 링크 `.ggc-link` | [link.md](link.md) | components-nav | 있음 |
+| 텍스트 목록 `.ggc-text-list` | [text-list.md](text-list.md) | components-nav | 있음 |
+| 페이지 내 내비 `.ggc-in-page-nav` | [in-page-nav.md](in-page-nav.md) | components-nav | 있음 |
+| 토스트 `.ggc-toast` | [toast.md](toast.md) | components-overlay | 있음 |
+| 툴팁 `.ggc-tooltip` | [tooltip.md](tooltip.md) | components-overlay | 있음 |
+| 빈 상태 `.ggc-empty` | [empty.md](empty.md) | components-overlay | 있음 |
 | 버튼 `.ggc-btn` | [button.md](button.md) | [components](../../design/examples/components.html) | 있음 |
 | 배지 · 태그 `.ggc-badge` `.ggc-tag` | [badge.md](badge.md) | components | 있음 |
 | 카드 `.ggc-card` | [card.md](card.md) | components | 있음 |
@@ -51,7 +63,8 @@
 
 ## 동작 — `design/ggc-behaviors.js`
 
-탭 키보드 · 모달 여닫기 · LNB drawer 는 이 파일 하나가 준다. 없어도 화면은 깨지지 않고
+탭 키보드 · 모달 여닫기 · LNB drawer · 토스트 · 드롭다운 메뉴 · 파일 목록 · 툴팁 Esc · 리스트박스 ·
+페이지 내 내비는 이 파일 하나가 준다([guides/behaviors-js.md](../guides/behaviors-js.md)). 없어도 화면은 깨지지 않고
 동작만 없다. `<script src="ggc-behaviors.js" defer>` 로 넣고, 동적으로 삽입한 마크업은
 `GGC.init(루트요소)` 로 다시 묶는다. 자세한 것은 각 컴포넌트 문서의 "키보드 · ARIA".
 

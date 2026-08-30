@@ -73,10 +73,10 @@
 
     <main class="ggc-shell-main ggc-shell-main--wide" id="main">
 
-      <h1 class="ex-h1">내비게이션 · 탭<span class="ver">ggc-components.css v2.0 · §12~15</span></h1>
+      <h1 class="ex-h1">내비게이션 · 탭<span class="ver">ggc-components.css v2.0 · §12~15 · §26 · §29~30 · §34~35</span></h1>
       <p class="ex-lede">
-        페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션. 화면 안에서 <b>"내가 어디 있고 어디로 갈 수 있는가"</b>를
-        말하는 요소들이다. 탭의 키보드 동작(화살표 · Home · End)은
+        페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 · 아코디언 · 드롭다운 메뉴 · 링크 · 텍스트 목록 · 페이지 내 내비.
+        화면 안에서 <b>"내가 어디 있고 어디로 갈 수 있는가"</b>를 말하는 요소들이다. 탭·메뉴의 키보드 동작(화살표 · Home · End · Esc)은
         <code class="ex-inline">ggc-behaviors.js</code> 가 준다 — 이 페이지에서 <kbd class="ex-inline">Tab</kbd> 으로
         탭에 들어가 화살표를 눌러 보라.
       </p>
@@ -256,6 +256,170 @@
           </nav>
         </div>
         <details class="ex-reveal" data-src="#d-pg"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 아코디언 -->
+      <section class="ex-section">
+        <h2>아코디언 · 디스클로저 <span class="cls">.ggc-accordion · .ggc-accordion-group</span></h2>
+        <p>네이티브 <code class="ex-inline">&lt;details&gt;</code> 라 JS 가 0 이다 — <kbd class="ex-inline">Enter</kbd>/<kbd class="ex-inline">Space</kbd> 와
+          펼침 상태 읽기를 브라우저가 준다. 같은 <code class="ex-inline">name</code> 을 주면 한 번에 하나만 열린다(FAQ).
+          <b>정말 접어도 되는 내용</b>에만 쓴다 — 필수 입력이나 오류를 접어 두지 않는다.</p>
+        <div class="ex-demo" id="d-acc">
+          <div class="ggc-accordion-group" style="max-width:720px">
+            <details class="ggc-accordion" name="faq" open>
+              <summary>의안은 누가 발의할 수 있는가 <span class="meta">「지방자치법」 제76조</span></summary>
+              <div class="body">의원 10명 이상의 찬성(재적의원 5분의 1 이상)으로 발의하거나, 위원회가 그 소관에 속하는 사항에 관하여 제안할 수 있다. 도지사도 조례안을 제출할 수 있다.</div>
+            </details>
+            <details class="ggc-accordion" name="faq">
+              <summary>회부 후 심사 기한은 <span class="meta">「회의규칙」 제42조</span></summary>
+              <div class="body">회부일부터 30일이다. 기한 안에 심사를 마치지 못하면 위원장은 그 사유를 의장에게 보고하고 계속심사 여부를 결정한다.</div>
+            </details>
+            <details class="ggc-accordion" name="faq">
+              <summary>비용추계서를 첨부하지 않아도 되는 경우</summary>
+              <div class="body">예산상 조치가 수반되지 않는 의안, 또는 「지방자치법」 제148조 단서에 해당하는 의안은 첨부를 생략할 수 있다 — 생략 사유서를 대신 낸다.</div>
+            </details>
+          </div>
+          <details class="ggc-accordion" style="max-width:720px;margin-top:var(--ggc-space-5)">
+            <summary>단독 디스클로저 — 고급 검색 조건</summary>
+            <div class="body">
+              <fieldset class="ggc-check-group">
+                <legend>의안 종류</legend>
+                <label class="ggc-check"><input type="checkbox" checked><span class="box"></span><span class="text">조례안</span></label>
+                <label class="ggc-check"><input type="checkbox"><span class="box"></span><span class="text">동의안</span></label>
+                <label class="ggc-check"><input type="checkbox"><span class="box"></span><span class="text">청원</span></label>
+              </fieldset>
+            </div>
+          </details>
+        </div>
+        <details class="ex-reveal" data-src="#d-acc"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 드롭다운 메뉴 -->
+      <section class="ex-section">
+        <h2>드롭다운 메뉴 <span class="cls">.ggc-menu</span></h2>
+        <p>"더보기" 같은 <b>동작 묶음</b>이다 — 페이지 이동 묶음이면 링크 목록을 쓴다(<code class="ex-inline">role="menu"</code> 없이).
+          <code class="ex-inline">&lt;details&gt;</code> 라 JS 없이도 열리고, <code class="ex-inline">ggc-behaviors.js</code> 가
+          열리면 첫 항목으로 포커스 · <kbd class="ex-inline">↑</kbd><kbd class="ex-inline">↓</kbd> · <kbd class="ex-inline">Esc</kbd> · 바깥 클릭을 준다.
+          파괴적 항목은 <code class="ex-inline">.danger</code> + 말줄임(…) — 확인 모달이 뒤따른다는 뜻이다.</p>
+        <div class="ex-demo" id="d-menu" style="min-height:260px">
+          <div class="ex-row" style="gap:var(--ggc-space-4);align-items:flex-start">
+            <details class="ggc-menu">
+              <summary class="ggc-btn ggc-btn--secondary ggc-btn--sm">더보기</summary>
+              <ul class="list" role="menu" aria-label="의안 동작">
+                <li role="none"><button role="menuitem" type="button">복사해 새 의안 작성 <span class="kbd">Ctrl+D</span></button></li>
+                <li role="none"><button role="menuitem" type="button">이력 보기</button></li>
+                <li role="none"><button role="menuitem" type="button" disabled>회수 (권한 없음)</button></li>
+                <li class="divider" role="separator"></li>
+                <li role="none"><button role="menuitem" type="button" class="danger">삭제…</button></li>
+              </ul>
+            </details>
+            <details class="ggc-menu ggc-menu--end" style="margin-left:auto">
+              <summary class="ggc-btn ggc-btn--primary ggc-btn--sm">내보내기</summary>
+              <ul class="list" role="menu" aria-label="내보내기 형식">
+                <li class="heading" role="none">형식</li>
+                <li role="none"><a role="menuitem" href="#main">HWP 문서</a></li>
+                <li role="none"><a role="menuitem" href="#main">PDF</a></li>
+                <li role="none"><a role="menuitem" href="#main">엑셀 (목록)</a></li>
+              </ul>
+            </details>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-menu"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 링크 -->
+      <section class="ex-section">
+        <h2>링크 <span class="cls">.ggc-link</span></h2>
+        <p>본문 흐름 안의 링크는 <b>밑줄</b>이 표식이다(색 단독 금지). 새 창은 <code class="ex-inline">--external</code> + 화면 밖 텍스트 "(새 창)",
+          내려받기는 <code class="ex-inline">--download</code> + 형식·크기. 링크가 빽빽한 표·목록에서는 <code class="ex-inline">--quiet</code>(색 + 굵기, 밑줄은 hover).</p>
+        <div class="ex-demo" id="d-link">
+          <p style="margin:0 0 var(--ggc-space-3);font-size:13.5px;line-height:1.8;color:var(--ggc-text-body)">
+            이 조례안은 <a class="ggc-link" href="#main">「청년기본법」 제3조</a>의 청년 연령에 맞추어 정비하려는 것이다.
+            원문은 <a class="ggc-link ggc-link--external" href="https://www.law.go.kr" target="_blank" rel="noopener">국가법령정보센터<span class="ggc-sr"> (새 창)</span></a>에서,
+            검토보고서는 <a class="ggc-link ggc-link--download" href="#main">검토보고서 (HWP, 184KB)</a>로 내려받는다.
+            관련 의안은 <a class="ggc-link ggc-link--strong" href="#main">BILL-2026-0412</a> 를 참조.
+          </p>
+          <div class="ggc-table-wrap" style="max-width:560px">
+            <table class="ggc-table ggc-table--flat">
+              <thead><tr><th scope="col">의안번호</th><th scope="col">의안명</th><th scope="col">상태</th></tr></thead>
+              <tbody>
+                <tr><td>BILL-2026-0417</td><td><a class="ggc-link ggc-link--quiet" href="#main">경기도 청년 기본 조례 일부개정조례안</a></td><td><span class="ggc-badge ggc-badge--pending">◷ 심사</span></td></tr>
+                <tr><td>BILL-2026-0412</td><td><a class="ggc-link ggc-link--quiet" href="#main">경기도 소상공인 지원 조례안</a></td><td><span class="ggc-badge ggc-badge--approved">✓ 가결</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-link"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 텍스트 목록 -->
+      <section class="ex-section">
+        <h2>텍스트 목록 <span class="cls">.ggc-text-list</span></h2>
+        <p>안내문 · 유의사항 · 제출 서류처럼 본문 밖 목록. <code class="ex-inline">ul/ol</code> 그대로에 <b>내어쓰기</b>만 얹는다 —
+          둘째 줄이 표식이 아니라 글자 아래에 온다. <code class="ex-inline">--check</code> 는 완료 항목(제출 완료 서류),
+          <code class="ex-inline">--dash</code> 는 짧은 안내.</p>
+        <div class="ex-demo" id="d-tlist">
+          <div class="ex-grid">
+            <div>
+              <div class="ex-sub" style="margin-top:0">제출 서류 · <code class="ex-inline">ol</code></div>
+              <ol class="ggc-text-list">
+                <li>의안 원문 (HWP) <span class="note">조문 · 제안 이유 · 신구조문대비표를 하나로</span></li>
+                <li>비용추계서 또는 생략 사유서</li>
+                <li>관련 법령 목록
+                  <ul><li>상위법 조문</li><li>타 시·도 유사 조례</li></ul>
+                </li>
+              </ol>
+            </div>
+            <div>
+              <div class="ex-sub" style="margin-top:0">진행 상태 · <code class="ex-inline">--check</code> · <code class="ex-inline">--dash</code></div>
+              <ul class="ggc-text-list ggc-text-list--check">
+                <li>의안 원문 — 2026-08-25 제출</li>
+                <li>비용추계서 — 2026-08-25 제출</li>
+              </ul>
+              <ul class="ggc-text-list ggc-text-list--dash" style="margin-top:var(--ggc-space-3)">
+                <li>관련 법령 목록은 아직 제출되지 않았다 — 회부 전까지 낸다</li>
+                <li>수정안이 있으면 별도 파일로 첨부한다</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-tlist"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 페이지 내 내비 -->
+      <section class="ex-section">
+        <h2>페이지 내 내비게이션 <span class="cls">.ggc-in-page-nav</span></h2>
+        <p>긴 문서의 절 목차. 본문 옆에 붙어(sticky) 스크롤에 따라 현재 절 — 뷰포트 위 25% 기준선을 지난 마지막 제목 — 을
+          <code class="ex-inline">aria-current="location"</code> 으로 옮긴다(<code class="ex-inline">data-ggc-in-page-nav</code>).
+          ≤1024px 에서는 본문 위 가로 칩 목록이 된다. 아래 본문은 짧아 절 전환이 빠르다 — 창을 낮추고 스크롤해 보라.</p>
+        <div class="ex-demo ex-demo--bg" id="d-ipn">
+          <div class="ex-ipn-grid" style="padding:var(--ggc-space-5);background:var(--ggc-surface);border:1px solid var(--ggc-border);border-radius:var(--ggc-radius-lg)">
+            <div class="ggc-prose">
+              <h2 id="ipn-1">Ⅰ. 제안 이유</h2>
+              <p>「청년기본법」 개정으로 청년 연령이 19세 이상 34세 이하로 정해짐에 따라 도 조례의 정의를 상위법에 맞추고, 청년정책조정위원회의 구성을 보완하려는 것이다.</p>
+              <p>현행 조례는 위원 정수를 30명으로 두고 있어 시행령 제6조 제2항(25명 이내)과 어긋난다. 정합성을 맞추지 않으면 위원회 구성 자체가 다툼의 대상이 된다.</p>
+              <h2 id="ipn-2">Ⅱ. 검토 의견</h2>
+              <h3 id="ipn-2-1">1. 상위법 정합성</h3>
+              <p>청년 정의는 상위법과 같아졌고, 위원 정수는 25명으로 조정해야 한다. 청년 위원 비율 30% 이상 규정은 「청년기본법」 제15조와 부합한다.</p>
+              <h3 id="ipn-2-2">2. 재정 영향</h3>
+              <p>위원 수 감소로 회의 수당이 연 약 480만 원 줄어든다. 별도 예산 조치는 필요 없다 — 비용추계서 생략 사유서로 갈음한다.</p>
+              <h2 id="ipn-3">Ⅲ. 결론</h2>
+              <p>이상의 사항을 반영하면 수정가결이 적절하다. 수정안은 별첨과 같다.</p>
+              <p>부칙의 경과조치(현 위원 임기 보장)는 문제가 없다. 시행일은 공포한 날부터로 한다.</p>
+            </div>
+            <nav class="ggc-in-page-nav" aria-label="이 페이지의 내용" data-ggc-in-page-nav>
+              <p class="heading">이 페이지</p>
+              <ul>
+                <li><a href="#ipn-1" aria-current="location">Ⅰ. 제안 이유</a></li>
+                <li><a href="#ipn-2">Ⅱ. 검토 의견</a>
+                  <ul><li><a href="#ipn-2-1">1. 상위법 정합성</a></li><li><a href="#ipn-2-2">2. 재정 영향</a></li></ul>
+                </li>
+                <li><a href="#ipn-3">Ⅲ. 결론</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-ipn"><summary>마크업</summary><pre class="ex-code"></pre></details>
       </section>
 
     </main>

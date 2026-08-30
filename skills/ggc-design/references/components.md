@@ -30,21 +30,31 @@
 | 탭 전환 | `.ggc-tabs` | `tabs` | components/tabs.md |
 | 페이지 나누기 | `.ggc-pagination` | `pagination` | components/pagination.md |
 | 알림 · 콜아웃 · 긴급 띠 | `.ggc-alert(--info/success/warning/danger/--banner)` | `alert` | components/alert.md |
+| 짧은 확인 (저장됨 · 복사됨) | `GGC.toast()` → `.ggc-toast` | (Phase 9b) | components/toast.md |
 | 근거 조문 인용 | `.ggc-prose blockquote` | — | components/prose.md |
+| 접는 내용 (FAQ · 고급 조건) | `.ggc-accordion` `.ggc-accordion-group` (`<details>`) | (Phase 9b) | components/accordion.md |
+| 본문 링크 · 새 창 · 내려받기 | `.ggc-link(--external/--download/--quiet)` | — | components/link.md |
+| 안내 · 유의사항 · 제출 서류 목록 | `.ggc-text-list(--check/--dash)` | — | components/text-list.md |
+| 긴 문서의 절 목차 | `.ggc-in-page-nav` + `data-ggc-in-page-nav` | — | components/in-page-nav.md |
+| 아이콘 · 약어 보조 설명 | `.ggc-tooltip-wrap` + `.ggc-tooltip` | (Phase 9b) | components/tooltip.md |
 
 ## 입력받기
 
 | 과업 | Tier 1 | Tier 2 | 문서 |
 |---|---|---|---|
-| 텍스트 · 날짜 · 숫자 | `.ggc-field` + `<input>` | `input` + `Field` | components.html |
+| 텍스트 · 숫자 | `.ggc-field` + `<input>` | `input` + `Field` | components.html |
+| 날짜 · 기간 | `.ggc-date` · `.ggc-date-range` (`<input type="date">`) | `input type="date"` | components/date.md |
 | 긴 글 입력 | `.ggc-field` + `<textarea>` | `textarea` | components.html |
-| 선택 (≤20) | `.ggc-select` | `select` | components/select.md |
-| 검색 · 다중 선택 | (P2 `.ggc-listbox`) | — | — |
-| 포함 여부 | `.ggc-check` · `.ggc-check-group` | `checkbox` | components/check-radio.md |
+| 선택 (≤20 · 한 줄) | `.ggc-select` | `select` | components/select.md |
+| 선택 (부제 · 필터 · 다중 · 항상 펼침) | `.ggc-listbox` + `data-ggc-listbox` | (Phase 9b) | components/listbox.md |
+| 포함 여부 (제출 시 반영) | `.ggc-check` · `.ggc-check-group` | `checkbox` | components/check-radio.md |
+| 켬/끔 (즉시 반영) | `.ggc-switch` (`role="switch"`) | (Phase 9b) | components/switch.md |
 | 택일 | `.ggc-radio` · `.ggc-check-group` | `radio-group` | components/check-radio.md |
+| 파일 첨부 | `.ggc-file` + `data-ggc-file` · `.ggc-file-list` | (Phase 9b) | components/file-upload.md |
 | 필터 스트립 | `.ggc-chip` + `.ggc-search` + `.ggc-select--sm` | — | components-forms.html 조립 |
 | 단계형 작성 | `.ggc-wizard` + `.ggc-actionbar` | `ggc-stepper` + `ggc-actionbar` | wizard.html · components/actionbar.md |
 | 확인 · 대화 | `.ggc-modal` (`--alert` = 파괴적) | `dialog` | components/modal.md |
+| 동작 묶음 ("더보기") | `.ggc-menu` (`<details>` + `role="menu"`) | (Phase 9b) | components/menu.md |
 | 검색창 (GNB) | `.ggc-search` | — | dashboard.html |
 
 ## 상태 3종
@@ -52,10 +62,10 @@
 | 상태 | 어떻게 |
 |---|---|
 | 로딩 | `.ggc-skeleton`(행 높이 유지) · `.ggc-spinner`(짧은 대기) · 버튼 안 `.ggc-spinner--sm` + disabled |
-| 빈 | 카드 + 문구(다음 행동) + 버튼 — components.html "세 상태" 조립 예시. 필터 때문인지 데이터가 없는지 가른다 |
-| 오류 | `.ggc-alert--danger`(사유 + 근거) + 다시 시도. 코드·시각을 남긴다 |
+| 빈 | `.ggc-empty`(제목 = 무엇이 없는지 · 설명 = 왜 없는지 · 행동) — components/empty.md. 필터 때문인지 데이터가 없는지 가른다 |
+| 오류 | 인라인은 `.ggc-alert--danger`(사유 + 근거), 영역 전체는 `.ggc-empty--error` + 다시 시도. 코드·시각을 남긴다 |
 
-## 아직 없는 것 (Phase 9)
+## 아직 없는 것
 
-토글 스위치 · 토스트 · 아코디언 · 날짜 선택기 · 파일 업로드(스타일) · 드롭다운 메뉴 · 툴팁 · 커스텀 리스트박스.
-필요하면 **정본에 먼저 넣는다** — 서비스에서 발명하지 않는다. `design/components.tsv` 의 예정 행이 목록이다.
+콤보박스(입력 + 팝업 목록) · 커스텀 달력(범위 · 회기 표시). 필요하면 **정본에 먼저 넣는다** — 서비스에서 발명하지 않는다.
+`design/components.tsv` 의 예정 행이 목록이다. 그 전까지는 `.ggc-listbox`(항상 보이는 목록) 와 네이티브 날짜 입력으로 만든다.

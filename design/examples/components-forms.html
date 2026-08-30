@@ -73,11 +73,11 @@
 
     <main class="ggc-shell-main ggc-shell-main--wide" id="main">
 
-      <h1 class="ex-h1">폼 컨트롤<span class="ver">ggc-components.css v2.0 · §16~17</span></h1>
+      <h1 class="ex-h1">폼 컨트롤<span class="ver">ggc-components.css v2.0 · §16~17 · §24 · §27~28 · §32</span></h1>
       <p class="ex-lede">
-        셀렉트 · 체크박스 · 라디오 · 칩. 전부 <b>네이티브 input 위에 CSS 만 얹은 것</b>이라
-        키보드·스크린리더·폼 전송이 브라우저 그대로 동작한다. 이미지 자산이 없다 —
-        화살표와 체크 표시는 CSS 가 그린다. 마크업 구조와 ARIA 는 KRDS 컴포넌트를 따랐다.
+        셀렉트 · 체크박스 · 라디오 · 칩 · 토글 스위치 · 날짜 · 파일 업로드 · 리스트박스. 리스트박스만 빼고 전부
+        <b>네이티브 input 위에 CSS 만 얹은 것</b>이라 키보드·스크린리더·폼 전송이 브라우저 그대로 동작한다.
+        이미지 자산이 없다 — 화살표와 체크 표시는 CSS 가 그린다. 마크업 구조와 ARIA 는 KRDS 컴포넌트를 따랐다.
       </p>
 
       <div class="ex-note">
@@ -199,6 +199,153 @@
           </fieldset>
         </div>
         <details class="ex-reveal" data-src="#d-chip"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 토글 스위치 -->
+      <section class="ex-section">
+        <h2>토글 스위치 <span class="cls">.ggc-switch</span></h2>
+        <p><b>즉시 적용되는</b> 켬/끔(알림 수신 · 공개 여부 · 자동 저장)에만 쓴다 — 저장 버튼을 눌러야
+          반영되는 선택은 체크박스다. <code class="ex-inline">role="switch"</code> 라 스크린리더가 켬/끔으로 읽고,
+          화면에는 색 + 손잡이 위치 + <code class="ex-inline">.state</code> 문구 셋으로 구분한다.</p>
+        <div class="ex-demo" id="d-switch">
+          <div class="ex-row" style="gap:var(--ggc-space-6)">
+            <label class="ggc-switch"><input type="checkbox" role="switch" checked><span class="track"></span><span class="text">회부 알림 <span class="state"></span></span></label>
+            <label class="ggc-switch"><input type="checkbox" role="switch"><span class="track"></span><span class="text">일정 알림 <span class="state"></span></span></label>
+            <label class="ggc-switch"><input type="checkbox" role="switch" disabled><span class="track"></span><span class="text">긴급 공지 (필수 수신)</span></label>
+            <label class="ggc-switch"><input type="checkbox" role="switch" disabled checked><span class="track"></span><span class="text">보안 로그</span></label>
+          </div>
+          <div class="ggc-card" style="margin-top:var(--ggc-space-5);max-width:480px">
+            <div class="ggc-card-head"><div><div class="title">공개 설정</div><div class="sub">저장 없이 즉시 반영된다</div></div></div>
+            <div style="padding:6px 22px 14px;display:flex;flex-direction:column;gap:var(--ggc-space-3)">
+              <label class="ggc-switch ggc-switch--row"><input type="checkbox" role="switch" checked><span class="track"></span><span class="text">검토보고서 공개 <span class="state"></span></span></label>
+              <label class="ggc-switch ggc-switch--row"><input type="checkbox" role="switch"><span class="track"></span><span class="text">회의록 초안 공개 <span class="state"></span></span></label>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-switch"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 날짜 -->
+      <section class="ex-section">
+        <h2>날짜 입력 <span class="cls">.ggc-date · .ggc-date-range</span></h2>
+        <p>네이티브 <code class="ex-inline">&lt;input type="date"&gt;</code> 다 — 달력 · 키보드(화살표로 년/월/일) · 스크린리더를
+          브라우저가 준다. <code class="ex-inline">min/max</code> 로 회기 범위를 잠근다. 힌트에 서버 형식(YYYY-MM-DD)을 적는다 —
+          브라우저 표시 형식과 다르다. 커스텀 달력(범위 하이라이트 · 회기 표시)은 예정 항목이다.</p>
+        <div class="ex-demo" id="d-date">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label for="dt1">접수일 <span class="req">*</span></label>
+              <div class="ggc-date"><input id="dt1" type="date" value="2026-08-25" min="2026-08-01" max="2026-09-12"></div>
+              <span class="hint">회기(2026-08-01 ~ 09-12) 안의 날짜만 (YYYY-MM-DD)</span>
+            </div>
+            <div class="ggc-field is-error">
+              <label for="dt2">심사 기한 <span class="req">*</span></label>
+              <div class="ggc-date"><input id="dt2" type="date" aria-describedby="dt2e"></div>
+              <span class="error" id="dt2e">회부일 이후 30일 안의 날짜여야 한다 — 「회의규칙」 제42조</span>
+            </div>
+            <div class="ggc-field">
+              <label for="dt3">의결일</label>
+              <div class="ggc-date"><input id="dt3" type="date" disabled></div>
+              <span class="hint">의결 처리 뒤 자동 기록된다</span>
+            </div>
+          </div>
+          <fieldset class="ggc-date-range" style="margin-top:var(--ggc-space-5);max-width:420px">
+            <legend>회기 기간</legend>
+            <div class="ggc-date"><label class="ggc-sr" for="dt-from">시작일</label><input id="dt-from" type="date" value="2026-08-01"></div>
+            <span class="sep" aria-hidden="true">~</span>
+            <div class="ggc-date"><label class="ggc-sr" for="dt-to">종료일</label><input id="dt-to" type="date" value="2026-09-12"></div>
+          </fieldset>
+        </div>
+        <details class="ex-reveal" data-src="#d-date"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 파일 -->
+      <section class="ex-section">
+        <h2>파일 업로드 <span class="cls">.ggc-file · .ggc-file-list</span></h2>
+        <p>선택 버튼 + 끌어놓기 영역 + 선택한 파일 목록(KRDS file_upload). input 은 시각적으로만 숨겨 <kbd class="ex-inline">Tab</kbd> 으로
+          도달하고 <kbd class="ex-inline">Enter</kbd> 로 열린다. 목록과 삭제는 <code class="ex-inline">ggc-behaviors.js</code> 가 채우고
+          삭제를 <code class="ex-inline">input.files</code> 에 되돌린다 — 폼 전송이 목록과 같다. 허용 형식 · 크기 · 개수를 <b>미리</b> 적는다.</p>
+        <div class="ex-demo" id="d-file">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label for="fu1">첨부 문서</label>
+              <div class="ggc-file" data-ggc-file data-ggc-file-max="5">
+                <div class="drop">
+                  <label class="cta" for="fu1">
+                    <input id="fu1" type="file" multiple accept=".hwp,.hwpx,.pdf" aria-describedby="fu1-h">
+                    <span class="ggc-btn ggc-btn--secondary ggc-btn--sm">파일 선택</span>
+                    <span class="or">또는 여기에 끌어놓기</span>
+                  </label>
+                  <span class="rule" id="fu1-h">HWP · HWPX · PDF, 파일당 20MB 까지, 최대 5개</span>
+                </div>
+                <ul class="ggc-file-list" aria-label="선택한 파일"></ul>
+              </div>
+            </div>
+            <div class="ggc-field">
+              <label for="fu2">이미 올린 파일 (서버 목록 + 한 줄형)</label>
+              <div class="ggc-file ggc-file--compact" data-ggc-file>
+                <div class="drop">
+                  <label class="cta" for="fu2">
+                    <input id="fu2" type="file" accept=".pdf" aria-describedby="fu2-h">
+                    <span class="ggc-btn ggc-btn--secondary ggc-btn--sm">파일 선택</span>
+                    <span class="or">또는 끌어놓기</span>
+                  </label>
+                  <span class="rule" id="fu2-h">PDF 1개</span>
+                </div>
+                <ul class="ggc-file-list" aria-label="올린 파일">
+                  <li><span class="name">검토보고서_청년기본조례_v2.hwpx</span><span class="size">184KB</span><button class="remove" type="button" aria-label="검토보고서_청년기본조례_v2.hwpx 삭제">✕</button></li>
+                  <li class="is-error"><span class="name">비용추계서.xlsx</span><span class="size">2.1MB</span><button class="remove" type="button" aria-label="비용추계서.xlsx 삭제">✕</button><span class="error">허용되지 않는 형식이다 — HWP · PDF 만 올릴 수 있다</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-file"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 리스트박스 -->
+      <section class="ex-section">
+        <h2>커스텀 리스트박스 <span class="cls">.ggc-listbox</span></h2>
+        <p>네이티브 셀렉트로 안 되는 것 — 항목에 <b>부제</b>가 있거나, <b>검색 필터</b>가 필요하거나, 항상 펼쳐 보여야 하거나, <b>다중 선택</b>일 때.
+          목록은 포커스 하나(<code class="ex-inline">tabindex=0</code>) + <code class="ex-inline">aria-activedescendant</code> 이며
+          <kbd class="ex-inline">↑</kbd><kbd class="ex-inline">↓</kbd> · <kbd class="ex-inline">Home</kbd> · <kbd class="ex-inline">End</kbd> · 앞글자 입력으로 움직인다.
+          단일 선택은 선택이 포커스를 따라가고(네이티브와 같다), 다중은 <kbd class="ex-inline">Space</kbd> 로 토글한다.</p>
+        <div class="ex-demo" id="d-listbox">
+          <div class="ex-grid">
+            <div class="ggc-field">
+              <label id="lb1-l" for="lb1-f">소관위원회 <span class="req">*</span></label>
+              <div class="ggc-listbox" data-ggc-listbox>
+                <input class="filter" id="lb1-f" type="search" placeholder="위원회 검색" aria-controls="lb1" autocomplete="off">
+                <ul id="lb1" role="listbox" aria-labelledby="lb1-l" tabindex="0">
+                  <li role="option" aria-selected="true" data-value="planning"><span class="text">기획재정위원회</span><span class="sub">위원 13명</span></li>
+                  <li role="option" aria-selected="false" data-value="economy"><span class="text">경제노동위원회</span><span class="sub">위원 12명</span></li>
+                  <li role="option" aria-selected="false" data-value="culture"><span class="text">문화체육관광위원회</span><span class="sub">위원 11명</span></li>
+                  <li role="option" aria-selected="false" data-value="welfare"><span class="text">보건복지위원회</span><span class="sub">위원 12명</span></li>
+                  <li role="option" aria-selected="false" data-value="construction"><span class="text">건설교통위원회</span><span class="sub">위원 13명</span></li>
+                  <li role="option" aria-selected="false" data-value="steering" aria-disabled="true"><span class="text">의회운영위원회</span><span class="sub">회부 대상 아님</span></li>
+                </ul>
+                <p class="none" hidden>일치하는 위원회가 없다</p>
+                <input type="hidden" name="committee" value="planning">
+              </div>
+              <span class="hint">필터에서 ↓ 를 누르면 목록으로 간다</span>
+            </div>
+            <div class="ggc-field">
+              <label id="lb2-l">참석 의원 (복수)</label>
+              <div class="ggc-listbox" data-ggc-listbox>
+                <ul id="lb2" role="listbox" aria-labelledby="lb2-l" aria-multiselectable="true" tabindex="0">
+                  <li role="option" aria-selected="true"><span class="text">김○○ 의원</span><span class="sub">위원장</span></li>
+                  <li role="option" aria-selected="true"><span class="text">이○○ 의원</span><span class="sub">부위원장</span></li>
+                  <li role="option" aria-selected="false"><span class="text">박○○ 의원</span></li>
+                  <li role="option" aria-selected="false"><span class="text">최○○ 의원</span></li>
+                  <li role="option" aria-selected="false"><span class="text">정○○ 의원</span><span class="sub">출장</span></li>
+                </ul>
+                <input type="hidden" name="attendees" value="김○○ 의원,이○○ 의원">
+              </div>
+              <span class="hint">Space 로 토글 · 선택은 ✓ 와 왼쪽 띠로 표시</span>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-listbox"><summary>마크업</summary><pre class="ex-code"></pre></details>
       </section>
 
       <!-- ============================================================ 조립 -->

@@ -37,9 +37,13 @@
  *   §12 .ggc-page-head  §13 .ggc-breadcrumb  §14 .ggc-tabs  §15 .ggc-pagination
  *   §16 .ggc-select     §17 .ggc-check/.ggc-radio/.ggc-chip  §18 .ggc-alert
  *   §19 .ggc-modal(<dialog>)  §20 .ggc-actionbar  §21 .ggc-spinner  §22 .ggc-skeleton
- *   §23 .ggc-prose · .ggc-sr  §24 고대비 보강
+ *   §23 .ggc-prose · .ggc-sr
+ *   §24 .ggc-switch  §25 .ggc-toast  §26 .ggc-accordion  §27 .ggc-date  §28 .ggc-file  §29 .ggc-menu
+ *   §30 .ggc-link  §31 .ggc-empty  §32 .ggc-listbox  §33 .ggc-tooltip  §34 .ggc-in-page-nav
+ *   §35 .ggc-text-list  §36 고대비 보강   (P1·P2, 2026-08-30)
  *   마크업·ARIA 는 KRDS 컴포넌트 HTML 을 따랐고 CSS 는 토큰으로 다시 썼다. 이미지 자산 0.
- *   동작(탭 키보드 · 모달 여닫기 · drawer)은 ggc-behaviors.js — 없어도 화면은 깨지지 않는다.
+ *   동작(탭 · 모달 · drawer · 토스트 · 메뉴 · 파일 · 툴팁 ESC · 리스트박스 · 페이지 내 내비)은
+ *   ggc-behaviors.js — 없어도 화면은 깨지지 않는다.
  * ============================================================================= */
 
 /* --- 0. 컴포넌트 레이어 전용 값 ---------------------------------------------
@@ -60,7 +64,9 @@
 .ggc-public, .ggc-public *, .ggc-public *::before, .ggc-public *::after,
 [class*="ggc-"], [class*="ggc-"]::before, [class*="ggc-"]::after,
 .ggc-field input, .ggc-field select, .ggc-field textarea,
-.ggc-select select, .ggc-search input, .ggc-modal * { box-sizing: border-box; }
+.ggc-select select, .ggc-search input, .ggc-modal *,
+.ggc-date input, .ggc-listbox *, .ggc-file *, .ggc-file-list *, .ggc-menu *, .ggc-toast *,
+.ggc-accordion *, .ggc-accordion-group *, .ggc-in-page-nav *, .ggc-empty * { box-sizing: border-box; }
 
 :root {
   /* --ggc-text-body 는 v2.0 에서 토큰 파일로 승격됐다 — 여기서 정의하지 않는다 */
@@ -1950,10 +1956,709 @@ html[data-ggc-modal-active] { overflow: hidden; }
 }
 
 /* =============================================================================
- * 24. 고대비 보강 — §12~§23 의 새 컴포넌트   (v2.0)
+ * 24. .ggc-switch — 토글 스위치   (v2.0 P1)
+ * 출처: KRDS toggle_switch. **즉시 적용되는** 켬/끔(알림 수신 · 공개 여부 · 자동 저장)에만 쓴다 —
+ *       제출 버튼을 눌러야 반영되는 선택은 .ggc-check 다(스위치를 켜면 "이미 적용됐다"고 읽힌다).
+ * 마크업 (라벨이 input 을 감싼다 — .ggc-check 와 같은 계약):
+ *   <label class="ggc-switch"><input type="checkbox" role="switch" checked><span class="track"></span>
+ *     <span class="text">알림 수신 <span class="state"></span></span></label>
+ *   .state 는 비워 둔다 — CSS 가 "켬/끔" 을 그린다(role="switch" 가 상태를 읽어 주므로 장식이다).
+ *   --row : 설정 목록 행 — 글자가 왼쪽, 트랙이 오른쪽 끝, 폭 100%.
+ * 켬/끔은 색 + 손잡이 위치 + 상태 문구 셋으로 구분한다(색 단독 금지).
+ * ============================================================================= */
+.ggc-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ggc-space-2);
+  font-family: var(--ggc-font);
+  font-size: var(--ggc-control-font);
+  line-height: 1.4;
+  color: var(--ggc-text);
+  cursor: pointer;
+  min-height: 24px;
+  position: relative;
+}
+.ggc-switch input {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.ggc-switch .track {
+  flex-shrink: 0;
+  width: 40px; height: 22px;
+  border-radius: 999px;
+  background: var(--ggc-text-faint);
+  border: 1.5px solid transparent;
+  position: relative;
+  transition: background .15s, border-color .15s;
+}
+.ggc-switch .track::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform .15s;
+}
+.ggc-switch input:checked + .track { background: var(--ggc-primary); }
+.ggc-switch input:checked + .track::after { transform: translateX(18px); }
+.ggc-switch input:focus-visible + .track { box-shadow: var(--ggc-focus-ring); border-color: var(--ggc-primary-deep); }
+.ggc-switch input:disabled ~ * { color: var(--ggc-text-subtle); cursor: default; }
+.ggc-switch input:disabled + .track { background: var(--ggc-control-bg); border-color: var(--ggc-border); }
+.ggc-switch input:disabled + .track::after { background: var(--ggc-border-strong); }
+.ggc-switch input:disabled:checked + .track { background: var(--ggc-text-faint); }
+.ggc-switch input:disabled:checked + .track::after { background: #fff; }
+.ggc-switch .state { font-size: 12px; font-weight: 700; color: var(--ggc-text-subtle); margin-left: 4px; }
+.ggc-switch .state::before { content: "끔"; }
+.ggc-switch input:checked ~ .text .state { color: var(--ggc-primary-deep); }
+.ggc-switch input:checked ~ .text .state::before { content: "켬"; }
+.ggc-switch--row { display: flex; width: 100%; flex-direction: row-reverse; justify-content: space-between; }
+
+/* =============================================================================
+ * 25. .ggc-toast-region · .ggc-toast — 토스트   (v2.0 P1)
+ * 출처: 자체(KRDS 에 없다). **짧은 확인**(저장됨 · 복사됨 · 발송됨)에만 쓴다 — 읽고 판단해야 하는
+ *       내용(오류 사유 · 확인 질문)은 .ggc-alert / .ggc-modal 이다. 토스트는 사라진다.
+ * 마크업:
+ *   <div class="ggc-toast-region" role="status" aria-live="polite" aria-label="알림"></div>  ← 문서에 하나(body 끝)
+ *   <div class="ggc-toast ggc-toast--success">
+ *     <span class="icon" aria-hidden="true">✓</span>
+ *     <div class="body"><b class="title">임시저장됨</b><span class="desc">14:32 · 자동 저장</span></div>
+ *     <button class="action" type="button">실행 취소</button>
+ *     <button class="close" type="button" aria-label="닫기">✕</button>
+ *   </div>
+ * JS: GGC.toast({ title, desc, variant, duration, action: { label, onClick } }) 가 위 마크업을 만든다
+ *     (ggc-behaviors.js ⑤). 영역이 없으면 만든다. 기본 5초 · action 이 있으면 8초 · duration:0 은 수동 닫기.
+ *     마우스를 올리거나 포커스가 들어가면 시계가 멈춘다. 선언형: <button data-ggc-toast="저장됨" data-ggc-toast-variant="success">
+ * 상태는 색 + 기호 + 제목으로 구분한다. 한 번에 3개까지 — 넘치면 가장 오래된 것을 닫는다.
+ * ============================================================================= */
+.ggc-toast-region {
+  position: fixed;
+  right: var(--ggc-space-6);
+  bottom: var(--ggc-space-6);
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ggc-space-2);
+  width: min(400px, calc(100vw - var(--ggc-space-4) * 2));
+  pointer-events: none;
+}
+.ggc-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ggc-space-3);
+  padding: 12px 12px 12px 14px;
+  border: 1px solid var(--ggc-border-strong);
+  border-left: 4px solid var(--ggc-text-muted);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+  color: var(--ggc-text);
+  font-family: var(--ggc-font);
+  font-size: var(--ggc-control-font);
+  line-height: 1.45;
+  box-shadow: 0 8px 24px rgba(20, 30, 50, 0.14);
+  animation: ggc-toast-in .18s ease-out;
+}
+.ggc-toast[data-leaving] { opacity: 0; transform: translateY(6px); transition: opacity .15s, transform .15s; }
+@keyframes ggc-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.ggc-toast .icon {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  margin-top: 1px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  background: var(--ggc-surface-inset);
+  color: var(--ggc-text-muted);
+}
+.ggc-toast .body { flex: 1; min-width: 0; }
+.ggc-toast .title { display: block; font-weight: 700; color: var(--ggc-text-strong); }
+.ggc-toast .desc { display: block; margin-top: 2px; font-size: 12.5px; color: var(--ggc-text-muted); overflow-wrap: anywhere; }
+.ggc-toast .action {
+  flex-shrink: 0;
+  align-self: center;
+  height: var(--ggc-control-h-sm);
+  padding: 0 10px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius-sm);
+  background: var(--ggc-surface);
+  font: inherit; font-size: var(--ggc-control-font-sm); font-weight: 700;
+  color: var(--ggc-primary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ggc-toast .action:hover { background: var(--ggc-primary-light); }
+.ggc-toast .close {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  margin: -4px -4px -4px 0;
+  border: none; background: none;
+  border-radius: var(--ggc-radius-sm);
+  color: var(--ggc-text-muted);
+  font-size: 14px;
+  cursor: pointer;
+}
+.ggc-toast .close:hover { background: var(--ggc-control-bg); color: var(--ggc-text); }
+.ggc-toast--success { border-left-color: var(--ggc-success); }
+.ggc-toast--success .icon { background: var(--ggc-success-tint); color: var(--ggc-success); }
+.ggc-toast--warning { border-left-color: var(--ggc-warning); }
+.ggc-toast--warning .icon { background: var(--ggc-warning-tint); color: var(--ggc-warning); }
+.ggc-toast--danger { border-left-color: var(--ggc-danger); }
+.ggc-toast--danger .icon { background: var(--ggc-danger-tint); color: var(--ggc-danger); }
+.ggc-toast--info { border-left-color: var(--ggc-info); }
+.ggc-toast--info .icon { background: var(--ggc-info-tint); color: var(--ggc-info); }
+@media (max-width: 480px) {
+  .ggc-toast-region { right: var(--ggc-space-3); left: var(--ggc-space-3); bottom: var(--ggc-space-3); width: auto; }
+}
+
+/* =============================================================================
+ * 26. .ggc-accordion — 아코디언 · 디스클로저 (네이티브 <details>)   (v2.0 P1)
+ * 출처: KRDS accordion / disclosure. <details>/<summary> 라 JS 0 — 키보드(Enter · Space) · 스크린리더의
+ *       펼침/접힘 상태를 브라우저가 준다.
+ * 마크업:
+ *   <div class="ggc-accordion-group">
+ *     <details class="ggc-accordion" name="faq" open>
+ *       <summary>의안은 누가 발의할 수 있는가 <span class="meta">3건</span></summary>
+ *       <div class="body">…</div>
+ *     </details>
+ *   </div>
+ *   같은 name= 을 주면 브라우저가 하나만 연다(배타). 단독으로 쓰면 카드형 하나다.
+ *   --flush : 카드 안 · 테두리 없이 구분선만.
+ * 화살표는 CSS 가 그린다(이미지 0). summary 안 텍스트가 곧 접근 가능한 이름이다 — 비워 두지 않는다.
+ * ============================================================================= */
+.ggc-accordion {
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+  font-family: var(--ggc-font);
+}
+.ggc-accordion + .ggc-accordion { margin-top: var(--ggc-space-2); }
+.ggc-accordion > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ggc-space-3);
+  padding: 14px 18px;
+  list-style: none;
+  cursor: pointer;
+  font-size: var(--ggc-control-font);
+  font-weight: 700;
+  color: var(--ggc-text-strong);
+  border-radius: var(--ggc-radius);
+}
+.ggc-accordion > summary::-webkit-details-marker { display: none; }
+.ggc-accordion > summary:hover { background: var(--ggc-row-hover); }
+.ggc-accordion > summary .meta { margin-left: auto; font-weight: 400; font-size: 12.5px; color: var(--ggc-text-subtle); }
+.ggc-accordion > summary::after {
+  content: "";
+  flex-shrink: 0;
+  width: 8px; height: 8px;
+  margin-left: var(--ggc-space-2);
+  border-right: 2px solid var(--ggc-text-muted);
+  border-bottom: 2px solid var(--ggc-text-muted);
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform .15s;
+}
+.ggc-accordion > summary .meta + ::after { margin-left: 0; }
+.ggc-accordion[open] > summary::after { transform: rotate(-135deg) translateY(2px); }
+.ggc-accordion[open] > summary { border-radius: var(--ggc-radius) var(--ggc-radius) 0 0; }
+.ggc-accordion > .body {
+  padding: 2px 18px 18px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ggc-text-body);
+}
+.ggc-accordion > .body > :first-child { margin-top: 0; }
+.ggc-accordion > .body > :last-child { margin-bottom: 0; }
+
+/* 묶음 — 테두리 하나, 항목 사이 구분선 */
+.ggc-accordion-group {
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-lg);
+  background: var(--ggc-surface);
+}
+.ggc-accordion-group > .ggc-accordion { border: 0; border-radius: 0; }
+.ggc-accordion-group > .ggc-accordion + .ggc-accordion { margin-top: 0; border-top: 1px solid var(--ggc-hairline); }
+.ggc-accordion-group > .ggc-accordion > summary { border-radius: 0; }
+.ggc-accordion-group > .ggc-accordion:first-child > summary { border-radius: var(--ggc-radius-lg) var(--ggc-radius-lg) 0 0; }
+.ggc-accordion-group > .ggc-accordion:last-child:not([open]) > summary { border-radius: 0 0 var(--ggc-radius-lg) var(--ggc-radius-lg); }
+.ggc-accordion-group > .ggc-accordion:first-child:last-child:not([open]) > summary { border-radius: var(--ggc-radius-lg); }
+
+/* 카드 안 · 여백 없이 */
+.ggc-accordion--flush, .ggc-accordion-group--flush { border: 0; border-radius: 0; background: none; }
+.ggc-accordion--flush > summary, .ggc-accordion-group--flush > .ggc-accordion > summary { padding-left: 0; padding-right: 0; border-radius: 0; }
+.ggc-accordion--flush > .body, .ggc-accordion-group--flush > .ggc-accordion > .body { padding-left: 0; padding-right: 0; }
+.ggc-accordion-group--flush > .ggc-accordion + .ggc-accordion { border-top-color: var(--ggc-border); }
+
+/* =============================================================================
+ * 27. .ggc-date — 날짜 입력 (네이티브 <input type="date">)   (v2.0 P1)
+ * 출처: KRDS date_input. 달력 UI 는 브라우저 것을 쓴다 — 키보드(화살표로 년/월/일) · 스크린리더가
+ *       검증돼 있고, 사내 표준 브라우저(Edge/Chrome)에서 한국어 형식으로 뜬다.
+ *       커스텀 달력(범위 하이라이트 · 회기 표시)은 Tier 2 calendar(예정)다 — 그때도 정본에 먼저 넣는다.
+ * 마크업:
+ *   <div class="ggc-field"><label for="d1">접수일 <span class="req">*</span></label>
+ *     <div class="ggc-date"><input id="d1" type="date" min="2026-01-01" max="2026-12-31"></div>
+ *     <span class="hint">회기 중 날짜만 고를 수 있다 (YYYY-MM-DD)</span></div>
+ * 기간:
+ *   <fieldset class="ggc-date-range"><legend>회기 기간</legend>
+ *     <div class="ggc-date"><label class="ggc-sr" for="d-from">시작일</label><input id="d-from" type="date"></div>
+ *     <span class="sep" aria-hidden="true">~</span>
+ *     <div class="ggc-date"><label class="ggc-sr" for="d-to">종료일</label><input id="d-to" type="date"></div>
+ *   </fieldset>
+ * 힌트에 서버 형식(YYYY-MM-DD)을 적는다 — 브라우저 표시 형식과 다르다. --inline : 폭이 내용만큼.
+ * ============================================================================= */
+.ggc-date { position: relative; display: block; font-family: var(--ggc-font); }
+.ggc-date input {
+  width: 100%;
+  height: var(--ggc-input-h);
+  padding: 0 12px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+  font-family: inherit;
+  font-size: var(--ggc-control-font);
+  color: var(--ggc-text);
+  font-variant-numeric: tabular-nums;
+}
+.ggc-date input:disabled { background: var(--ggc-control-bg); color: var(--ggc-text-subtle); }
+.ggc-date input::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .75; }
+.ggc-date input::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+.ggc-date--inline { display: inline-block; width: auto; }
+.ggc-date--inline input { width: auto; min-width: 160px; }
+.ggc-date-range {
+  margin: 0; padding: 0; border: 0;
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--ggc-space-2);
+  font-family: var(--ggc-font);
+}
+.ggc-date-range > legend { width: 100%; margin-bottom: 6px; padding: 0; font-size: var(--ggc-label-font); font-weight: 700; color: var(--ggc-text-muted); }
+.ggc-date-range .ggc-date { flex: 1 1 160px; }
+.ggc-date-range .sep { color: var(--ggc-text-subtle); }
+
+/* =============================================================================
+ * 28. .ggc-file — 파일 업로드   (v2.0 P1)
+ * 출처: KRDS file_upload — 선택 버튼 + 끌어놓기 영역 + 선택한 파일 목록(이름 · 크기 · 삭제).
+ * 마크업:
+ *   <div class="ggc-file" data-ggc-file data-ggc-file-max="5">
+ *     <div class="drop">
+ *       <label class="cta" for="f1">
+ *         <input id="f1" type="file" multiple accept=".hwp,.hwpx,.pdf" aria-describedby="f1-h">
+ *         <span class="ggc-btn ggc-btn--secondary ggc-btn--sm">파일 선택</span>
+ *         <span class="or">또는 여기에 끌어놓기</span>
+ *       </label>
+ *       <span class="rule" id="f1-h">HWP · PDF, 파일당 20MB 까지, 최대 5개</span>
+ *     </div>
+ *     <ul class="ggc-file-list" aria-label="선택한 파일"></ul>
+ *   </div>
+ *   목록 항목: <li><span class="name">검토보고서.hwpx</span><span class="size">184KB</span>
+ *              <button class="remove" type="button" aria-label="검토보고서.hwpx 삭제">✕</button></li>
+ *   목록은 ggc-behaviors.js ⑦ 이 change · drop 마다 채우고 삭제를 input.files 에 되돌린다(data-ggc-file).
+ *   없으면 브라우저 기본 문구("파일 n개")가 보인다 — 깨지지 않는다.
+ * input 은 시각적으로만 숨긴다 — Tab 으로 도달하고 Enter/Space 로 열린다(.drop 의 :focus-within 이 링을 그린다).
+ * 이미 올린 파일(서버) 목록도 같은 .ggc-file-list 로 그린다 — 삭제 버튼 이름에 파일명을 넣는다.
+ * --compact : 한 줄(표 안 · 좁은 폼).
+ * ============================================================================= */
+.ggc-file { font-family: var(--ggc-font); }
+.ggc-file .drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--ggc-space-5) var(--ggc-space-4);
+  border: 1.5px dashed var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface-inset);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.ggc-file .drop:hover, .ggc-file .drop[data-over] { border-color: var(--ggc-primary); background: var(--ggc-primary-light); }
+.ggc-file .drop:focus-within { border-color: var(--ggc-primary); box-shadow: var(--ggc-focus-ring); }
+.ggc-file input[type="file"] {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.ggc-file .cta { display: inline-flex; align-items: center; gap: var(--ggc-space-2); font-size: var(--ggc-control-font); color: var(--ggc-text-muted); cursor: pointer; }
+.ggc-file .rule { font-size: 12.5px; color: var(--ggc-text-subtle); }
+.ggc-file--compact .drop { flex-direction: row; flex-wrap: wrap; justify-content: flex-start; gap: var(--ggc-space-3); padding: var(--ggc-space-2) var(--ggc-space-3); text-align: left; }
+.ggc-file-list { list-style: none; margin: var(--ggc-space-2) 0 0; padding: 0; }
+.ggc-file-list:empty { display: none; }
+.ggc-file-list li {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-3);
+  padding: 8px 12px;
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-sm);
+  background: var(--ggc-surface);
+  font-size: var(--ggc-control-font-sm);
+}
+.ggc-file-list li + li { margin-top: 6px; }
+.ggc-file-list .name { flex: 1; min-width: 0; color: var(--ggc-text); overflow-wrap: anywhere; }
+.ggc-file-list .size { color: var(--ggc-text-subtle); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ggc-file-list .remove {
+  width: 28px; height: 28px; margin: -4px -6px -4px 0;
+  border: none; background: none; border-radius: var(--ggc-radius-sm);
+  color: var(--ggc-text-muted); font-size: 13px; cursor: pointer;
+}
+.ggc-file-list .remove:hover { background: var(--ggc-danger-tint); color: var(--ggc-danger); }
+.ggc-file-list li.is-error { border-color: var(--ggc-danger); }
+.ggc-file-list .error { width: 100%; font-size: 12px; color: var(--ggc-danger); }
+
+/* =============================================================================
+ * 29. .ggc-menu — 드롭다운 메뉴 (네이티브 <details>)   (v2.0 P1)
+ * 출처: shadcn dropdown-menu 의 역할 구조(menu / menuitem) + <details> 로 여닫기(JS 없이도 열린다).
+ *       "더보기 ⋯" 처럼 **동작 묶음**에 쓴다. 페이지 이동 묶음이면 그냥 링크 목록이다 — role="menu" 를 붙이지 않는다.
+ * 마크업:
+ *   <details class="ggc-menu">
+ *     <summary class="ggc-btn ggc-btn--secondary ggc-btn--sm">더보기</summary>
+ *     <ul class="list" role="menu" aria-label="의안 동작">
+ *       <li role="none"><button role="menuitem" type="button">복사</button></li>
+ *       <li role="none"><button role="menuitem" type="button" disabled>이동</button></li>
+ *       <li class="divider" role="separator"></li>
+ *       <li role="none"><button role="menuitem" type="button" class="danger">삭제…</button></li>
+ *     </ul>
+ *   </details>
+ *   --end : 오른쪽 정렬(표 행 끝). --up : 위로 펼침. .kbd 슬롯 = 단축키 표기, .heading = 묶음 제목.
+ * 키보드(ggc-behaviors.js ⑥): 열리면 첫 항목으로, ↑↓ Home End 이동, ESC · 바깥 클릭 · 항목 실행 시 닫고 summary 로 복귀.
+ * 파괴적 항목은 .danger + 말줄임(…)으로 확인 단계가 있음을 알린다 — 메뉴에서 바로 삭제하지 않는다.
+ * ============================================================================= */
+.ggc-menu { position: relative; display: inline-block; font-family: var(--ggc-font); }
+.ggc-menu > summary { list-style: none; cursor: pointer; }
+.ggc-menu > summary::-webkit-details-marker { display: none; }
+.ggc-menu > summary::after {
+  content: "";
+  display: inline-block;
+  width: 6px; height: 6px;
+  margin-left: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+}
+.ggc-menu[open] > summary::after { transform: rotate(-135deg) translateY(2px); }
+.ggc-menu > .list {
+  position: absolute;
+  top: calc(100% + 4px); left: 0;
+  z-index: 60;
+  min-width: 180px;
+  margin: 0; padding: 6px;
+  list-style: none;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+  box-shadow: 0 8px 24px rgba(20, 30, 50, 0.12);
+}
+.ggc-menu--end > .list { left: auto; right: 0; }
+.ggc-menu--up > .list { top: auto; bottom: calc(100% + 4px); }
+.ggc-menu .list [role="menuitem"] {
+  display: flex; align-items: center; gap: var(--ggc-space-2);
+  width: 100%;
+  min-height: var(--ggc-control-h-sm);
+  padding: 6px 10px;
+  border: none; background: none;
+  border-radius: var(--ggc-radius-sm);
+  font: inherit; font-size: var(--ggc-control-font-sm); font-weight: 600;
+  color: var(--ggc-text);
+  text-align: left; text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ggc-menu .list [role="menuitem"]:hover,
+.ggc-menu .list [role="menuitem"]:focus-visible { background: var(--ggc-primary-light); color: var(--ggc-primary-deep); }
+.ggc-menu .list [role="menuitem"]:disabled,
+.ggc-menu .list [role="menuitem"][aria-disabled="true"] { color: var(--ggc-text-subtle); cursor: default; background: none; }
+.ggc-menu .list [role="menuitem"].danger { color: var(--ggc-danger); }
+.ggc-menu .list [role="menuitem"].danger:hover,
+.ggc-menu .list [role="menuitem"].danger:focus-visible { background: var(--ggc-danger-tint); color: var(--ggc-danger); }
+.ggc-menu .list .divider { height: 1px; margin: 6px 4px; background: var(--ggc-border); }
+.ggc-menu .list .kbd { margin-left: auto; padding-left: var(--ggc-space-4); font-size: 11px; color: var(--ggc-text-subtle); font-family: var(--ggc-font-mono); }
+.ggc-menu .list .heading { padding: 6px 10px 4px; font-size: 11.5px; font-weight: 700; color: var(--ggc-text-subtle); }
+
+/* =============================================================================
+ * 30. .ggc-link — 본문 링크   (v2.0 P1)
+ * 출처: KRDS link — 밑줄이 링크의 표식이다(색 단독 금지). 본문 흐름 안의 <a> 에 붙인다.
+ *       내비(LNB · 탭 · 브레드크럼)와 버튼은 자기 규칙이 있다 — 거기에는 쓰지 않는다.
+ * 마크업: <a class="ggc-link" href="…">「경기도의회 회의규칙」 제42조</a>
+ *   --external : 새 창(target="_blank" rel="noopener") — 기호 ↗ 를 CSS 가 붙이고, 화면 밖 텍스트 "(새 창)" 을 마크업에 둔다
+ *   --download : 내려받기 — 기호 ↓. 형식·크기를 텍스트에 적는다("검토보고서 (HWP, 184KB)")
+ *   --quiet    : 밑줄을 hover 에서만 — 표 안 · 목록처럼 링크가 빽빽한 곳(그 대신 색 + 굵기로 구분)
+ *   --strong   : 굵게
+ * ============================================================================= */
+.ggc-link {
+  color: var(--ggc-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  border-radius: 2px;
+  overflow-wrap: anywhere;
+}
+.ggc-link:hover { color: var(--ggc-primary-dark); text-decoration-thickness: 2px; }
+.ggc-link--quiet { text-decoration: none; font-weight: 600; }
+.ggc-link--quiet:hover { text-decoration: underline; }
+.ggc-link--strong { font-weight: 700; }
+.ggc-link--external::after { content: " ↗"; font-size: 0.85em; }
+.ggc-link--download::after { content: " ↓"; font-size: 0.85em; }
+.ggc-link[aria-disabled="true"] { color: var(--ggc-text-subtle); pointer-events: none; text-decoration: none; }
+
+/* =============================================================================
+ * 31. .ggc-empty — 빈 상태   (v2.0 P1)
+ * 출처: components.html "세 상태" 조립 예시를 클래스로(ADR 0006 — 레이아웃만 정본, 문구·행동은 화면이 정한다).
+ * 마크업:
+ *   <div class="ggc-empty">
+ *     <span class="icon" aria-hidden="true">☰</span>
+ *     <p class="title">처리 대기 의안이 없다</p>
+ *     <p class="desc">필터 "내 소관 · 처리 대기" 에 해당하는 의안이 없다. 필터를 풀면 147건이다.</p>
+ *     <div class="actions"><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">필터 초기화</button></div>
+ *   </div>
+ *   --error   : 불러오지 못함 — 기호·제목이 danger, "다시 시도" 를 둔다. 오류 코드·시각을 desc 에 남긴다
+ *   --compact : 카드 안 짧은 빈 상태(패딩 절반)
+ * 제목은 **무엇이 없는지**, 설명은 **왜 없는지(필터 때문인지 데이터가 없는지)**, 행동은 **다음에 할 일**.
+ * 카드 · 표 본문 · 탭 패널 어디에나 들어간다 — 자기 테두리가 없다.
+ * ============================================================================= */
+.ggc-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--ggc-space-8) var(--ggc-space-5);
+  text-align: center;
+  font-family: var(--ggc-font);
+  color: var(--ggc-text-muted);
+}
+.ggc-empty .icon {
+  width: 44px; height: 44px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--ggc-surface-inset);
+  color: var(--ggc-text-faint);
+  font-size: 20px;
+}
+.ggc-empty .title { margin: 0; font-size: 14.5px; font-weight: 700; color: var(--ggc-text-strong); }
+.ggc-empty .desc { margin: 0; max-width: 440px; font-size: 13px; line-height: 1.6; color: var(--ggc-text-muted); }
+.ggc-empty .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ggc-space-2); margin-top: var(--ggc-space-3); }
+.ggc-empty--error .icon { background: var(--ggc-danger-tint); color: var(--ggc-danger); }
+.ggc-empty--error .title { color: var(--ggc-danger); }
+.ggc-empty--compact { padding: var(--ggc-space-5) var(--ggc-space-4); gap: 4px; }
+.ggc-empty--compact .icon { width: 36px; height: 36px; font-size: 16px; }
+
+/* =============================================================================
+ * 32. .ggc-listbox — 커스텀 리스트박스   (v2.0 P2)
+ * 출처: KRDS select(custom) 의 목록 부분. 네이티브 <select> 로 안 되는 것 — 항목에 두 줄(부제) · 검색 필터 ·
+ *       항상 펼쳐 보이는 선택 · 다중 선택 — 에만 쓴다. 항목 ≤20 이고 한 줄이면 .ggc-select 다.
+ *       입력창 + 팝업(콤보박스)은 별도 항목(combobox, 예정) — 여기는 **항상 보이는 목록**이다.
+ * 마크업:
+ *   <div class="ggc-listbox" data-ggc-listbox>
+ *     <span class="ggc-sr" id="lb1-l">소관위원회</span>                         ← 또는 .ggc-field 의 <label id>
+ *     <input class="filter" type="search" aria-label="소관위원회 검색" aria-controls="lb1" placeholder="위원회 검색">  (선택)
+ *     <ul id="lb1" role="listbox" aria-labelledby="lb1-l" tabindex="0">
+ *       <li role="option" aria-selected="true" data-value="A"><span class="text">기획재정위원회</span><span class="sub">위원 13명</span></li>
+ *       <li role="option" aria-selected="false" data-value="B" aria-disabled="true">…</li>
+ *     </ul>
+ *     <p class="none" hidden>일치하는 위원회가 없다</p>
+ *     <input type="hidden" name="committee" value="A">                        ← 선택값. behaviors.js 가 동기화한다
+ *   </div>
+ * 키보드(ggc-behaviors.js ⑨): 목록이 포커스 하나(tabindex=0) + aria-activedescendant 로 현재 항목을 가리킨다.
+ *   ↑↓ · Home/End 이동(단일 선택은 선택이 따라온다) · Enter/Space 선택(다중은 토글) · 글자 = 앞글자 찾기.
+ *   필터에서 ↓ 를 누르면 목록으로 간다. aria-multiselectable="true" 면 다중.
+ * 선택은 배경 + 왼쪽 띠 + ✓ 기호(색 단독 금지). 현재 항목(.is-active)은 outline.
+ * ============================================================================= */
+.ggc-listbox { font-family: var(--ggc-font); }
+.ggc-listbox .filter {
+  width: 100%;
+  height: var(--ggc-control-h-sm);
+  margin-bottom: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius-sm);
+  background: var(--ggc-control-bg);
+  font: inherit; font-size: var(--ggc-control-font-sm);
+  color: var(--ggc-text);
+}
+.ggc-listbox [role="listbox"] {
+  margin: 0; padding: 4px;
+  list-style: none;
+  max-height: 264px;
+  overflow-y: auto;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+}
+.ggc-listbox [role="option"] {
+  display: flex; align-items: center; gap: var(--ggc-space-2);
+  min-height: var(--ggc-control-h-sm);
+  padding: 6px 10px 6px 12px;
+  border-left: 3px solid transparent;
+  border-radius: var(--ggc-radius-sm);
+  font-size: var(--ggc-control-font-sm);
+  color: var(--ggc-text);
+  cursor: pointer;
+}
+.ggc-listbox [role="option"] .text { flex: 1; min-width: 0; }
+.ggc-listbox [role="option"] .sub { font-size: 12px; color: var(--ggc-text-subtle); }
+.ggc-listbox [role="option"]:hover { background: var(--ggc-row-hover); }
+.ggc-listbox [role="option"][aria-selected="true"] { background: var(--ggc-primary-light); border-left-color: var(--ggc-primary); color: var(--ggc-primary-deep); font-weight: 700; }
+.ggc-listbox [role="option"][aria-selected="true"]::after { content: "✓"; font-weight: 800; }
+.ggc-listbox [role="option"].is-active { outline: 2px solid var(--ggc-primary); outline-offset: -2px; }
+.ggc-listbox [role="option"][aria-disabled="true"] { color: var(--ggc-text-subtle); cursor: default; background: none; }
+.ggc-listbox [role="option"][hidden] { display: none; }
+.ggc-listbox .none { margin: 6px 0 0; padding: var(--ggc-space-3); font-size: 12.5px; color: var(--ggc-text-subtle); text-align: center; }
+
+/* =============================================================================
+ * 33. .ggc-tooltip — 툴팁   (v2.0 P2)
+ * 출처: KRDS tooltip. **보조 설명**(아이콘 버튼의 이름 풀이 · 약어 · 잘린 값)에만 쓴다 — 툴팁에만 있는 정보는
+ *       없는 정보다(터치 · 스크린리더 · hover 없는 사용자). 필수 내용은 화면에 적는다.
+ * 마크업 (트리거를 감싸고, 툴팁 본문은 형제):
+ *   <span class="ggc-tooltip-wrap">
+ *     <button class="ggc-icon-btn" type="button" aria-describedby="tt1">…</button>
+ *     <span class="ggc-tooltip" role="tooltip" id="tt1">의안을 위원회에 회부한다</span>
+ *   </span>
+ *   --top(기본) --bottom --start --end : 위치. 좁은 폭에서 잘리면 --bottom 으로.
+ * hover · focus-within 에 CSS 만으로 보이고, ESC 로 닫힌다(ggc-behaviors.js ⑧ — WCAG 1.4.13 dismissable).
+ * 트리거의 접근 가능한 이름이 이미 툴팁과 같다면 aria-describedby 를 두지 않는다(두 번 읽는다).
+ * overflow:auto 컨테이너(.ggc-table-wrap) 안에서는 잘린다 — 거기서는 --bottom 이나 셀 밖 배치.
+ * ============================================================================= */
+.ggc-tooltip-wrap { position: relative; display: inline-flex; }
+.ggc-tooltip {
+  position: absolute;
+  left: 50%; bottom: calc(100% + 8px);
+  z-index: 70;
+  transform: translateX(-50%);
+  max-width: 260px;
+  width: max-content;
+  padding: 6px 10px;
+  border-radius: var(--ggc-radius-sm);
+  background: var(--ggc-text-strong);
+  color: #fff;
+  font-family: var(--ggc-font);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .12s, visibility .12s;
+}
+.ggc-tooltip::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 100%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--ggc-text-strong);
+}
+.ggc-tooltip-wrap:hover > .ggc-tooltip,
+.ggc-tooltip-wrap:focus-within > .ggc-tooltip { opacity: 1; visibility: visible; }
+.ggc-tooltip-wrap[data-ggc-tooltip-dismissed] > .ggc-tooltip { opacity: 0; visibility: hidden; }
+.ggc-tooltip--bottom { bottom: auto; top: calc(100% + 8px); }
+.ggc-tooltip--bottom::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--ggc-text-strong); }
+.ggc-tooltip--start { left: 0; transform: none; }
+.ggc-tooltip--start::after { left: 12px; transform: none; }
+.ggc-tooltip--end { left: auto; right: 0; transform: none; }
+.ggc-tooltip--end::after { left: auto; right: 12px; transform: none; }
+
+/* =============================================================================
+ * 34. .ggc-in-page-nav — 페이지 내 내비게이션   (v2.0 P2)
+ * 출처: KRDS in_page_navigation. 긴 문서(검토보고서 · 안내 페이지)의 절 목차. 본문 옆에 붙어(sticky) 현재 절을 표시한다.
+ * 마크업:
+ *   <nav class="ggc-in-page-nav" aria-label="이 페이지의 내용" data-ggc-in-page-nav>
+ *     <p class="heading">이 페이지</p>
+ *     <ul>
+ *       <li><a href="#s1" aria-current="location">Ⅰ. 제안 이유</a></li>
+ *       <li><a href="#s2">Ⅱ. 검토 의견</a><ul><li><a href="#s2-1">1. 상위법 정합성</a></li></ul></li>
+ *     </ul>
+ *   </nav>
+ * 배치: 2열 그리드의 둘째 열(본문 옆) 또는 .ggc-public-main--side 의 사이드 슬롯. ≤1024px 에서는 본문 위 가로 칩 목록이 된다.
+ * 현재 절은 ggc-behaviors.js ⑩ 이 스크롤 기준선(뷰포트 25%)을 지난 마지막 제목으로 aria-current="location" 을 옮긴다
+ * (없으면 마크업의 값 그대로).
+ * 표시는 색 + 왼쪽 띠 + 굵기(색 단독 금지).
+ * ============================================================================= */
+.ggc-in-page-nav {
+  position: sticky;
+  top: var(--ggc-space-6);
+  align-self: start;
+  font-family: var(--ggc-font);
+  font-size: 13px;
+}
+.ggc-in-page-nav .heading { margin: 0 0 8px; padding-left: 12px; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--ggc-text-subtle); }
+.ggc-in-page-nav ul { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--ggc-border); }
+.ggc-in-page-nav ul ul { border-left: 0; }
+.ggc-in-page-nav ul ul a { padding-left: 24px; font-size: 12.5px; }
+.ggc-in-page-nav a {
+  display: block;
+  margin-left: -2px;
+  padding: 5px 12px 5px 10px;
+  border-left: 2px solid transparent;
+  color: var(--ggc-text-muted);
+  text-decoration: none;
+  line-height: 1.45;
+}
+.ggc-in-page-nav a:hover { color: var(--ggc-text); border-left-color: var(--ggc-border-strong); }
+.ggc-in-page-nav a[aria-current="location"] { color: var(--ggc-primary-deep); font-weight: 700; border-left-color: var(--ggc-primary); }
+@media (max-width: 1024px) {
+  .ggc-in-page-nav { position: static; margin-bottom: var(--ggc-space-5); }
+  .ggc-in-page-nav ul { display: flex; flex-wrap: wrap; gap: 4px; border-left: 0; }
+  .ggc-in-page-nav ul ul { display: none; }
+  .ggc-in-page-nav a { margin: 0; padding: 5px 10px; border: 1px solid var(--ggc-border); border-radius: 999px; }
+  .ggc-in-page-nav a[aria-current="location"] { border-color: var(--ggc-primary); background: var(--ggc-primary-light); }
+}
+
+/* =============================================================================
+ * 35. .ggc-text-list — 텍스트 목록   (v2.0 P2)
+ * 출처: KRDS text_list. 안내문 · 유의사항 · 제출 서류처럼 **본문(.ggc-prose) 밖** 목록에 쓴다.
+ * 마크업: <ul class="ggc-text-list"><li>…</li><li>…<ul><li>…</li></ul></li></ul>
+ *   <ol class="ggc-text-list"> 이면 번호. --dash : 하이픈 표식. --check : ✓ 표식(완료 항목 · 제출 완료 서류).
+ *   --none : 표식 없음. --tight : 간격 절반. .note 슬롯 = 항목 아래 작은 보조 문구. 표식은 CSS 라 이미지 0.
+ * 정렬은 **내어쓰기** — 둘째 줄이 표식 아래가 아니라 글자 아래에 온다.
+ * ============================================================================= */
+.ggc-text-list {
+  margin: 0;
+  padding-left: 20px;
+  font-family: var(--ggc-font);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ggc-text-body);
+}
+.ggc-text-list li { padding-left: 2px; }
+.ggc-text-list li + li { margin-top: 6px; }
+.ggc-text-list li::marker { color: var(--ggc-text-subtle); }
+.ggc-text-list ul, .ggc-text-list ol { margin: 4px 0 0; padding-left: 18px; font-size: 13px; }
+.ggc-text-list ul li + li, .ggc-text-list ol li + li { margin-top: 3px; }
+.ggc-text-list--dash, .ggc-text-list--check, .ggc-text-list--none { list-style: none; padding-left: 0; }
+.ggc-text-list--dash > li, .ggc-text-list--check > li { position: relative; padding-left: 18px; }
+.ggc-text-list--dash > li::before { content: "–"; position: absolute; left: 2px; color: var(--ggc-text-subtle); }
+.ggc-text-list--check > li::before { content: "✓"; position: absolute; left: 0; font-weight: 800; color: var(--ggc-success); }
+.ggc-text-list--tight li + li { margin-top: 2px; }
+.ggc-text-list .note { display: block; font-size: 12.5px; color: var(--ggc-text-subtle); }
+
+/* =============================================================================
+ * 36. 고대비 보강 — §12~§35 의 새 컴포넌트   (v2.0)
  * §10 과 같은 원칙: forced-colors 에서 배경·그림자가 죽으므로 테두리·outline 으로 복원한다.
  * ============================================================================= */
 @media (forced-colors: active) {
+  .ggc-switch .track { border: 1.5px solid; background: Canvas; }
+  .ggc-switch .track::after { background: CanvasText; }
+  .ggc-switch input:checked + .track { background: Highlight; border-color: Highlight; }
+  .ggc-switch input:checked + .track::after { background: HighlightText; }
+  .ggc-toast { border: 1px solid; border-left-width: 4px; box-shadow: none; }
+  .ggc-accordion, .ggc-accordion-group { border: 1px solid; }
+  .ggc-accordion > summary::after { border-color: CanvasText; }
+  .ggc-date input, .ggc-listbox .filter { border: 1px solid; }
+  .ggc-file .drop { border: 1.5px dashed; }
+  .ggc-file-list li { border: 1px solid; }
+  .ggc-menu > .list { border: 1px solid; box-shadow: none; }
+  .ggc-menu .list [role="menuitem"]:focus-visible { outline: 2px solid Highlight; outline-offset: -2px; }
+  .ggc-listbox [role="listbox"] { border: 1px solid; }
+  .ggc-listbox [role="option"][aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+  .ggc-listbox [role="option"].is-active { outline-color: CanvasText; }
+  .ggc-tooltip { border: 1px solid; background: Canvas; color: CanvasText; }
+  .ggc-tooltip::after { display: none; }
+  .ggc-in-page-nav a[aria-current="location"] { outline: 1px solid Highlight; outline-offset: -1px; }
+  .ggc-empty .icon { border: 1px solid; }
   .ggc-tab[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
   .ggc-pagination a[aria-current="page"] { outline: 2px solid Highlight; outline-offset: -2px; }
   .ggc-pagination .nav { border: 1px solid; }
@@ -1981,4 +2686,8 @@ html[data-ggc-modal-active] { overflow: hidden; }
   .ggc-check .box, .ggc-radio .box, .ggc-chip, .ggc-select select { border-color: var(--ggc-text-muted); }
   .ggc-alert { border-left-width: 5px; }
   .ggc-modal { border-color: var(--ggc-border-strong); }
+  .ggc-switch .track { border-color: var(--ggc-text-muted); }
+  .ggc-date input, .ggc-listbox [role="listbox"], .ggc-listbox .filter,
+  .ggc-accordion, .ggc-accordion-group, .ggc-file-list li, .ggc-toast { border-color: var(--ggc-border-strong); }
+  .ggc-file .drop { border-color: var(--ggc-text-muted); }
 }

@@ -408,30 +408,30 @@
 
       <!-- ============================================================ 세 상태 -->
       <section class="ex-section">
-        <h2>빈 상태 · 오류 · 로딩 <span class="cls">전용 클래스가 없다 — 조립한다</span></h2>
-        <p>이 세 가지는 PoC 에서 가장 자주 빠지고 <b>시연 당일에 드러난다.</b> 정본에 전용 클래스를
-          두지 않은 것은 의도다 — 화면마다 문구와 다음 행동이 달라서 클래스로 굳히면 반드시
-          누군가 자기 것을 새로 만든다. <b>기존 요소로 조립하고, 세 가지를 처음부터 함께 만든다.</b></p>
+        <h2>빈 상태 · 오류 · 로딩 <span class="cls">.ggc-empty · .ggc-empty--error · .ggc-skeleton</span></h2>
+        <p>이 세 가지는 PoC 에서 가장 자주 빠지고 <b>시연 당일에 드러난다.</b> 정본이 주는 것은
+          <b>레이아웃</b>(<code class="ex-inline">.ggc-empty</code> · <code class="ex-inline">.ggc-skeleton</code>)뿐이고 문구와 다음 행동은 화면이
+          정한다(ADR 0006) — 화면마다 다르므로 클래스로 굳히면 반드시 누군가 자기 것을 새로 만든다.
+          <b>세 가지를 처음부터 함께 만든다.</b> 자세한 것은 <a href="components-overlay.html">오버레이 · 상태</a>.</p>
         <div class="ex-demo ex-demo--bg" id="d-states">
           <div class="ex-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
 
-            <div class="ggc-card ggc-card--pad" style="text-align:center;padding:var(--ggc-space-7) var(--ggc-space-5)">
-              <div style="font-size:30px;line-height:1;color:var(--ggc-text-faint)" aria-hidden="true">◻</div>
-              <div style="font-size:14px;font-weight:700;color:var(--ggc-text-strong);margin:var(--ggc-space-3) 0 var(--ggc-space-2)">등록된 검토보고서가 없다</div>
-              <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted);margin-bottom:var(--ggc-space-4)">
-                이번 회기에 배정된 의안이 아직 없다.<br>의안이 접수되면 여기에 나타난다.
+            <div class="ggc-card">
+              <div class="ggc-empty">
+                <span class="icon" aria-hidden="true">◻</span>
+                <p class="title">등록된 검토보고서가 없다</p>
+                <p class="desc">이번 회기에 배정된 의안이 아직 없다. 의안이 접수되면 여기에 나타난다.</p>
+                <div class="actions"><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">의안 목록 열기</button></div>
               </div>
-              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">의안 목록 열기</button>
             </div>
 
-            <div class="ggc-card ggc-card--pad" style="text-align:center;padding:var(--ggc-space-7) var(--ggc-space-5)">
-              <div style="font-size:30px;line-height:1;color:var(--ggc-danger)" aria-hidden="true">⚠</div>
-              <div style="font-size:14px;font-weight:700;color:var(--ggc-text-strong);margin:var(--ggc-space-3) 0 var(--ggc-space-2)">목록을 불러오지 못했다</div>
-              <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted);margin-bottom:var(--ggc-space-4)">
-                의안정보 연계에 응답이 없다.<br>
-                <span style="font-family:var(--ggc-font-mono);font-size:11.5px">BILL-SYNC-504 · 14:32:07</span>
+            <div class="ggc-card">
+              <div class="ggc-empty ggc-empty--error">
+                <span class="icon" aria-hidden="true">⚠</span>
+                <p class="title">목록을 불러오지 못했다</p>
+                <p class="desc">의안정보 연계에 응답이 없다. <span style="font-family:var(--ggc-font-mono);font-size:11.5px">BILL-SYNC-504 · 14:32:07</span></p>
+                <div class="actions"><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">다시 시도</button></div>
               </div>
-              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">다시 시도</button>
             </div>
 
             <div class="ggc-card" aria-busy="true">
@@ -439,17 +439,17 @@
                 <div><div class="title">불러오는 중</div><div class="sub">의안 목록</div></div>
               </div>
               <div class="ggc-list-row">
-                <span class="icon" aria-hidden="true"></span>
+                <span class="ggc-skeleton ggc-skeleton--circle"></span>
                 <div class="body">
-                  <div style="height:13px;width:78%;border-radius:4px;background:var(--ggc-hairline);margin-bottom:7px"></div>
-                  <div style="height:11px;width:46%;border-radius:4px;background:var(--ggc-hairline)"></div>
+                  <div class="ggc-skeleton" style="width:78%"></div>
+                  <div class="ggc-skeleton" style="width:46%"></div>
                 </div>
               </div>
               <div class="ggc-list-row">
-                <span class="icon" aria-hidden="true"></span>
+                <span class="ggc-skeleton ggc-skeleton--circle"></span>
                 <div class="body">
-                  <div style="height:13px;width:64%;border-radius:4px;background:var(--ggc-hairline);margin-bottom:7px"></div>
-                  <div style="height:11px;width:38%;border-radius:4px;background:var(--ggc-hairline)"></div>
+                  <div class="ggc-skeleton" style="width:64%"></div>
+                  <div class="ggc-skeleton" style="width:38%"></div>
                 </div>
               </div>
               <div class="ggc-card-foot ggc-card-foot--inset ggc-card-foot--center">
