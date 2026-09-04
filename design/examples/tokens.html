@@ -36,7 +36,12 @@
         <span class="svc">공통 디자인 시스템</span>
       </span>
     </a>
-    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-gnb-page">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="index.html">홈</a></li><li><a href="index.html">갤러리</a></li><li aria-current="page">토큰 · 팔레트</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title" id="page-title">토큰 · 팔레트</h1>
+    </div>
     <div class="ggc-search">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
         <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
@@ -68,9 +73,9 @@
       <a class="ggc-lnb-item" href="public/index.html">대민 셸 · Public</a>
     </nav>
 
-    <main class="ggc-shell-main" id="main">
+    <main class="ggc-shell-main" id="main" aria-labelledby="page-title">
 
-      <h1 class="ex-h1">토큰 · 팔레트<span class="ver">ggc-tokens.css v2.0</span></h1>
+      <p class="ex-ver">ggc-tokens.css v2.0</p>
       <p class="ex-lede">
         아래 <b>모든 색값과 대비비는 이 페이지가 열릴 때 브라우저가 계산한 것</b>이다.
         마크업에는 토큰 <b>이름</b>만 있고 숫자가 하나도 없다 —

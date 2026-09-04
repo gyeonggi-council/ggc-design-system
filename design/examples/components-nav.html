@@ -39,7 +39,12 @@
         <span class="svc">공통 디자인 시스템</span>
       </span>
     </a>
-    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-gnb-page">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="index.html">홈</a></li><li><a href="components.html">컴포넌트</a></li><li aria-current="page">내비게이션 · 탭</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title" id="page-title">내비게이션 · 탭</h1>
+    </div>
     <div class="ggc-search">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
         <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
@@ -71,9 +76,9 @@
       <a class="ggc-lnb-item" href="public/index.html">대민 셸 · Public</a>
     </nav>
 
-    <main class="ggc-shell-main ggc-shell-main--wide" id="main">
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main" aria-labelledby="page-title">
 
-      <h1 class="ex-h1">내비게이션 · 탭<span class="ver">ggc-components.css v2.0 · §12~15 · §26 · §29~30 · §34~35</span></h1>
+      <p class="ex-ver">ggc-components.css v2.0 · §12~15 · §26 · §29~30 · §34~35</p>
       <p class="ex-lede">
         페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 · 아코디언 · 드롭다운 메뉴 · 링크 · 텍스트 목록 · 페이지 내 내비.
         화면 안에서 <b>"내가 어디 있고 어디로 갈 수 있는가"</b>를 말하는 요소들이다. 탭·메뉴의 키보드 동작(화살표 · Home · End · Esc)은
@@ -81,26 +86,51 @@
         탭에 들어가 화살표를 눌러 보라.
       </p>
 
-      <!-- ============================================================ 페이지 헤더 -->
+      <!-- ============================================================ GNB 제목부 + 페이지 헤더 -->
+      <section class="ex-section">
+        <h2>GNB 제목부 <span class="cls">.ggc-gnb-page</span></h2>
+        <p>브레드크럼 + 페이지 제목(<code class="ex-inline">&lt;h1&gt;</code>)은 본문이 아니라 <b>GNB 안</b>,
+          브랜드 슬롯과 검색 사이에 산다(v2.1, ADR 0008). 화면의 h1 은 여기 하나이고
+          <code class="ex-inline">&lt;main aria-labelledby="page-title"&gt;</code> 로 본문 랜드마크에 잇는다.
+          높이 64 가 고정이라 <b>줄바꿈하지 않고 말줄임</b>한다 — 잘릴 수 있는 의안명은 본문 첫 카드에 전문을 다시 적는다.
+          900px 이하에서 브레드크럼이 접히고 480px 이하에서 제목은 시각만 숨는다.
+          Monitor 첫 화면은 브레드크럼 없이 제목만 둔다. 이 쪽의 GNB 가 실물이고, 아래는 표본이다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-gnbpage">
+          <header class="ggc-gnb ex-demo-gnb">
+            <a class="ggc-gnb-brand" href="#main">
+              <img src="../brand/dist/assembly-mark.png" alt="">
+              <span class="ggc-gnb-title"><span class="org">경기도의회</span><span class="svc">의정지원 플랫폼</span></span>
+            </a>
+            <div class="ggc-gnb-page">
+              <nav class="ggc-breadcrumb" aria-label="현재 경로">
+                <ol>
+                  <li><a href="#main">홈</a></li>
+                  <li><a href="#main">의안</a></li>
+                  <li aria-current="page">의안 목록</li>
+                </ol>
+              </nav>
+              <h1 class="ggc-gnb-page-title">의안 목록</h1>
+            </div>
+            <div class="ggc-search">
+              <label for="q-demo" class="ggc-sr">의안 · 조례 검색</label>
+              <input id="q-demo" type="search" placeholder="의안 · 조례 검색">
+            </div>
+          </header>
+        </div>
+        <details class="ex-reveal" data-src="#d-gnbpage"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
       <section class="ex-section">
         <h2>페이지 헤더 <span class="cls">.ggc-page-head</span></h2>
-        <p>브레드크럼 + 제목 + 메타 + <b>주 액션 하나</b>. archetypes 의 "헤더 제목부 2형" 이다 —
-          Monitor 첫 화면만 인사말형(<code class="ex-inline">--greeting</code>)을 쓰고 나머지는
-          경로형이다. 메타에는 기관 맥락(제N대 · 제NNN회 · 소관)을 적는다.</p>
+        <p>본문 첫 줄 — <b>메타 + 주 액션 하나</b>. 제목과 브레드크럼은 위 GNB 제목부로 갔다.
+          Monitor 첫 화면만 인사말형(<code class="ex-inline">--greeting</code>)을 쓴다 — 인사말은
+          <code class="ex-inline">&lt;p class="title"&gt;</code> 이고 h1 이 아니다(h1 은 GNB 에 있다).
+          메타에는 기관 맥락(제N대 · 제NNN회 · 소관)을 적는다.
+          GNB 가 없는 셸 ⓐ(유틸리티 바만)에서만 예전처럼 브레드크럼과 <code class="ex-inline">h1.title</code> 을 여기 둔다.</p>
         <div class="ex-demo ex-demo--bg" id="d-head">
           <div class="ggc-page-head">
-            <nav class="ggc-breadcrumb" aria-label="현재 경로">
-              <ol>
-                <li><a href="#main">홈</a></li>
-                <li><a href="#main">의안</a></li>
-                <li aria-current="page">의안 목록</li>
-              </ol>
-            </nav>
             <div class="row">
-              <div>
-                <h1 class="title">의안 목록</h1>
-                <p class="meta">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
-              </div>
+              <p class="meta">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
               <div class="actions">
                 <button class="ggc-btn ggc-btn--secondary" type="button">엑셀 내려받기</button>
                 <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
@@ -111,7 +141,7 @@
           <div class="ggc-page-head ggc-page-head--greeting" style="margin-top:var(--ggc-space-6);margin-bottom:0">
             <div class="row">
               <div>
-                <h1 class="title">이○○님, 오늘 처리할 검토보고서 3건이 있습니다</h1>
+                <p class="title">이○○님, 오늘 처리할 검토보고서 3건이 있습니다</p>
                 <p class="meta">정책지원관 · 기획재정위원회 · 2026-08-29 (금)</p>
               </div>
               <div class="actions">
@@ -128,7 +158,9 @@
         <h2>브레드크럼 <span class="cls">.ggc-breadcrumb</span></h2>
         <p>KRDS 구조 그대로 — <code class="ex-inline">&lt;nav aria-label="현재 경로"&gt;&lt;ol&gt;</code>.
           마지막 항목은 링크가 아니라 <code class="ex-inline">aria-current="page"</code> 텍스트다.
-          구분자는 CSS 가 그린다 — 마크업에 "/" 나 "›" 를 적으면 스크린리더가 읽는다.</p>
+          구분자는 CSS 가 그린다 — 마크업에 "/" 나 "›" 를 적으면 스크린리더가 읽는다.
+          업무 셸에서는 GNB 제목부 안이 기본이고(위 절 · 거기서는 말줄임), 본문·대민 화면에 단독으로 둘 때는
+          아래처럼 줄바꿈되고 말줄임하지 않는다 — 의안명은 잘리면 다른 의안이 된다.</p>
         <div class="ex-demo" id="d-bc">
           <nav class="ggc-breadcrumb" aria-label="현재 경로">
             <ol>

@@ -5,6 +5,23 @@
 
 ## [Unreleased] — v2 재구성
 
+### GNB 제목부 — 브레드크럼·페이지 제목을 GNB 로 (2026-09-04)
+
+- `ggc-components.css` §9 `.ggc-gnb-page` + `.ggc-gnb-page-title` 신설 — 브레드크럼 + `<h1>` 이 본문 첫 줄이 아니라
+  **GNB 안**(브랜드 슬롯과 검색 사이)에 산다. 업무 셸 기본 규칙([ADR 0008](docs/decisions/0008-page-title-in-gnb.md)).
+  화면당 h1 은 GNB 에 하나, `<main aria-labelledby="page-title">`. 64px 고정이라 줄바꿈 없이 말줄임 —
+  잘릴 수 있는 의안명은 본문에 전문. §10: ≤900 브레드크럼 숨김 · ≤480 제목 시각 숨김(접근성 트리 유지).
+- `.ggc-page-head` 는 **메타 + 주 액션**으로 좁아졌다(선택자 불변 · `.meta:first-child` 마진 보정). Monitor 인사말은
+  `<p class="title">`. 셸 ⓐ(GNB 없음)만 예전처럼 h1 을 여기 둔다.
+- 갤러리 8쪽 GNB 에 제목부 적용(login 제외), dashboard·wizard 본문 헤더를 정본 `.ggc-page-head` 로 교체,
+  components-nav 에 "GNB 제목부" 절 신설. 합본은 쪽 전환 시 제목부를 `<template>` 로 갈아 끼운다.
+- Tier 2: `ggc-shell` 에 `GnbPage breadcrumb title titleId` · `ShellMain titleId`; `ggc-page-head` 는 `title` 선택,
+  `greeting` 이면 `<p>`.
+- 문서: 계약 §2 · layout-shell · shell · breadcrumb · page-head · archetypes · 스킬 components.md · ADR 0008
+- 합본 결함 수정: `ggc-behaviors.js` 주석의 `</script>` 가 인라인 스크립트를 조기 종료시켜 합본에서 동작 스크립트 전체가
+  SyntaxError 로 죽어 있었다(drawer · 탭 · 토스트 무반응). 생성기가 인라인 시에만 `<\/script` 로 이스케이프한다 — 정본 불변
+- ⚠ D1 — `ggc-components.css` 바이트가 바뀌었다. 사본 재복사 필요(토큰 파일은 불변)
+
 ### Phase 9b — Tier 2 레지스트리 22항목 신설 (총 47) (2026-08-30)
 
 - UI 6종: `switch` · `accordion` · `dropdown-menu` · `tooltip`(Radix + 토큰) · `toast`(GGC.toast 와 같은 규칙의

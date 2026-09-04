@@ -37,6 +37,16 @@ body { margin: 0; }
   margin-left: var(--ggc-space-2);
   vertical-align: 3px;
 }
+/* 쪽 제목은 GNB 제목부(.ggc-gnb-page)로 갔다(v2.1) — 본문 첫 줄엔 버전 꼬리표만 남는다 */
+.ex-ver {
+  font-family: var(--ggc-font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ggc-text-subtle);
+  margin: 0 0 var(--ggc-space-2);
+}
+/* 데모 상자 안에 GNB 를 표본으로 놓을 때 — sticky 를 풀고 폭을 상자에 맞춘다 */
+.ex-demo-gnb { position: static; z-index: auto; }
 
 /* 섹션 — 위 여백이 곧 구획이다. 구분선을 긋지 않는다 */
 .ex-section { margin: var(--ggc-space-7) 0 0; }

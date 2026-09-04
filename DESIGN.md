@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (97d40d06) -->
+<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (3b73e338) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -110,7 +110,7 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 
 | 컴포넌트 | Tier 1 클래스 | Tier 2 | 프로필 | 우선순위 | 상태 |
 |---|---|---|---|---|---|
-| 업무 셸 (GNB + LNB + 본문) | `.ggc-shell .ggc-gnb .ggc-lnb .ggc-shell-main(--wide/--split) .ggc-scroll` | `ggc-shell` | work | P0 | 있음 |
+| 업무 셸 (GNB 제목부 + LNB + 본문) | `.ggc-shell .ggc-gnb .ggc-gnb-page .ggc-gnb-page-title .ggc-lnb .ggc-shell-main(--wide/--split) .ggc-scroll` | `ggc-shell` | work | P0 | 있음 |
 | 유틸리티 바 | `.ggc-utility-bar` | `ggc-utility-bar` | both | P0 | 있음 |
 | 푸터 (업무) | `.ggc-footer` | `ggc-footer` | work | P0 | 있음 |
 | 스킵 링크 | `.ggc-skip-link` | `(ggc-shell 포함)` | both | P0 | 있음 |
@@ -135,7 +135,7 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 알림 / 콜아웃 | `.ggc-alert (--info --success --warning --danger)` | `alert` | both | P0 | 있음 |
 | 페이지네이션 | `.ggc-pagination` | `pagination` | both | P0 | 있음 |
 | 브레드크럼 | `.ggc-breadcrumb` | `breadcrumb` | both | P0 | 있음 |
-| 페이지 헤더 (제목 · 메타 · 주 액션) | `.ggc-page-head` | `ggc-page-head` | work | P1 | 있음 |
+| 페이지 헤더 (메타 · 주 액션) | `.ggc-page-head` | `ggc-page-head` | work | P1 | 있음 |
 | 스피너 | `.ggc-spinner .ggc-spinner-block` | `spinner` | both | P1 | 있음 |
 | 스켈레톤 | `.ggc-skeleton` | `skeleton` | both | P1 | 있음 |
 | 대민 페이지 컨테이너 · 페이지 타이틀 | `.ggc-public .ggc-public-main(--side) .ggc-page-title .ggc-h2` | `ggc-public-layout` | public | P0 | 있음 |
