@@ -772,6 +772,8 @@ GENERATED = [
      "README 팔레트 미리보기 (GitHub 웹은 HTML 을 렌더하지 않는다)"),
     ("examples/build-standalone.py", "examples/examples-standalone.html",
      "링크 하나로 여는 갤러리 합본 (URL 로 공유되는 판)"),
+    ("examples/build-shots.py", "examples/shots/manifest.json",
+     "README 컴포넌트 미리보기 PNG (헤드리스 Chrome 촬영 · 입력 해시로 신선도 판정)"),
     ("../tools/build-design-md.py", "../DESIGN.md",
      "Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (v2.0)"),
     ("../tools/check-registry.py", "../public/r",

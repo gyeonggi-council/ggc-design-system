@@ -34,19 +34,23 @@
 **③ 예제 코드는 렌더된 DOM 에서 읽는다.** `components.html` 의 “마크업” 블록은
 손으로 적은 것이 아니라 그 위 데모의 `innerHTML` 이다. 코드와 화면이 갈라질 자리가 없다.
 
-## 생성물 둘 — 직접 고치지 말 것
+## 생성물 셋 — 직접 고치지 말 것
 
 | 파일 | 무엇 | 왜 |
 |---|---|---|
 | `preview-palette.svg` | 팔레트 한 장 | GitHub 웹은 HTML 을 렌더하지 않는다. README 가 이걸로 보인다 |
-| `examples-standalone.html` | **6쪽 합본 (약 239KB)** | 링크 하나로 열기 위한 판. 정본 CSS·JS·마크를 인라인해 **외부 요청 0** |
+| `shots/*.png` + `shots/manifest.json` | **컴포넌트·실물 화면 미리보기 16장** | 같은 이유 — 컴포넌트는 CSS 가 그리므로 브라우저가 찍어야 정본과 같다. README 상단이 이걸로 보인다 |
+| `examples-standalone.html` | **9쪽 합본 (약 440KB)** | 링크 하나로 열기 위한 판. 정본 CSS·JS·마크를 인라인해 **외부 요청 0** |
 
 ```bash
 python design/examples/build-preview.py       # 또는 --check
+python design/examples/build-shots.py         # 또는 --check  (생성에는 node · playwright · Chrome 필요, --check 는 불필요)
 python design/examples/build-standalone.py    # 또는 --check
 ```
 
-둘 다 `check_design.py --canon` 이 신선도를 본다(D6 `gen`). 낡으면 WARN 이 뜬다.
+셋 다 `check_design.py --canon` 이 신선도를 본다(D6 `gen`). 낡으면 WARN 이 뜬다.
+미리보기 PNG 는 픽셀이 환경마다 조금씩 달라 바이트 비교 대신 **입력(정본 CSS·JS·갤러리 쪽) 해시**를
+`manifest.json` 에 적어 두고 그것으로 판정한다 — 정본이 바뀌었는데 다시 찍지 않으면 낡은 것이다.
 
 > **합본은 사본이다** — 갤러리가 지키는 "사본을 두지 않는다" 와 정면으로 부딪친다.
 > 그래서 손으로 만들지 않고 **생성**하며, 이 예외는 "링크 하나로 열어 보기" 하나뿐이다.

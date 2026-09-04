@@ -10,7 +10,7 @@
 - **새 주색 금지 · 다크모드 금지 · 외부 CDN 금지**(망분리) · v1.2 이후 토큰 이름 불변.
 - **프로필(`[data-ggc-profile="public"]`)은 치수 14종만** 바꾼다. 색·포커스·서체가 프로필 블록에 들어가면 D6 FAIL.
 - **생성물은 손으로 고치지 않는다**: `DESIGN.md` · `design/examples/examples-standalone.html` ·
-  `design/examples/preview-*.svg` · `public/r/*.json`. 정본을 고치고 생성기를 돌린다.
+  `design/examples/preview-*.svg` · `design/examples/shots/` · `public/r/*.json`. 정본을 고치고 생성기를 돌린다.
 - 접근성: 색 단독 의미 전달 금지, `:focus-visible` 링 제거 금지, `forced-colors` 보강 유지, WCAG AA 4.5:1.
 - **마스킹을 되돌리는 커밋 금지**(공개 저장소) — 원문 IP·절대경로(`D:\`)는 `tools/check-links.py` 가 잡는다.
 
@@ -19,7 +19,7 @@
 | 고친 것 | 다시 만들 것 |
 |---|---|
 | `design/ggc-tokens.css` · `design/components.tsv` | `python tools/build-design-md.py` (DESIGN.md) |
-| 정본 CSS/JS · 갤러리 쪽 | `python design/examples/build-standalone.py` |
+| 정본 CSS/JS · 갤러리 쪽 | `python design/examples/build-standalone.py` · `python design/examples/build-shots.py` (README 미리보기 PNG — node · playwright · Chrome) |
 | 토큰 값 | `python design/examples/build-preview.py` (미리보기 SVG) |
 | `registry.json` · `registry/ggc/**` | `npx shadcn@4.19.0 build registry.json -o public/r` |
 
