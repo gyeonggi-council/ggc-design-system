@@ -5,7 +5,8 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /* 업무 셸 — ggc-components.css §9 + 토큰 파일의 .ggc-utility-bar/.ggc-footer 를 React 로.
- * 계약 §2: GNB 64 · LNB 256 · 본문 1320(대시보드)/1360(--wide). ≤900 에서 LNB 는 drawer.
+ * 계약 §2: GNB 64(브랜드 · 제목부 GnbPage · 검색) · LNB 256 · 본문 1320(대시보드)/1360(--wide). ≤900 에서 LNB 는 drawer.
+ * 화면의 h1 은 GnbPage 에 하나 — ShellMain 에 titleId 를 넘겨 aria-labelledby 로 잇는다(ADR 0008).
  * 대민 화면에는 쓰지 않는다(계약 §9). */
 function Shell({ className, ...props }: React.ComponentProps<"div">) {
   return <div data-slot="shell" className={cn("flex min-h-screen flex-col bg-background font-sans text-foreground antialiased", className)} {...props} />
@@ -39,6 +40,34 @@ function GnbBrand({ className, mark, org, service, ...props }: React.ComponentPr
         {service && <span className="text-[13px] font-semibold tracking-[-0.01em] text-primary max-[900px]:hidden">{service}</span>}
       </span>
     </a>
+  )
+}
+
+/* GNB 제목부 — §9 .ggc-gnb-page. 브레드크럼(@ggc/breadcrumb 조립을 받는다 — 의존은 더하지 않는다) + h1.
+ * 높이 64 고정이라 줄바꿈 없이 말줄임 · ≤900 브레드크럼 숨김 · ≤480 제목은 sr-only(접근성 트리 유지).
+ * Monitor 첫 화면은 breadcrumb 없이 title 만. */
+function GnbPage({
+  className,
+  breadcrumb,
+  title,
+  titleId = "page-title",
+  ...props
+}: React.ComponentProps<"div"> & { breadcrumb?: React.ReactNode; title: React.ReactNode; titleId?: string }) {
+  return (
+    <div
+      data-slot="gnb-page"
+      className={cn(
+        "flex h-full min-w-0 flex-1 flex-col justify-center gap-1 pl-3 font-sans max-[900px]:pl-0 max-[480px]:flex-none max-[480px]:basis-0 max-[480px]:pl-0",
+        "[&_[data-slot=breadcrumb]]:max-[900px]:hidden [&_[data-slot=breadcrumb-list]]:flex-nowrap [&_[data-slot=breadcrumb-list]]:whitespace-nowrap [&_[data-slot=breadcrumb-item]]:shrink-0 [&_[data-slot=breadcrumb-page]]:min-w-0 [&_[data-slot=breadcrumb-page]]:truncate",
+        className
+      )}
+      {...props}
+    >
+      {breadcrumb}
+      <h1 id={titleId} className="m-0 truncate text-lg leading-[1.3] font-extrabold tracking-[-0.02em] text-(--ggc-text-strong) max-[480px]:sr-only">
+        {title}
+      </h1>
+    </div>
   )
 }
 
@@ -76,8 +105,8 @@ function LnbItem({ className, active, ...props }: React.ComponentProps<"a"> & { 
   )
 }
 
-function ShellMain({ className, wide = false, ...props }: React.ComponentProps<"main"> & { wide?: boolean }) {
-  return <main data-slot="shell-main" className={cn("min-w-0 flex-1 px-8 pt-[26px] pb-12 max-[900px]:px-4 max-[900px]:pt-[18px] max-[900px]:pb-10", wide ? "max-w-(--ggc-main-max-wide)" : "max-w-(--ggc-main-max)", className)} {...props} />
+function ShellMain({ className, wide = false, titleId, ...props }: React.ComponentProps<"main"> & { wide?: boolean; titleId?: string }) {
+  return <main data-slot="shell-main" aria-labelledby={titleId} className={cn("min-w-0 flex-1 px-8 pt-[26px] pb-12 max-[900px]:px-4 max-[900px]:pt-[18px] max-[900px]:pb-10", wide ? "max-w-(--ggc-main-max-wide)" : "max-w-(--ggc-main-max)", className)} {...props} />
 }
 
 function Footer({ className, ...props }: React.ComponentProps<"footer">) {
@@ -88,4 +117,4 @@ function Footer({ className, ...props }: React.ComponentProps<"footer">) {
   )
 }
 
-export { Shell, UtilityBar, UtilityLink, Gnb, GnbBrand, ShellBody, Lnb, LnbGroup, LnbItem, ShellMain, Footer }
+export { Shell, UtilityBar, UtilityLink, Gnb, GnbBrand, GnbPage, ShellBody, Lnb, LnbGroup, LnbItem, ShellMain, Footer }

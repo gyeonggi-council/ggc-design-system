@@ -43,6 +43,9 @@ PAGES = [
 ]
 
 MAIN_RE = re.compile(r"<main\b([^>]*)>(.*)</main>", re.S)
+# GNB 제목부(브레드크럼 + h1) — 쪽마다 다르므로 <main> 처럼 떼어 와 전환 시 갈아 끼운다.
+# 슬롯 안에 <div> 가 없어 non-greedy 로 충분하다. login 은 GNB 가 없어 슬롯이 없다(빈 문자열).
+GNBPAGE_RE = re.compile(r'<div class="ggc-gnb-page">(.*?)</div>', re.S)
 CLASS_RE = re.compile(r'class="([^"]*)"')
 
 # 원본 index.html 의 "이 페이지가 예제다" 문단은 **상대경로 링크**를 근거로 삼는다.
@@ -69,6 +72,10 @@ def read(p):
     return io.open(p, encoding="utf-8").read()
 
 
+def inline_js(src):
+    return src.replace("</script", "<\\/script")
+
+
 def data_uri(path, mime):
     with open(path, "rb") as fh:
         return "data:%s;base64,%s" % (mime, base64.b64encode(fh.read()).decode())
@@ -79,7 +86,7 @@ def build():
                     "image/png")
 
     # --- 각 쪽의 <main> 만 떼어 온다 -----------------------------------------
-    mains, claim_hits = [], 0
+    mains, gnb_pages, claim_hits = [], {}, 0
     for key, fn, _label, _svc in PAGES:
         src = read(os.path.join(HERE, fn))
         if key == "index":
@@ -91,6 +98,13 @@ def build():
             claim_hits += 1
         m = MAIN_RE.search(src)
         assert m, "%s: <main> 을 찾지 못했다" % fn
+        g = GNBPAGE_RE.search(src)
+        assert g or key == "login", "%s: .ggc-gnb-page 를 찾지 못했다" % fn
+        gp = g.group(1) if g else ""
+        for k2, fn2, _l, _s in PAGES:
+            gp = gp.replace('href="%s"' % fn2, 'href="#%s"' % k2)
+        # 각 쪽의 h1 은 id="page-title" 인데 합본은 GNB 가 하나라 슬롯 컨테이너가 그 id 를 갖는다.
+        gnb_pages[key] = gp.replace(' id="page-title"', "")
         cm = CLASS_RE.search(m.group(1))
         cls = cm.group(1) if cm else "ggc-shell-main"
         body = m.group(2)
@@ -117,6 +131,10 @@ def build():
         for key, cls, body in mains)
 
     svc_map = "{" + ", ".join('%s: "%s"' % (k, s) for k, _f, _l, s in PAGES) + "}"
+    # 제목부 HTML 은 JS 문자열이 아니라 <template> 로 싣는다 — 따옴표·줄바꿈 이스케이프를 피한다
+    gnb_tpl = "\n".join(
+        '<template data-gnb-page="%s">%s</template>' % (k, gnb_pages[k])
+        for k, _f, _l, _s in PAGES)
 
     # ⚠ %-포맷도 str.format 도 쓰지 않는다 — 인라인되는 CSS 에 `100%` 와 `{` 가
     #   가득해서 둘 다 그 자리에서 깨진다. 고유 표식을 넣고 replace 로 채운다.
@@ -124,12 +142,15 @@ def build():
         "@@TOKENS@@": read(os.path.join(DESIGN, "ggc-tokens.css")),
         "@@COMPONENTS@@": read(os.path.join(DESIGN, "ggc-components.css")),
         "@@EXAMPLES_CSS@@": read(os.path.join(HERE, "examples.css")),
-        "@@BEHAVIORS_JS@@": read(os.path.join(DESIGN, "ggc-behaviors.js")),
-        "@@EXAMPLES_JS@@": read(os.path.join(HERE, "examples.js")),
+        # 인라인 <script> 는 본문 속 "</script" 에서 끝난다 — behaviors.js 주석의 사용 예가 그것을 담고 있어
+        # 합본에서 동작 스크립트 전체가 SyntaxError 로 죽어 있었다. 정본을 고치지 않고 인라인할 때만 이스케이프한다.
+        "@@BEHAVIORS_JS@@": inline_js(read(os.path.join(DESIGN, "ggc-behaviors.js"))),
+        "@@EXAMPLES_JS@@": inline_js(read(os.path.join(HERE, "examples.js"))),
         "@@MARK@@": mark,
         "@@LNB@@": "\n".join(lnb_rows),
         "@@MAINS@@": mains_html,
         "@@SVCMAP@@": svc_map,
+        "@@GNBPAGES@@": gnb_tpl,
     }
     html = SHELL
     for k, v in slots.items():
@@ -199,7 +220,7 @@ body {
         <span class="svc" id="svc">공통 디자인 시스템</span>
       </span>
     </a>
-    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-gnb-page" id="page-title"></div>
     <div class="ggc-search">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
         <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
@@ -222,6 +243,8 @@ body {
 
 @@MAINS@@
   </div>
+
+@@GNBPAGES@@
 
   <footer class="ggc-footer">
     <div class="inner">
@@ -247,6 +270,7 @@ body {
   var mains = document.querySelectorAll("main[data-page]");
   var items = document.querySelectorAll(".ggc-lnb-item[data-page]");
   var svc = document.getElementById("svc");
+  var gnbPage = document.getElementById("page-title");
 
   function show(key) {
     if (!Object.prototype.hasOwnProperty.call(SVC, key)) key = "index";
@@ -264,6 +288,12 @@ body {
       }
     });
     svc.textContent = SVC[key];
+    /* GNB 제목부(브레드크럼 + h1)는 쪽마다 다르다 — 해당 쪽의 <template> 로 갈아 끼운다 */
+    var tpl = document.querySelector('template[data-gnb-page="' + key + '"]');
+    gnbPage.replaceChildren(tpl ? tpl.content.cloneNode(true) : document.createTextNode(""));
+    /* 본문 랜드마크 이름 — 제목부가 있는 쪽만(login 은 GNB 제목이 없다) */
+    var main = document.getElementById("main");
+    if (tpl) { main.setAttribute("aria-labelledby", "page-title"); } else { main.removeAttribute("aria-labelledby"); }
   }
 
   function fromHash() { show((location.hash || "#index").slice(1)); }

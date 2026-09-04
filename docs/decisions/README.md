@@ -11,3 +11,4 @@
 | [0005](0005-radix-and-tailwind-v4.md) | Tier 2 는 Radix + Tailwind v4 · 다크 없음 · React 18/19 겸용 | 2026-08-29 |
 | [0006](0006-empty-state-assembled.md) | 빈 상태는 클래스가 아니라 조립 — `.ggc-empty` 는 레이아웃만(Phase 9) | 2026-08-29 |
 | [0007](0007-brand-identity-separate-repo.md) | 브랜드 아이덴티티는 별도 저장소 `ggc-design-guide` | 2026-08-30 |
+| [0008](0008-page-title-in-gnb.md) | 페이지 제목과 브레드크럼은 GNB 제목부에 — 업무 셸 기본 규칙 | 2026-09-04 |

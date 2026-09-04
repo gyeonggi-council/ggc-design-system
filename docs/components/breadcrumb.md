@@ -18,8 +18,8 @@
 
 - **마지막 항목은 링크가 아니다** — `aria-current="page"` 텍스트다.
 - 구분자(›)는 CSS 가 그린다. 마크업에 "/" 나 ">" 를 적으면 스크린리더가 읽는다.
-- 첫 항목은 "홈". 페이지 헤더(`.ggc-page-head`) 안에 두는 것이 기본이고, 단독으로도 쓴다.
-- 긴 제목은 줄바꿈된다(`flex-wrap`). 말줄임하지 않는다 — 의안명은 잘리면 다른 의안이 된다.
+- 첫 항목은 "홈". **업무 셸에서는 GNB 제목부(`.ggc-gnb-page`, [shell.md](shell.md)) 안이 기본**이다(v2.1, ADR 0008). 거기서는 줄바꿈하지 않고 마지막 항목만 말줄임한다 — 마지막 항목은 **화면 이름**이고, 레코드명(의안명)은 h1 과 본문이 전문을 갖는다.
+- 본문(셸 ⓐ 의 `.ggc-page-head`)이나 대민 화면(`.ggc-page-title`)에 둘 때는 줄바꿈된다(`flex-wrap`). 말줄임하지 않는다 — 의안명은 잘리면 다른 의안이 된다.
 
 ## 키보드 · ARIA
 
@@ -35,4 +35,4 @@
 
 ## 근거
 
-KRDS `html/code/breadcrumb.html` · archetypes 헤더 2형.
+KRDS `html/code/breadcrumb.html` · archetypes "GNB 제목부" · ADR 0008.

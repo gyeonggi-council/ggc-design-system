@@ -7,11 +7,11 @@
 
 | 과업 | Tier 1 | Tier 2 | 문서 · 갤러리 |
 |---|---|---|---|
-| 업무 셸 (유틸리티바 · GNB · LNB · 본문) | `.ggc-utility-bar` `.ggc-gnb` `.ggc-lnb` `.ggc-shell-main(--wide)` | `ggc-shell` | dashboard.html |
+| 업무 셸 (유틸리티바 · GNB + 제목부 · LNB · 본문) | `.ggc-utility-bar` `.ggc-gnb` `.ggc-gnb-page` `.ggc-lnb` `.ggc-shell-main(--wide)` | `ggc-shell` (`GnbPage`) | components/shell.md · dashboard.html |
 | 대민 셸 (마스트헤드 · 헤더 · 주 메뉴 · 공개 푸터 · 아이덴티파이어) | `.ggc-masthead` `.ggc-header` `.ggc-main-menu` `.ggc-footer--public` `.ggc-identifier` | `ggc-masthead` `ggc-public-header` `ggc-public-footer` `ggc-identifier` | guides/public-shell.md · public/index.html |
-| 페이지 헤더 (제목 · 메타 · 주 액션) | `.ggc-page-head` | `ggc-page-head` | components/page-head.md |
+| 페이지 헤더 (메타 · 주 액션 — 제목·브레드크럼은 GNB 제목부) | `.ggc-page-head` | `ggc-page-head` | components/page-head.md |
 | 대민 페이지 타이틀 · 히어로 | `.ggc-page-title` `.ggc-hero` | `ggc-public-layout` `ggc-hero` | guides/public-shell.md |
-| 현재 경로 | `.ggc-breadcrumb` | `breadcrumb` | components/breadcrumb.md |
+| 현재 경로 (업무 셸은 GNB 제목부 안이 기본) | `.ggc-breadcrumb` | `breadcrumb` | components/breadcrumb.md |
 | 사이드 내비 (대민) | `.ggc-side-nav` | `ggc-side-nav` | components/side-nav.md |
 | 로그인 | `.ggc-qr` `.ggc-login` | `ggc-qr-login` | login.html |
 

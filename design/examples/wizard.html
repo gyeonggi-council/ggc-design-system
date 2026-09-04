@@ -36,7 +36,12 @@
         <span class="svc">조례 초안 작성</span>
       </span>
     </a>
-    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-gnb-page">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="dashboard.html">홈</a></li><li><a href="dashboard.html">입법지원</a></li><li aria-current="page">조례 초안 작성</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title" id="page-title">조례 초안 작성</h1>
+    </div>
     <div class="ggc-search">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
         <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
@@ -68,7 +73,7 @@
       <a class="ggc-lnb-item" href="public/index.html">대민 셸 · Public</a>
     </nav>
 
-    <main class="ggc-shell-main ggc-shell-main--wide" id="main">
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main" aria-labelledby="page-title">
 
       <div class="ex-note" style="margin-top:0">
         <p><b>Configure archetype 이다.</b> 순서가 있는 다단계 입력 — 단계 표시가
@@ -76,17 +81,17 @@
         하단에 <b>이전 / 다음</b> 이 항상 같은 자리에 있다. 예시 데이터다.</p>
       </div>
 
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--ggc-space-4);flex-wrap:wrap;margin-bottom:var(--ggc-space-5)">
-        <div>
-          <h1 class="ex-h1" style="margin-bottom:6px">조례 초안 작성</h1>
-          <div style="font-size:13px;color:var(--ggc-text-subtle)">
+      <!-- 제목(h1)·브레드크럼은 GNB 제목부에 있다. 본문 첫 줄은 메타 + 주 액션 -->
+      <div class="ggc-page-head">
+        <div class="row">
+          <p class="meta">
             경기도 청년 기본조례 일부개정조례안 ·
             <span style="font-family:var(--ggc-font-mono)">DRAFT-2026-0088</span>
+          </p>
+          <div class="actions">
+            <span style="font-size:12px;color:var(--ggc-text-subtle)">08-22 14:07 자동저장됨</span>
+            <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
           </div>
-        </div>
-        <div class="ex-row">
-          <span style="font-size:12px;color:var(--ggc-text-subtle)">08-22 14:07 자동저장됨</span>
-          <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
         </div>
       </div>
 

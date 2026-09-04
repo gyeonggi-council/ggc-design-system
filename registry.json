@@ -452,7 +452,7 @@
       "name": "ggc-shell",
       "type": "registry:block",
       "title": "업무 셸",
-      "description": "유틸리티 바 + GNB 64 + LNB 256 + 본문 1320/1360. 계약 §2. 대민 화면에는 쓰지 않는다.",
+      "description": "유틸리티 바 + GNB 64(브랜드 · 제목부 GnbPage: 브레드크럼 + h1 · 검색) + LNB 256 + 본문 1320/1360. 계약 §2 · ADR 0008. 대민 화면에는 쓰지 않는다.",
       "registryDependencies": [
         "@ggc/ggc-tokens"
       ],
@@ -506,7 +506,7 @@
       "name": "ggc-page-head",
       "type": "registry:block",
       "title": "페이지 헤더",
-      "description": "브레드크럼 + 제목 + 메타 + 주 액션 하나.",
+      "description": "본문 첫 줄 — 메타 + 주 액션 하나. 브레드크럼·h1 은 GNB 제목부(ggc-shell GnbPage)에 있다(ADR 0008).",
       "registryDependencies": [
         "@ggc/breadcrumb"
       ],

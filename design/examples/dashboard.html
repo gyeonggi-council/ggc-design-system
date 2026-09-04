@@ -36,7 +36,9 @@
         <span class="svc">의정지원 플랫폼</span>
       </span>
     </a>
-    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-gnb-page">
+      <h1 class="ggc-gnb-page-title" id="page-title">제12대 제3차 정례회</h1>
+    </div>
     <div class="ggc-search">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
         <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
@@ -68,7 +70,7 @@
       <a class="ggc-lnb-item" href="public/index.html">대민 셸 · Public</a>
     </nav>
 
-    <main class="ggc-shell-main" id="main">
+    <main class="ggc-shell-main" id="main" aria-labelledby="page-title">
 
       <div class="ex-note" style="margin-top:0">
         <p><b>이 화면은 예시 데이터다.</b> Monitor archetype 이 실제 업무 화면으로
@@ -77,17 +79,20 @@
         <code>ggc-tokens.css</code> 와 <code>ggc-components.css</code> 만으로 그려진다.</p>
       </div>
 
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--ggc-space-4);flex-wrap:wrap;margin-bottom:var(--ggc-space-6)">
-        <div>
-          <h1 class="ex-h1" style="margin-bottom:6px">제12대 제3차 정례회</h1>
-          <div style="font-size:13px;color:var(--ggc-text-subtle)">
-            회기 2026-08-18 ~ 2026-09-05 · 오늘 <b style="color:var(--ggc-text-muted)">18일차</b>
-            <span class="ggc-badge ggc-badge--session" style="margin-left:8px">● 회기 중</span>
+      <!-- 제목(h1)은 GNB 제목부에 있다. Monitor 는 본문 첫 줄이 인사말형 페이지 헤더다 -->
+      <div class="ggc-page-head ggc-page-head--greeting">
+        <div class="row">
+          <div>
+            <p class="title">이○○님, 오늘 처리할 의안 3건이 있습니다</p>
+            <p class="meta">
+              회기 2026-08-18 ~ 2026-09-05 · 오늘 <b style="color:var(--ggc-text-muted)">18일차</b>
+              <span class="ggc-badge ggc-badge--session" style="margin-left:8px">● 회기 중</span>
+            </p>
           </div>
-        </div>
-        <div class="ex-row">
-          <button class="ggc-btn ggc-btn--secondary" type="button">회기 전환</button>
-          <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+          <div class="actions">
+            <button class="ggc-btn ggc-btn--secondary" type="button">회기 전환</button>
+            <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+          </div>
         </div>
       </div>
 

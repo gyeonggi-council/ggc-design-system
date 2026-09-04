@@ -11,7 +11,7 @@
 
 | 컴포넌트 | 문서 | 갤러리 | 상태 |
 |---|---|---|---|
-| 페이지 헤더 `.ggc-page-head` | [page-head.md](page-head.md) | [components-nav](../../design/examples/components-nav.html) | 있음 |
+| 페이지 헤더 (메타 · 주 액션) `.ggc-page-head` | [page-head.md](page-head.md) | [components-nav](../../design/examples/components-nav.html) | 있음 |
 | 브레드크럼 `.ggc-breadcrumb` | [breadcrumb.md](breadcrumb.md) | components-nav | 있음 |
 | 탭 `.ggc-tabs` | [tabs.md](tabs.md) | components-nav | 있음 |
 | 페이지네이션 `.ggc-pagination` | [pagination.md](pagination.md) | components-nav | 있음 |

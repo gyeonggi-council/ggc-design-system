@@ -6,7 +6,7 @@
 # id	이름	Tier1 클래스	Tier2 레지스트리 항목	근거	프로필	우선순위	상태	단계
 # 상태: 있음 = 정본 CSS 에 정의됨 · 부분 = 일부만 · 예정 = 아직 없음(단계 열 참조)
 # 프로필: work = 업무 전용 · public = 대민 전용 · both = 공용
-shell-work	업무 셸 (GNB + LNB + 본문)	.ggc-shell .ggc-gnb .ggc-lnb .ggc-shell-main(--wide/--split) .ggc-scroll	ggc-shell	기존 §9	work	P0	있음	1
+shell-work	업무 셸 (GNB 제목부 + LNB + 본문)	.ggc-shell .ggc-gnb .ggc-gnb-page .ggc-gnb-page-title .ggc-lnb .ggc-shell-main(--wide/--split) .ggc-scroll	ggc-shell	기존 §9	work	P0	있음	1
 utility-bar	유틸리티 바	.ggc-utility-bar	ggc-utility-bar	토큰 파일	both	P0	있음	1
 footer	푸터 (업무)	.ggc-footer	ggc-footer	토큰 파일	work	P0	있음	1
 skip-link	스킵 링크	.ggc-skip-link	(ggc-shell 포함)	기존 §10 · KRDS skip_link	both	P0	있음	1
@@ -30,8 +30,8 @@ select	셀렉트 (네이티브)	.ggc-select	select	KRDS select	both	P0	있음	3
 check-radio	체크박스 · 라디오 · 칩	.ggc-check .ggc-radio .ggc-check-group(--column) .ggc-chip	checkbox radio-group	KRDS checkbox/radio/chip	both	P0	있음	3
 alert	알림 / 콜아웃	.ggc-alert (--info --success --warning --danger)	alert	KRDS critical_alerts · .ggc-qr-callout 일반화	both	P0	있음	3
 pagination	페이지네이션	.ggc-pagination	pagination	KRDS pagination	both	P0	있음	3
-breadcrumb	브레드크럼	.ggc-breadcrumb	breadcrumb	KRDS breadcrumb · archetypes 헤더 2형	both	P0	있음	3
-page-head	페이지 헤더 (제목 · 메타 · 주 액션)	.ggc-page-head	ggc-page-head	archetypes 슬롯 1·2	work	P1	있음	3
+breadcrumb	브레드크럼	.ggc-breadcrumb	breadcrumb	KRDS breadcrumb · GNB 제목부(§9 · ADR 0008)	both	P0	있음	3
+page-head	페이지 헤더 (메타 · 주 액션)	.ggc-page-head	ggc-page-head	archetypes 슬롯 1·2	work	P1	있음	3
 spinner	스피너	.ggc-spinner .ggc-spinner-block	spinner	KRDS spinner · .ggc-qr-spinner 일반화	both	P1	있음	3
 skeleton	스켈레톤	.ggc-skeleton	skeleton	갤러리 로딩 예시	both	P1	있음	3
 public-layout	대민 페이지 컨테이너 · 페이지 타이틀	.ggc-public .ggc-public-main(--side) .ggc-page-title .ggc-h2	ggc-public-layout	KRDS 레이아웃 (contents 1200 + 24×2) · page title	public	P0	있음	4

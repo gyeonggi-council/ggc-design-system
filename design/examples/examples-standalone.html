@@ -317,7 +317,7 @@
  *   §0  토큰 v1.2 로 승격된 값들의 중복 정의 제거.
  *       **--ggc-focus-ring 의 .15 오버라이드를 삭제했다** — 계약 §3 은 .20 이고,
  *       여기서 덮어쓰던 것이 계약 위반이었다.
- *   §9  공통 셸 — GNB 64px · LNB 256px · 본문 폭 · 커스텀 스크롤바
+ *   §9  공통 셸 — GNB 64px(브랜드 · 제목부 .ggc-gnb-page · 검색) · LNB 256px · 본문 폭 · 커스텀 스크롤바
  *   §10 접근성·반응형 — skip-link · 모션 감소 · 900px drawer · >=1680px 확폭
  *
  * -- v1.2 에서 바뀐 것 -------------------------------------------------------
@@ -995,7 +995,57 @@
 .ggc-gnb-title { display: flex; flex-direction: column; line-height: 1.2; white-space: nowrap; }
 .ggc-gnb-title .org { font-size: 15px; font-weight: 700; color: var(--ggc-text); letter-spacing: -0.02em; }
 .ggc-gnb-title .svc { font-size: 13px; font-weight: 600; color: var(--ggc-primary); letter-spacing: -0.01em; }
+/* 스페이서는 제목부(.ggc-gnb-page)가 없는 셸 ⓐ·이관 셸에서만 쓴다 — 둘을 같이 두지 않는다 */
 .ggc-gnb-spacer { flex: 1; min-width: 12px; }
+
+/* GNB 제목부 — 브레드크럼 + 페이지 제목   (v2.1, ADR 0008)
+ * 업무 셸의 기본이다: 화면의 <h1> 은 본문이 아니라 여기 하나다.
+ * 브랜드 슬롯(--ggc-lnb-w)과 검색(300) 사이의 빈 폭을 쓰고, 검색은 밀리지 않는다(flex:1 + min-width:0).
+ * 높이 --ggc-gnb-h(64) 안에 12.5px 브레드크럼 + 4 + 18px 제목 ≈ 43 — 위아래가 남는다.
+ * 줄바꿈 금지 — GNB 높이가 LNB sticky · drawer · --split 의 기준이라 늘릴 수 없다. 대신 말줄임.
+ *   접근성: text-overflow 는 접근 가능한 이름을 자르지 않는다(스크린리더는 전문을 읽는다).
+ *   시각 사용자를 위해 잘릴 수 있는 식별자(의안명)는 본문 첫 카드에 전문을 다시 적는다(breadcrumb.md).
+ * 마크업:
+ *   <div class="ggc-gnb-page">
+ *     <nav class="ggc-breadcrumb" aria-label="현재 경로"><ol>…<li aria-current="page">의안 목록</li></ol></nav>
+ *     <h1 class="ggc-gnb-page-title" id="page-title">의안 목록</h1>
+ *   </div>
+ *   … <main class="ggc-shell-main" id="main" aria-labelledby="page-title">
+ * 왼쪽 padding 12 = 본문 padding(32) − GNB gap(20): 제목의 왼쪽 선이 본문 내용과 맞는다.
+ * Monitor 첫 화면은 브레드크럼 없이 제목만(홈 자신이라 경로가 없다). */
+.ggc-gnb-page {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--ggc-space-1);
+  padding-left: var(--ggc-space-3);
+  font-family: var(--ggc-font);
+}
+.ggc-gnb-page .ggc-breadcrumb ol { flex-wrap: nowrap; white-space: nowrap; }
+.ggc-gnb-page .ggc-breadcrumb li { flex-shrink: 0; }
+/* 마지막 항목(화면 이름)만 줄어들며 말줄임 — 앞 경로는 항상 다 보인다 */
+.ggc-gnb-page .ggc-breadcrumb li:last-child {
+  display: block;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ggc-gnb-page .ggc-breadcrumb li:last-child::before { display: inline-block; vertical-align: middle; }
+.ggc-gnb-page-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--ggc-text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* 검색 — 계약 §2: 300x40, --ggc-control-bg, r10 */
 .ggc-search {
@@ -1127,6 +1177,10 @@
   .ggc-gnb-title .svc { display: none; }
   .ggc-search { width: auto; flex: 1; min-width: 0; }
   .ggc-search kbd { display: none; }
+  /* 제목부: 브레드크럼은 접는다(경로는 LNB drawer 의 aria-current 가 준다).
+   * 제목과 검색이 남은 폭을 반씩 나눈다(둘 다 flex:1 · min-width:0) */
+  .ggc-gnb-page { padding-left: 0; }
+  .ggc-gnb-page .ggc-breadcrumb { display: none; }
 
   .ggc-lnb {
     position: fixed; top: var(--ggc-gnb-h); left: 0; z-index: 45;
@@ -1145,6 +1199,14 @@
 
 @media (max-width: 480px) {
   .ggc-stat-grid { grid-template-columns: 1fr; }
+  /* 390 에서 GNB 남은 폭이 ≈100px 다. 검색은 유일한 GNB 동선(계약 §2)이라 남기고, 제목은 **시각만** 숨긴다
+   * (display:none 이 아니다 — h1 은 접근성 트리에 남아 main 의 aria-labelledby 가 살아 있다).
+   * 시각 사용자의 위치 단서는 LNB drawer 의 aria-current 와 .ggc-page-head 의 메타 줄이다. */
+  .ggc-gnb-page { flex: 0 0 0; padding: 0; }
+  .ggc-gnb-page-title {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); border: 0;
+  }
   .ggc-shell-main, .ggc-shell-main--wide { padding: 14px var(--ggc-space-3) 32px; }
 }
 
@@ -1557,14 +1619,16 @@
 
 
 /* =============================================================================
- * 12. .ggc-page-head — 페이지 헤더 (브레드크럼 · 제목 · 메타 · 주 액션)   (v2.0)
- * 출처: archetypes.md 헤더 제목부 2형 — "홈 / 상위" breadcrumb + 제목 18px/800/-0.02em.
- *       Monitor 첫 화면만 인사말형(.ggc-page-head--greeting, 17px/800/-0.03em).
+ * 12. .ggc-page-head — 페이지 헤더 (메타 · 주 액션)   (v2.0 → v2.1)
+ * v2.1: 브레드크럼과 제목은 GNB 제목부(§9 .ggc-gnb-page)로 갔다(ADR 0008). 이 블록은 본문 첫 줄의
+ *       **메타 + 주 액션**이다. .title 은 두 경우에만 남는다 —
+ *       ① 셸 ⓐ(GNB 가 없는 유틸리티 바만): <h1 class="title"> + 브레드크럼을 여기 둔다
+ *       ② Monitor 인사말형(--greeting, 17px/800/-0.03em): <p class="title"> — h1 은 GNB 에 있다
+ * 출처: archetypes.md "GNB 제목부".
  * 마크업:
  *   <div class="ggc-page-head">
- *     <nav class="ggc-breadcrumb" aria-label="현재 경로">…</nav>
  *     <div class="row">
- *       <div><h1 class="title">의안 목록</h1><p class="meta">제12대 · 제380회 · 접수 147건</p></div>
+ *       <p class="meta">제12대 · 제380회 · 접수 147건</p>
  *       <div class="actions"><button class="ggc-btn ggc-btn--primary">＋ 의안 등록</button></div>
  *     </div>
  *   </div>
@@ -1598,6 +1662,7 @@
   font-size: 12.5px;
   color: var(--ggc-text-subtle);
 }
+.ggc-page-head .meta:first-child { margin-top: 0; }   /* 제목 없이 메타만 있을 때(v2.1 기본) */
 .ggc-page-head .actions {
   display: flex;
   align-items: center;
@@ -1610,6 +1675,8 @@
  * 출처: KRDS breadcrumb — <nav aria-label="현재 경로"><ol><li><a>홈</a></li>…</ol></nav>.
  *       마지막 항목은 링크가 아니라 aria-current="page" 텍스트다.
  * 구분자는 CSS 가 그린다 — 마크업에 "/" 나 ">" 를 적으면 스크린리더가 읽는다.
+ * 업무 셸에서는 GNB 제목부(§9 .ggc-gnb-page) 안이 기본이고, 거기서는 §9 가 nowrap·말줄임으로 덮는다.
+ * 본문·대민 화면에 둘 때는 아래 그대로 — 줄바꿈되고 말줄임하지 않는다.
  * ============================================================================= */
 .ggc-breadcrumb ol {
   display: flex;
@@ -3032,6 +3099,16 @@ body { margin: 0; }
   margin-left: var(--ggc-space-2);
   vertical-align: 3px;
 }
+/* 쪽 제목은 GNB 제목부(.ggc-gnb-page)로 갔다(v2.1) — 본문 첫 줄엔 버전 꼬리표만 남는다 */
+.ex-ver {
+  font-family: var(--ggc-font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ggc-text-subtle);
+  margin: 0 0 var(--ggc-space-2);
+}
+/* 데모 상자 안에 GNB 를 표본으로 놓을 때 — sticky 를 풀고 폭을 상자에 맞춘다 */
+.ex-demo-gnb { position: static; z-index: auto; }
 
 /* 섹션 — 위 여백이 곧 구획이다. 구분선을 긋지 않는다 */
 .ex-section { margin: var(--ggc-space-7) 0 0; }
@@ -3340,7 +3417,7 @@ body {
         <span class="svc" id="svc">공통 디자인 시스템</span>
       </span>
     </a>
-    <span class="ggc-gnb-spacer"></span>
+    <div class="ggc-gnb-page" id="page-title"></div>
     <div class="ggc-search">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
         <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
@@ -3382,7 +3459,7 @@ body {
       </div>
 
 
-      <h1 class="ex-h1">경기도의회 공통 디자인 시스템<span class="ver">토큰 v1.2 · 컴포넌트 v1.2</span></h1>
+      <p class="ex-ver">토큰 v1.2 · 컴포넌트 v1.2</p>
       <p class="ex-lede">
         의정정보시스템 <b>11개 프런트엔드</b>가 공유하는 한 벌이다. Next 14/15/16 ·
         React 18/19 · Vite · JSP/Tiles · Jinja2 · FastAPI · 정적 HTML —
@@ -3542,7 +3619,7 @@ body {
     </main>
       <main class="ggc-shell-main" data-page="tokens" hidden>
 
-      <h1 class="ex-h1">토큰 · 팔레트<span class="ver">ggc-tokens.css v2.0</span></h1>
+      <p class="ex-ver">ggc-tokens.css v2.0</p>
       <p class="ex-lede">
         아래 <b>모든 색값과 대비비는 이 페이지가 열릴 때 브라우저가 계산한 것</b>이다.
         마크업에는 토큰 <b>이름</b>만 있고 숫자가 하나도 없다 —
@@ -3879,7 +3956,7 @@ body {
     </main>
       <main class="ggc-shell-main ggc-shell-main--wide" data-page="components" hidden>
 
-      <h1 class="ex-h1">컴포넌트 카탈로그<span class="ver">ggc-components.css v2.0</span></h1>
+      <p class="ex-ver">ggc-components.css v2.0</p>
       <p class="ex-lede">
         각 예제 아래 <b>“마크업”</b> 을 펼치면 지금 화면에 그려진 <b>바로 그 DOM</b> 이 나온다.
         손으로 옮겨 적은 코드가 아니라 <code class="ex-inline">innerHTML</code> 을 읽어 채운 것이라,
@@ -4281,7 +4358,7 @@ body {
     </main>
       <main class="ggc-shell-main ggc-shell-main--wide" data-page="forms" hidden>
 
-      <h1 class="ex-h1">폼 컨트롤<span class="ver">ggc-components.css v2.0 · §16~17 · §24 · §27~28 · §32</span></h1>
+      <p class="ex-ver">ggc-components.css v2.0 · §16~17 · §24 · §27~28 · §32</p>
       <p class="ex-lede">
         셀렉트 · 체크박스 · 라디오 · 칩 · 토글 스위치 · 날짜 · 파일 업로드 · 리스트박스. 리스트박스만 빼고 전부
         <b>네이티브 input 위에 CSS 만 얹은 것</b>이라 키보드·스크린리더·폼 전송이 브라우저 그대로 동작한다.
@@ -4600,7 +4677,7 @@ body {
     </main>
       <main class="ggc-shell-main ggc-shell-main--wide" data-page="nav" hidden>
 
-      <h1 class="ex-h1">내비게이션 · 탭<span class="ver">ggc-components.css v2.0 · §12~15 · §26 · §29~30 · §34~35</span></h1>
+      <p class="ex-ver">ggc-components.css v2.0 · §12~15 · §26 · §29~30 · §34~35</p>
       <p class="ex-lede">
         페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 · 아코디언 · 드롭다운 메뉴 · 링크 · 텍스트 목록 · 페이지 내 내비.
         화면 안에서 <b>"내가 어디 있고 어디로 갈 수 있는가"</b>를 말하는 요소들이다. 탭·메뉴의 키보드 동작(화살표 · Home · End · Esc)은
@@ -4608,26 +4685,51 @@ body {
         탭에 들어가 화살표를 눌러 보라.
       </p>
 
-      <!-- ============================================================ 페이지 헤더 -->
+      <!-- ============================================================ GNB 제목부 + 페이지 헤더 -->
+      <section class="ex-section">
+        <h2>GNB 제목부 <span class="cls">.ggc-gnb-page</span></h2>
+        <p>브레드크럼 + 페이지 제목(<code class="ex-inline">&lt;h1&gt;</code>)은 본문이 아니라 <b>GNB 안</b>,
+          브랜드 슬롯과 검색 사이에 산다(v2.1, ADR 0008). 화면의 h1 은 여기 하나이고
+          <code class="ex-inline">&lt;main aria-labelledby="page-title"&gt;</code> 로 본문 랜드마크에 잇는다.
+          높이 64 가 고정이라 <b>줄바꿈하지 않고 말줄임</b>한다 — 잘릴 수 있는 의안명은 본문 첫 카드에 전문을 다시 적는다.
+          900px 이하에서 브레드크럼이 접히고 480px 이하에서 제목은 시각만 숨는다.
+          Monitor 첫 화면은 브레드크럼 없이 제목만 둔다. 이 쪽의 GNB 가 실물이고, 아래는 표본이다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-gnbpage">
+          <header class="ggc-gnb ex-demo-gnb">
+            <a class="ggc-gnb-brand" href="#main">
+              <img src="../brand/dist/assembly-mark.png" alt="">
+              <span class="ggc-gnb-title"><span class="org">경기도의회</span><span class="svc">의정지원 플랫폼</span></span>
+            </a>
+            <div class="ggc-gnb-page">
+              <nav class="ggc-breadcrumb" aria-label="현재 경로">
+                <ol>
+                  <li><a href="#main">홈</a></li>
+                  <li><a href="#main">의안</a></li>
+                  <li aria-current="page">의안 목록</li>
+                </ol>
+              </nav>
+              <h1 class="ggc-gnb-page-title">의안 목록</h1>
+            </div>
+            <div class="ggc-search">
+              <label for="q-demo" class="ggc-sr">의안 · 조례 검색</label>
+              <input id="q-demo" type="search" placeholder="의안 · 조례 검색">
+            </div>
+          </header>
+        </div>
+        <details class="ex-reveal" data-src="#d-gnbpage"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
       <section class="ex-section">
         <h2>페이지 헤더 <span class="cls">.ggc-page-head</span></h2>
-        <p>브레드크럼 + 제목 + 메타 + <b>주 액션 하나</b>. archetypes 의 "헤더 제목부 2형" 이다 —
-          Monitor 첫 화면만 인사말형(<code class="ex-inline">--greeting</code>)을 쓰고 나머지는
-          경로형이다. 메타에는 기관 맥락(제N대 · 제NNN회 · 소관)을 적는다.</p>
+        <p>본문 첫 줄 — <b>메타 + 주 액션 하나</b>. 제목과 브레드크럼은 위 GNB 제목부로 갔다.
+          Monitor 첫 화면만 인사말형(<code class="ex-inline">--greeting</code>)을 쓴다 — 인사말은
+          <code class="ex-inline">&lt;p class="title"&gt;</code> 이고 h1 이 아니다(h1 은 GNB 에 있다).
+          메타에는 기관 맥락(제N대 · 제NNN회 · 소관)을 적는다.
+          GNB 가 없는 셸 ⓐ(유틸리티 바만)에서만 예전처럼 브레드크럼과 <code class="ex-inline">h1.title</code> 을 여기 둔다.</p>
         <div class="ex-demo ex-demo--bg" id="d-head">
           <div class="ggc-page-head">
-            <nav class="ggc-breadcrumb" aria-label="현재 경로">
-              <ol>
-                <li><a href="#main">홈</a></li>
-                <li><a href="#main">의안</a></li>
-                <li aria-current="page">의안 목록</li>
-              </ol>
-            </nav>
             <div class="row">
-              <div>
-                <h1 class="title">의안 목록</h1>
-                <p class="meta">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
-              </div>
+              <p class="meta">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
               <div class="actions">
                 <button class="ggc-btn ggc-btn--secondary" type="button">엑셀 내려받기</button>
                 <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
@@ -4638,7 +4740,7 @@ body {
           <div class="ggc-page-head ggc-page-head--greeting" style="margin-top:var(--ggc-space-6);margin-bottom:0">
             <div class="row">
               <div>
-                <h1 class="title">이○○님, 오늘 처리할 검토보고서 3건이 있습니다</h1>
+                <p class="title">이○○님, 오늘 처리할 검토보고서 3건이 있습니다</p>
                 <p class="meta">정책지원관 · 기획재정위원회 · 2026-08-29 (금)</p>
               </div>
               <div class="actions">
@@ -4655,7 +4757,9 @@ body {
         <h2>브레드크럼 <span class="cls">.ggc-breadcrumb</span></h2>
         <p>KRDS 구조 그대로 — <code class="ex-inline">&lt;nav aria-label="현재 경로"&gt;&lt;ol&gt;</code>.
           마지막 항목은 링크가 아니라 <code class="ex-inline">aria-current="page"</code> 텍스트다.
-          구분자는 CSS 가 그린다 — 마크업에 "/" 나 "›" 를 적으면 스크린리더가 읽는다.</p>
+          구분자는 CSS 가 그린다 — 마크업에 "/" 나 "›" 를 적으면 스크린리더가 읽는다.
+          업무 셸에서는 GNB 제목부 안이 기본이고(위 절 · 거기서는 말줄임), 본문·대민 화면에 단독으로 둘 때는
+          아래처럼 줄바꿈되고 말줄임하지 않는다 — 의안명은 잘리면 다른 의안이 된다.</p>
         <div class="ex-demo" id="d-bc">
           <nav class="ggc-breadcrumb" aria-label="현재 경로">
             <ol>
@@ -4952,7 +5056,7 @@ body {
     </main>
       <main class="ggc-shell-main ggc-shell-main--wide" data-page="overlay" hidden>
 
-      <h1 class="ex-h1">오버레이 · 상태 · 본문<span class="ver">ggc-components.css v2.0 · §18~23 · §25 · §31 · §33</span></h1>
+      <p class="ex-ver">ggc-components.css v2.0 · §18~23 · §25 · §31 · §33</p>
       <p class="ex-lede">
         알림 · 토스트 · 모달 · 툴팁 · 스피너 · 스켈레톤 · 빈 상태 · 문서 본문 · 하단 액션바. 모달은 네이티브
         <code class="ex-inline">&lt;dialog&gt;</code> 라 포커스 가두기 · ESC · 배경 inert 를 브라우저가 준다.
@@ -5280,17 +5384,20 @@ body {
         <code>ggc-tokens.css</code> 와 <code>ggc-components.css</code> 만으로 그려진다.</p>
       </div>
 
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--ggc-space-4);flex-wrap:wrap;margin-bottom:var(--ggc-space-6)">
-        <div>
-          <h1 class="ex-h1" style="margin-bottom:6px">제12대 제3차 정례회</h1>
-          <div style="font-size:13px;color:var(--ggc-text-subtle)">
-            회기 2026-08-18 ~ 2026-09-05 · 오늘 <b style="color:var(--ggc-text-muted)">18일차</b>
-            <span class="ggc-badge ggc-badge--session" style="margin-left:8px">● 회기 중</span>
+      <!-- 제목(h1)은 GNB 제목부에 있다. Monitor 는 본문 첫 줄이 인사말형 페이지 헤더다 -->
+      <div class="ggc-page-head ggc-page-head--greeting">
+        <div class="row">
+          <div>
+            <p class="title">이○○님, 오늘 처리할 의안 3건이 있습니다</p>
+            <p class="meta">
+              회기 2026-08-18 ~ 2026-09-05 · 오늘 <b style="color:var(--ggc-text-muted)">18일차</b>
+              <span class="ggc-badge ggc-badge--session" style="margin-left:8px">● 회기 중</span>
+            </p>
           </div>
-        </div>
-        <div class="ex-row">
-          <button class="ggc-btn ggc-btn--secondary" type="button">회기 전환</button>
-          <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+          <div class="actions">
+            <button class="ggc-btn ggc-btn--secondary" type="button">회기 전환</button>
+            <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+          </div>
         </div>
       </div>
 
@@ -5540,17 +5647,17 @@ body {
         하단에 <b>이전 / 다음</b> 이 항상 같은 자리에 있다. 예시 데이터다.</p>
       </div>
 
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--ggc-space-4);flex-wrap:wrap;margin-bottom:var(--ggc-space-5)">
-        <div>
-          <h1 class="ex-h1" style="margin-bottom:6px">조례 초안 작성</h1>
-          <div style="font-size:13px;color:var(--ggc-text-subtle)">
+      <!-- 제목(h1)·브레드크럼은 GNB 제목부에 있다. 본문 첫 줄은 메타 + 주 액션 -->
+      <div class="ggc-page-head">
+        <div class="row">
+          <p class="meta">
             경기도 청년 기본조례 일부개정조례안 ·
             <span style="font-family:var(--ggc-font-mono)">DRAFT-2026-0088</span>
+          </p>
+          <div class="actions">
+            <span style="font-size:12px;color:var(--ggc-text-subtle)">08-22 14:07 자동저장됨</span>
+            <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
           </div>
-        </div>
-        <div class="ex-row">
-          <span style="font-size:12px;color:var(--ggc-text-subtle)">08-22 14:07 자동저장됨</span>
-          <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
         </div>
       </div>
 
@@ -5919,6 +6026,50 @@ body {
     </main>
   </div>
 
+<template data-gnb-page="index">
+      <h1 class="ggc-gnb-page-title">경기도의회 공통 디자인 시스템</h1>
+    </template>
+<template data-gnb-page="tokens">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#index">홈</a></li><li><a href="#index">갤러리</a></li><li aria-current="page">토큰 · 팔레트</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title">토큰 · 팔레트</h1>
+    </template>
+<template data-gnb-page="components">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#index">홈</a></li><li><a href="#index">갤러리</a></li><li aria-current="page">컴포넌트 카탈로그</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title">컴포넌트 카탈로그</h1>
+    </template>
+<template data-gnb-page="forms">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#index">홈</a></li><li><a href="#components">컴포넌트</a></li><li aria-current="page">폼 컨트롤</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title">폼 컨트롤</h1>
+    </template>
+<template data-gnb-page="nav">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#index">홈</a></li><li><a href="#components">컴포넌트</a></li><li aria-current="page">내비게이션 · 탭</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title">내비게이션 · 탭</h1>
+    </template>
+<template data-gnb-page="overlay">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#index">홈</a></li><li><a href="#components">컴포넌트</a></li><li aria-current="page">오버레이 · 상태 · 본문</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title">오버레이 · 상태 · 본문</h1>
+    </template>
+<template data-gnb-page="dashboard">
+      <h1 class="ggc-gnb-page-title">제12대 제3차 정례회</h1>
+    </template>
+<template data-gnb-page="wizard">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#dashboard">홈</a></li><li><a href="#dashboard">입법지원</a></li><li aria-current="page">조례 초안 작성</li></ol>
+      </nav>
+      <h1 class="ggc-gnb-page-title">조례 초안 작성</h1>
+    </template>
+<template data-gnb-page="login"></template>
+
   <footer class="ggc-footer">
     <div class="inner">
       경기도의회 의정정보시스템 · 공통 디자인 시스템 예제 갤러리 (합본) ·
@@ -5951,7 +6102,7 @@ body {
  * 외부 파일 하나, 인라인 0 — eGovFrame CSP(unsafe-inline 금지)에서도 그대로 붙는다.
  * 의존성 0. React 서비스는 이 파일 대신 Tier 2 레지스트리 컴포넌트를 쓴다.
  *
- * 사용: <script src="ggc-behaviors.js" defer></script>
+ * 사용: <script src="ggc-behaviors.js" defer><\/script>
  *       동적으로 삽입한 마크업은 GGC.init(루트요소) 로 다시 묶는다.
  * ============================================================================= */
 (function () {
@@ -6819,6 +6970,7 @@ body {
   var mains = document.querySelectorAll("main[data-page]");
   var items = document.querySelectorAll(".ggc-lnb-item[data-page]");
   var svc = document.getElementById("svc");
+  var gnbPage = document.getElementById("page-title");
 
   function show(key) {
     if (!Object.prototype.hasOwnProperty.call(SVC, key)) key = "index";
@@ -6836,6 +6988,12 @@ body {
       }
     });
     svc.textContent = SVC[key];
+    /* GNB 제목부(브레드크럼 + h1)는 쪽마다 다르다 — 해당 쪽의 <template> 로 갈아 끼운다 */
+    var tpl = document.querySelector('template[data-gnb-page="' + key + '"]');
+    gnbPage.replaceChildren(tpl ? tpl.content.cloneNode(true) : document.createTextNode(""));
+    /* 본문 랜드마크 이름 — 제목부가 있는 쪽만(login 은 GNB 제목이 없다) */
+    var main = document.getElementById("main");
+    if (tpl) { main.setAttribute("aria-labelledby", "page-title"); } else { main.removeAttribute("aria-labelledby"); }
   }
 
   function fromHash() { show((location.hash || "#index").slice(1)); }
