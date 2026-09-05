@@ -15,7 +15,7 @@
 <style>
 /* ---- design/ggc-tokens.css (정본) ---------------------------------------- */
 /* =============================================================================
- * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v2.0 (2026-08-29)
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.0 (2026-09-05)
  * 근거: docs/contract.md (AUTHORITATIVE) · 구판 가이드는 archive/03-공통디자인가이드.md
  * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
  *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
@@ -23,6 +23,20 @@
  * 사용: 각 앱이 이 파일을 복사(또는 값 이식)해 자체 스타일의 최상단에 둔다.
  *       대민(공개) 화면은 <html data-ggc-profile="public"> 을 붙인다 — 그 외에는 같다.
  * 검사: python design/check_design.py --canon   /   --gate <서비스>
+ *
+ * ── v3.0 에서 바뀐 것 (업무 프로필을 shadcn 기본 밀도로 — 색은 하나도 바뀌지 않았다) ───
+ * v2.0 의 업무 치수는 Claude Design 목업의 실측값(버튼 42 · 입력 44 · 13.5px)이었다.
+ * 그 값은 shadcn/ui 기본(36 · 36 · 14px)보다 **성겨서** 업무 화면인데 한 화면에 행이 적게
+ * 들어왔고, shadcn 블록(sidebar · data-table)과 조립할 때마다 치수 보정이 필요했다.
+ * 사용자 결정(2026-09-05, ADR 0009): 업무 프로필 = shadcn 기본 밀도. 대민 블록은 KRDS 그대로.
+ *
+ *   변경  --ggc-control-h-sm/-h/-h-lg  34/42/46 → 32/36/40     --ggc-input-h · --ggc-search-h 44/40 → 36/36
+ *   변경  --ggc-control-font(-sm/-lg)  13.5/13/14 → 14/13/14   --ggc-label-font · --ggc-table-font 13 → 14
+ *   변경  --ggc-cell-pad 11px 10px → 8px 12px · --ggc-row-pad 15px 22px → 12px 16px · --ggc-card-pad 18px 22px → 16px 20px
+ *   신설  --ggc-text-xs~3xl · --ggc-leading-* · --ggc-h1/h2/h3-size · --ggc-kpi-size   타이포 스케일 (치수 — 프로필이 덮어쓸 수 있다)
+ *   신설  --ggc-icon · --ggc-icon-lg · --ggc-icon-stroke   아이콘 치수 (lucide 전용 — 이모지·유니코드 기호 금지, ADR 0009)
+ *   신설  --ggc-lnb-w-icon   접힌 사이드바 폭 (Tier 2 sidebar collapsible="icon")
+ *   ⚠ D1 — 바이트가 바뀌었다. v2 소비자는 사본을 재복사한다(docs/migration/v2-to-v3.md).
  *
  * ── v2.0 에서 바뀐 것 (프로필 층 신설 — 색은 하나도 바뀌지 않았다) ────────────────
  * 업무용과 대민용이 **같은 토큰 파일 하나**를 쓴다. 기본(속성 없음)이 업무 프로필이라
@@ -142,26 +156,52 @@
   /* --- 셸 치수 (계약 §2) --- */
   --ggc-gnb-h: 64px;
   --ggc-lnb-w: 256px;
+  --ggc-lnb-w-icon: 48px;        /* 접힌 사이드바 (v3.0 — Tier 2 sidebar collapsible="icon") */
   --ggc-main-max: 1320px;        /* 대시보드 */
   --ggc-main-max-wide: 1360px;   /* 기타 업무 화면 */
 
-  /* --- 컨트롤 치수·밀도·폭 (v2.0 — 프로필이 조정하는 유일한 층) ---
-   * 값은 컴포넌트 레이어의 실측 리터럴을 그대로 옮긴 것이다(리팩터 전후 렌더 동일).
-   * 대민 프로필은 아래 [data-ggc-profile="public"] 블록에서 **이 이름들만** 덮어쓴다. */
-  --ggc-control-h-sm:    34px;      /* .ggc-btn--sm */
-  --ggc-control-h:       42px;      /* .ggc-btn */
-  --ggc-control-h-lg:    46px;      /* .ggc-btn--lg */
-  --ggc-input-h:         44px;      /* .ggc-field input/select · .ggc-btn--dashed */
-  --ggc-search-h:        40px;      /* .ggc-search */
-  --ggc-control-font:    13.5px;    /* 버튼·입력 글자 */
+  /* --- 컨트롤 치수·밀도·폭 (v3.0 — 업무 = shadcn 기본 밀도, ADR 0009) ---
+   * 대민 프로필은 아래 [data-ggc-profile="public"] 블록에서 **이 이름들만** 덮어쓴다(KRDS 치수). */
+  --ggc-control-h-sm:    32px;      /* .ggc-btn--sm      (shadcn h-8) */
+  --ggc-control-h:       36px;      /* .ggc-btn          (shadcn h-9) */
+  --ggc-control-h-lg:    40px;      /* .ggc-btn--lg      (shadcn h-10) */
+  --ggc-input-h:         36px;      /* .ggc-field input/select · .ggc-btn--dashed */
+  --ggc-search-h:        36px;      /* .ggc-search */
+  --ggc-control-font:    14px;      /* 버튼·입력 글자  (shadcn text-sm) */
   --ggc-control-font-sm: 13px;
   --ggc-control-font-lg: 14px;
-  --ggc-label-font:      13px;      /* 폼 라벨 */
-  --ggc-table-font:      13px;      /* .ggc-table */
-  --ggc-cell-pad:        11px 10px; /* th · td */
-  --ggc-row-pad:         15px 22px; /* .ggc-list-row */
-  --ggc-card-pad:        18px 22px; /* .ggc-card--pad */
+  --ggc-label-font:      14px;      /* 폼 라벨 */
+  --ggc-table-font:      14px;      /* .ggc-table */
+  --ggc-cell-pad:        8px 12px;  /* th · td            (shadcn p-2 / px-3) */
+  --ggc-row-pad:         12px 16px; /* .ggc-list-row */
+  --ggc-card-pad:        16px 20px; /* .ggc-card--pad */
   --ggc-container-max:   1280px;    /* 유틸리티 바 · 푸터 inner */
+
+  /* --- 타이포 스케일 (v3.0 신설 — 위계는 색이 아니라 크기·굵기로 만든다) ---
+   * v2.0 까지 제목 토큰이 없어 h1 18 · 카드 제목 16 · 본문 13.5 로 비율이 1.3 에 그쳤다.
+   * 값은 shadcn/Tailwind 기본 스텝(12/14/16/18/20/24/30)에서 가져왔다 — 사이 값을 발명하지 않는다.
+   * 치수이므로 대민 프로필이 덮어쓴다(KRDS body 17 · title 스텝). */
+  --ggc-text-xs:   12px;   /* 캡션 · 표 보조 */
+  --ggc-text-sm:   13px;   /* 메타 · 부제 */
+  --ggc-text-base: 14px;   /* 본문 기본 */
+  --ggc-text-md:   16px;   /* 카드 제목 · 강조 본문 */
+  --ggc-text-lg:   18px;   /* 섹션 제목 */
+  --ggc-text-xl:   20px;   /* 모달 제목 */
+  --ggc-text-2xl:  24px;   /* 페이지 제목 */
+  --ggc-text-3xl:  30px;   /* KPI 숫자 */
+  --ggc-leading-tight:  1.25;
+  --ggc-leading-normal: 1.5;
+  --ggc-h1-size:  var(--ggc-text-2xl);   /* 본문 첫 줄의 <h1> (ADR 0010 — GNB 가 아니라 본문) */
+  --ggc-h2-size:  var(--ggc-text-lg);
+  --ggc-h3-size:  var(--ggc-text-md);
+  --ggc-kpi-size: var(--ggc-text-3xl);
+
+  /* --- 아이콘 (v3.0 신설 — lucide 전용) ---
+   * 정본 아이콘은 design/ggc-icons.svg(lucide 부분집합 스프라이트)다. 이모지 · 유니코드 기호(📋 ◷ ✕)를
+   * UI 아이콘으로 쓰지 않는다 — 글꼴 렌더러마다 모양이 갈리고 제품 인상이 가장 크게 흔들리는 지점이다. */
+  --ggc-icon:        16px;   /* 버튼 · 메뉴 · 표 안 */
+  --ggc-icon-lg:     20px;   /* 사이드바 · KPI 타일 · 빈 상태 */
+  --ggc-icon-stroke: 2;
 }
 
 /* =============================================================================
@@ -190,6 +230,16 @@
   --ggc-row-pad:         20px 24px;
   --ggc-card-pad:        24px 24px;
   --ggc-container-max:   1248px;
+  /* 타이포 스케일 (v3.0) — KRDS body.medium 17 · title small/medium/large = 20/24/32 */
+  --ggc-text-sm:   15px;
+  --ggc-text-base: 17px;
+  --ggc-text-md:   19px;
+  --ggc-text-lg:   20px;
+  --ggc-text-xl:   24px;
+  --ggc-text-2xl:  32px;
+  --ggc-text-3xl:  40px;
+  --ggc-icon:      20px;
+  --ggc-icon-lg:   24px;
 }
 
 /* --- 공통 포커스 규칙 (계약 §3) ---
@@ -299,8 +349,8 @@
 
 /* ---- design/ggc-components.css (정본) ------------------------------------ */
 /* =============================================================================
- * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v2.0 (2026-08-29)
- * 전제: design/ggc-tokens.css v2.0 을 먼저 로드할 것 (--ggc-* 변수 의존)
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.0 (2026-09-05)
+ * 전제: design/ggc-tokens.css v3.0 을 먼저 로드할 것 (--ggc-* 변수 의존)
  * 출처: Claude Design 산출물(.dc.html) 실측 추출
  *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
  *   정본 2  design_경기도의회_의정지원_플랫폼/조례초안 작성 위저드.dc.html
@@ -326,6 +376,18 @@
  *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
  *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
  *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ *
+ * -- v3.0 에서 바뀐 것 (ADR 0009 · 0010) -------------------------------------
+ *   업무 프로필이 shadcn 기본 밀도로 갔다 — 치수는 전부 토큰이라 이 파일의 컨트롤·표·행·카드는
+ *   **값 변경 없이** 따라온다(버튼 36 · 입력 36 · 글자 14 · 셀 8×12). 이 파일에서 바뀐 것:
+ *   §2·§3·§5  카드 제목 · KPI 숫자 · 행 제목/메타의 리터럴 글자 크기 → 타이포 스케일 토큰(--ggc-h3-size · --ggc-kpi-size · --ggc-text-*)
+ *   §6        버튼 radius 리터럴 → --ggc-radius · 버튼 안 svg 는 --ggc-icon
+ *   §9        .ggc-gnb-page 는 **브레드크럼만** 담는다(ADR 0010). .ggc-gnb-page-title 은 폐기 예정(한 판 유지).
+ *             LNB 항목 밀도(32px · 14px) · 아이콘 슬롯 · .ggc-lnb--icon 접힘 변형 · 검색/아이콘 버튼 치수 토큰
+ *   §10       ≤480 제목 시각 숨김 규칙 삭제(제목이 GNB 에 없다)
+ *   §12       .ggc-page-head 가 <h1 class="ggc-page-title">(--ggc-h1-size 24) + .desc + .actions 를 그린다
+ *   §37 신설  .ggc-h1/.ggc-h2/.ggc-h3 제목 유틸 · .ggc-icon (lucide 스프라이트 <use>) — 이모지·유니코드 기호 아이콘 금지
+ *   아이콘 정본은 design/ggc-icons.svg(생성물, build-icons.py). 갤러리는 같은 심볼을 인라인한다(file:// 에서 외부 <use> 가 막힌다).
  *
  * -- v2.0 에서 바뀐 것 -------------------------------------------------------
  *   값 불변 리팩터 — 컨트롤 높이·글자 크기·셀/행/카드 패딩·컨테이너 폭 리터럴을
@@ -428,14 +490,14 @@
 }
 .ggc-card-head .title {
   margin: 0;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: var(--ggc-h3-size);
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ggc-text-strong);
 }
 .ggc-card-head .sub {
   margin: 3px 0 0;
-  font-size: 12.5px;
+  font-size: var(--ggc-text-sm);
   font-weight: 400;
   color: var(--ggc-text-subtle);
 }
@@ -500,7 +562,7 @@
   justify-content: space-between;
   margin-bottom: 12px;
 }
-.ggc-stat .label { font-size: 13px; font-weight: 600; color: var(--ggc-text-muted); }
+.ggc-stat .label { font-size: var(--ggc-text-sm); font-weight: 600; color: var(--ggc-text-muted); }
 .ggc-stat .icon {
   width: 34px; height: 34px;
   border-radius: 9px;
@@ -513,8 +575,9 @@
 .ggc-stat .icon--warning { background: var(--ggc-warning-tint); color: var(--ggc-warning); }
 .ggc-stat .icon--danger  { background: var(--ggc-danger-tint);  color: var(--ggc-danger); }
 .ggc-stat .icon--info    { background: var(--ggc-info-tint);    color: var(--ggc-info); }
+.ggc-stat .icon svg { width: var(--ggc-icon-lg); height: var(--ggc-icon-lg); }   /* lucide — 이모지 금지 (v3.0) */
 .ggc-stat .value {
-  font-size: 30px;
+  font-size: var(--ggc-kpi-size);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--ggc-text-strong);
@@ -530,13 +593,14 @@
 .ggc-stat .trend {
   display: flex; align-items: center; gap: 5px;
   margin-top: 9px;
-  font-size: 12px;
+  font-size: var(--ggc-text-xs);
   font-weight: 600;
   color: var(--ggc-text-muted);
 }
 .ggc-stat .trend--up   { color: var(--ggc-success); }
 .ggc-stat .trend--warn { color: var(--ggc-warning); }
 .ggc-stat .trend--down { color: var(--ggc-danger); }
+.ggc-stat .trend svg { width: 14px; height: 14px; }
 
 /* =============================================================================
  * 4. .ggc-wizard — 단계 스텝퍼
@@ -701,22 +765,23 @@
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
+.ggc-list-row .icon svg { width: var(--ggc-icon-lg); height: var(--ggc-icon-lg); }   /* lucide (v3.0) */
 .ggc-list-row .body { flex: 1; min-width: 0; }
 .ggc-list-row .title {
-  font-size: 14px;
+  font-size: var(--ggc-text-base);
   font-weight: 700;
   color: var(--ggc-text);
   margin-bottom: 3px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.ggc-list-row .meta { font-size: 12px; color: var(--ggc-text-subtle); }
+.ggc-list-row .meta { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
 .ggc-list-row .end {           /* 우측 상태·시각·버튼 슬롯 */
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
   text-align: right;
-  font-size: 12px;
+  font-size: var(--ggc-text-xs);
   color: var(--ggc-text-subtle);
 }
 /* 심각도 좌측 바 — 출처: 필수조례정비 지원.dc.html (width 5px radius 3px, 행 높이만큼) */
@@ -765,8 +830,8 @@
   justify-content: center;
   gap: 8px;
   height: var(--ggc-control-h);
-  padding: 0 18px;
-  border-radius: 10px;
+  padding: 0 var(--ggc-space-4);
+  border-radius: var(--ggc-radius);
   border: 1px solid transparent;
   font-family: var(--ggc-font);
   font-size: var(--ggc-control-font);
@@ -778,6 +843,7 @@
   transition: background .12s, border-color .12s, color .12s;
 }
 .ggc-btn:disabled { opacity: 0.45; cursor: default; }
+.ggc-btn svg { width: var(--ggc-icon); height: var(--ggc-icon); flex-shrink: 0; }   /* lucide (v3.0) — ＋ ← → 같은 기호 대신 */
 
 .ggc-btn--primary {
   background: var(--ggc-primary);
@@ -822,8 +888,8 @@
   background: #f6f9fd;
 }
 
-.ggc-btn--sm { height: var(--ggc-control-h-sm); padding: 0 14px; border-radius: 8px; font-size: var(--ggc-control-font-sm); }
-.ggc-btn--lg { height: var(--ggc-control-h-lg); padding: 0 20px; border-radius: 11px; font-size: var(--ggc-control-font-lg); }
+.ggc-btn--sm { height: var(--ggc-control-h-sm); padding: 0 var(--ggc-space-3); border-radius: 8px; font-size: var(--ggc-control-font-sm); }
+.ggc-btn--lg { height: var(--ggc-control-h-lg); padding: 0 var(--ggc-space-5); border-radius: var(--ggc-radius); font-size: var(--ggc-control-font-lg); }
 .ggc-btn--block { width: 100%; }
 
 /* =============================================================================
@@ -920,6 +986,8 @@
    실제로 그랬다). anywhere 는 넘칠 때만 끊으므로 보통 단어는 그대로 둔다. */
 .ggc-table code,
 .ggc-table .mono { overflow-wrap: anywhere; }
+/* 식별자 · 날짜 · 상태 · 동작 열은 줄바꿈하지 않는다 — 열 폭을 그 값이 정하고, 남는 폭은 제목 열이 쓴다 (v3.0) */
+.ggc-table .nowrap, .ggc-table th.nowrap, .ggc-table td.nowrap { white-space: nowrap; }
 .ggc-table tr.total,
 .ggc-table tfoot tr {
   border-top: 2px solid var(--ggc-primary-deep);
@@ -998,21 +1066,18 @@
 /* 스페이서는 제목부(.ggc-gnb-page)가 없는 셸 ⓐ·이관 셸에서만 쓴다 — 둘을 같이 두지 않는다 */
 .ggc-gnb-spacer { flex: 1; min-width: 12px; }
 
-/* GNB 제목부 — 브레드크럼 + 페이지 제목   (v2.1, ADR 0008)
- * 업무 셸의 기본이다: 화면의 <h1> 은 본문이 아니라 여기 하나다.
+/* GNB 경로부 — 브레드크럼   (v3.0, ADR 0010 — 0008 대체)
+ * 헤더에는 **화면마다 자리가 같은 정보**(경로 · 검색 · 알림)만 둔다. 페이지 제목 <h1> 은 본문 첫 줄
+ * .ggc-page-head 의 .ggc-page-title(§12, 24px)이다 — 64px 띠 안의 18px 제목은 크롬처럼 읽혀 시선의 닻이 되지 못했다.
  * 브랜드 슬롯(--ggc-lnb-w)과 검색(300) 사이의 빈 폭을 쓰고, 검색은 밀리지 않는다(flex:1 + min-width:0).
- * 높이 --ggc-gnb-h(64) 안에 12.5px 브레드크럼 + 4 + 18px 제목 ≈ 43 — 위아래가 남는다.
- * 줄바꿈 금지 — GNB 높이가 LNB sticky · drawer · --split 의 기준이라 늘릴 수 없다. 대신 말줄임.
- *   접근성: text-overflow 는 접근 가능한 이름을 자르지 않는다(스크린리더는 전문을 읽는다).
- *   시각 사용자를 위해 잘릴 수 있는 식별자(의안명)는 본문 첫 카드에 전문을 다시 적는다(breadcrumb.md).
+ * 브레드크럼은 한 줄 · 마지막 항목만 말줄임(접근 가능한 이름은 잘리지 않는다).
  * 마크업:
  *   <div class="ggc-gnb-page">
  *     <nav class="ggc-breadcrumb" aria-label="현재 경로"><ol>…<li aria-current="page">의안 목록</li></ol></nav>
- *     <h1 class="ggc-gnb-page-title" id="page-title">의안 목록</h1>
  *   </div>
- *   … <main class="ggc-shell-main" id="main" aria-labelledby="page-title">
- * 왼쪽 padding 12 = 본문 padding(32) − GNB gap(20): 제목의 왼쪽 선이 본문 내용과 맞는다.
- * Monitor 첫 화면은 브레드크럼 없이 제목만(홈 자신이라 경로가 없다). */
+ *   … <main class="ggc-shell-main" id="main" aria-labelledby="page-title">   ← h1 은 본문(§12)
+ * 왼쪽 padding 12 = 본문 padding(32) − GNB gap(20): 경로의 왼쪽 선이 본문 내용과 맞는다.
+ * Monitor 첫 화면(홈)은 경로가 없으므로 이 블록을 비워 둔다(공간만 차지). */
 .ggc-gnb-page {
   flex: 1 1 0;
   min-width: 0;
@@ -1039,10 +1104,11 @@
   display: inline-block; vertical-align: middle;
   margin-right: calc(3px + var(--ggc-space-1));
 }
+/* ⚠ 폐기 예정 (v2.1 → v3.0 한 판 유지). 제목은 §12 .ggc-page-title 로 옮긴다. v3.1 에서 삭제한다. */
 .ggc-gnb-page-title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: var(--ggc-text-lg);
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.3;
   color: var(--ggc-text-strong);
@@ -1062,13 +1128,14 @@
 }
 .ggc-search input {
   border: none; background: transparent; width: 100%;
-  font-family: inherit; font-size: 13.5px; color: var(--ggc-text);
+  font-family: inherit; font-size: var(--ggc-control-font); color: var(--ggc-text);
 }
+.ggc-search svg { width: var(--ggc-icon); height: var(--ggc-icon); color: var(--ggc-text-faint); flex-shrink: 0; }
 /* ⚠ placeholder 를 유일한 라벨로 쓰지 않는다. 색도 AA 를 넘겨야 한다 */
 .ggc-search input::placeholder { color: var(--ggc-text-subtle); }
 
 .ggc-icon-btn {
-  position: relative; width: 40px; height: 40px; flex-shrink: 0;
+  position: relative; width: var(--ggc-control-h); height: var(--ggc-control-h); flex-shrink: 0;
   border-radius: var(--ggc-radius);
   border: 1px solid var(--ggc-shell-border);
   background: var(--ggc-surface);
@@ -1076,6 +1143,7 @@
   cursor: pointer;
 }
 .ggc-icon-btn:hover { background: var(--ggc-control-bg); }
+.ggc-icon-btn svg { width: var(--ggc-icon); height: var(--ggc-icon); color: var(--ggc-text-muted); }
 
 .ggc-shell-body { display: flex; flex: 1; align-items: stretch; }
 
@@ -1084,34 +1152,49 @@
   flex-shrink: 0;
   background: var(--ggc-surface);
   border-right: 1px solid var(--ggc-shell-border);
-  padding: var(--ggc-space-5) 14px;
+  padding: var(--ggc-space-4) var(--ggc-space-2);
   position: sticky;
   top: var(--ggc-gnb-h);
   height: calc(100vh - var(--ggc-gnb-h));
   overflow-y: auto;
 }
+/* v3.0 — shadcn sidebar 밀도(항목 32px · 14px · 아이콘 16). 아이콘은 첫 자식 svg 슬롯 */
 .ggc-lnb-group {
-  padding: 0 var(--ggc-space-2) var(--ggc-space-3);
-  font-size: 11px; font-weight: 700;
+  padding: var(--ggc-space-2) var(--ggc-space-2) var(--ggc-space-1);
+  font-size: var(--ggc-text-xs); font-weight: 600;
   color: var(--ggc-text-subtle);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
 }
 .ggc-lnb-item {
-  display: flex; align-items: center; gap: 11px; width: 100%;
-  padding: 10px 12px; margin-bottom: 3px;
+  display: flex; align-items: center; gap: var(--ggc-space-2); width: 100%;
+  height: var(--ggc-control-h-sm); padding: 0 var(--ggc-space-2); margin-bottom: 2px;
   border: none; background: none;
-  border-radius: var(--ggc-radius);
-  font-family: inherit; font-size: 13.5px; font-weight: 600;
-  color: var(--ggc-text-muted);
+  border-radius: var(--ggc-radius-sm);
+  font-family: inherit; font-size: var(--ggc-text-base); font-weight: 500;
+  color: var(--ggc-text);
   text-align: left; text-decoration: none; cursor: pointer;
+  white-space: nowrap; overflow: hidden;
+}
+.ggc-lnb-item svg { width: var(--ggc-icon); height: var(--ggc-icon); flex-shrink: 0; color: var(--ggc-text-muted); }
+.ggc-lnb-item .label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.ggc-lnb-item .count {                       /* 우측 건수 — 업무 큐의 "처리할 건" */
+  font-size: var(--ggc-text-xs); font-weight: 600; color: var(--ggc-text-subtle);
+  font-variant-numeric: tabular-nums;
 }
 .ggc-lnb-item:hover { background: var(--ggc-control-bg); }
 .ggc-lnb-item[aria-current], .ggc-lnb-item.is-active {
   background: var(--ggc-primary-light);
   color: var(--ggc-primary-deep);
-  font-weight: 700;
+  font-weight: 600;
 }
-.ggc-lnb-divider { height: 1px; background: var(--ggc-bg); margin: var(--ggc-space-4) var(--ggc-space-2); }
+.ggc-lnb-item[aria-current] svg, .ggc-lnb-item.is-active svg { color: var(--ggc-primary); }
+.ggc-lnb-divider { height: 1px; background: var(--ggc-bg); margin: var(--ggc-space-3) var(--ggc-space-2); }
+/* 접힌 사이드바 (v3.0) — 아이콘만 48px. 라벨·캡션·건수는 시각만 숨긴다(접근성 트리 유지). 토글은 서비스 몫 */
+.ggc-lnb--icon { width: var(--ggc-lnb-w-icon); padding-left: var(--ggc-space-1); padding-right: var(--ggc-space-1); }
+.ggc-lnb--icon .ggc-lnb-item { justify-content: center; padding: 0; }
+.ggc-lnb--icon .ggc-lnb-item .label, .ggc-lnb--icon .ggc-lnb-item .count, .ggc-lnb--icon .ggc-lnb-group {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0;
+}
 
 /* 본문 — 계약 §2: 대시보드 1320, 기타 업무화면 1360 */
 .ggc-shell-main {
@@ -1203,15 +1286,10 @@
 
 @media (max-width: 480px) {
   .ggc-stat-grid { grid-template-columns: 1fr; }
-  /* 390 에서 GNB 남은 폭이 ≈100px 다. 검색은 유일한 GNB 동선(계약 §2)이라 남기고, 제목은 **시각만** 숨긴다
-   * (display:none 이 아니다 — h1 은 접근성 트리에 남아 main 의 aria-labelledby 가 살아 있다).
-   * 시각 사용자의 위치 단서는 LNB drawer 의 aria-current 와 .ggc-page-head 의 메타 줄이다. */
+  /* v3.0: 제목은 본문(§12)에 있으므로 GNB 에서 숨길 것이 없다. 경로부는 ≤900 에서 이미 접혔다 — 검색이 폭을 다 쓴다 */
   .ggc-gnb-page { flex: 0 0 0; padding: 0; }
-  .ggc-gnb-page-title {
-    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
-    overflow: hidden; clip: rect(0 0 0 0); border: 0;
-  }
   .ggc-shell-main, .ggc-shell-main--wide { padding: 14px var(--ggc-space-3) 32px; }
+  .ggc-page-head .ggc-page-title, .ggc-page-head .title { font-size: var(--ggc-text-xl); }
 }
 
 /* --- Windows 고대비 (forced-colors) — 깨지지 않게 하는 것이 전부다 ---
@@ -1623,20 +1701,21 @@
 
 
 /* =============================================================================
- * 12. .ggc-page-head — 페이지 헤더 (메타 · 주 액션)   (v2.0 → v2.1)
- * v2.1: 브레드크럼과 제목은 GNB 제목부(§9 .ggc-gnb-page)로 갔다(ADR 0008). 이 블록은 본문 첫 줄의
- *       **메타 + 주 액션**이다. .title 은 두 경우에만 남는다 —
- *       ① 셸 ⓐ(GNB 가 없는 유틸리티 바만): <h1 class="title"> + 브레드크럼을 여기 둔다
- *       ② Monitor 인사말형(--greeting, 17px/800/-0.03em): <p class="title"> — h1 은 GNB 에 있다
- * 출처: archetypes.md "GNB 제목부".
- * 마크업:
+ * 12. .ggc-page-head — 페이지 헤더 (제목 · 설명 · 주 액션)   (v3.0, ADR 0010)
+ * 본문 첫 줄. 화면의 <h1> 은 여기 하나다 — 그 화면에서 가장 큰 글자(--ggc-h1-size 24)여야 시선의 닻이 된다.
+ * 브레드크럼은 GNB 경로부(§9)에 있다. 마크업:
  *   <div class="ggc-page-head">
  *     <div class="row">
- *       <p class="meta">제12대 · 제380회 · 접수 147건</p>
- *       <div class="actions"><button class="ggc-btn ggc-btn--primary">＋ 의안 등록</button></div>
+ *       <div>
+ *         <h1 class="ggc-page-title" id="page-title">의안 목록</h1>
+ *         <p class="desc">제12대 · 제380회 정례회 · 접수 147건</p>
+ *       </div>
+ *       <div class="actions"><button class="ggc-btn ggc-btn--primary"><svg class="ggc-icon"><use href="#i-plus"/></svg>의안 등록</button></div>
  *     </div>
  *   </div>
+ *   … <main class="ggc-shell-main" id="main" aria-labelledby="page-title">
  * 주 액션은 하나다 — 둘 이상이면 무엇을 눌러야 하는지 흐려진다(archetypes Learn/Decide).
+ * Monitor 첫 화면: h1 은 화면 이름("대시보드"), 인사말은 .desc 에 온다. .title / .meta 는 v2 호환 별칭(폐기 예정).
  * ============================================================================= */
 .ggc-page-head {
   display: flex;
@@ -1652,21 +1731,24 @@
   gap: var(--ggc-space-4);
   flex-wrap: wrap;
 }
+.ggc-page-head .ggc-page-title,
 .ggc-page-head .title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: var(--ggc-h1-size);
+  font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.3;
+  line-height: var(--ggc-leading-tight);
   color: var(--ggc-text-strong);
 }
-.ggc-page-head--greeting .title { font-size: 17px; letter-spacing: -0.03em; }
+.ggc-page-head--greeting .title { font-size: var(--ggc-h1-size); letter-spacing: -0.02em; }   /* v2 별칭 — v3 는 h1 + .desc */
+.ggc-page-head .desc,
 .ggc-page-head .meta {
-  margin: 3px 0 0;
-  font-size: 12.5px;
-  color: var(--ggc-text-subtle);
+  margin: var(--ggc-space-1) 0 0;
+  font-size: var(--ggc-text-sm);
+  line-height: var(--ggc-leading-normal);
+  color: var(--ggc-text-muted);
 }
-.ggc-page-head .meta:first-child { margin-top: 0; }   /* 제목 없이 메타만 있을 때(v2.1 기본) */
+.ggc-page-head .meta:first-child { margin-top: 0; }   /* 제목 없이 메타만 있을 때(v2.1 호환) */
 .ggc-page-head .actions {
   display: flex;
   align-items: center;
@@ -3063,6 +3145,53 @@ html[data-ggc-modal-active] { overflow: hidden; }
   .ggc-file .drop { border-color: var(--ggc-text-muted); }
 }
 
+/* =============================================================================
+ * 37. 타이포 스케일 유틸 · 아이콘   (v3.0, ADR 0009)
+ * 위계는 색이 아니라 크기·굵기·간격으로 만든다. 값은 토큰(--ggc-h*-size · --ggc-text-*)이라 대민 프로필이 KRDS 스텝으로 키운다.
+ *   .ggc-h1  페이지 제목(24)  — 화면당 하나, .ggc-page-head 가 그린다
+ *   .ggc-h2  섹션 제목(18)    — 카드 밖 구획 제목
+ *   .ggc-h3  카드 제목(16)    — .ggc-card-head .title 과 같다
+ *   .ggc-text-sm · .ggc-text-xs  메타 · 캡션
+ * 아이콘: lucide 스프라이트(design/ggc-icons.svg, 생성물) 의 <symbol id="i-…"> 를 <use> 로 그린다.
+ *   <svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>
+ *   서비스는 스프라이트를 정적루트에 두고 href="ggc-icons.svg#i-check" 로 참조하거나(같은 오리진),
+ *   갤러리처럼 <body> 첫 줄에 인라인한다(file:// · 망분리 정적 HTML). 이모지·유니코드 기호 아이콘은 쓰지 않는다.
+ *   의미 있는 아이콘(단독 버튼)은 aria-label 을 버튼에 둔다 — svg 는 항상 aria-hidden.
+ * ============================================================================= */
+.ggc-h1, .ggc-h2, .ggc-h3 {
+  margin: 0;
+  font-family: var(--ggc-font);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: var(--ggc-leading-tight);
+  color: var(--ggc-text-strong);
+}
+.ggc-h1 { font-size: var(--ggc-h1-size); }
+.ggc-h2 { font-size: var(--ggc-h2-size); }
+.ggc-h3 { font-size: var(--ggc-h3-size); }
+.ggc-text-sm { font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.ggc-text-xs { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+
+.ggc-icon {
+  width: var(--ggc-icon); height: var(--ggc-icon);
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--ggc-icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -0.125em;   /* 인라인 텍스트 옆에서 x-height 에 맞춘다 */
+}
+.ggc-icon--lg { width: var(--ggc-icon-lg); height: var(--ggc-icon-lg); }
+.ggc-icon--sm { width: 14px; height: 14px; }
+/* 스프라이트를 인라인할 때 — 화면을 차지하지 않고 접근성 트리에도 없다 */
+.ggc-icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+/* 배지·태그 안 아이콘은 글자 크기를 따른다(색 단독 금지 규칙은 그대로 — 텍스트와 함께) */
+.ggc-badge .ggc-icon, .ggc-tag .ggc-icon { width: 1em; height: 1em; }
+@media (forced-colors: active) {
+  .ggc-icon { stroke: currentColor; }
+}
+
 /* ---- design/examples/examples.css (갤러리 전용) -------------------------- */
 /* =============================================================================
  * examples.css — 예제 갤러리 **전용** 껍데기 (2026-08-22)
@@ -3397,6 +3526,9 @@ body {
 </style>
 
 <a class="ggc-skip-link" href="#main">본문 바로가기</a>
+<!-- ggc-icons:begin — 생성물. design/build-icons.py 가 갈아 끼운다. 손으로 고치지 말 것 -->
+<svg xmlns="http://www.w3.org/2000/svg" class="ggc-icon-sprite" aria-hidden="true" focusable="false"><symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol><symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol><symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol><symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol><symbol id="i-badge-check" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol><symbol id="i-building-2" viewBox="0 0 24 24"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></symbol><symbol id="i-calendar-check" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="m9 15 2 2 4-4"/></symbol><symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></symbol><symbol id="i-chart-column" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol><symbol id="i-chevrons-left" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></symbol><symbol id="i-chevrons-right" viewBox="0 0 24 24"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></symbol><symbol id="i-chevrons-up-down" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol><symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-circle-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></symbol><symbol id="i-circle-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-clipboard-list" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol><symbol id="i-columns-3" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol><symbol id="i-ellipsis-vertical" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></symbol><symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol><symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol><symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><symbol id="i-funnel" viewBox="0 0 24 24"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></symbol><symbol id="i-gavel" viewBox="0 0 24 24"><path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381"/><path d="m16 16 6-6"/><path d="m21.5 10.5-8-8"/><path d="m8 8 6-6"/><path d="m8.5 7.5 8 8"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol><symbol id="i-grip-vertical" viewBox="0 0 24 24"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol><symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol><symbol id="i-landmark" viewBox="0 0 24 24"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></symbol><symbol id="i-layout-dashboard" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></symbol><symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></symbol><symbol id="i-loader-circle" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-log-in" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/></symbol><symbol id="i-log-out" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></symbol><symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol><symbol id="i-message-square" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol><symbol id="i-panel-left" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></symbol><symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></symbol><symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></symbol><symbol id="i-qr-code" viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></symbol><symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol><symbol id="i-save" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></symbol><symbol id="i-scroll-text" viewBox="0 0 24 24"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></symbol><symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol><symbol id="i-square-check" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-table-2" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></symbol><symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol><symbol id="i-trending-down" viewBox="0 0 24 24"><path d="M16 17h6v-6"/><path d="m22 17-8.5-8.5-5 5L2 7"/></symbol><symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol><symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol></svg>
+<!-- ggc-icons:end -->
 
 <div class="ggc-shell">
 
@@ -3421,38 +3553,35 @@ body {
         <span class="svc" id="svc">공통 디자인 시스템</span>
       </span>
     </a>
-    <div class="ggc-gnb-page" id="page-title"></div>
+    <div class="ggc-gnb-page" id="gnb-page"></div>
     <div class="ggc-search">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
-        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
-      </svg>
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-search"/></svg>
       <label for="q" class="ex-sr">예제 검색</label>
       <input id="q" type="search" placeholder="예제 검색">
     </div>
     <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
-        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
-      </svg>
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-bell"/></svg>
     </button>
   </header>
 
   <div class="ggc-shell-body">
     <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
       <div class="ggc-lnb-group">갤러리</div>
-      <a class="ggc-lnb-item" href="#index" data-page="index">개요</a>
-      <a class="ggc-lnb-item" href="#tokens" data-page="tokens">토큰 · 팔레트</a>
-      <a class="ggc-lnb-item" href="#components" data-page="components">컴포넌트 카탈로그</a>
-      <a class="ggc-lnb-item" href="#forms" data-page="forms">폼 컨트롤</a>
-      <a class="ggc-lnb-item" href="#nav" data-page="nav">내비게이션 · 탭</a>
-      <a class="ggc-lnb-item" href="#overlay" data-page="overlay">오버레이 · 상태 · 본문</a>
+      <a class="ggc-lnb-item" href="#index" data-page="index"><svg class="ggc-icon" aria-hidden="true"><use href="#i-house"/></svg><span class="label">개요</span></a>
+      <a class="ggc-lnb-item" href="#tokens" data-page="tokens"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg><span class="label">토큰 · 팔레트</span></a>
+      <a class="ggc-lnb-item" href="#components" data-page="components"><svg class="ggc-icon" aria-hidden="true"><use href="#i-columns-3"/></svg><span class="label">컴포넌트 카탈로그</span></a>
+      <a class="ggc-lnb-item" href="#forms" data-page="forms"><svg class="ggc-icon" aria-hidden="true"><use href="#i-square-check"/></svg><span class="label">폼 컨트롤</span></a>
+      <a class="ggc-lnb-item" href="#nav" data-page="nav"><svg class="ggc-icon" aria-hidden="true"><use href="#i-list"/></svg><span class="label">내비게이션 · 탭</span></a>
+      <a class="ggc-lnb-item" href="#overlay" data-page="overlay"><svg class="ggc-icon" aria-hidden="true"><use href="#i-message-square"/></svg><span class="label">오버레이 · 상태 · 본문</span></a>
       <div class="ggc-lnb-divider"></div>
       <div class="ggc-lnb-group">실물 화면</div>
-      <a class="ggc-lnb-item" href="#dashboard" data-page="dashboard">대시보드 · Monitor</a>
-      <a class="ggc-lnb-item" href="#wizard" data-page="wizard">위저드 · Configure</a>
-      <a class="ggc-lnb-item" href="#login" data-page="login">QR 로그인 · Entry</a>
+      <a class="ggc-lnb-item" href="#dashboard" data-page="dashboard"><svg class="ggc-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg><span class="label">대시보드 · Monitor</span></a>
+      <a class="ggc-lnb-item" href="#explore" data-page="explore"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록 · Explore</span></a>
+      <a class="ggc-lnb-item" href="#wizard" data-page="wizard"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">위저드 · Configure</span></a>
+      <a class="ggc-lnb-item" href="#login" data-page="login"><svg class="ggc-icon" aria-hidden="true"><use href="#i-qr-code"/></svg><span class="label">QR 로그인 · Entry</span></a>
     </nav>
 
-      <main class="ggc-shell-main" data-page="index">
+      <main class="ggc-shell-main" data-page="index" aria-labelledby="page-title-index">
       <div class="ex-note ex-note--warn">
         <p><b>이 파일은 생성물이다.</b> 갤러리 9쪽과 정본 CSS·JS·브랜드 자산을
         한 파일로 합친 것이고, <code>design/examples/build-standalone.py</code> 가
@@ -3463,7 +3592,14 @@ body {
       </div>
 
 
-      <p class="ex-ver">토큰 v1.2 · 컴포넌트 v1.2</p>
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-index">경기도의회 공통 디자인 시스템</h1>
+            <p class="desc">토큰 v3.0 · 컴포넌트 v3.0 · Tier 2 레지스트리 v3</p>
+          </div>
+        </div>
+      </div>
       <p class="ex-lede">
         의정정보시스템 <b>11개 프런트엔드</b>가 공유하는 한 벌이다. Next 14/15/16 ·
         React 18/19 · Vite · JSP/Tiles · Jinja2 · FastAPI · 정적 HTML —
@@ -3621,9 +3757,16 @@ body {
       </section>
 
     </main>
-      <main class="ggc-shell-main" data-page="tokens" hidden>
+      <main class="ggc-shell-main" data-page="tokens" aria-labelledby="page-title-tokens" hidden>
 
-      <p class="ex-ver">ggc-tokens.css v2.0</p>
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-tokens">토큰 · 팔레트</h1>
+            <p class="desc">ggc-tokens.css v3.0</p>
+          </div>
+        </div>
+      </div>
       <p class="ex-lede">
         아래 <b>모든 색값과 대비비는 이 페이지가 열릴 때 브라우저가 계산한 것</b>이다.
         마크업에는 토큰 <b>이름</b>만 있고 숫자가 하나도 없다 —
@@ -3687,12 +3830,12 @@ body {
           색각 이상 사용자에게는 대비만으로 부족하고, 이것은 대비 수치와 무관하게 지켜야 한다.</p>
         </div>
         <div class="ex-demo ex-row">
-          <span class="ggc-badge ggc-badge--approved">✓ 승인</span>
-          <span class="ggc-badge ggc-badge--pending">◷ 대기</span>
-          <span class="ggc-badge ggc-badge--rejected">✕ 반려</span>
-          <span class="ggc-badge ggc-badge--session">● 회기 중</span>
-          <span class="ggc-badge ggc-badge--meeting">◆ 회의일</span>
-          <span class="ggc-badge ggc-badge--recess">○ 비회기</span>
+          <span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>승인</span>
+          <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>대기</span>
+          <span class="ggc-badge ggc-badge--rejected"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg>반려</span>
+          <span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span>
+          <span class="ggc-badge ggc-badge--meeting"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>회의일</span>
+          <span class="ggc-badge ggc-badge--recess"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle"/></svg>비회기</span>
           <span class="ggc-badge ggc-badge--paid">₩ 지급완료</span>
         </div>
       </section>
@@ -3915,8 +4058,8 @@ body {
         <div class="ex-sub">같은 마크업이 프로필에 따라 어떻게 달라지는가</div>
         <div class="ex-demo ex-demo--flow">
           <div class="ex-row">
-            <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button">＋ 의안 등록 (sm)</button>
-            <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+            <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>의안 등록 (sm)</button>
+            <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>의안 등록</button>
             <button class="ggc-btn ggc-btn--secondary ggc-btn--lg" type="button">임시저장 (lg)</button>
           </div>
           <div class="ggc-field" style="max-width:360px">
@@ -3930,14 +4073,14 @@ body {
                 <div class="title">경기도 청년 기본 조례 일부개정조례안</div>
                 <div class="meta">기획재정위원회 · 2026-08-25 접수</div>
               </div>
-              <div class="end"><span class="ggc-badge ggc-badge--pending">◷ 검토</span></div>
+              <div class="end"><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>검토</span></div>
             </div>
             <div class="ggc-list-row">
               <div class="body">
                 <div class="title">경기도 지방보조금 관리 조례 전부개정조례안</div>
                 <div class="meta">행정안전위원회 · 2026-08-22 접수</div>
               </div>
-              <div class="end"><span class="ggc-badge ggc-badge--approved">✓ 의결</span></div>
+              <div class="end"><span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>의결</span></div>
             </div>
           </div>
           <div class="ggc-table-wrap">
@@ -3958,9 +4101,16 @@ body {
       </section>
 
     </main>
-      <main class="ggc-shell-main ggc-shell-main--wide" data-page="components" hidden>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="components" aria-labelledby="page-title-components" hidden>
 
-      <p class="ex-ver">ggc-components.css v2.0</p>
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-components">컴포넌트 카탈로그</h1>
+            <p class="desc">ggc-components.css v3.0</p>
+          </div>
+        </div>
+      </div>
       <p class="ex-lede">
         각 예제 아래 <b>“마크업”</b> 을 펼치면 지금 화면에 그려진 <b>바로 그 DOM</b> 이 나온다.
         손으로 옮겨 적은 코드가 아니라 <code class="ex-inline">innerHTML</code> 을 읽어 채운 것이라,
@@ -3989,7 +4139,7 @@ body {
             <button class="ggc-btn ggc-btn--primary" type="button" disabled>비활성</button>
           </div>
           <div style="max-width:420px;margin-top:var(--ggc-space-4)">
-            <button class="ggc-btn ggc-btn--dashed" type="button">＋ 조문 직접 추가</button>
+            <button class="ggc-btn ggc-btn--dashed" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>조문 직접 추가</button>
           </div>
         </div>
         <details class="ex-reveal" data-src="#d-btn"><summary>마크업</summary><pre class="ex-code"></pre></details>
@@ -4003,12 +4153,12 @@ body {
           둘을 섞어 쓰면 한 화면에서 같은 모양이 두 가지 뜻으로 읽힌다.</p>
         <div class="ex-demo ex-demo--flow" id="d-badge">
           <div class="ex-row">
-            <span class="ggc-badge ggc-badge--approved">✓ 승인</span>
-            <span class="ggc-badge ggc-badge--pending">◷ 대기</span>
-            <span class="ggc-badge ggc-badge--rejected">✕ 반려</span>
-            <span class="ggc-badge ggc-badge--session">● 회기 중</span>
-            <span class="ggc-badge ggc-badge--meeting">◆ 회의일</span>
-            <span class="ggc-badge ggc-badge--recess">○ 비회기</span>
+            <span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>승인</span>
+            <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>대기</span>
+            <span class="ggc-badge ggc-badge--rejected"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg>반려</span>
+            <span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span>
+            <span class="ggc-badge ggc-badge--meeting"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>회의일</span>
+            <span class="ggc-badge ggc-badge--recess"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle"/></svg>비회기</span>
             <span class="ggc-badge ggc-badge--paid">₩ 지급완료</span>
           </div>
           <div class="ex-row">
@@ -4049,20 +4199,20 @@ body {
               <a class="action" href="#main">전체 보기</a>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">📄</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-file-text"/></svg></span>
               <div class="body">
                 <div class="title">경기도 청년 기본조례 일부개정조례안 검토보고</div>
                 <div class="meta">기획재정위원회 · 정책지원관 이○○ · 2026-08-21</div>
               </div>
-              <div class="end"><span class="ggc-badge ggc-badge--approved">✓ 승인</span></div>
+              <div class="end"><span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>승인</span></div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">📄</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-file-text"/></svg></span>
               <div class="body">
                 <div class="title">경기도 사회적경제 육성 지원 조례안 검토보고</div>
                 <div class="meta">경제노동위원회 · 정책지원관 박○○ · 2026-08-20</div>
               </div>
-              <div class="end"><span class="ggc-badge ggc-badge--pending">◷ 대기</span></div>
+              <div class="end"><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>대기</span></div>
             </div>
             <div class="ggc-card-foot ggc-card-foot--inset ggc-card-foot--center">
               <a class="action" href="#main">9건 더 보기</a>
@@ -4093,23 +4243,23 @@ body {
             <div class="ggc-stat">
               <div class="label-row">
                 <span class="label">접수 의안</span>
-                <span class="icon icon--info" aria-hidden="true">📋</span>
+                <span class="icon icon--info" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-clipboard-list"/></svg></span>
               </div>
               <div class="value">147<span class="unit">건</span></div>
-              <div class="trend trend--up">▲ 전 회기 대비 12건</div>
+              <div class="trend trend--up"><svg class="ggc-icon" aria-hidden="true"><use href="#i-trending-up"/></svg>전 회기 대비 12건</div>
             </div>
             <div class="ggc-stat">
               <div class="label-row">
                 <span class="label">가결</span>
-                <span class="icon icon--success" aria-hidden="true">✓</span>
+                <span class="icon icon--success" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-check"/></svg></span>
               </div>
               <div class="value">118<span class="unit">건</span></div>
-              <div class="trend trend--up">▲ 처리율 80.3%</div>
+              <div class="trend trend--up"><svg class="ggc-icon" aria-hidden="true"><use href="#i-trending-up"/></svg>처리율 80.3%</div>
             </div>
             <div class="ggc-stat">
               <div class="label-row">
                 <span class="label">계속심사</span>
-                <span class="icon icon--warning" aria-hidden="true">◷</span>
+                <span class="icon icon--warning" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-clock"/></svg></span>
               </div>
               <div class="value">21<span class="unit">건</span></div>
               <div class="trend trend--warn">기한 임박 4건</div>
@@ -4117,10 +4267,10 @@ body {
             <div class="ggc-stat">
               <div class="label-row">
                 <span class="label">부결 · 폐기</span>
-                <span class="icon icon--danger" aria-hidden="true">✕</span>
+                <span class="icon icon--danger" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-x"/></svg></span>
               </div>
               <div class="value">8<span class="unit">건</span></div>
-              <div class="trend trend--down">▼ 전 회기 대비 3건</div>
+              <div class="trend trend--down"><svg class="ggc-icon" aria-hidden="true"><use href="#i-trending-down"/></svg>전 회기 대비 3건</div>
             </div>
           </div>
         </div>
@@ -4187,11 +4337,11 @@ body {
                 </tr>
               </thead>
               <tbody>
-                <tr><td>기획재정위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">38</td><td class="num">31</td><td class="num">5</td><td><span class="ggc-badge ggc-badge--session">● 회기 중</span></td></tr>
-                <tr><td>경제노동위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">29</td><td class="num">24</td><td class="num">4</td><td><span class="ggc-badge ggc-badge--session">● 회기 중</span></td></tr>
-                <tr><td>문화체육관광위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">22</td><td class="num">19</td><td class="num">2</td><td><span class="ggc-badge ggc-badge--meeting">◆ 회의일</span></td></tr>
-                <tr><td>보건복지위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">34</td><td class="num">28</td><td class="num">6</td><td><span class="ggc-badge ggc-badge--recess">○ 비회기</span></td></tr>
-                <tr><td>건설교통위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">24</td><td class="num">16</td><td class="num">4</td><td><span class="ggc-badge ggc-badge--recess">○ 비회기</span></td></tr>
+                <tr><td>기획재정위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">38</td><td class="num">31</td><td class="num">5</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span></td></tr>
+                <tr><td>경제노동위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">29</td><td class="num">24</td><td class="num">4</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span></td></tr>
+                <tr><td>문화체육관광위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">22</td><td class="num">19</td><td class="num">2</td><td><span class="ggc-badge ggc-badge--meeting"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>회의일</span></td></tr>
+                <tr><td>보건복지위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">34</td><td class="num">28</td><td class="num">6</td><td><span class="ggc-badge ggc-badge--recess"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle"/></svg>비회기</span></td></tr>
+                <tr><td>건설교통위원회</td><td><span class="ggc-tag ggc-tag--primary">상임위</span></td><td class="num">24</td><td class="num">16</td><td class="num">4</td><td><span class="ggc-badge ggc-badge--recess"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle"/></svg>비회기</span></td></tr>
               </tbody>
               <tfoot>
                 <tr><td>합계</td><td></td><td class="num">147</td><td class="num">118</td><td class="num">21</td><td></td></tr>
@@ -4210,7 +4360,7 @@ body {
                 <tr><th scope="row">의안명</th><td>경기도 청년 기본조례 일부개정조례안</td></tr>
                 <tr><th scope="row">제안자</th><td>○○○ 의원 외 12인 <span class="ggc-badge ggc-badge--role-member">의원</span></td></tr>
                 <tr><th scope="row">소관위원회</th><td>기획재정위원회</td></tr>
-                <tr><th scope="row">처리결과</th><td><span class="ggc-badge ggc-badge--approved">✓ 원안가결</span></td></tr>
+                <tr><th scope="row">처리결과</th><td><span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>원안가결</span></td></tr>
               </tbody>
             </table>
           </div>
@@ -4308,7 +4458,7 @@ body {
 
             <div class="ggc-card">
               <div class="ggc-empty">
-                <span class="icon" aria-hidden="true">◻</span>
+                <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-file"/></svg></span>
                 <p class="title">등록된 검토보고서가 없다</p>
                 <p class="desc">이번 회기에 배정된 의안이 아직 없다. 의안이 접수되면 여기에 나타난다.</p>
                 <div class="actions"><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">의안 목록 열기</button></div>
@@ -4317,7 +4467,7 @@ body {
 
             <div class="ggc-card">
               <div class="ggc-empty ggc-empty--error">
-                <span class="icon" aria-hidden="true">⚠</span>
+                <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-triangle-alert"/></svg></span>
                 <p class="title">목록을 불러오지 못했다</p>
                 <p class="desc">의안정보 연계에 응답이 없다. <span style="font-family:var(--ggc-font-mono);font-size:11.5px">BILL-SYNC-504 · 14:32:07</span></p>
                 <div class="actions"><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">다시 시도</button></div>
@@ -4360,9 +4510,16 @@ body {
       </section>
 
     </main>
-      <main class="ggc-shell-main ggc-shell-main--wide" data-page="forms" hidden>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="forms" aria-labelledby="page-title-forms" hidden>
 
-      <p class="ex-ver">ggc-components.css v2.0 · §16~17 · §24 · §27~28 · §32</p>
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-forms">폼 컨트롤</h1>
+            <p class="desc">ggc-components.css v3.0 · §16~17 · §24 · §27~28 · §32</p>
+          </div>
+        </div>
+      </div>
       <p class="ex-lede">
         셀렉트 · 체크박스 · 라디오 · 칩 · 토글 스위치 · 날짜 · 파일 업로드 · 리스트박스. 리스트박스만 빼고 전부
         <b>네이티브 input 위에 CSS 만 얹은 것</b>이라 키보드·스크린리더·폼 전송이 브라우저 그대로 동작한다.
@@ -4679,9 +4836,16 @@ body {
       </section>
 
     </main>
-      <main class="ggc-shell-main ggc-shell-main--wide" data-page="nav" hidden>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="nav" aria-labelledby="page-title-nav" hidden>
 
-      <p class="ex-ver">ggc-components.css v2.0 · §12~15 · §26 · §29~30 · §34~35</p>
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-nav">내비게이션 · 탭</h1>
+            <p class="desc">ggc-components.css v3.0 · §12~15 · §26 · §29~30 · §34~35</p>
+          </div>
+        </div>
+      </div>
       <p class="ex-lede">
         페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 · 아코디언 · 드롭다운 메뉴 · 링크 · 텍스트 목록 · 페이지 내 내비.
         화면 안에서 <b>"내가 어디 있고 어디로 갈 수 있는가"</b>를 말하는 요소들이다. 탭·메뉴의 키보드 동작(화살표 · Home · End · Esc)은
@@ -4689,15 +4853,15 @@ body {
         탭에 들어가 화살표를 눌러 보라.
       </p>
 
-      <!-- ============================================================ GNB 제목부 + 페이지 헤더 -->
+      <!-- ============================================================ GNB 경로부 + 페이지 헤더 -->
       <section class="ex-section">
-        <h2>GNB 제목부 <span class="cls">.ggc-gnb-page</span></h2>
-        <p>브레드크럼 + 페이지 제목(<code class="ex-inline">&lt;h1&gt;</code>)은 본문이 아니라 <b>GNB 안</b>,
-          브랜드 슬롯과 검색 사이에 산다(v2.1, ADR 0008). 화면의 h1 은 여기 하나이고
-          <code class="ex-inline">&lt;main aria-labelledby="page-title"&gt;</code> 로 본문 랜드마크에 잇는다.
-          높이 64 가 고정이라 <b>줄바꿈하지 않고 말줄임</b>한다 — 잘릴 수 있는 의안명은 본문 첫 카드에 전문을 다시 적는다.
-          900px 이하에서 브레드크럼이 접히고 480px 이하에서 제목은 시각만 숨는다.
-          Monitor 첫 화면은 브레드크럼 없이 제목만 둔다. 이 쪽의 GNB 가 실물이고, 아래는 표본이다.</p>
+        <h2>GNB 경로부 <span class="cls">.ggc-gnb-page</span></h2>
+        <p>헤더에는 <b>화면마다 자리가 같은 정보</b>만 둔다 — 브레드크럼 · 검색 · 알림. 브랜드 슬롯과 검색 사이가
+          경로부다(v3.0, ADR 0010 — 0008 대체). 페이지 제목 <code class="ex-inline">&lt;h1&gt;</code> 은 여기 있지 않고
+          <b>본문 첫 줄</b>(아래 페이지 헤더)에 24px 로 있다. 64px 띠 안의 18px 제목은 크롬처럼 읽혀 시선의 닻이 되지
+          못했다. 브레드크럼은 한 줄 · 마지막 항목만 말줄임하고, 900px 이하에서 접힌다(경로는 LNB drawer 의
+          <code class="ex-inline">aria-current</code> 가 준다). Monitor 첫 화면(홈)은 경로가 없어 비워 둔다.
+          이 쪽의 GNB 가 실물이고, 아래는 표본이다.</p>
         <div class="ex-demo ex-demo--bg" id="d-gnbpage">
           <header class="ggc-gnb ex-demo-gnb">
             <a class="ggc-gnb-brand" href="#main">
@@ -4712,12 +4876,13 @@ body {
                   <li aria-current="page">의안 목록</li>
                 </ol>
               </nav>
-              <h1 class="ggc-gnb-page-title">의안 목록</h1>
             </div>
             <div class="ggc-search">
+              <svg class="ggc-icon" aria-hidden="true"><use href="#i-search"/></svg>
               <label for="q-demo" class="ggc-sr">의안 · 조례 검색</label>
               <input id="q-demo" type="search" placeholder="의안 · 조례 검색">
             </div>
+            <button class="ggc-icon-btn" type="button" aria-label="알림 3건"><svg class="ggc-icon" aria-hidden="true"><use href="#i-bell"/></svg></button>
           </header>
         </div>
         <details class="ex-reveal" data-src="#d-gnbpage"><summary>마크업</summary><pre class="ex-code"></pre></details>
@@ -4725,30 +4890,34 @@ body {
 
       <section class="ex-section">
         <h2>페이지 헤더 <span class="cls">.ggc-page-head</span></h2>
-        <p>본문 첫 줄 — <b>메타 + 주 액션 하나</b>. 제목과 브레드크럼은 위 GNB 제목부로 갔다.
-          Monitor 첫 화면만 인사말형(<code class="ex-inline">--greeting</code>)을 쓴다 — 인사말은
-          <code class="ex-inline">&lt;p class="title"&gt;</code> 이고 h1 이 아니다(h1 은 GNB 에 있다).
-          메타에는 기관 맥락(제N대 · 제NNN회 · 소관)을 적는다.
-          GNB 가 없는 셸 ⓐ(유틸리티 바만)에서만 예전처럼 브레드크럼과 <code class="ex-inline">h1.title</code> 을 여기 둔다.</p>
+        <p>본문 첫 줄 — <b><code class="ex-inline">&lt;h1 class="ggc-page-title"&gt;</code>(24px) + 설명 한 줄 + 주 액션 하나</b>.
+          화면의 h1 은 여기 하나이고 <code class="ex-inline">&lt;main aria-labelledby="page-title"&gt;</code> 로 본문 랜드마크에 잇는다.
+          제목은 그 화면에서 가장 큰 글자다 — 위계는 색이 아니라 크기·굵기로 만든다(ADR 0009).
+          설명(<code class="ex-inline">.desc</code>)에는 기관 맥락(제N대 · 제NNN회 · 소관)과 건수를 적는다. Monitor 첫 화면은
+          h1 이 화면 이름("대시보드")이고 인사말이 설명 자리에 온다 — 인사말을 h1 으로 쓰지 않는다.
+          레코드 화면(의안 상세)은 의안명이 h1 이며 두 줄까지 허용한다 — 잘리면 다른 의안이 된다.</p>
         <div class="ex-demo ex-demo--bg" id="d-head">
           <div class="ggc-page-head">
             <div class="row">
-              <p class="meta">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
+              <div>
+                <h1 class="ggc-page-title">의안 목록</h1>
+                <p class="desc">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
+              </div>
               <div class="actions">
-                <button class="ggc-btn ggc-btn--secondary" type="button">엑셀 내려받기</button>
-                <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+                <button class="ggc-btn ggc-btn--secondary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>엑셀 내려받기</button>
+                <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>의안 등록</button>
               </div>
             </div>
           </div>
 
-          <div class="ggc-page-head ggc-page-head--greeting" style="margin-top:var(--ggc-space-6);margin-bottom:0">
+          <div class="ggc-page-head" style="margin-top:var(--ggc-space-6);margin-bottom:0">
             <div class="row">
               <div>
-                <p class="title">이○○님, 오늘 처리할 검토보고서 3건이 있습니다</p>
-                <p class="meta">정책지원관 · 기획재정위원회 · 2026-08-29 (금)</p>
+                <h1 class="ggc-page-title">대시보드</h1>
+                <p class="desc">이○○님, 오늘 처리할 검토보고서 3건이 있습니다 · 정책지원관 · 기획재정위원회 · 2026-08-29 (금)</p>
               </div>
               <div class="actions">
-                <button class="ggc-btn ggc-btn--primary" type="button">＋ 검토보고서 작성</button>
+                <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>검토보고서 작성</button>
               </div>
             </div>
           </div>
@@ -4762,7 +4931,7 @@ body {
         <p>KRDS 구조 그대로 — <code class="ex-inline">&lt;nav aria-label="현재 경로"&gt;&lt;ol&gt;</code>.
           마지막 항목은 링크가 아니라 <code class="ex-inline">aria-current="page"</code> 텍스트다.
           구분자는 CSS 가 그린다 — 마크업에 "/" 나 "›" 를 적으면 스크린리더가 읽는다.
-          업무 셸에서는 GNB 제목부 안이 기본이고(위 절 · 거기서는 말줄임), 본문·대민 화면에 단독으로 둘 때는
+          업무 셸에서는 GNB 경로부 안이 기본이고(위 절 · 거기서는 말줄임), 본문·대민 화면에 단독으로 둘 때는
           아래처럼 줄바꿈되고 말줄임하지 않는다 — 의안명은 잘리면 다른 의안이 된다.</p>
         <div class="ex-demo" id="d-bc">
           <nav class="ggc-breadcrumb" aria-label="현재 경로">
@@ -4807,15 +4976,15 @@ body {
             <div class="ggc-tabpanel" role="tabpanel" id="tp2" aria-labelledby="tb2" hidden>
               <div class="ggc-list-row" style="border-top:none;padding-left:0;padding-right:0">
                 <div class="body"><div class="title">위원회 회부</div><div class="meta">2026-08-26 · 의장</div></div>
-                <div class="end"><span class="ggc-badge ggc-badge--approved">✓ 완료</span></div>
+                <div class="end"><span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>완료</span></div>
               </div>
               <div class="ggc-list-row" style="padding-left:0;padding-right:0">
                 <div class="body"><div class="title">전문위원 검토보고</div><div class="meta">2026-08-28 · 정책지원관 이○○</div></div>
-                <div class="end"><span class="ggc-badge ggc-badge--pending">◷ 검토</span></div>
+                <div class="end"><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>검토</span></div>
               </div>
               <div class="ggc-list-row" style="padding-left:0;padding-right:0">
                 <div class="body"><div class="title">상임위원회 심사</div><div class="meta">예정 · 제380회 제2차</div></div>
-                <div class="end"><span class="ggc-badge ggc-badge--recess">○ 대기</span></div>
+                <div class="end"><span class="ggc-badge ggc-badge--recess"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle"/></svg>대기</span></div>
               </div>
             </div>
             <div class="ggc-tabpanel" role="tabpanel" id="tp3" aria-labelledby="tb3" hidden>
@@ -4868,7 +5037,7 @@ body {
         <div class="ex-demo" id="d-pg">
           <nav class="ggc-pagination" aria-label="페이지">
             <span class="summary">총 147건 · 2 / 8쪽</span>
-            <a class="nav" href="#main">← 이전</a>
+            <a class="nav" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>이전</a>
             <ol class="pages">
               <li><a href="#main">1</a></li>
               <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>2</a></li>
@@ -4878,16 +5047,16 @@ body {
               <li><span class="gap" aria-hidden="true">…</span></li>
               <li><a href="#main">8</a></li>
             </ol>
-            <a class="nav" href="#main">다음 →</a>
+            <a class="nav" href="#main">다음<svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </nav>
           <nav class="ggc-pagination" aria-label="페이지 (첫 쪽)" style="margin-top:var(--ggc-space-5)">
-            <a class="nav" href="#main" aria-disabled="true" tabindex="-1">← 이전</a>
+            <a class="nav" href="#main" aria-disabled="true" tabindex="-1"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>이전</a>
             <ol class="pages">
               <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>1</a></li>
               <li><a href="#main">2</a></li>
               <li><a href="#main">3</a></li>
             </ol>
-            <a class="nav" href="#main">다음 →</a>
+            <a class="nav" href="#main">다음<svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </nav>
         </div>
         <details class="ex-reveal" data-src="#d-pg"><summary>마크업</summary><pre class="ex-code"></pre></details>
@@ -4978,8 +5147,8 @@ body {
             <table class="ggc-table ggc-table--flat">
               <thead><tr><th scope="col">의안번호</th><th scope="col">의안명</th><th scope="col">상태</th></tr></thead>
               <tbody>
-                <tr><td>BILL-2026-0417</td><td><a class="ggc-link ggc-link--quiet" href="#main">경기도 청년 기본 조례 일부개정조례안</a></td><td><span class="ggc-badge ggc-badge--pending">◷ 심사</span></td></tr>
-                <tr><td>BILL-2026-0412</td><td><a class="ggc-link ggc-link--quiet" href="#main">경기도 소상공인 지원 조례안</a></td><td><span class="ggc-badge ggc-badge--approved">✓ 가결</span></td></tr>
+                <tr><td>BILL-2026-0417</td><td><a class="ggc-link ggc-link--quiet" href="#main">경기도 청년 기본 조례 일부개정조례안</a></td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>심사</span></td></tr>
+                <tr><td>BILL-2026-0412</td><td><a class="ggc-link ggc-link--quiet" href="#main">경기도 소상공인 지원 조례안</a></td><td><span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>가결</span></td></tr>
               </tbody>
             </table>
           </div>
@@ -5058,9 +5227,16 @@ body {
       </section>
 
     </main>
-      <main class="ggc-shell-main ggc-shell-main--wide" data-page="overlay" hidden>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="overlay" aria-labelledby="page-title-overlay" hidden>
 
-      <p class="ex-ver">ggc-components.css v2.0 · §18~23 · §25 · §31 · §33</p>
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-overlay">오버레이 · 상태 · 본문</h1>
+            <p class="desc">ggc-components.css v3.0 · §18~23 · §25 · §31 · §33</p>
+          </div>
+        </div>
+      </div>
       <p class="ex-lede">
         알림 · 토스트 · 모달 · 툴팁 · 스피너 · 스켈레톤 · 빈 상태 · 문서 본문 · 하단 액션바. 모달은 네이티브
         <code class="ex-inline">&lt;dialog&gt;</code> 라 포커스 가두기 · ESC · 배경 inert 를 브라우저가 준다.
@@ -5077,25 +5253,25 @@ body {
           즉시 알려야 하는 오류면 <code class="ex-inline">alert</code>.</p>
         <div class="ex-demo ex-demo--flow" id="d-alert">
           <div class="ggc-alert ggc-alert--info" role="status">
-            <span class="icon" aria-hidden="true">ⓘ</span>
+            <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-info"/></svg></span>
             <div class="body"><strong class="title">회기 중</strong><p>제380회 정례회가 2026-09-12 까지 진행된다. 회기 중 접수 의안은 당일 회부된다.</p></div>
           </div>
           <div class="ggc-alert ggc-alert--success" role="status">
-            <span class="icon" aria-hidden="true">✓</span>
+            <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-check"/></svg></span>
             <div class="body"><strong class="title">상신 완료</strong><p>검토보고서가 위원장 결재함으로 넘어갔다 — 2026-08-29 14:32.</p></div>
             <div class="actions"><a class="ggc-btn ggc-btn--secondary ggc-btn--sm" href="#main">결재함 보기</a></div>
           </div>
           <div class="ggc-alert ggc-alert--warning" role="status">
-            <span class="icon" aria-hidden="true">⚠</span>
+            <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-triangle-alert"/></svg></span>
             <div class="body"><strong class="title">기한 임박</strong><p>회부 후 30일이 2026-09-02 에 지난다. 「경기도의회 회의규칙」 제42조에 따라 계속심사 여부를 결정해야 한다.</p></div>
             <button class="close" type="button" aria-label="닫기">✕</button>
           </div>
           <div class="ggc-alert ggc-alert--danger" role="alert">
-            <span class="icon" aria-hidden="true">✕</span>
+            <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-x"/></svg></span>
             <div class="body"><strong class="title">상신할 수 없다</strong><p>위원 정수 상한(25명)을 초과한다 — 「청년기본법 시행령」 제6조 제2항. 명단에서 1명을 제외하고 다시 시도한다.</p></div>
           </div>
           <div class="ggc-alert" role="status">
-            <span class="icon" aria-hidden="true">§</span>
+            <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-scale"/></svg></span>
             <div class="body"><p>중립 콜아웃 — 근거 조문·참고 안내처럼 상태가 아닌 보조 정보에 쓴다.</p></div>
           </div>
         </div>
@@ -5104,9 +5280,9 @@ body {
         <div class="ex-sub">띠형 · <code class="ex-inline">.ggc-alert--banner</code> — 본문 상단 긴급 공지 (KRDS critical alerts)</div>
         <div class="ex-demo ex-demo--bg" id="d-banner" style="padding:0;overflow:hidden">
           <div class="ggc-alert ggc-alert--danger ggc-alert--banner" role="alert">
-            <span class="icon" aria-hidden="true">⚠</span>
+            <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-triangle-alert"/></svg></span>
             <div class="body"><p><strong class="title" style="display:inline;margin-right:6px">긴급</strong>의안정보 연계 서버 점검 — 2026-08-30 (토) 02:00~06:00 동안 접수·회부가 중단된다.</p></div>
-            <div class="actions"><a class="ggc-btn ggc-btn--ghost ggc-btn--sm" href="#main">자세히 →</a></div>
+            <div class="actions"><a class="ggc-btn ggc-btn--ghost ggc-btn--sm" href="#main">자세히<svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></div>
           </div>
         </div>
         <details class="ex-reveal" data-src="#d-banner"><summary>마크업</summary><pre class="ex-code"></pre></details>
@@ -5130,12 +5306,12 @@ body {
         <div class="ex-demo ex-demo--bg" id="d-toast-dom">
           <div style="display:flex;flex-direction:column;gap:var(--ggc-space-2);max-width:400px">
             <div class="ggc-toast ggc-toast--success" style="animation:none">
-              <span class="icon" aria-hidden="true">✓</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-check"/></svg></span>
               <div class="body"><b class="title">임시저장됨</b><span class="desc">14:32 · 자동 저장</span></div>
               <button class="close" type="button" aria-label="닫기">✕</button>
             </div>
             <div class="ggc-toast" style="animation:none">
-              <span class="icon" aria-hidden="true">▣</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-circle-check"/></svg></span>
               <div class="body"><b class="title">의안 3건을 보관함으로 옮겼다</b></div>
               <button class="action" type="button">실행 취소</button>
               <button class="close" type="button" aria-label="닫기">✕</button>
@@ -5297,7 +5473,7 @@ body {
             <div class="ggc-card">
               <div class="ggc-card-head"><div><div class="title">처리 대기 의안</div><div class="sub">내 소관</div></div></div>
               <div class="ggc-empty">
-                <span class="icon" aria-hidden="true">☰</span>
+                <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-inbox"/></svg></span>
                 <p class="title">처리 대기 의안이 없다</p>
                 <p class="desc">필터 "내 소관 · 처리 대기" 에 해당하는 의안이 없다. 필터를 풀면 147건이다.</p>
                 <div class="actions"><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">필터 초기화</button></div>
@@ -5306,7 +5482,7 @@ body {
             <div class="ggc-card">
               <div class="ggc-card-head"><div><div class="title">회의 일정</div><div class="sub">이번 주</div></div></div>
               <div class="ggc-empty ggc-empty--error">
-                <span class="icon" aria-hidden="true">✕</span>
+                <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-x"/></svg></span>
                 <p class="title">일정을 불러오지 못했다</p>
                 <p class="desc">의사일정 연계 응답 없음 (HTTP 504) · 2026-08-29 14:32. 연계 서버 점검 중일 수 있다.</p>
                 <div class="actions"><button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button">다시 시도</button><a class="ggc-btn ggc-btn--ghost ggc-btn--sm" href="#main">의사일정 바로가기</a></div>
@@ -5315,9 +5491,9 @@ body {
             <div class="ggc-card">
               <div class="ggc-card-head"><div><div class="title">첨부 문서</div></div></div>
               <div class="ggc-empty ggc-empty--compact">
-                <span class="icon" aria-hidden="true">＋</span>
+                <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-plus"/></svg></span>
                 <p class="title">첨부 문서가 없다</p>
-                <div class="actions"><button class="ggc-btn ggc-btn--dashed ggc-btn--sm" type="button">＋ 문서 첨부</button></div>
+                <div class="actions"><button class="ggc-btn ggc-btn--dashed ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>문서 첨부</button></div>
               </div>
             </div>
           </div>
@@ -5379,7 +5555,7 @@ body {
       </div>
 
     </main>
-      <main class="ggc-shell-main" data-page="dashboard" hidden>
+      <main class="ggc-shell-main" data-page="dashboard" aria-labelledby="page-title-dashboard" hidden>
 
       <div class="ex-note" style="margin-top:0">
         <p><b>이 화면은 예시 데이터다.</b> Monitor archetype 이 실제 업무 화면으로
@@ -5388,19 +5564,20 @@ body {
         <code>ggc-tokens.css</code> 와 <code>ggc-components.css</code> 만으로 그려진다.</p>
       </div>
 
-      <!-- 제목(h1)은 GNB 제목부에 있다. Monitor 는 본문 첫 줄이 인사말형 페이지 헤더다 -->
-      <div class="ggc-page-head ggc-page-head--greeting">
+      <!-- h1 은 본문 첫 줄(ADR 0010). Monitor 는 화면 이름이 제목이고 인사말·회기 맥락이 .desc 다 -->
+      <div class="ggc-page-head">
         <div class="row">
           <div>
-            <p class="title">이○○님, 오늘 처리할 의안 3건이 있습니다</p>
-            <p class="meta">
-              회기 2026-08-18 ~ 2026-09-05 · 오늘 <b style="color:var(--ggc-text-muted)">18일차</b>
-              <span class="ggc-badge ggc-badge--session" style="margin-left:8px">● 회기 중</span>
+            <h1 class="ggc-page-title" id="page-title-dashboard">대시보드</h1>
+            <p class="desc">
+              이○○님, 오늘 처리할 의안 <b style="color:var(--ggc-text-strong)">3건</b>이 있습니다 ·
+              제12대 제3차 정례회 2026-08-18 ~ 2026-09-05 · 오늘 <b style="color:var(--ggc-text-strong)">18일차</b>
+              <span class="ggc-badge ggc-badge--session" style="margin-left:8px"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span>
             </p>
           </div>
           <div class="actions">
             <button class="ggc-btn ggc-btn--secondary" type="button">회기 전환</button>
-            <button class="ggc-btn ggc-btn--primary" type="button">＋ 의안 등록</button>
+            <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>의안 등록</button>
           </div>
         </div>
       </div>
@@ -5410,23 +5587,23 @@ body {
         <div class="ggc-stat">
           <div class="label-row">
             <span class="label">접수 의안</span>
-            <span class="icon icon--info" aria-hidden="true">📋</span>
+            <span class="icon icon--info" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-clipboard-list"/></svg></span>
           </div>
           <div class="value">147<span class="unit">건</span></div>
-          <div class="trend trend--up">▲ 전 회기 대비 12건</div>
+          <div class="trend trend--up"><svg class="ggc-icon" aria-hidden="true"><use href="#i-trending-up"/></svg>전 회기 대비 12건</div>
         </div>
         <div class="ggc-stat">
           <div class="label-row">
             <span class="label">가결</span>
-            <span class="icon icon--success" aria-hidden="true">✓</span>
+            <span class="icon icon--success" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-check"/></svg></span>
           </div>
           <div class="value">118<span class="unit">건</span></div>
-          <div class="trend trend--up">▲ 처리율 80.3%</div>
+          <div class="trend trend--up"><svg class="ggc-icon" aria-hidden="true"><use href="#i-trending-up"/></svg>처리율 80.3%</div>
         </div>
         <div class="ggc-stat">
           <div class="label-row">
             <span class="label">계속심사</span>
-            <span class="icon icon--warning" aria-hidden="true">◷</span>
+            <span class="icon icon--warning" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-clock"/></svg></span>
           </div>
           <div class="value">21<span class="unit">건</span></div>
           <div class="trend trend--warn">기한 임박 4건</div>
@@ -5434,10 +5611,10 @@ body {
         <div class="ggc-stat">
           <div class="label-row">
             <span class="label">부결 · 폐기</span>
-            <span class="icon icon--danger" aria-hidden="true">✕</span>
+            <span class="icon icon--danger" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-x"/></svg></span>
           </div>
           <div class="value">8<span class="unit">건</span></div>
-          <div class="trend trend--down">▼ 전 회기 대비 3건</div>
+          <div class="trend trend--down"><svg class="ggc-icon" aria-hidden="true"><use href="#i-trending-down"/></svg>전 회기 대비 3건</div>
         </div>
       </div>
 
@@ -5456,46 +5633,46 @@ body {
               <a class="action" href="#main">전체 보기</a>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">📄</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-file-text"/></svg></span>
               <div class="body">
                 <div class="title">경기도 청년 기본조례 일부개정조례안 검토보고</div>
                 <div class="meta">기획재정위원회 · 정책지원관 이○○ <span class="ggc-tag ggc-tag--primary">본회의</span></div>
               </div>
               <div class="end">
-                <span class="ggc-badge ggc-badge--approved">✓ 승인</span>
+                <span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>승인</span>
                 <span>08-21 16:40</span>
               </div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">📄</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-file-text"/></svg></span>
               <div class="body">
                 <div class="title">경기도 사회적경제 육성 지원 조례안 검토보고</div>
                 <div class="meta">경제노동위원회 · 정책지원관 박○○ <span class="ggc-tag ggc-tag--info">상임위</span></div>
               </div>
               <div class="end">
-                <span class="ggc-badge ggc-badge--pending">◷ 대기</span>
+                <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>대기</span>
                 <span>08-21 11:02</span>
               </div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">📄</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-file-text"/></svg></span>
               <div class="body">
                 <div class="title">경기도 도시공원 및 녹지 등에 관한 조례 일부개정조례안 검토보고</div>
                 <div class="meta">건설교통위원회 · 정책지원관 최○○ <span class="ggc-tag ggc-tag--info">상임위</span></div>
               </div>
               <div class="end">
-                <span class="ggc-badge ggc-badge--rejected">✕ 반려</span>
+                <span class="ggc-badge ggc-badge--rejected"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg>반려</span>
                 <span>08-20 17:25</span>
               </div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">📄</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-file-text"/></svg></span>
               <div class="body">
                 <div class="title">경기도 평생교육 진흥 조례 전부개정조례안 검토보고</div>
                 <div class="meta">문화체육관광위원회 · 정책지원관 정○○ <span class="ggc-tag ggc-tag--primary">본회의</span></div>
               </div>
               <div class="end">
-                <span class="ggc-badge ggc-badge--approved">✓ 승인</span>
+                <span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>승인</span>
                 <span>08-20 09:14</span>
               </div>
             </div>
@@ -5526,11 +5703,11 @@ body {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td>기획재정위원회</td><td class="num">38</td><td class="num">31</td><td class="num">5</td><td class="num">81.6%</td><td><span class="ggc-badge ggc-badge--session">● 회기 중</span></td></tr>
-                  <tr><td>경제노동위원회</td><td class="num">29</td><td class="num">24</td><td class="num">4</td><td class="num">82.8%</td><td><span class="ggc-badge ggc-badge--session">● 회기 중</span></td></tr>
-                  <tr><td>문화체육관광위원회</td><td class="num">22</td><td class="num">19</td><td class="num">2</td><td class="num">86.4%</td><td><span class="ggc-badge ggc-badge--meeting">◆ 회의일</span></td></tr>
-                  <tr><td>보건복지위원회</td><td class="num">34</td><td class="num">28</td><td class="num">6</td><td class="num">82.4%</td><td><span class="ggc-badge ggc-badge--recess">○ 비회기</span></td></tr>
-                  <tr><td>건설교통위원회</td><td class="num">24</td><td class="num">16</td><td class="num">4</td><td class="num">66.7%</td><td><span class="ggc-badge ggc-badge--recess">○ 비회기</span></td></tr>
+                  <tr><td>기획재정위원회</td><td class="num">38</td><td class="num">31</td><td class="num">5</td><td class="num">81.6%</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span></td></tr>
+                  <tr><td>경제노동위원회</td><td class="num">29</td><td class="num">24</td><td class="num">4</td><td class="num">82.8%</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span></td></tr>
+                  <tr><td>문화체육관광위원회</td><td class="num">22</td><td class="num">19</td><td class="num">2</td><td class="num">86.4%</td><td><span class="ggc-badge ggc-badge--meeting"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>회의일</span></td></tr>
+                  <tr><td>보건복지위원회</td><td class="num">34</td><td class="num">28</td><td class="num">6</td><td class="num">82.4%</td><td><span class="ggc-badge ggc-badge--recess"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle"/></svg>비회기</span></td></tr>
+                  <tr><td>건설교통위원회</td><td class="num">24</td><td class="num">16</td><td class="num">4</td><td class="num">66.7%</td><td><span class="ggc-badge ggc-badge--recess"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle"/></svg>비회기</span></td></tr>
                 </tbody>
                 <tfoot>
                   <tr><td>합계</td><td class="num">147</td><td class="num">118</td><td class="num">21</td><td class="num">80.3%</td><td></td></tr>
@@ -5549,28 +5726,28 @@ body {
               <div><div class="title">이번 주 일정</div><div class="sub">08-24 ~ 08-30</div></div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">🗓</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-calendar"/></svg></span>
               <div class="body">
                 <div class="title">제3차 본회의</div>
                 <div class="meta">08-25 (월) 10:00 · 본회의장</div>
               </div>
-              <div class="end"><span class="ggc-badge ggc-badge--meeting">◆ 회의일</span></div>
+              <div class="end"><span class="ggc-badge ggc-badge--meeting"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar-check"/></svg>회의일</span></div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">🗓</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-calendar"/></svg></span>
               <div class="body">
                 <div class="title">기획재정위원회 제2차</div>
                 <div class="meta">08-26 (화) 14:00 · 제1회의실</div>
               </div>
-              <div class="end"><span class="ggc-badge ggc-badge--session">● 회기 중</span></div>
+              <div class="end"><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span></div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">🗓</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-calendar"/></svg></span>
               <div class="body">
                 <div class="title">행정사무감사 계획 보고</div>
                 <div class="meta">08-28 (목) 10:00 · 제2회의실</div>
               </div>
-              <div class="end"><span class="ggc-badge ggc-badge--session">● 회기 중</span></div>
+              <div class="end"><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span></div>
             </div>
             <div class="ggc-card-foot ggc-card-foot--center">
               <a class="action" href="#main">전체 일정</a>
@@ -5643,7 +5820,132 @@ body {
       </div>
 
     </main>
-      <main class="ggc-shell-main ggc-shell-main--wide" data-page="wizard" hidden>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="explore" aria-labelledby="page-title-explore" hidden>
+
+      <div class="ex-note" style="margin-top:0">
+        <p><b>Explore archetype 이다.</b> 업무 시스템에서 가장 많은 화면 — 필터 스트립 + 표 + 페이지네이션.
+        담당자는 스크롤보다 대조를 하므로 <b>첫 화면에 15행 이상</b>이 들어와야 한다(v3.0 밀도: 셀 8×12 · 14px).
+        식별자(의안번호)는 왼쪽 첫 열, 숫자는 우정렬, 날짜는 <code>YYYY-MM-DD</code>, 상태는 배지 + 텍스트. 예시 데이터다.</p>
+      </div>
+
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-explore">의안 목록</h1>
+            <p class="desc">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
+          </div>
+          <div class="actions">
+            <button class="ggc-btn ggc-btn--secondary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>엑셀 내려받기</button>
+            <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>의안 등록</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 필터 스트립 (Explore 슬롯 2) ─────────────────────────────── -->
+      <form class="ggc-card ggc-card--pad" role="search" aria-label="의안 검색 조건" onsubmit="return false" style="margin-bottom:var(--ggc-space-4)">
+        <div class="ex-row" style="align-items:flex-end;gap:var(--ggc-space-3)">
+          <div class="ggc-field" style="flex:1 1 260px">
+            <label for="f-q">의안명 · 의안번호</label>
+            <input id="f-q" type="search" placeholder="예: 청년 기본 조례, 2026-0117">
+          </div>
+          <div class="ggc-field" style="flex:0 1 200px">
+            <label for="f-c">소관위원회</label>
+            <div class="ggc-select"><select id="f-c"><option>내 소관</option><option>전체</option><option>기획재정위원회</option><option>경제노동위원회</option><option>문화체육관광위원회</option><option>보건복지위원회</option><option>건설교통위원회</option></select></div>
+          </div>
+          <div class="ggc-field" style="flex:0 1 170px">
+            <label for="f-s">처리 상태</label>
+            <div class="ggc-select"><select id="f-s"><option>처리 대기</option><option>전체</option><option>접수</option><option>회부</option><option>심사</option><option>의결</option></select></div>
+          </div>
+          <div class="ggc-field" style="flex:0 1 170px">
+            <label for="f-t">회기</label>
+            <div class="ggc-select"><select id="f-t"><option>제380회 (정례회)</option><option>제379회 (임시회)</option><option>제12대 전체</option></select></div>
+          </div>
+          <button class="ggc-btn ggc-btn--primary" type="submit">검색</button>
+          <button class="ggc-btn ggc-btn--ghost" type="reset"><svg class="ggc-icon" aria-hidden="true"><use href="#i-refresh-cw"/></svg>초기화</button>
+        </div>
+        <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2);margin-top:var(--ggc-space-3)">
+          <legend class="ggc-sr">의안 종류</legend>
+          <label class="ggc-chip"><input type="checkbox" checked><span class="text">조례안</span></label>
+          <label class="ggc-chip"><input type="checkbox" checked><span class="text">동의안</span></label>
+          <label class="ggc-chip"><input type="checkbox"><span class="text">결의안</span></label>
+          <label class="ggc-chip"><input type="checkbox"><span class="text">건의안</span></label>
+          <label class="ggc-chip"><input type="checkbox"><span class="text">청원</span></label>
+        </fieldset>
+      </form>
+
+      <!-- ── 결과 요약 (슬롯 3) + 표 (슬롯 4) ───────────────────────────── -->
+      <div class="ggc-card">
+        <div class="ggc-card-head">
+          <div>
+            <div class="title">처리 대기 의안</div>
+            <div class="sub">총 <b style="color:var(--ggc-text-strong)">21건</b> · 내 소관 · 조례안 · 동의안 · 정렬 최근 접수순</div>
+          </div>
+          <a class="action" href="#main">열 설정</a>
+        </div>
+        <div class="ggc-table-wrap">
+          <table class="ggc-table">
+            <caption class="ggc-sr">처리 대기 의안 목록 — 의안번호 · 의안명 · 종류 · 소관위원회 · 제안자 · 접수일 · 처리기한 · 상태</caption>
+            <thead>
+              <tr>
+                <th scope="col" style="padding-left:var(--ggc-space-5)">의안번호</th>
+                <th scope="col">의안명</th>
+                <th scope="col">종류</th>
+                <th scope="col">소관위원회</th>
+                <th scope="col" class="nowrap">제안자</th>
+                <th scope="col" class="nowrap">접수일</th>
+                <th scope="col" class="num">경과(일)</th>
+                <th scope="col">상태</th>
+                <th scope="col" class="ggc-sr">동작</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0147</code></td><td><a href="#main">경기도 청년 기본조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>기획재정위원회</td><td class="nowrap">김○○ 의원 외 12인</td><td class="nowrap">2026-09-04</td><td class="num">1</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>접수</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">회부</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0146</code></td><td><a href="#main">경기도 사회적경제 육성 지원 조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>경제노동위원회</td><td class="nowrap">박○○ 의원 외 8인</td><td class="nowrap">2026-09-03</td><td class="num">2</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>접수</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">회부</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0145</code></td><td><a href="#main">2026년도 제2회 추가경정예산안 동의안</a></td><td><span class="ggc-tag">동의안</span></td><td>기획재정위원회</td><td class="nowrap">경기도지사</td><td class="nowrap">2026-09-02</td><td class="num">3</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회부</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">심사 배정</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0144</code></td><td><a href="#main">경기도 도시공원 및 녹지 등에 관한 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>건설교통위원회</td><td class="nowrap">최○○ 의원 외 5인</td><td class="nowrap">2026-09-01</td><td class="num">4</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회부</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">심사 배정</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0143</code></td><td><a href="#main">경기도 평생교육 진흥 조례 전부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>문화체육관광위원회</td><td class="nowrap">정○○ 의원 외 10인</td><td class="nowrap">2026-08-29</td><td class="num">7</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0142</code></td><td><a href="#main">경기도 주차장 설치 및 관리 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>건설교통위원회</td><td class="nowrap">이○○ 의원 외 7인</td><td class="nowrap">2026-08-28</td><td class="num">8</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0141</code></td><td><a href="#main">경기도 옥외광고물 등 관리 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>건설교통위원회</td><td class="nowrap">경기도지사</td><td class="nowrap">2026-08-27</td><td class="num">9</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>검토 대기</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0140</code></td><td><a href="#main">경기도 장애인 이동권 보장 조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>보건복지위원회</td><td class="nowrap">한○○ 의원 외 15인</td><td class="nowrap">2026-08-27</td><td class="num">9</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0139</code></td><td><a href="#main">경기도 공공기관 임원 보수 기준 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>기획재정위원회</td><td class="nowrap">오○○ 의원 외 6인</td><td class="nowrap">2026-08-26</td><td class="num">10</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>검토 대기</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0138</code></td><td><a href="#main">경기도 소상공인 지원 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>경제노동위원회</td><td class="nowrap">윤○○ 의원 외 9인</td><td class="nowrap">2026-08-25</td><td class="num">11</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0137</code></td><td><a href="#main">경기도 문화예술진흥 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>문화체육관광위원회</td><td class="nowrap">서○○ 의원 외 4인</td><td class="nowrap">2026-08-25</td><td class="num">11</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0136</code></td><td><a href="#main">경기도 재난기본소득 지급 조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>보건복지위원회</td><td class="nowrap">경기도지사</td><td class="nowrap">2026-08-22</td><td class="num">14</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>계속심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">심사 일정</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0135</code></td><td><a href="#main">경기도 도시계획 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>건설교통위원회</td><td class="nowrap">강○○ 의원 외 11인</td><td class="nowrap">2026-08-21</td><td class="num">15</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0134</code></td><td><a href="#main">경기도교육청 학교급식 지원 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>교육기획위원회</td><td class="nowrap">조○○ 의원 외 13인</td><td class="nowrap">2026-08-20</td><td class="num">16</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>검토 대기</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0133</code></td><td><a href="#main">경기도 공유재산 관리 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>기획재정위원회</td><td class="nowrap">경기도지사</td><td class="nowrap">2026-08-19</td><td class="num">17</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0132</code></td><td><a href="#main">경기도 청년 주거 지원 조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>건설교통위원회</td><td class="nowrap">임○○ 의원 외 18인</td><td class="nowrap">2026-08-18</td><td class="num">18</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>계속심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">심사 일정</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0131</code></td><td><a href="#main">경기도 농어업인 기본소득 지원 조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>농정해양위원회</td><td class="nowrap">배○○ 의원 외 9인</td><td class="nowrap">2026-08-14</td><td class="num">22</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0130</code></td><td><a href="#main">경기도 감염병 예방 및 관리 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>보건복지위원회</td><td class="nowrap">경기도지사</td><td class="nowrap">2026-08-12</td><td class="num">24</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>검토 대기</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0129</code></td><td><a href="#main">경기도 기후위기 대응 기본조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>도시환경위원회</td><td class="nowrap">문○○ 의원 외 21인</td><td class="nowrap">2026-08-11</td><td class="num">25</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0128</code></td><td><a href="#main">경기도 공공산후조리원 설치 및 운영 조례 일부개정조례안</a></td><td><span class="ggc-tag ggc-tag--primary">조례안</span></td><td>보건복지위원회</td><td class="nowrap">신○○ 의원 외 7인</td><td class="nowrap">2026-08-08</td><td class="num">28</td><td><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>계속심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">심사 일정</button></td></tr>
+              <tr><td class="nowrap" style="padding-left:var(--ggc-space-5)"><code class="mono">2026-0127</code></td><td><a href="#main">경기도 국제교류 협력 증진 동의안</a></td><td><span class="ggc-tag">동의안</span></td><td>기획재정위원회</td><td class="nowrap">경기도지사</td><td class="nowrap">2026-08-07</td><td class="num">29</td><td><span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>심사</span></td><td><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">검토보고</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ggc-card-foot ggc-card-foot--inset" style="justify-content:center">
+          <nav class="ggc-pagination" aria-label="페이지" style="width:100%">
+            <span class="summary">총 21건 · 1 / 2쪽 · 20건씩</span>
+            <a class="nav" href="#main" aria-disabled="true" tabindex="-1"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>이전</a>
+            <ol class="pages">
+              <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>1</a></li>
+              <li><a href="#main">2</a></li>
+            </ol>
+            <a class="nav" href="#main">다음<svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="ex-note" style="margin-top:var(--ggc-space-7)">
+        <p><b>세 상태를 함께 만든다.</b> 빈 상태는 <b>필터 때문인지 데이터가 없는 건지 구분</b>해 문구를 다르게 한다
+        ("조건에 맞는 의안이 없습니다 — 필터를 바꿔 보세요" / "접수된 의안이 없습니다. 의안 등록으로 시작합니다").
+        오류는 표 자리에 재시도 버튼, 로딩은 <code>.ggc-skeleton</code> 으로 행 높이를 유지한다 —
+        <a href="#overlay">오버레이 · 상태</a> 쪽에 실물이 있다.
+        React 라면 <code>@ggc/ggc-data-table</code>(TanStack) 이 정렬 · 열 표시 · 쪽 이동 · 빈 상태 구분까지 한 번에 준다.</p>
+      </div>
+
+    </main>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="wizard" aria-labelledby="page-title-wizard" hidden>
 
       <div class="ex-note" style="margin-top:0">
         <p><b>Configure archetype 이다.</b> 순서가 있는 다단계 입력 — 단계 표시가
@@ -5651,13 +5953,16 @@ body {
         하단에 <b>이전 / 다음</b> 이 항상 같은 자리에 있다. 예시 데이터다.</p>
       </div>
 
-      <!-- 제목(h1)·브레드크럼은 GNB 제목부에 있다. 본문 첫 줄은 메타 + 주 액션 -->
+      <!-- 브레드크럼은 GNB 경로부에, h1 은 본문 첫 줄에(ADR 0010). 레코드명은 .desc — 잘리지 않는다 -->
       <div class="ggc-page-head">
         <div class="row">
-          <p class="meta">
-            경기도 청년 기본조례 일부개정조례안 ·
-            <span style="font-family:var(--ggc-font-mono)">DRAFT-2026-0088</span>
-          </p>
+          <div>
+            <h1 class="ggc-page-title" id="page-title-wizard">조례 초안 작성</h1>
+            <p class="desc">
+              경기도 청년 기본조례 일부개정조례안 ·
+              <span style="font-family:var(--ggc-font-mono)">DRAFT-2026-0088</span>
+            </p>
+          </div>
           <div class="actions">
             <span style="font-size:12px;color:var(--ggc-text-subtle)">08-22 14:07 자동저장됨</span>
             <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
@@ -5730,12 +6035,12 @@ body {
           </div>
 
           <div style="margin-top:var(--ggc-space-5)">
-            <button class="ggc-btn ggc-btn--dashed" type="button">＋ 조문 직접 추가</button>
+            <button class="ggc-btn ggc-btn--dashed" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>조문 직접 추가</button>
           </div>
 
           <!-- 하단 이동 바 — 항상 같은 자리 -->
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--ggc-space-4);margin:var(--ggc-space-6) -22px -18px;padding:var(--ggc-space-4) var(--ggc-space-5);background:var(--ggc-surface-inset);border-top:1px solid var(--ggc-hairline);border-radius:0 0 var(--ggc-radius-lg) var(--ggc-radius-lg)">
-            <button class="ggc-btn ggc-btn--secondary" type="button">← 이전</button>
+            <button class="ggc-btn ggc-btn--secondary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>이전</button>
             <div class="ggc-wizard-mini">
               <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
               <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
@@ -5743,7 +6048,7 @@ body {
               <span class="step"><span class="dot"></span><span class="line"></span></span>
               <span class="stage">3 / 4</span>
             </div>
-            <button class="ggc-btn ggc-btn--primary" type="button">다음 →</button>
+            <button class="ggc-btn ggc-btn--primary" type="button">다음<svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </div>
         </div>
 
@@ -5782,7 +6087,7 @@ body {
               <a class="action" href="#main">전체</a>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">§</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-scale"/></svg></span>
               <div class="body">
                 <div class="title">서울특별시 청년 기본조례</div>
                 <div class="meta">2026-04-11 개정 · 19~39세</div>
@@ -5790,7 +6095,7 @@ body {
               <div class="end"><span class="ggc-tag ggc-tag--success">일치</span></div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">§</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-scale"/></svg></span>
               <div class="body">
                 <div class="title">부산광역시 청년 기본조례</div>
                 <div class="meta">2026-02-28 개정 · 18~39세</div>
@@ -5798,7 +6103,7 @@ body {
               <div class="end"><span class="ggc-tag ggc-tag--warning">상이</span></div>
             </div>
             <div class="ggc-list-row">
-              <span class="icon" aria-hidden="true">§</span>
+              <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-scale"/></svg></span>
               <div class="body">
                 <div class="title">인천광역시 청년 기본조례</div>
                 <div class="meta">2026-05-30 개정 · 19~39세</div>
@@ -5809,7 +6114,7 @@ body {
 
           <div class="ggc-card ggc-card--pad">
             <div style="display:flex;align-items:center;gap:var(--ggc-space-2);margin-bottom:var(--ggc-space-3)">
-              <span style="font-size:16px;color:var(--ggc-danger)" aria-hidden="true">⚠</span>
+              <span style="color:var(--ggc-danger);display:inline-flex" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-triangle-alert"/></svg></span>
               <span style="font-size:13.5px;font-weight:800;color:var(--ggc-text-strong)">검토 필요 1건</span>
             </div>
             <div style="font-size:12.5px;line-height:1.7;color:var(--ggc-text-muted)">
@@ -5838,7 +6143,7 @@ body {
       </div>
 
     </main>
-      <main class="ggc-shell-main" data-page="login" hidden>
+      <main class="ggc-shell-main" data-page="login" aria-labelledby="page-title-login" hidden>
 
       <h1 class="ex-h1">QR 로그인<span class="ver">.ggc-qr · 컴포넌트 v1.2</span></h1>
       <p class="ex-lede">경기도의정포털 앱으로 들어오는 <b>전 시스템 공통 입구</b>다.
@@ -6031,54 +6336,50 @@ body {
   </div>
 
 <template data-gnb-page="index">
-      <h1 class="ggc-gnb-page-title">경기도의회 공통 디자인 시스템</h1>
     </template>
 <template data-gnb-page="tokens">
       <nav class="ggc-breadcrumb" aria-label="현재 경로">
         <ol><li><a href="#index">홈</a></li><li><a href="#index">갤러리</a></li><li aria-current="page">토큰 · 팔레트</li></ol>
       </nav>
-      <h1 class="ggc-gnb-page-title">토큰 · 팔레트</h1>
     </template>
 <template data-gnb-page="components">
       <nav class="ggc-breadcrumb" aria-label="현재 경로">
         <ol><li><a href="#index">홈</a></li><li><a href="#index">갤러리</a></li><li aria-current="page">컴포넌트 카탈로그</li></ol>
       </nav>
-      <h1 class="ggc-gnb-page-title">컴포넌트 카탈로그</h1>
     </template>
 <template data-gnb-page="forms">
       <nav class="ggc-breadcrumb" aria-label="현재 경로">
         <ol><li><a href="#index">홈</a></li><li><a href="#components">컴포넌트</a></li><li aria-current="page">폼 컨트롤</li></ol>
       </nav>
-      <h1 class="ggc-gnb-page-title">폼 컨트롤</h1>
     </template>
 <template data-gnb-page="nav">
       <nav class="ggc-breadcrumb" aria-label="현재 경로">
         <ol><li><a href="#index">홈</a></li><li><a href="#components">컴포넌트</a></li><li aria-current="page">내비게이션 · 탭</li></ol>
       </nav>
-      <h1 class="ggc-gnb-page-title">내비게이션 · 탭</h1>
     </template>
 <template data-gnb-page="overlay">
       <nav class="ggc-breadcrumb" aria-label="현재 경로">
         <ol><li><a href="#index">홈</a></li><li><a href="#components">컴포넌트</a></li><li aria-current="page">오버레이 · 상태 · 본문</li></ol>
       </nav>
-      <h1 class="ggc-gnb-page-title">오버레이 · 상태 · 본문</h1>
     </template>
-<template data-gnb-page="dashboard">
-      <h1 class="ggc-gnb-page-title">제12대 제3차 정례회</h1>
+<template data-gnb-page="dashboard"><!-- 홈(Monitor)은 경로가 없다 — 비워 둔다(ADR 0010) --></template>
+<template data-gnb-page="explore">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#dashboard">홈</a></li><li><a href="#explore">의안</a></li><li aria-current="page">의안 목록</li></ol>
+      </nav>
     </template>
 <template data-gnb-page="wizard">
       <nav class="ggc-breadcrumb" aria-label="현재 경로">
         <ol><li><a href="#dashboard">홈</a></li><li><a href="#dashboard">입법지원</a></li><li aria-current="page">조례 초안 작성</li></ol>
       </nav>
-      <h1 class="ggc-gnb-page-title">조례 초안 작성</h1>
     </template>
 <template data-gnb-page="login"></template>
 
   <footer class="ggc-footer">
     <div class="inner">
       경기도의회 의정정보시스템 · 공통 디자인 시스템 예제 갤러리 (합본) ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v2.0 ·
-      <code style="font-family:var(--ggc-font-mono)">ggc-components.css</code> v2.0
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v3.0 ·
+      <code style="font-family:var(--ggc-font-mono)">ggc-components.css</code> v3.0
     </div>
   </footer>
 </div>
@@ -6970,11 +7271,11 @@ body {
 /* 쪽 전환 — 합본 전용. 원본 갤러리는 파일이 나뉘어 있어 이 코드가 없다. */
 (function () {
   "use strict";
-  var SVC = {index: "공통 디자인 시스템", tokens: "공통 디자인 시스템", components: "공통 디자인 시스템", forms: "공통 디자인 시스템", nav: "공통 디자인 시스템", overlay: "공통 디자인 시스템", dashboard: "의정지원 플랫폼", wizard: "조례 초안 작성", login: "공통 디자인 시스템"};
+  var SVC = {index: "공통 디자인 시스템", tokens: "공통 디자인 시스템", components: "공통 디자인 시스템", forms: "공통 디자인 시스템", nav: "공통 디자인 시스템", overlay: "공통 디자인 시스템", dashboard: "의정지원 플랫폼", explore: "의안관리", wizard: "조례 초안 작성", login: "공통 디자인 시스템"};
   var mains = document.querySelectorAll("main[data-page]");
   var items = document.querySelectorAll(".ggc-lnb-item[data-page]");
   var svc = document.getElementById("svc");
-  var gnbPage = document.getElementById("page-title");
+  var gnbPage = document.getElementById("gnb-page");
 
   function show(key) {
     if (!Object.prototype.hasOwnProperty.call(SVC, key)) key = "index";
@@ -6992,12 +7293,9 @@ body {
       }
     });
     svc.textContent = SVC[key];
-    /* GNB 제목부(브레드크럼 + h1)는 쪽마다 다르다 — 해당 쪽의 <template> 로 갈아 끼운다 */
+    /* GNB 경로부(브레드크럼)는 쪽마다 다르다 — 해당 쪽의 <template> 로 갈아 끼운다. 제목 h1 은 각 main 안에 있다(ADR 0010) */
     var tpl = document.querySelector('template[data-gnb-page="' + key + '"]');
     gnbPage.replaceChildren(tpl ? tpl.content.cloneNode(true) : document.createTextNode(""));
-    /* 본문 랜드마크 이름 — 제목부가 있는 쪽만(login 은 GNB 제목이 없다) */
-    var main = document.getElementById("main");
-    if (tpl) { main.setAttribute("aria-labelledby", "page-title"); } else { main.removeAttribute("aria-labelledby"); }
   }
 
   function fromHash() { show((location.hash || "#index").slice(1)); }

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ggc-filter-bar",
+  "title": "필터 스트립",
+  "description": "Explore 슬롯 2 — 검색 · 셀렉트 · 칩 + 적용/초기화(기본 필터 '내 소관 · 처리 대기' 로). ResultSummary 포함.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "@ggc/button"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/blocks/ggc-filter-bar/ggc-filter-bar.tsx",
+      "content": "import * as React from \"react\"\nimport { RotateCcwIcon } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\n\n/* 필터 스트립 — Explore 슬롯 2(archetypes.md). 흰 카드 한 줄에 검색 · 셀렉트 · 칩을 늘어놓고 오른쪽에 적용/초기화.\n * 기본 필터는 \"내 소관 · 처리 대기\" 다(domain-language.md) — 초기화는 그 기본으로 돌아간다(전부 해제가 아니다).\n * 컨트롤은 @ggc/input · select · native-select · toggle-group · badge 를 자식으로 조립한다 — 이 블록은 배치와 라벨만 갖는다.\n *\n *   <FilterBar onReset={…} onApply={…}>\n *     <FilterField label=\"위원회\"><NativeSelect …/></FilterField>\n *     <FilterField label=\"상태\"><ToggleGroup …/></FilterField>\n *   </FilterBar> */\nfunction FilterBar({\n  className,\n  children,\n  onApply,\n  onReset,\n  applyLabel = \"적용\",\n  resetLabel = \"초기화\",\n  end,\n  ...props\n}: React.ComponentProps<\"form\"> & { onApply?: () => void; onReset?: () => void; applyLabel?: React.ReactNode; resetLabel?: React.ReactNode; end?: React.ReactNode }) {\n  return (\n    <form\n      role=\"search\"\n      data-slot=\"filter-bar\"\n      onSubmit={(e) => { e.preventDefault(); onApply?.() }}\n      className={cn(\"flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card px-4 py-3\", className)}\n      {...props}\n    >\n      {children}\n      <div className=\"ml-auto flex items-center gap-2 self-end\">\n        {end}\n        {onReset && (\n          <Button type=\"button\" variant=\"ghost\" size=\"sm\" onClick={onReset}><RotateCcwIcon />{resetLabel}</Button>\n        )}\n        {onApply && <Button type=\"submit\" size=\"sm\">{applyLabel}</Button>}\n      </div>\n    </form>\n  )\n}\n\nfunction FilterField({ className, label, htmlFor, children, ...props }: React.ComponentProps<\"div\"> & { label: React.ReactNode; htmlFor?: string }) {\n  return (\n    <div data-slot=\"filter-field\" className={cn(\"flex min-w-0 flex-col gap-1\", className)} {...props}>\n      <label htmlFor={htmlFor} className=\"text-(length:--ggc-text-xs) font-semibold text-muted-foreground\">{label}</label>\n      {children}\n    </div>\n  )\n}\n\n/* 결과 요약 — Explore 슬롯 3. \"총 147건 · 처리 대기 21건\". 숫자는 tabular-nums */\nfunction ResultSummary({ className, ...props }: React.ComponentProps<\"p\">) {\n  return <p data-slot=\"result-summary\" className={cn(\"m-0 text-(length:--ggc-text-sm) text-muted-foreground tabular-nums [&_b]:font-semibold [&_b]:text-foreground\", className)} {...props} />\n}\n\nexport { FilterBar, FilterField, ResultSummary }\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:block"
+}

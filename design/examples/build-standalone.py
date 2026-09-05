@@ -38,12 +38,13 @@ PAGES = [
     ("nav",        "components-nav.html",     "내비게이션 · 탭",       "공통 디자인 시스템"),
     ("overlay",    "components-overlay.html", "오버레이 · 상태 · 본문", "공통 디자인 시스템"),
     ("dashboard",  "dashboard.html",  "대시보드 · Monitor",  "의정지원 플랫폼"),
+    ("explore",    "explore.html",    "의안 목록 · Explore", "의안관리"),
     ("wizard",     "wizard.html",     "위저드 · Configure",  "조례 초안 작성"),
     ("login",      "login.html",      "QR 로그인 · Entry",   "공통 디자인 시스템"),
 ]
 
 MAIN_RE = re.compile(r"<main\b([^>]*)>(.*)</main>", re.S)
-# GNB 제목부(브레드크럼 + h1) — 쪽마다 다르므로 <main> 처럼 떼어 와 전환 시 갈아 끼운다.
+# GNB 경로부(브레드크럼) — 쪽마다 다르므로 <main> 처럼 떼어 와 전환 시 갈아 끼운다(v3.0: 제목 h1 은 본문 안에 있다 — ADR 0010).
 # 슬롯 안에 <div> 가 없어 non-greedy 로 충분하다. login 은 GNB 가 없어 슬롯이 없다(빈 문자열).
 GNBPAGE_RE = re.compile(r'<div class="ggc-gnb-page">(.*?)</div>', re.S)
 CLASS_RE = re.compile(r'class="([^"]*)"')
@@ -103,11 +104,12 @@ def build():
         gp = g.group(1) if g else ""
         for k2, fn2, _l, _s in PAGES:
             gp = gp.replace('href="%s"' % fn2, 'href="#%s"' % k2)
-        # 각 쪽의 h1 은 id="page-title" 인데 합본은 GNB 가 하나라 슬롯 컨테이너가 그 id 를 갖는다.
-        gnb_pages[key] = gp.replace(' id="page-title"', "")
+        gnb_pages[key] = gp
         cm = CLASS_RE.search(m.group(1))
         cls = cm.group(1) if cm else "ggc-shell-main"
         body = m.group(2)
+        # 각 쪽의 h1 은 id="page-title" — 합본은 main 이 여럿이라 쪽별로 id 를 나눈다(중복 id 금지)
+        body = body.replace(' id="page-title"', ' id="page-title-%s"' % key)
         if key == "index":
             body = STANDALONE_NOTE + body
         # 쪽 사이 이동을 해시로 바꾼다
@@ -116,20 +118,29 @@ def build():
         mains.append((key, cls, body))
     assert claim_hits == 1, "index.html 문단 치환 실패"
 
+    # LNB 항목 아이콘 — 낱장 갤러리와 같은 lucide 심볼(v3.0). 스프라이트는 @@ICONS@@ 로 인라인된다
+    ICONS = {"index": "house", "tokens": "sliders-horizontal", "components": "columns-3", "forms": "square-check",
+             "nav": "list", "overlay": "message-square", "dashboard": "layout-dashboard", "explore": "table-2",
+             "wizard": "file-text", "login": "qr-code"}
     lnb_rows = []
     for key, _fn, label, _svc in PAGES:
         if key == "dashboard":
             lnb_rows.append('      <div class="ggc-lnb-divider"></div>')
             lnb_rows.append('      <div class="ggc-lnb-group">실물 화면</div>')
         lnb_rows.append(
-            '      <a class="ggc-lnb-item" href="#%s" data-page="%s">%s</a>'
-            % (key, key, label))
+            '      <a class="ggc-lnb-item" href="#%s" data-page="%s">'
+            '<svg class="ggc-icon" aria-hidden="true"><use href="#i-%s"/></svg><span class="label">%s</span></a>'
+            % (key, key, ICONS.get(key, "circle"), label))
 
     mains_html = "\n".join(
-        '      <main class="%s" data-page="%s"%s>%s</main>'
-        % (cls, key, "" if key == "index" else " hidden", body)
+        '      <main class="%s" data-page="%s" aria-labelledby="page-title-%s"%s>%s</main>'
+        % (cls, key, key, "" if key == "index" else " hidden", body)
         for key, cls, body in mains)
 
+    # 인라인 아이콘 스프라이트 — 각 쪽의 <body> 첫 줄(build-icons.py 생성물)에서 한 번만 가져온다
+    ib = re.search(r"<!-- ggc-icons:begin[^>]*-->.*?<!-- ggc-icons:end -->", read(os.path.join(HERE, "index.html")), re.S)
+    assert ib, "index.html 에 인라인 아이콘 스프라이트가 없다 — python design/build-icons.py"
+    icons_block = ib.group(0)
     svc_map = "{" + ", ".join('%s: "%s"' % (k, s) for k, _f, _l, s in PAGES) + "}"
     # 제목부 HTML 은 JS 문자열이 아니라 <template> 로 싣는다 — 따옴표·줄바꿈 이스케이프를 피한다
     gnb_tpl = "\n".join(
@@ -151,6 +162,7 @@ def build():
         "@@MAINS@@": mains_html,
         "@@SVCMAP@@": svc_map,
         "@@GNBPAGES@@": gnb_tpl,
+        "@@ICONS@@": icons_block,
     }
     html = SHELL
     for k, v in slots.items():
@@ -196,6 +208,7 @@ body {
 </style>
 
 <a class="ggc-skip-link" href="#main">본문 바로가기</a>
+@@ICONS@@
 
 <div class="ggc-shell">
 
@@ -220,18 +233,14 @@ body {
         <span class="svc" id="svc">공통 디자인 시스템</span>
       </span>
     </a>
-    <div class="ggc-gnb-page" id="page-title"></div>
+    <div class="ggc-gnb-page" id="gnb-page"></div>
     <div class="ggc-search">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true" style="color:var(--ggc-text-faint);flex-shrink:0">
-        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
-      </svg>
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-search"/></svg>
       <label for="q" class="ex-sr">예제 검색</label>
       <input id="q" type="search" placeholder="예제 검색">
     </div>
     <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)">
-        <path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
-      </svg>
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-bell"/></svg>
     </button>
   </header>
 
@@ -249,8 +258,8 @@ body {
   <footer class="ggc-footer">
     <div class="inner">
       경기도의회 의정정보시스템 · 공통 디자인 시스템 예제 갤러리 (합본) ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v2.0 ·
-      <code style="font-family:var(--ggc-font-mono)">ggc-components.css</code> v2.0
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v3.0 ·
+      <code style="font-family:var(--ggc-font-mono)">ggc-components.css</code> v3.0
     </div>
   </footer>
 </div>
@@ -270,7 +279,7 @@ body {
   var mains = document.querySelectorAll("main[data-page]");
   var items = document.querySelectorAll(".ggc-lnb-item[data-page]");
   var svc = document.getElementById("svc");
-  var gnbPage = document.getElementById("page-title");
+  var gnbPage = document.getElementById("gnb-page");
 
   function show(key) {
     if (!Object.prototype.hasOwnProperty.call(SVC, key)) key = "index";
@@ -288,12 +297,9 @@ body {
       }
     });
     svc.textContent = SVC[key];
-    /* GNB 제목부(브레드크럼 + h1)는 쪽마다 다르다 — 해당 쪽의 <template> 로 갈아 끼운다 */
+    /* GNB 경로부(브레드크럼)는 쪽마다 다르다 — 해당 쪽의 <template> 로 갈아 끼운다. 제목 h1 은 각 main 안에 있다(ADR 0010) */
     var tpl = document.querySelector('template[data-gnb-page="' + key + '"]');
     gnbPage.replaceChildren(tpl ? tpl.content.cloneNode(true) : document.createTextNode(""));
-    /* 본문 랜드마크 이름 — 제목부가 있는 쪽만(login 은 GNB 제목이 없다) */
-    var main = document.getElementById("main");
-    if (tpl) { main.setAttribute("aria-labelledby", "page-title"); } else { main.removeAttribute("aria-labelledby"); }
   }
 
   function fromHash() { show((location.hash || "#index").slice(1)); }

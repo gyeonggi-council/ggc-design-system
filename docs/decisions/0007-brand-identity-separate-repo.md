@@ -13,3 +13,5 @@
 
 ## 결과
 README 「이 저장소의 지위」. 의회 마크(`design/brand/`)는 공식 홈페이지 OG 이미지 파생이라 여기 남고, 마크 외 CI 자산은 넣지 않는다.
+
+> **추기 (2026-09-05):** 대외 발표용 PPT 템플릿은 CI 원본이 아니라 **토큰의 생성물**(`design/ppt/build-ppt.py` → `dist/`)이라 이 저장소에 둔다. 값은 여전히 `ggc-tokens.css` 한 곳이다. 로고 원본 · CI 원본 색은 여전히 `ggc-design-guide`.

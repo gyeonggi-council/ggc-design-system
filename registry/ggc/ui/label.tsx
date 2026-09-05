@@ -1,11 +1,8 @@
-"use client"
-
+/* 라벨 — --ggc-label-font. 필수 표시는 <Label required>. (shadcn 공식 소스 + 토큰 · ADR 0011) */
 import * as React from "react"
+import { cn } from "@/lib/utils"
 import { Label as LabelPrimitive } from "radix-ui"
 
-import { cn } from "@/lib/utils"
-
-/* 폼 라벨 — --ggc-label-font(업무 13 / 대민 17) · 700 · text-muted. 필수는 <Label required>. */
 function Label({
   className,
   required = false,
@@ -15,11 +12,14 @@ function Label({
   return (
     <LabelPrimitive.Root
       data-slot="label"
-      className={cn("flex items-center gap-1 text-(length:--ggc-label-font) font-bold leading-none text-(--ggc-text-muted) select-none peer-disabled:cursor-default peer-disabled:opacity-60", className)}
+      className={cn(
+        "flex items-center gap-1.5 text-(length:--ggc-label-font) leading-none font-semibold text-muted-foreground select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        className
+      )}
       {...props}
     >
       {children}
-      {required && <span aria-hidden="true" className="ml-0.5 text-destructive">*</span>}
+      {required && <span aria-hidden="true" className="text-destructive">*</span>}
     </LabelPrimitive.Root>
   )
 }

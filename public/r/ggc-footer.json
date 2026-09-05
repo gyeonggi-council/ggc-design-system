@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-footer",
   "title": "업무 푸터",
-  "description": "업무 화면 하단 한 줄 푸터(.ggc-footer + .inner 1280). 대민 푸터와 다르다.",
+  "description": "업무 화면 하단 한 줄 푸터. 대민 푸터와 다르다.",
   "registryDependencies": [
     "@ggc/ggc-tokens"
   ],

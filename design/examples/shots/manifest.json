@@ -1,6 +1,6 @@
 {
   "_": "생성물이다. design/examples/build-shots.py 가 만든다 — 직접 고치지 말 것.",
-  "sha256": "fd150c8e0dd0e9fbca18797c8622613087a99a73ce6dbc7f9e15fa300b1662f3",
+  "sha256": "89f0fc9b50d30e55d6ad615973e02c9f7a75cc4711056502519728879f6e0c55",
   "sources": [
     "design/ggc-tokens.css",
     "design/ggc-components.css",
@@ -15,15 +15,18 @@
     "design/examples/components-overlay.html",
     "design/examples/components.html",
     "design/examples/dashboard.html",
+    "design/examples/explore.html",
     "design/examples/public/index.html",
     "design/examples/wizard.html"
   ],
   "dpr": 2,
   "shots": [
     "screen-dashboard",
+    "screen-explore",
     "screen-wizard",
     "screen-public",
     "gnb-page",
+    "page-head",
     "buttons",
     "badges",
     "cards",
@@ -38,10 +41,12 @@
     "alerts"
   ],
   "captions": {
-    "screen-dashboard": "Monitor — 대시보드 · GNB 제목부 + LNB + KPI",
-    "screen-wizard": "Configure — 조례 초안 위저드 · 브레드크럼 + 단계 표시",
+    "screen-dashboard": "Monitor — 대시보드 · 본문 h1 + KPI + 큐 (v3.0 밀도)",
+    "screen-explore": "Explore — 의안 목록 · 필터 스트립 + 표 20행 + 페이지네이션",
+    "screen-wizard": "Configure — 조례 초안 위저드 · 브레드크럼(헤더) + h1(본문) + 단계 표시",
     "screen-public": "대민 셸 — 마스트헤드 · 헤더 · 주 메뉴 (KRDS 패턴)",
-    "gnb-page": "GNB 제목부 `.ggc-gnb-page`",
+    "gnb-page": "GNB 경로부 `.ggc-gnb-page` (브레드크럼 — 제목은 본문)",
+    "page-head": "페이지 헤더 `.ggc-page-head` — h1 24px + 설명 + 주 액션",
     "buttons": "버튼 `.ggc-btn`",
     "badges": "배지 · 태그 `.ggc-badge` `.ggc-tag`",
     "cards": "카드 `.ggc-card`",

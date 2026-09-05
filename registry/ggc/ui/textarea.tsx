@@ -1,5 +1,5 @@
+/* 텍스트 영역 — 입력과 같은 규칙. (shadcn 공식 소스 + 토큰 · ADR 0011) */
 import * as React from "react"
-
 import { cn } from "@/lib/utils"
 
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
@@ -7,8 +7,7 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
     <textarea
       data-slot="textarea"
       className={cn(
-        "flex min-h-[72px] w-full rounded-(--ggc-radius) border border-input bg-card px-[14px] py-2.5 text-(length:--ggc-control-font) leading-relaxed text-foreground outline-none transition-[border-color,box-shadow] placeholder:text-(--ggc-text-subtle) disabled:cursor-default disabled:bg-(--ggc-control-bg)",
-        "focus-visible:border-primary focus-visible:shadow-(--ggc-focus-ring) aria-invalid:border-destructive",
+        "flex field-sizing-content min-h-16 w-full rounded-lg border border-input bg-card px-3 py-2 text-(length:--ggc-control-font) leading-relaxed transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
         className
       )}
       {...props}

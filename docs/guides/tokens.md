@@ -28,9 +28,15 @@
 | 간격 | `--ggc-space-1` ~ `-11` (4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64 · 80) — KRDS gap 부분집합. 사이 값을 발명하지 않는다 |
 | 형태 | `--ggc-radius-sm` `--ggc-radius` `--ggc-radius-lg` · `--ggc-shadow` `--ggc-shadow-primary` |
 | 포커스 | `--ggc-focus-ring` (계약 §3 알파 .20) |
-| 셸 | `--ggc-gnb-h` `--ggc-lnb-w` `--ggc-main-max` `--ggc-main-max-wide` (업무) |
+| 셸 | `--ggc-gnb-h` `--ggc-lnb-w` `--ggc-lnb-w-icon` `--ggc-main-max` `--ggc-main-max-wide` (업무) |
+| 아이콘 (v3.0) | `--ggc-icon` `--ggc-icon-lg` `--ggc-icon-stroke` — lucide 전용, [icons.md](icons.md) |
 
-## 컨트롤 · 밀도 · 폭 — 프로필이 바꾸는 유일한 층 (v2.0)
+## 타이포 스케일 (v3.0)
+
+`--ggc-text-xs` `-sm` `-base` `-md` `-lg` `-xl` `-2xl` `-3xl` · `--ggc-leading-tight` `-normal` · 제목 `--ggc-h1-size` `-h2-` `-h3-` · `--ggc-kpi-size`.
+위계는 색이 아니라 크기·굵기로 — [typography.md](typography.md). 치수이므로 대민 프로필이 KRDS 스텝으로 덮어쓴다.
+
+## 컨트롤 · 밀도 · 폭 — 프로필이 바꾸는 층 (v2.0 → v3.0)
 
 | 이름 | 무엇 |
 |---|---|
@@ -40,7 +46,7 @@
 | `--ggc-cell-pad` `--ggc-row-pad` `--ggc-card-pad` | 표 셀 / 행 리스트 / 자유 본문 카드 패딩 |
 | `--ggc-container-max` | 유틸리티 바·푸터·대민 본문 폭 |
 
-`<html data-ggc-profile="public">` 이면 이 이름들만 KRDS 치수로 바뀐다. 색·서체·포커스는 프로필이 건드리지 못한다(검사기 D6).
+`<html data-ggc-profile="public">` 이면 이 이름들(+ 타이포 스케일 · 아이콘 치수)만 KRDS 치수로 바뀐다. 업무 기본값은 v3.0 부터 shadcn 기본 밀도(버튼 36 · 입력 36 · 14px · 셀 8×12)다. 색·서체·포커스는 프로필이 건드리지 못한다(검사기 D6).
 
 ## 확장 규칙
 

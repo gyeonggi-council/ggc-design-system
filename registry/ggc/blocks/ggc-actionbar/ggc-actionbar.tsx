@@ -15,7 +15,7 @@ function ActionBar({ className, status, children, ...props }: React.ComponentPro
       )}
       {...props}
     >
-      {status && <div className="min-w-0 text-[12.5px] text-(--ggc-text-subtle) max-[900px]:hidden">{status}</div>}
+      {status && <div className="min-w-0 text-(length:--ggc-text-sm) text-(--ggc-text-subtle) max-[900px]:hidden">{status}</div>}
       <div className="ml-auto flex shrink-0 items-center gap-2 max-[900px]:w-full max-[900px]:[&>*]:flex-1">{children}</div>
     </div>
   )

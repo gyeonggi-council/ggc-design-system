@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-identifier",
   "title": "아이덴티파이어 (대민)",
-  "description": "\"이 누리집은 {기관명} 누리집입니다.\" — 공개 푸터 .bottom 안. logo 는 정부 제공 자산 슬롯.",
+  "description": "\"이 누리집은 {기관명} 누리집입니다.\"",
   "registryDependencies": [
     "@ggc/ggc-tokens"
   ],

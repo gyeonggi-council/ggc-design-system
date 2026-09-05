@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sonner",
+  "title": "토스트",
+  "description": "Sonner. 짧은 확인(저장됨 · 복사됨) — 오른쪽 아래 · 3개 상한 · 5초. 다크 없음.",
+  "dependencies": [
+    "lucide-react",
+    "sonner"
+  ],
+  "files": [
+    {
+      "path": "registry/ggc/ui/sonner.tsx",
+      "content": "/* 토스트 — Sonner. 다크 없음(theme=light 고정). 3개 상한 · 짧은 확인(저장됨 · 복사됨)용. (shadcn 공식 소스 + 토큰 · ADR 0011) */\nimport * as React from \"react\"\nimport { Toaster as Sonner, type ToasterProps } from \"sonner\"\nimport { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from \"lucide-react\"\n\nconst Toaster = ({ ...props }: ToasterProps) => {\n  return (\n    <Sonner\n      theme=\"light\"             /* 다크 없음(계약 §3) — OS 다크에 따라가지 않는다 */\n      position=\"bottom-right\"\n      visibleToasts={3}         /* ggc-behaviors.js GGC.toast 와 같은 상한 */\n      duration={5000}\n      className=\"toaster group\"\n      icons={{\n        success: (\n          <CircleCheckIcon className=\"size-4\" />\n        ),\n        info: (\n          <InfoIcon className=\"size-4\" />\n        ),\n        warning: (\n          <TriangleAlertIcon className=\"size-4\" />\n        ),\n        error: (\n          <OctagonXIcon className=\"size-4\" />\n        ),\n        loading: (\n          <Loader2Icon className=\"size-4 animate-spin\" />\n        ),\n      }}\n      style={\n        {\n          \"--normal-bg\": \"var(--popover)\",\n          \"--normal-text\": \"var(--popover-foreground)\",\n          \"--normal-border\": \"var(--border)\",\n          \"--border-radius\": \"var(--radius)\",\n          \"--success-bg\": \"var(--ggc-success-tint)\",\n          \"--success-text\": \"var(--ggc-success)\",\n          \"--success-border\": \"var(--ggc-success)\",\n          \"--warning-bg\": \"var(--ggc-warning-tint)\",\n          \"--warning-text\": \"var(--ggc-warning)\",\n          \"--warning-border\": \"var(--ggc-warning)\",\n          \"--error-bg\": \"var(--ggc-danger-tint)\",\n          \"--error-text\": \"var(--ggc-danger)\",\n          \"--error-border\": \"var(--ggc-danger)\",\n          \"--info-bg\": \"var(--ggc-info-tint)\",\n          \"--info-text\": \"var(--ggc-info)\",\n          \"--info-border\": \"var(--ggc-info)\",\n        } as React.CSSProperties\n      }\n      toastOptions={{\n        classNames: {\n          toast: \"cn-toast\",\n        },\n      }}\n      {...props}\n    />\n  )\n}\n\nexport { Toaster }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

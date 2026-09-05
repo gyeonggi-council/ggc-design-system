@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
  * 진네이비 띠 + inner 1280 + 통합서비스 스위처. 현재 시스템은 active, 내부망 전용은 disabled. */
 function UtilityBar({ className, brand, children, ...props }: React.ComponentProps<"div"> & { brand: React.ReactNode }) {
   return (
-    <div data-slot="utility-bar" className={cn("bg-(--ggc-primary-deep) font-sans text-[13px] leading-none text-primary-foreground/80", className)} {...props}>
+    <div data-slot="utility-bar" className={cn("bg-(--ggc-primary-deep) font-sans text-(length:--ggc-text-sm) leading-none text-primary-foreground/80", className)} {...props}>
       <div className="mx-auto flex max-w-(--ggc-container-max) items-center justify-between gap-3 px-4 py-2">
         <span data-slot="utility-brand" className="font-bold tracking-[-0.2px] text-primary-foreground [&_a]:text-inherit [&_a]:no-underline">{brand}</span>
         <nav className="flex flex-wrap items-center gap-1">{children}</nav>

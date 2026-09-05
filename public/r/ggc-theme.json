@@ -2,14 +2,24 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-theme",
   "title": "GGC 테마 — shadcn 변수를 --ggc-* 토큰으로 매핑",
-  "description": "shadcn 의 --primary · --background · --radius 등을 전부 var(--ggc-*) 로 돌린다. 값(hex)은 하나도 없다 — 값은 ggc-tokens.css 한 곳에만 산다. 다크 팔레트는 없다(계약 §3).",
+  "description": "shadcn 의 --primary · --background · --radius · --sidebar-* · --chart-* 를 전부 var(--ggc-*) 로 돌린다. 값(hex)은 하나도 없다. 다크 팔레트는 없다(계약 §3). radius 스텝(sm/md/lg/xl)에 토큰을 대 주어 공식 소스의 rounded-lg · rounded-xl 이 계약 §2 형태가 된다.",
+  "dependencies": [
+    "shadcn",
+    "tw-animate-css"
+  ],
   "registryDependencies": [
     "@ggc/ggc-tokens"
   ],
   "cssVars": {
     "theme": {
       "font-sans": "var(--ggc-font)",
-      "font-mono": "var(--ggc-font-mono)"
+      "font-heading": "var(--ggc-font)",
+      "font-mono": "var(--ggc-font-mono)",
+      "radius-sm": "var(--ggc-radius-sm)",
+      "radius-md": "var(--ggc-radius-sm)",
+      "radius-lg": "var(--ggc-radius)",
+      "radius-xl": "var(--ggc-radius-lg)",
+      "radius-2xl": "var(--ggc-radius-lg)"
     },
     "light": {
       "background": "var(--ggc-bg)",
@@ -60,6 +70,6 @@
       }
     }
   },
-  "docs": "radius 단계는 토큰을 직접 쓴다 — Tailwind 유틸 rounded-(--ggc-radius) / rounded-(--ggc-radius-sm) / rounded-(--ggc-radius-lg). 다크 모드 변수를 만들지 않는다(계약 §3-2).",
+  "docs": "다크 모드 변수를 만들지 않는다(계약 §3-2) — 프리셋이 만든 .dark 블록은 지운다. 공식 소스의 dark: 변형은 이식 때 제거했다. Tailwind 유틸에서 토큰을 직접 쓸 때: h-(--ggc-control-h) · text-(length:--ggc-text-sm) · bg-(--ggc-success-tint).",
   "type": "registry:theme"
 }

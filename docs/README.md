@@ -35,14 +35,19 @@
 | [guides/accessibility.md](guides/accessibility.md) | AA · 색 단독 금지 · 포커스 · 고대비 · 키보드 |
 | [guides/fonts.md](guides/fonts.md) | Pretendard GOV 자체 호스팅 |
 | [guides/brand-assets.md](guides/brand-assets.md) | 파비콘 · 마크 |
-| [guides/layout-shell.md](guides/layout-shell.md) | 업무 셸 (GNB · LNB · 본문 · 아키타입) |
+| [guides/layout-shell.md](guides/layout-shell.md) | 업무 셸 (헤더 · 사이드바 · 본문 · 아키타입) |
+| [guides/typography.md](guides/typography.md) | 타이포 스케일 — 위계는 크기·굵기로 (v3.0) |
+| [guides/icons.md](guides/icons.md) | 아이콘 — lucide 스프라이트, 이모지 금지 (v3.0) |
+| [guides/ppt.md](guides/ppt.md) | 대외 발표용 PPT 템플릿 — 토큰에서 생성 (v3.0) |
+| [audit/2026-09-05-shadcn-krds-audit.md](audit/2026-09-05-shadcn-krds-audit.md) | v2.0 진단 — shadcn 충실도 · KRDS 범위 · "한눈에 안 들어오는" 원인 |
 | [guides/behaviors-js.md](guides/behaviors-js.md) | 탭 · 모달 · drawer · 대민 메뉴 동작 |
 | [krds-alignment.md](krds-alignment.md) | KRDS 와 무엇이 같고 무엇이 다른가 |
 | [decisions/](decisions/) | 결정 기록(ADR) — 왜 그렇게 정했나 |
 
-## v1.2 에서 올리기
+## 올리기
 
-[migration/v1.2-to-v2.md](migration/v1.2-to-v2.md). 플랫폼 서비스별 실측은 [migration/platform-services-2026-08.md](migration/platform-services-2026-08.md).
+- **v2.0 → v3.0**: [migration/v2-to-v3.md](migration/v2-to-v3.md) — 정본 6파일 재복사 · h1 을 본문으로 · 이모지 → 아이콘 · Tier 2 재설치
+- v1.2 → v2.0: [migration/v1.2-to-v2.md](migration/v1.2-to-v2.md). 플랫폼 서비스별 실측은 [migration/platform-services-2026-08.md](migration/platform-services-2026-08.md).
 
 ## 검사
 

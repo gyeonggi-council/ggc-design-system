@@ -1,6 +1,6 @@
 /* =============================================================================
- * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v2.0 (2026-08-29)
- * 전제: design/ggc-tokens.css v2.0 을 먼저 로드할 것 (--ggc-* 변수 의존)
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.0 (2026-09-05)
+ * 전제: design/ggc-tokens.css v3.0 을 먼저 로드할 것 (--ggc-* 변수 의존)
  * 출처: Claude Design 산출물(.dc.html) 실측 추출
  *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
  *   정본 2  design_경기도의회_의정지원_플랫폼/조례초안 작성 위저드.dc.html
@@ -26,6 +26,18 @@
  *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
  *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
  *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ *
+ * -- v3.0 에서 바뀐 것 (ADR 0009 · 0010) -------------------------------------
+ *   업무 프로필이 shadcn 기본 밀도로 갔다 — 치수는 전부 토큰이라 이 파일의 컨트롤·표·행·카드는
+ *   **값 변경 없이** 따라온다(버튼 36 · 입력 36 · 글자 14 · 셀 8×12). 이 파일에서 바뀐 것:
+ *   §2·§3·§5  카드 제목 · KPI 숫자 · 행 제목/메타의 리터럴 글자 크기 → 타이포 스케일 토큰(--ggc-h3-size · --ggc-kpi-size · --ggc-text-*)
+ *   §6        버튼 radius 리터럴 → --ggc-radius · 버튼 안 svg 는 --ggc-icon
+ *   §9        .ggc-gnb-page 는 **브레드크럼만** 담는다(ADR 0010). .ggc-gnb-page-title 은 폐기 예정(한 판 유지).
+ *             LNB 항목 밀도(32px · 14px) · 아이콘 슬롯 · .ggc-lnb--icon 접힘 변형 · 검색/아이콘 버튼 치수 토큰
+ *   §10       ≤480 제목 시각 숨김 규칙 삭제(제목이 GNB 에 없다)
+ *   §12       .ggc-page-head 가 <h1 class="ggc-page-title">(--ggc-h1-size 24) + .desc + .actions 를 그린다
+ *   §37 신설  .ggc-h1/.ggc-h2/.ggc-h3 제목 유틸 · .ggc-icon (lucide 스프라이트 <use>) — 이모지·유니코드 기호 아이콘 금지
+ *   아이콘 정본은 design/ggc-icons.svg(생성물, build-icons.py). 갤러리는 같은 심볼을 인라인한다(file:// 에서 외부 <use> 가 막힌다).
  *
  * -- v2.0 에서 바뀐 것 -------------------------------------------------------
  *   값 불변 리팩터 — 컨트롤 높이·글자 크기·셀/행/카드 패딩·컨테이너 폭 리터럴을
@@ -128,14 +140,14 @@
 }
 .ggc-card-head .title {
   margin: 0;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: var(--ggc-h3-size);
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ggc-text-strong);
 }
 .ggc-card-head .sub {
   margin: 3px 0 0;
-  font-size: 12.5px;
+  font-size: var(--ggc-text-sm);
   font-weight: 400;
   color: var(--ggc-text-subtle);
 }
@@ -200,7 +212,7 @@
   justify-content: space-between;
   margin-bottom: 12px;
 }
-.ggc-stat .label { font-size: 13px; font-weight: 600; color: var(--ggc-text-muted); }
+.ggc-stat .label { font-size: var(--ggc-text-sm); font-weight: 600; color: var(--ggc-text-muted); }
 .ggc-stat .icon {
   width: 34px; height: 34px;
   border-radius: 9px;
@@ -213,8 +225,9 @@
 .ggc-stat .icon--warning { background: var(--ggc-warning-tint); color: var(--ggc-warning); }
 .ggc-stat .icon--danger  { background: var(--ggc-danger-tint);  color: var(--ggc-danger); }
 .ggc-stat .icon--info    { background: var(--ggc-info-tint);    color: var(--ggc-info); }
+.ggc-stat .icon svg { width: var(--ggc-icon-lg); height: var(--ggc-icon-lg); }   /* lucide — 이모지 금지 (v3.0) */
 .ggc-stat .value {
-  font-size: 30px;
+  font-size: var(--ggc-kpi-size);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--ggc-text-strong);
@@ -230,13 +243,14 @@
 .ggc-stat .trend {
   display: flex; align-items: center; gap: 5px;
   margin-top: 9px;
-  font-size: 12px;
+  font-size: var(--ggc-text-xs);
   font-weight: 600;
   color: var(--ggc-text-muted);
 }
 .ggc-stat .trend--up   { color: var(--ggc-success); }
 .ggc-stat .trend--warn { color: var(--ggc-warning); }
 .ggc-stat .trend--down { color: var(--ggc-danger); }
+.ggc-stat .trend svg { width: 14px; height: 14px; }
 
 /* =============================================================================
  * 4. .ggc-wizard — 단계 스텝퍼
@@ -401,22 +415,23 @@
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
+.ggc-list-row .icon svg { width: var(--ggc-icon-lg); height: var(--ggc-icon-lg); }   /* lucide (v3.0) */
 .ggc-list-row .body { flex: 1; min-width: 0; }
 .ggc-list-row .title {
-  font-size: 14px;
+  font-size: var(--ggc-text-base);
   font-weight: 700;
   color: var(--ggc-text);
   margin-bottom: 3px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.ggc-list-row .meta { font-size: 12px; color: var(--ggc-text-subtle); }
+.ggc-list-row .meta { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
 .ggc-list-row .end {           /* 우측 상태·시각·버튼 슬롯 */
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
   text-align: right;
-  font-size: 12px;
+  font-size: var(--ggc-text-xs);
   color: var(--ggc-text-subtle);
 }
 /* 심각도 좌측 바 — 출처: 필수조례정비 지원.dc.html (width 5px radius 3px, 행 높이만큼) */
@@ -465,8 +480,8 @@
   justify-content: center;
   gap: 8px;
   height: var(--ggc-control-h);
-  padding: 0 18px;
-  border-radius: 10px;
+  padding: 0 var(--ggc-space-4);
+  border-radius: var(--ggc-radius);
   border: 1px solid transparent;
   font-family: var(--ggc-font);
   font-size: var(--ggc-control-font);
@@ -478,6 +493,7 @@
   transition: background .12s, border-color .12s, color .12s;
 }
 .ggc-btn:disabled { opacity: 0.45; cursor: default; }
+.ggc-btn svg { width: var(--ggc-icon); height: var(--ggc-icon); flex-shrink: 0; }   /* lucide (v3.0) — ＋ ← → 같은 기호 대신 */
 
 .ggc-btn--primary {
   background: var(--ggc-primary);
@@ -522,8 +538,8 @@
   background: #f6f9fd;
 }
 
-.ggc-btn--sm { height: var(--ggc-control-h-sm); padding: 0 14px; border-radius: 8px; font-size: var(--ggc-control-font-sm); }
-.ggc-btn--lg { height: var(--ggc-control-h-lg); padding: 0 20px; border-radius: 11px; font-size: var(--ggc-control-font-lg); }
+.ggc-btn--sm { height: var(--ggc-control-h-sm); padding: 0 var(--ggc-space-3); border-radius: 8px; font-size: var(--ggc-control-font-sm); }
+.ggc-btn--lg { height: var(--ggc-control-h-lg); padding: 0 var(--ggc-space-5); border-radius: var(--ggc-radius); font-size: var(--ggc-control-font-lg); }
 .ggc-btn--block { width: 100%; }
 
 /* =============================================================================
@@ -620,6 +636,8 @@
    실제로 그랬다). anywhere 는 넘칠 때만 끊으므로 보통 단어는 그대로 둔다. */
 .ggc-table code,
 .ggc-table .mono { overflow-wrap: anywhere; }
+/* 식별자 · 날짜 · 상태 · 동작 열은 줄바꿈하지 않는다 — 열 폭을 그 값이 정하고, 남는 폭은 제목 열이 쓴다 (v3.0) */
+.ggc-table .nowrap, .ggc-table th.nowrap, .ggc-table td.nowrap { white-space: nowrap; }
 .ggc-table tr.total,
 .ggc-table tfoot tr {
   border-top: 2px solid var(--ggc-primary-deep);
@@ -698,21 +716,18 @@
 /* 스페이서는 제목부(.ggc-gnb-page)가 없는 셸 ⓐ·이관 셸에서만 쓴다 — 둘을 같이 두지 않는다 */
 .ggc-gnb-spacer { flex: 1; min-width: 12px; }
 
-/* GNB 제목부 — 브레드크럼 + 페이지 제목   (v2.1, ADR 0008)
- * 업무 셸의 기본이다: 화면의 <h1> 은 본문이 아니라 여기 하나다.
+/* GNB 경로부 — 브레드크럼   (v3.0, ADR 0010 — 0008 대체)
+ * 헤더에는 **화면마다 자리가 같은 정보**(경로 · 검색 · 알림)만 둔다. 페이지 제목 <h1> 은 본문 첫 줄
+ * .ggc-page-head 의 .ggc-page-title(§12, 24px)이다 — 64px 띠 안의 18px 제목은 크롬처럼 읽혀 시선의 닻이 되지 못했다.
  * 브랜드 슬롯(--ggc-lnb-w)과 검색(300) 사이의 빈 폭을 쓰고, 검색은 밀리지 않는다(flex:1 + min-width:0).
- * 높이 --ggc-gnb-h(64) 안에 12.5px 브레드크럼 + 4 + 18px 제목 ≈ 43 — 위아래가 남는다.
- * 줄바꿈 금지 — GNB 높이가 LNB sticky · drawer · --split 의 기준이라 늘릴 수 없다. 대신 말줄임.
- *   접근성: text-overflow 는 접근 가능한 이름을 자르지 않는다(스크린리더는 전문을 읽는다).
- *   시각 사용자를 위해 잘릴 수 있는 식별자(의안명)는 본문 첫 카드에 전문을 다시 적는다(breadcrumb.md).
+ * 브레드크럼은 한 줄 · 마지막 항목만 말줄임(접근 가능한 이름은 잘리지 않는다).
  * 마크업:
  *   <div class="ggc-gnb-page">
  *     <nav class="ggc-breadcrumb" aria-label="현재 경로"><ol>…<li aria-current="page">의안 목록</li></ol></nav>
- *     <h1 class="ggc-gnb-page-title" id="page-title">의안 목록</h1>
  *   </div>
- *   … <main class="ggc-shell-main" id="main" aria-labelledby="page-title">
- * 왼쪽 padding 12 = 본문 padding(32) − GNB gap(20): 제목의 왼쪽 선이 본문 내용과 맞는다.
- * Monitor 첫 화면은 브레드크럼 없이 제목만(홈 자신이라 경로가 없다). */
+ *   … <main class="ggc-shell-main" id="main" aria-labelledby="page-title">   ← h1 은 본문(§12)
+ * 왼쪽 padding 12 = 본문 padding(32) − GNB gap(20): 경로의 왼쪽 선이 본문 내용과 맞는다.
+ * Monitor 첫 화면(홈)은 경로가 없으므로 이 블록을 비워 둔다(공간만 차지). */
 .ggc-gnb-page {
   flex: 1 1 0;
   min-width: 0;
@@ -739,10 +754,11 @@
   display: inline-block; vertical-align: middle;
   margin-right: calc(3px + var(--ggc-space-1));
 }
+/* ⚠ 폐기 예정 (v2.1 → v3.0 한 판 유지). 제목은 §12 .ggc-page-title 로 옮긴다. v3.1 에서 삭제한다. */
 .ggc-gnb-page-title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: var(--ggc-text-lg);
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.3;
   color: var(--ggc-text-strong);
@@ -762,13 +778,14 @@
 }
 .ggc-search input {
   border: none; background: transparent; width: 100%;
-  font-family: inherit; font-size: 13.5px; color: var(--ggc-text);
+  font-family: inherit; font-size: var(--ggc-control-font); color: var(--ggc-text);
 }
+.ggc-search svg { width: var(--ggc-icon); height: var(--ggc-icon); color: var(--ggc-text-faint); flex-shrink: 0; }
 /* ⚠ placeholder 를 유일한 라벨로 쓰지 않는다. 색도 AA 를 넘겨야 한다 */
 .ggc-search input::placeholder { color: var(--ggc-text-subtle); }
 
 .ggc-icon-btn {
-  position: relative; width: 40px; height: 40px; flex-shrink: 0;
+  position: relative; width: var(--ggc-control-h); height: var(--ggc-control-h); flex-shrink: 0;
   border-radius: var(--ggc-radius);
   border: 1px solid var(--ggc-shell-border);
   background: var(--ggc-surface);
@@ -776,6 +793,7 @@
   cursor: pointer;
 }
 .ggc-icon-btn:hover { background: var(--ggc-control-bg); }
+.ggc-icon-btn svg { width: var(--ggc-icon); height: var(--ggc-icon); color: var(--ggc-text-muted); }
 
 .ggc-shell-body { display: flex; flex: 1; align-items: stretch; }
 
@@ -784,34 +802,49 @@
   flex-shrink: 0;
   background: var(--ggc-surface);
   border-right: 1px solid var(--ggc-shell-border);
-  padding: var(--ggc-space-5) 14px;
+  padding: var(--ggc-space-4) var(--ggc-space-2);
   position: sticky;
   top: var(--ggc-gnb-h);
   height: calc(100vh - var(--ggc-gnb-h));
   overflow-y: auto;
 }
+/* v3.0 — shadcn sidebar 밀도(항목 32px · 14px · 아이콘 16). 아이콘은 첫 자식 svg 슬롯 */
 .ggc-lnb-group {
-  padding: 0 var(--ggc-space-2) var(--ggc-space-3);
-  font-size: 11px; font-weight: 700;
+  padding: var(--ggc-space-2) var(--ggc-space-2) var(--ggc-space-1);
+  font-size: var(--ggc-text-xs); font-weight: 600;
   color: var(--ggc-text-subtle);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
 }
 .ggc-lnb-item {
-  display: flex; align-items: center; gap: 11px; width: 100%;
-  padding: 10px 12px; margin-bottom: 3px;
+  display: flex; align-items: center; gap: var(--ggc-space-2); width: 100%;
+  height: var(--ggc-control-h-sm); padding: 0 var(--ggc-space-2); margin-bottom: 2px;
   border: none; background: none;
-  border-radius: var(--ggc-radius);
-  font-family: inherit; font-size: 13.5px; font-weight: 600;
-  color: var(--ggc-text-muted);
+  border-radius: var(--ggc-radius-sm);
+  font-family: inherit; font-size: var(--ggc-text-base); font-weight: 500;
+  color: var(--ggc-text);
   text-align: left; text-decoration: none; cursor: pointer;
+  white-space: nowrap; overflow: hidden;
+}
+.ggc-lnb-item svg { width: var(--ggc-icon); height: var(--ggc-icon); flex-shrink: 0; color: var(--ggc-text-muted); }
+.ggc-lnb-item .label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.ggc-lnb-item .count {                       /* 우측 건수 — 업무 큐의 "처리할 건" */
+  font-size: var(--ggc-text-xs); font-weight: 600; color: var(--ggc-text-subtle);
+  font-variant-numeric: tabular-nums;
 }
 .ggc-lnb-item:hover { background: var(--ggc-control-bg); }
 .ggc-lnb-item[aria-current], .ggc-lnb-item.is-active {
   background: var(--ggc-primary-light);
   color: var(--ggc-primary-deep);
-  font-weight: 700;
+  font-weight: 600;
 }
-.ggc-lnb-divider { height: 1px; background: var(--ggc-bg); margin: var(--ggc-space-4) var(--ggc-space-2); }
+.ggc-lnb-item[aria-current] svg, .ggc-lnb-item.is-active svg { color: var(--ggc-primary); }
+.ggc-lnb-divider { height: 1px; background: var(--ggc-bg); margin: var(--ggc-space-3) var(--ggc-space-2); }
+/* 접힌 사이드바 (v3.0) — 아이콘만 48px. 라벨·캡션·건수는 시각만 숨긴다(접근성 트리 유지). 토글은 서비스 몫 */
+.ggc-lnb--icon { width: var(--ggc-lnb-w-icon); padding-left: var(--ggc-space-1); padding-right: var(--ggc-space-1); }
+.ggc-lnb--icon .ggc-lnb-item { justify-content: center; padding: 0; }
+.ggc-lnb--icon .ggc-lnb-item .label, .ggc-lnb--icon .ggc-lnb-item .count, .ggc-lnb--icon .ggc-lnb-group {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0;
+}
 
 /* 본문 — 계약 §2: 대시보드 1320, 기타 업무화면 1360 */
 .ggc-shell-main {
@@ -903,15 +936,10 @@
 
 @media (max-width: 480px) {
   .ggc-stat-grid { grid-template-columns: 1fr; }
-  /* 390 에서 GNB 남은 폭이 ≈100px 다. 검색은 유일한 GNB 동선(계약 §2)이라 남기고, 제목은 **시각만** 숨긴다
-   * (display:none 이 아니다 — h1 은 접근성 트리에 남아 main 의 aria-labelledby 가 살아 있다).
-   * 시각 사용자의 위치 단서는 LNB drawer 의 aria-current 와 .ggc-page-head 의 메타 줄이다. */
+  /* v3.0: 제목은 본문(§12)에 있으므로 GNB 에서 숨길 것이 없다. 경로부는 ≤900 에서 이미 접혔다 — 검색이 폭을 다 쓴다 */
   .ggc-gnb-page { flex: 0 0 0; padding: 0; }
-  .ggc-gnb-page-title {
-    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
-    overflow: hidden; clip: rect(0 0 0 0); border: 0;
-  }
   .ggc-shell-main, .ggc-shell-main--wide { padding: 14px var(--ggc-space-3) 32px; }
+  .ggc-page-head .ggc-page-title, .ggc-page-head .title { font-size: var(--ggc-text-xl); }
 }
 
 /* --- Windows 고대비 (forced-colors) — 깨지지 않게 하는 것이 전부다 ---
@@ -1323,20 +1351,21 @@
 
 
 /* =============================================================================
- * 12. .ggc-page-head — 페이지 헤더 (메타 · 주 액션)   (v2.0 → v2.1)
- * v2.1: 브레드크럼과 제목은 GNB 제목부(§9 .ggc-gnb-page)로 갔다(ADR 0008). 이 블록은 본문 첫 줄의
- *       **메타 + 주 액션**이다. .title 은 두 경우에만 남는다 —
- *       ① 셸 ⓐ(GNB 가 없는 유틸리티 바만): <h1 class="title"> + 브레드크럼을 여기 둔다
- *       ② Monitor 인사말형(--greeting, 17px/800/-0.03em): <p class="title"> — h1 은 GNB 에 있다
- * 출처: archetypes.md "GNB 제목부".
- * 마크업:
+ * 12. .ggc-page-head — 페이지 헤더 (제목 · 설명 · 주 액션)   (v3.0, ADR 0010)
+ * 본문 첫 줄. 화면의 <h1> 은 여기 하나다 — 그 화면에서 가장 큰 글자(--ggc-h1-size 24)여야 시선의 닻이 된다.
+ * 브레드크럼은 GNB 경로부(§9)에 있다. 마크업:
  *   <div class="ggc-page-head">
  *     <div class="row">
- *       <p class="meta">제12대 · 제380회 · 접수 147건</p>
- *       <div class="actions"><button class="ggc-btn ggc-btn--primary">＋ 의안 등록</button></div>
+ *       <div>
+ *         <h1 class="ggc-page-title" id="page-title">의안 목록</h1>
+ *         <p class="desc">제12대 · 제380회 정례회 · 접수 147건</p>
+ *       </div>
+ *       <div class="actions"><button class="ggc-btn ggc-btn--primary"><svg class="ggc-icon"><use href="#i-plus"/></svg>의안 등록</button></div>
  *     </div>
  *   </div>
+ *   … <main class="ggc-shell-main" id="main" aria-labelledby="page-title">
  * 주 액션은 하나다 — 둘 이상이면 무엇을 눌러야 하는지 흐려진다(archetypes Learn/Decide).
+ * Monitor 첫 화면: h1 은 화면 이름("대시보드"), 인사말은 .desc 에 온다. .title / .meta 는 v2 호환 별칭(폐기 예정).
  * ============================================================================= */
 .ggc-page-head {
   display: flex;
@@ -1352,21 +1381,24 @@
   gap: var(--ggc-space-4);
   flex-wrap: wrap;
 }
+.ggc-page-head .ggc-page-title,
 .ggc-page-head .title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: var(--ggc-h1-size);
+  font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.3;
+  line-height: var(--ggc-leading-tight);
   color: var(--ggc-text-strong);
 }
-.ggc-page-head--greeting .title { font-size: 17px; letter-spacing: -0.03em; }
+.ggc-page-head--greeting .title { font-size: var(--ggc-h1-size); letter-spacing: -0.02em; }   /* v2 별칭 — v3 는 h1 + .desc */
+.ggc-page-head .desc,
 .ggc-page-head .meta {
-  margin: 3px 0 0;
-  font-size: 12.5px;
-  color: var(--ggc-text-subtle);
+  margin: var(--ggc-space-1) 0 0;
+  font-size: var(--ggc-text-sm);
+  line-height: var(--ggc-leading-normal);
+  color: var(--ggc-text-muted);
 }
-.ggc-page-head .meta:first-child { margin-top: 0; }   /* 제목 없이 메타만 있을 때(v2.1 기본) */
+.ggc-page-head .meta:first-child { margin-top: 0; }   /* 제목 없이 메타만 있을 때(v2.1 호환) */
 .ggc-page-head .actions {
   display: flex;
   align-items: center;
@@ -2761,4 +2793,51 @@ html[data-ggc-modal-active] { overflow: hidden; }
   .ggc-date input, .ggc-listbox [role="listbox"], .ggc-listbox .filter,
   .ggc-accordion, .ggc-accordion-group, .ggc-file-list li, .ggc-toast { border-color: var(--ggc-border-strong); }
   .ggc-file .drop { border-color: var(--ggc-text-muted); }
+}
+
+/* =============================================================================
+ * 37. 타이포 스케일 유틸 · 아이콘   (v3.0, ADR 0009)
+ * 위계는 색이 아니라 크기·굵기·간격으로 만든다. 값은 토큰(--ggc-h*-size · --ggc-text-*)이라 대민 프로필이 KRDS 스텝으로 키운다.
+ *   .ggc-h1  페이지 제목(24)  — 화면당 하나, .ggc-page-head 가 그린다
+ *   .ggc-h2  섹션 제목(18)    — 카드 밖 구획 제목
+ *   .ggc-h3  카드 제목(16)    — .ggc-card-head .title 과 같다
+ *   .ggc-text-sm · .ggc-text-xs  메타 · 캡션
+ * 아이콘: lucide 스프라이트(design/ggc-icons.svg, 생성물) 의 <symbol id="i-…"> 를 <use> 로 그린다.
+ *   <svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>
+ *   서비스는 스프라이트를 정적루트에 두고 href="ggc-icons.svg#i-check" 로 참조하거나(같은 오리진),
+ *   갤러리처럼 <body> 첫 줄에 인라인한다(file:// · 망분리 정적 HTML). 이모지·유니코드 기호 아이콘은 쓰지 않는다.
+ *   의미 있는 아이콘(단독 버튼)은 aria-label 을 버튼에 둔다 — svg 는 항상 aria-hidden.
+ * ============================================================================= */
+.ggc-h1, .ggc-h2, .ggc-h3 {
+  margin: 0;
+  font-family: var(--ggc-font);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: var(--ggc-leading-tight);
+  color: var(--ggc-text-strong);
+}
+.ggc-h1 { font-size: var(--ggc-h1-size); }
+.ggc-h2 { font-size: var(--ggc-h2-size); }
+.ggc-h3 { font-size: var(--ggc-h3-size); }
+.ggc-text-sm { font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.ggc-text-xs { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+
+.ggc-icon {
+  width: var(--ggc-icon); height: var(--ggc-icon);
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--ggc-icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -0.125em;   /* 인라인 텍스트 옆에서 x-height 에 맞춘다 */
+}
+.ggc-icon--lg { width: var(--ggc-icon-lg); height: var(--ggc-icon-lg); }
+.ggc-icon--sm { width: 14px; height: 14px; }
+/* 스프라이트를 인라인할 때 — 화면을 차지하지 않고 접근성 트리에도 없다 */
+.ggc-icon-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+/* 배지·태그 안 아이콘은 글자 크기를 따른다(색 단독 금지 규칙은 그대로 — 텍스트와 함께) */
+.ggc-badge .ggc-icon, .ggc-tag .ggc-icon { width: 1em; height: 1em; }
+@media (forced-colors: active) {
+  .ggc-icon { stroke: currentColor; }
 }

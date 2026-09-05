@@ -2,10 +2,11 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "skeleton",
   "title": "스켈레톤",
+  "description": "로딩 중 자리 유지 — 행 높이를 그대로.",
   "files": [
     {
       "path": "registry/ggc/ui/skeleton.tsx",
-      "content": "import { cn } from \"@/lib/utils\"\n\n/* 스켈레톤 — ggc-components.css §22. 실제 행 높이를 지킨다. 컨테이너에 aria-busy. */\nfunction Skeleton({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"skeleton\" className={cn(\"h-3 animate-pulse rounded-(--ggc-radius-sm) bg-(--ggc-hairline) motion-reduce:animate-none forced-colors:border\", className)} {...props} />\n}\n\nexport { Skeleton }\n",
+      "content": "import { cn } from \"@/lib/utils\"\n\nfunction Skeleton({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn(\"animate-pulse rounded-md bg-muted\", className)}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n",
       "type": "registry:ui"
     }
   ],

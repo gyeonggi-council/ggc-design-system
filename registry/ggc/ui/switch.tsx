@@ -1,25 +1,27 @@
-"use client"
-
 import * as React from "react"
+import { cn } from "@/lib/utils"
 import { Switch as SwitchPrimitive } from "radix-ui"
 
-import { cn } from "@/lib/utils"
-
-/* 토글 스위치 — ggc-components.css §24. 즉시 적용되는 켬/끔에만(제출로 반영되는 선택은 체크박스).
- * 트랙 40×22 · 손잡이 15px 흰 원. 켬/끔은 색 + 손잡이 위치 + 상태 문구 셋 — 색 단독 금지. 색은 전부 토큰. */
-function Switch({ className, ...props }: React.ComponentProps<typeof SwitchPrimitive.Root>) {
+function Switch({
+  className,
+  size = "default",
+  ...props
+}: React.ComponentProps<typeof SwitchPrimitive.Root> & {
+  size?: "sm" | "default"
+}) {
   return (
     <SwitchPrimitive.Root
       data-slot="switch"
+      data-size={size}
       className={cn(
-        "peer inline-flex h-[22px] w-10 shrink-0 items-center rounded-full border-[1.5px] border-transparent bg-(--ggc-text-faint) transition-[background-color,border-color] outline-none focus-visible:border-(--ggc-primary-deep) focus-visible:shadow-(--ggc-focus-ring) disabled:cursor-default disabled:border-border disabled:bg-(--ggc-control-bg) data-[state=checked]:bg-primary disabled:data-[state=checked]:bg-(--ggc-text-faint) forced-colors:border-[CanvasText] forced-colors:bg-[Canvas] forced-colors:data-[state=checked]:border-[Highlight] forced-colors:data-[state=checked]:bg-[Highlight]",
+        "peer group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent transition-all outline-none group-has-[:focus-visible]/field-label:border-transparent group-has-[:focus-visible]/field-label:ring-0 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] data-checked:bg-primary data-unchecked:bg-input data-disabled:cursor-not-allowed data-disabled:opacity-50",
         className
       )}
       {...props}
     >
       <SwitchPrimitive.Thumb
         data-slot="switch-thumb"
-        className="pointer-events-none block size-[15px] translate-x-0.5 rounded-full bg-card transition-transform data-[state=checked]:translate-x-[20px] data-[disabled]:bg-(--ggc-border-strong) data-[disabled]:data-[state=checked]:bg-card forced-colors:bg-[CanvasText] forced-colors:data-[state=checked]:bg-[HighlightText]"
+        className="pointer-events-none block rounded-full bg-background ring-0 transition-transform group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0"
       />
     </SwitchPrimitive.Root>
   )

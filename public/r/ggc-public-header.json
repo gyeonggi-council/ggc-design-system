@@ -2,11 +2,11 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-public-header",
   "title": "대민 헤더 · 주 메뉴",
-  "description": "유틸리티 · 브랜딩 · 통합검색 · 주 메뉴(1단 ≤6 · 2단 ≤8). PC 2단은 hover/focus-within, ≤900 은 오른쪽 패널 + 아코디언(한 번에 하나). 업무 GNB/LNB 와 섞지 않는다.",
+  "description": "유틸리티 · 브랜딩 · 통합검색 · 주 메뉴. 업무 셸과 섞지 않는다.",
   "registryDependencies": [
+    "@ggc/button",
     "@ggc/ggc-tokens",
-    "@ggc/input",
-    "@ggc/button"
+    "@ggc/input"
   ],
   "files": [
     {

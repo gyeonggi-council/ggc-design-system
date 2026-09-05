@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-structured-list",
   "title": "구조화 목록 (대민)",
-  "description": "공모·접수·방청 카드 격자 — 배지 + 제목 + 설명(3줄) + 기간 + 행동. 업무 화면 목록은 표.",
+  "description": "공모 · 접수 · 방청 카드 격자.",
   "registryDependencies": [
     "@ggc/ggc-tokens"
   ],

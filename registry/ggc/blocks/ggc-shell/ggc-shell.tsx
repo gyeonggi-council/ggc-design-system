@@ -1,88 +1,260 @@
 "use client"
 
 import * as React from "react"
+import { BellIcon, ChevronsUpDownIcon, LogOutIcon, SearchIcon, UserIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
-/* 업무 셸 — ggc-components.css §9 + 토큰 파일의 .ggc-utility-bar/.ggc-footer 를 React 로.
- * 계약 §2: GNB 64(브랜드 · 제목부 GnbPage · 검색) · LNB 256 · 본문 1320(대시보드)/1360(--wide). ≤900 에서 LNB 는 drawer.
- * 화면의 h1 은 GnbPage 에 하나 — ShellMain 에 titleId 를 넘겨 aria-labelledby 로 잇는다(ADR 0008).
- * 대민 화면에는 쓰지 않는다(계약 §9). */
-function Shell({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="shell" className={cn("flex min-h-screen flex-col bg-background font-sans text-foreground antialiased", className)} {...props} />
+/* 업무 셸 v3 (ADR 0009 · 0010 · 0011) — shadcn dashboard-01 과 같은 구조.
+ *
+ *   <Shell>                                  SidebarProvider · 페이지 배경
+ *     <UtilityBar …/>                        (선택) 모든 시스템 최상단 진네이비 띠 — @ggc/ggc-utility-bar. switcher="bar" 일 때
+ *     <ShellFrame>
+ *       <AppSidebar brand groups user …/>    사이드바 256 · 접으면 48(아이콘만) · ≤768 은 Sheet(drawer)
+ *       <ShellInset>
+ *         <ShellHeader breadcrumb …/>        64px — 토글 · 브레드크럼(경로) · 검색 · 알림 · (슬롯)
+ *         <ShellMain>                        본문 1320(Monitor) / --wide 1360. 첫 줄은 @ggc/ggc-page-head 의 <h1>
+ *
+ * 제목(h1)은 헤더가 아니라 본문 첫 줄이다(ADR 0010). 헤더에는 화면마다 자리가 같은 것만 둔다.
+ * 시스템 스위처는 사이드바 머리(드롭다운, switcher="sidebar") 또는 유틸리티 바(switcher="bar") 중 하나다 — 둘 다 두지 않는다.
+ * 대민 화면에는 쓰지 않는다(계약 §9 — ggc-public-header). */
+
+type NavItem = {
+  title: string
+  href: string
+  icon?: React.ComponentType<{ className?: string }>
+  active?: boolean
+  badge?: React.ReactNode         /* 우측 건수 — 업무 큐의 "처리할 건" */
 }
+type NavGroup = { label?: string; items: NavItem[] }
+type SystemLink = { name: string; href?: string; active?: boolean; disabled?: boolean }
 
-function UtilityBar({ className, brand, children, ...props }: React.ComponentProps<"div"> & { brand: React.ReactNode }) {
+/* 공식 sidebar 의 접힘 툴팁이 TooltipProvider 를 요구한다 — 셸이 한 번 감싼다(소비자 실증 2026-09-05 에서 잡힌 결함) */
+function Shell({ className, defaultOpen = true, children, ...props }: React.ComponentProps<typeof SidebarProvider>) {
   return (
-    <div data-slot="utility-bar" className={cn("bg-(--ggc-primary-deep) text-[13px] leading-none text-[#c9d6ea]", className)} {...props}>
-      <div className="mx-auto flex max-w-(--ggc-container-max) items-center justify-between gap-3 px-4 py-2">
-        <span className="font-bold text-white">{brand}</span>
-        <nav className="flex flex-wrap items-center gap-1">{children}</nav>
-      </div>
-    </div>
+    <TooltipProvider delayDuration={0}>
+      <SidebarProvider
+        defaultOpen={defaultOpen}
+        data-slot="shell"
+        className={cn("min-h-svh flex-col bg-background font-sans text-foreground antialiased", className)}
+        {...props}
+      >
+        {children}
+      </SidebarProvider>
+    </TooltipProvider>
   )
 }
 
-function UtilityLink({ className, active, ...props }: React.ComponentProps<"a"> & { active?: boolean }) {
-  return <a data-slot="utility-link" className={cn("rounded-(--ggc-radius-sm) px-2 py-[3px] no-underline transition-colors", active ? "bg-primary font-semibold text-white" : "text-[#c9d6ea] hover:bg-white/10 hover:text-white", className)} {...props} />
+/* 사이드바 + 본문을 가로로 — 유틸리티 바가 위에 있을 수 있어 Provider 와 분리한다 */
+function ShellFrame({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="shell-frame" className={cn("flex min-h-0 flex-1", className)} {...props} />
 }
 
-function Gnb({ className, ...props }: React.ComponentProps<"header">) {
-  return <header data-slot="gnb" className={cn("sticky top-0 z-50 flex h-(--ggc-gnb-h) shrink-0 items-center gap-5 border-b border-(--ggc-shell-border) bg-card pr-6 max-[900px]:gap-3 max-[900px]:pr-4", className)} {...props} />
-}
-
-function GnbBrand({ className, mark, org, service, ...props }: React.ComponentProps<"a"> & { mark: React.ReactNode; org: React.ReactNode; service?: React.ReactNode }) {
-  return (
-    <a data-slot="gnb-brand" className={cn("flex h-full w-(--ggc-lnb-w) shrink-0 items-center gap-[11px] border-r border-(--ggc-shell-border) px-[18px] text-inherit no-underline max-[900px]:w-auto max-[900px]:border-r-0 max-[900px]:px-3", className)} {...props}>
-      <span className="size-10 shrink-0 [&>img]:size-10 [&>img]:object-contain">{mark}</span>
-      <span className="flex flex-col leading-tight whitespace-nowrap">
-        <span className="text-[15px] font-bold tracking-[-0.02em] text-foreground">{org}</span>
-        {service && <span className="text-[13px] font-semibold tracking-[-0.01em] text-primary max-[900px]:hidden">{service}</span>}
+function AppSidebar({
+  brand,
+  groups,
+  systems,
+  user,
+  footer,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  brand: { mark: React.ReactNode; org: React.ReactNode; service?: React.ReactNode; href?: string }
+  groups: NavGroup[]
+  systems?: SystemLink[]         /* 있으면 브랜드가 시스템 스위처 드롭다운이 된다(switcher="sidebar") */
+  user?: { name: React.ReactNode; role?: React.ReactNode; dept?: React.ReactNode; onLogout?: () => void }
+  footer?: React.ReactNode
+}) {
+  const brandInner = (
+    <>
+      <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md [&>img]:size-8 [&>img]:object-contain">{brand.mark}</span>
+      <span className="grid min-w-0 flex-1 text-left leading-tight">
+        <span className="truncate text-(length:--ggc-text-base) font-bold tracking-[-0.02em] text-foreground">{brand.org}</span>
+        {brand.service && <span className="truncate text-(length:--ggc-text-xs) font-semibold text-primary">{brand.service}</span>}
       </span>
-    </a>
+    </>
+  )
+  return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader className="h-(--ggc-gnb-h) justify-center border-b border-sidebar-border">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            {systems?.length ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton size="lg" className="data-open:bg-sidebar-accent" aria-label="시스템 전환">
+                    {brandInner}
+                    <ChevronsUpDownIcon className="ml-auto size-4 text-muted-foreground" />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">통합서비스</DropdownMenuLabel>
+                  {systems.map((s) => (
+                    <DropdownMenuItem key={s.name} asChild disabled={s.disabled} data-active={s.active || undefined}>
+                      <a href={s.href ?? "#"} aria-current={s.active ? "page" : undefined} className={cn(s.active && "font-semibold text-primary")}>
+                        {s.name}
+                        {s.disabled && <span className="ml-auto text-xs text-muted-foreground">내부망</span>}
+                      </a>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <SidebarMenuButton size="lg" asChild>
+                <a href={brand.href ?? "/"}>{brandInner}</a>
+              </SidebarMenuButton>
+            )}
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+
+      <SidebarContent>
+        {groups.map((g, gi) => (
+          <SidebarGroup key={gi}>
+            {g.label && <SidebarGroupLabel>{g.label}</SidebarGroupLabel>}
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {g.items.map((it) => (
+                  <SidebarMenuItem key={it.href + it.title}>
+                    <SidebarMenuButton asChild isActive={it.active} tooltip={it.title}>
+                      <a href={it.href} aria-current={it.active ? "page" : undefined}>
+                        {it.icon && <it.icon />}
+                        <span>{it.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                    {it.badge != null && <SidebarMenuBadge className="tabular-nums">{it.badge}</SidebarMenuBadge>}
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
+      </SidebarContent>
+
+      {(user || footer) && (
+        <SidebarFooter className="border-t border-sidebar-border">
+          {footer}
+          {user && (
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <SidebarMenuButton size="lg" aria-label="사용자 메뉴">
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-(--ggc-primary-light) text-primary"><UserIcon className="size-4" /></span>
+                      <span className="grid min-w-0 flex-1 leading-tight">
+                        <span className="truncate text-sm font-semibold">{user.name}</span>
+                        {(user.role || user.dept) && (
+                          <span className="truncate text-xs text-muted-foreground">{[user.role, user.dept].filter(Boolean).map((x, i) => <React.Fragment key={i}>{i > 0 && " · "}{x}</React.Fragment>)}</span>
+                        )}
+                      </span>
+                      <ChevronsUpDownIcon className="ml-auto size-4 text-muted-foreground" />
+                    </SidebarMenuButton>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
+                    <DropdownMenuLabel className="font-normal">
+                      <span className="block text-sm font-semibold">{user.name}</span>
+                      {(user.role || user.dept) && <span className="block text-xs text-muted-foreground">{[user.role, user.dept].filter(Boolean).map((x, i) => <React.Fragment key={i}>{i > 0 && " · "}{x}</React.Fragment>)}</span>}
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onSelect={user.onLogout}><LogOutIcon />로그아웃</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          )}
+        </SidebarFooter>
+      )}
+      <SidebarRail />
+    </Sidebar>
   )
 }
 
-/* GNB 제목부 — §9 .ggc-gnb-page. 브레드크럼(@ggc/breadcrumb 조립을 받는다 — 의존은 더하지 않는다) + h1.
- * 높이 64 고정이라 줄바꿈 없이 말줄임 · ≤900 브레드크럼 숨김 · ≤480 제목은 sr-only(접근성 트리 유지).
- * Monitor 첫 화면은 breadcrumb 없이 title 만. */
-function GnbPage({
+function ShellInset({ className, ...props }: React.ComponentProps<typeof SidebarInset>) {
+  return <SidebarInset data-slot="shell-inset" className={cn("min-w-0 bg-background", className)} {...props} />
+}
+
+/* 헤더 64 — 토글 · 브레드크럼(@ggc/breadcrumb 조립을 받는다) · 검색(@ggc/ggc-search) · 알림 · 슬롯.
+ * 제목은 여기 없다(ADR 0010). ≤900 에서 브레드크럼은 숨긴다 — 경로는 사이드바 drawer 의 현재 항목이 준다. */
+function ShellHeader({
   className,
   breadcrumb,
-  title,
-  titleId = "page-title",
+  search,
+  notifications,
+  onNotificationsClick,
+  children,
   ...props
-}: React.ComponentProps<"div"> & { breadcrumb?: React.ReactNode; title: React.ReactNode; titleId?: string }) {
+}: React.ComponentProps<"header"> & {
+  breadcrumb?: React.ReactNode
+  search?: React.ReactNode
+  notifications?: number
+  onNotificationsClick?: () => void
+}) {
   return (
-    <div
-      data-slot="gnb-page"
+    <header
+      data-slot="shell-header"
       className={cn(
-        "flex h-full min-w-0 flex-1 flex-col justify-center gap-1 pl-3 font-sans max-[900px]:pl-0 max-[480px]:flex-none max-[480px]:basis-0 max-[480px]:pl-0",
-        "[&_[data-slot=breadcrumb]]:max-[900px]:hidden [&_[data-slot=breadcrumb-list]]:flex-nowrap [&_[data-slot=breadcrumb-list]]:whitespace-nowrap [&_[data-slot=breadcrumb-item]]:shrink-0 [&_[data-slot=breadcrumb-page]]:min-w-0 [&_[data-slot=breadcrumb-page]]:truncate",
+        "sticky top-0 z-40 flex h-(--ggc-gnb-h) shrink-0 items-center gap-3 border-b border-(--ggc-shell-border) bg-card px-4",
+        "[&_[data-slot=breadcrumb]]:max-[900px]:hidden",
         className
       )}
       {...props}
     >
-      {breadcrumb}
-      <h1 id={titleId} className="m-0 truncate text-lg leading-[1.3] font-extrabold tracking-[-0.02em] text-(--ggc-text-strong) max-[480px]:sr-only">
-        {title}
-      </h1>
-    </div>
+      <SidebarTrigger className="-ml-1" aria-label="메뉴 열기/닫기" />
+      <div className="min-w-0 flex-1">{breadcrumb}</div>
+      {search ?? null}
+      {notifications != null && (
+        <Button variant="outline" size="icon" className="relative" aria-label={`알림 ${notifications}건`} onClick={onNotificationsClick}>
+          <BellIcon />
+          {notifications > 0 && <span aria-hidden="true" className="absolute top-1.5 right-1.5 size-2 rounded-full bg-destructive" />}
+        </Button>
+      )}
+      {children}
+    </header>
   )
 }
 
-function ShellBody({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="shell-body" className={cn("flex flex-1 items-stretch", className)} {...props} />
-}
-
-function Lnb({ className, open = false, ...props }: React.ComponentProps<"nav"> & { open?: boolean }) {
+/* 본문 — 계약 §2: Monitor 1320 · 그 외 --wide 1360 · ≥1680 확폭(§2-1)은 소비자가 className 으로 켠다.
+ * titleId 는 @ggc/ggc-page-head 의 h1 id 와 같아야 한다(기본 page-title). */
+function ShellMain({
+  className,
+  wide = false,
+  titleId = "page-title",
+  ...props
+}: React.ComponentProps<"main"> & { wide?: boolean; titleId?: string }) {
   return (
-    <nav
-      data-slot="lnb"
-      data-open={open || undefined}
+    <main
+      id="main"
+      data-slot="shell-main"
+      aria-labelledby={titleId}
       className={cn(
-        "sticky top-(--ggc-gnb-h) h-[calc(100vh-var(--ggc-gnb-h))] w-(--ggc-lnb-w) shrink-0 overflow-y-auto border-r border-(--ggc-shell-border) bg-card px-[14px] py-5",
-        "max-[900px]:fixed max-[900px]:left-0 max-[900px]:z-40 max-[900px]:-translate-x-full max-[900px]:shadow-[0_8px_24px_rgba(20,30,50,0.12)] max-[900px]:transition-transform max-[900px]:data-[open]:translate-x-0",
+        "w-full min-w-0 flex-1 px-8 pt-6 pb-12 max-[900px]:px-4 max-[900px]:pt-4 max-[900px]:pb-10",
+        wide ? "max-w-(--ggc-main-max-wide)" : "max-w-(--ggc-main-max)",
         className
       )}
       {...props}
@@ -90,31 +262,18 @@ function Lnb({ className, open = false, ...props }: React.ComponentProps<"nav"> 
   )
 }
 
-function LnbGroup({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="lnb-group" className={cn("px-2 pb-3 text-[11px] font-bold tracking-[0.06em] text-(--ggc-text-subtle)", className)} {...props} />
-}
-
-function LnbItem({ className, active, ...props }: React.ComponentProps<"a"> & { active?: boolean }) {
+/* 스킵 링크 — 계약 §3 · KRDS skip_link. 첫 자식으로 둔다 */
+function SkipLink({ className, href = "#main", children = "본문 바로가기", ...props }: React.ComponentProps<"a">) {
   return (
     <a
-      data-slot="lnb-item"
-      aria-current={active ? "page" : undefined}
-      className={cn("mb-[3px] flex w-full items-center gap-[11px] rounded-(--ggc-radius) px-3 py-2.5 text-[13.5px] font-semibold no-underline transition-colors", active ? "bg-(--ggc-primary-light) font-bold text-(--ggc-primary-deep) forced-colors:border" : "text-(--ggc-text-muted) hover:bg-(--ggc-control-bg)", className)}
+      href={href}
+      className={cn("sr-only z-50 rounded-br-sm bg-(--ggc-primary-deep) px-4 py-2 text-sm font-bold text-primary-foreground focus:not-sr-only focus:absolute focus:top-0 focus:left-0", className)}
       {...props}
-    />
+    >
+      {children}
+    </a>
   )
 }
 
-function ShellMain({ className, wide = false, titleId, ...props }: React.ComponentProps<"main"> & { wide?: boolean; titleId?: string }) {
-  return <main data-slot="shell-main" aria-labelledby={titleId} className={cn("min-w-0 flex-1 px-8 pt-[26px] pb-12 max-[900px]:px-4 max-[900px]:pt-[18px] max-[900px]:pb-10", wide ? "max-w-(--ggc-main-max-wide)" : "max-w-(--ggc-main-max)", className)} {...props} />
-}
-
-function Footer({ className, ...props }: React.ComponentProps<"footer">) {
-  return (
-    <footer data-slot="footer" className={cn("border-t border-border bg-background text-xs text-(--ggc-text-muted)", className)}>
-      <div className="mx-auto max-w-(--ggc-container-max) p-4" {...props} />
-    </footer>
-  )
-}
-
-export { Shell, UtilityBar, UtilityLink, Gnb, GnbBrand, GnbPage, ShellBody, Lnb, LnbGroup, LnbItem, ShellMain, Footer }
+export { Shell, ShellFrame, AppSidebar, ShellInset, ShellHeader, ShellMain, SkipLink, SearchIcon as ShellSearchIcon }
+export type { NavItem, NavGroup, SystemLink }
