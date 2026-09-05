@@ -42,11 +42,13 @@ MANIFEST = os.path.join(OUT_DIR, "manifest.json")
 #   key · 갤러리 쪽 · 잘라낼 요소(없으면 뷰포트 전체) · 뷰포트 폭×높이 · README 캡션
 SHOTS = [
     # 실물 화면 — 셸이 붙은 모습
-    ("screen-dashboard", "dashboard.html", None,          (1440, 720), "Monitor — 대시보드 · GNB 제목부 + LNB + KPI"),
-    ("screen-wizard",    "wizard.html",    None,          (1440, 640), "Configure — 조례 초안 위저드 · 브레드크럼 + 단계 표시"),
+    ("screen-dashboard", "dashboard.html", None,          (1440, 720), "Monitor — 대시보드 · 본문 h1 + KPI + 큐 (v3.0 밀도)"),
+    ("screen-explore",   "explore.html",   None,          (1440, 900), "Explore — 의안 목록 · 필터 스트립 + 표 20행 + 페이지네이션"),
+    ("screen-wizard",    "wizard.html",    None,          (1440, 640), "Configure — 조례 초안 위저드 · 브레드크럼(헤더) + h1(본문) + 단계 표시"),
     ("screen-public",    "public/index.html", None,       (1440, 720), "대민 셸 — 마스트헤드 · 헤더 · 주 메뉴 (KRDS 패턴)"),
     # 컴포넌트 — 갤러리 데모 상자를 그대로 잘라낸다
-    ("gnb-page",   "components-nav.html",     "#d-gnbpage",   (1440, 900), "GNB 제목부 `.ggc-gnb-page`"),
+    ("gnb-page",   "components-nav.html",     "#d-gnbpage",   (1440, 900), "GNB 경로부 `.ggc-gnb-page` (브레드크럼 — 제목은 본문)"),
+    ("page-head",  "components-nav.html",     "#d-head",      (1440, 900), "페이지 헤더 `.ggc-page-head` — h1 24px + 설명 + 주 액션"),
     ("buttons",    "components.html",         "#d-btn",       (1440, 900), "버튼 `.ggc-btn`"),
     ("badges",     "components.html",         "#d-badge",     (1440, 900), "배지 · 태그 `.ggc-badge` `.ggc-tag`"),
     ("cards",      "components.html",         "#d-card",      (1440, 900), "카드 `.ggc-card`"),

@@ -43,7 +43,7 @@ public-footer	대민 푸터	.ggc-footer--public	ggc-public-footer	KRDS footer	pu
 side-nav	사이드 내비게이션 (대민)	.ggc-side-nav	ggc-side-nav	KRDS side_navigation	public	P1	있음	4
 structured-list	구조화 목록	.ggc-structured-list	ggc-structured-list	KRDS structured_list	public	P1	있음	4
 switch	토글 스위치	.ggc-switch (--row)	switch	KRDS toggle_switch	both	P1	있음	9
-toast	토스트	.ggc-toast-region .ggc-toast (--success --warning --danger --info)	toast	자체 (KRDS 없음)	both	P1	있음	9
+toast	토스트	.ggc-toast-region .ggc-toast (--success --warning --danger --info)	sonner	자체 (KRDS 없음) · Tier 2 는 Sonner(v3)	both	P1	있음	9
 accordion	아코디언 / 디스클로저	.ggc-accordion .ggc-accordion-group (<details>, --flush)	accordion	KRDS accordion/disclosure	both	P1	있음	9
 date	날짜 입력 (네이티브)	.ggc-date .ggc-date-range (--inline)	input (date)	KRDS date_input	both	P1	있음	9
 file-upload	파일 업로드	.ggc-file .ggc-file-list (--compact)	ggc-file-upload	KRDS file_upload	both	P1	있음	9
@@ -54,5 +54,13 @@ listbox	커스텀 리스트박스 (항상 보이는 목록 · 필터 · 다중)	
 tooltip	툴팁	.ggc-tooltip-wrap .ggc-tooltip (--bottom --start --end)	tooltip	KRDS tooltip	both	P2	있음	9
 in-page-nav	페이지 내 내비게이션	.ggc-in-page-nav	—	KRDS in_page_navigation	both	P2	있음	9
 text-list	텍스트 목록	.ggc-text-list (--dash --check --none --tight)	—	KRDS text_list	both	P2	있음	9
-combobox	콤보박스 (입력 + 팝업 목록)	.ggc-combobox	combobox	KRDS select_* · shadcn combobox	both	P2	예정	10
-calendar	커스텀 달력 (범위 · 회기 표시)	.ggc-calendar	calendar	KRDS calendar	both	P2	예정	10
+combobox	콤보박스 (입력 + 팝업 목록)	.ggc-combobox	command popover	KRDS select_* · shadcn combobox — Tier 2 는 있음(v3)	both	P2	예정	10
+calendar	커스텀 달력 (범위 · 회기 표시)	.ggc-calendar	calendar	KRDS calendar — Tier 2 는 있음(v3)	both	P2	예정	10
+# --- v3.0 (2026-09-05, ADR 0009 · 0010 · 0011) ---
+page-title	페이지 제목 · 제목 스케일	.ggc-page-title .ggc-h1 .ggc-h2 .ggc-h3 .ggc-text-sm .ggc-text-xs	ggc-page-head	§12 · §37 · ADR 0010	both	P0	있음	11
+icon	아이콘 (lucide 스프라이트)	.ggc-icon (--lg --sm) .ggc-icon-sprite	—	§37 · design/ggc-icons.svg · ADR 0009	both	P0	있음	11
+lnb-icon	접힌 사이드바	.ggc-lnb--icon	sidebar	§9 · shadcn sidebar collapsible=icon	work	P1	있음	11
+data-table	데이터 표 (정렬 · 검색 · 열 · 쪽)	—	ggc-data-table	shadcn data-table (TanStack) · Tier 2 전용	work	P0	있음	11
+filter-bar	필터 스트립	—	ggc-filter-bar	archetypes Explore 슬롯 2 · Tier 2 전용	work	P1	있음	11
+detail-layout	상세 배치 (본문 + 결재 레일)	—	ggc-detail-layout	archetypes Learn/Decide · Tier 2 전용	work	P1	있음	11
+wizard-layout	위저드 배치	—	ggc-wizard-layout	archetypes Configure · Tier 2 전용	work	P1	있음	11

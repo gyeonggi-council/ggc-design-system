@@ -2,11 +2,11 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-hero",
   "title": "히어로 (대민 메인)",
-  "description": "메인 첫 화면 전용 — 안내 문구 + 통합검색 + 바로가기 칩. 하위 페이지는 PageTitle 부터.",
+  "description": "안내 문구 + 통합검색 + 바로가기 칩.",
   "registryDependencies": [
+    "@ggc/button",
     "@ggc/ggc-tokens",
-    "@ggc/input",
-    "@ggc/button"
+    "@ggc/input"
   ],
   "files": [
     {

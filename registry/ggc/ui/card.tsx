@@ -1,15 +1,20 @@
+/* 카드 — 흰 면 · 1px border · radius --ggc-radius-lg · 그림자 없음(계약 §2). CardTitle 은 --ggc-h3-size. (shadcn 공식 소스 + 토큰 · ADR 0011) */
 import * as React from "react"
-
 import { cn } from "@/lib/utils"
 
-/* 카드 — ggc-components.css §2. 흰 면 · 1px 테두리 · radius 16 · **그림자 없음**(계약 §2).
- * CardHeader = 제목 + 부제 + 우측 액션(CardAction). CardContent 는 목록형(패딩 0)이 기본이고
- * 자유 본문은 <CardContent padded>. CardFooter 는 상단 hairline. */
-function Card({ className, ...props }: React.ComponentProps<"div">) {
+function Card({
+  className,
+  size = "default",
+  ...props
+}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
   return (
     <div
       data-slot="card"
-      className={cn("flex flex-col overflow-hidden rounded-2xl border border-border bg-card text-card-foreground", className)}
+      data-size={size}
+      className={cn(
+        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl border border-border bg-card py-(--card-spacing) text-sm text-card-foreground forced-colors:border [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+        className
+      )}
       {...props}
     />
   )
@@ -19,42 +24,80 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-header"
-      className={cn("@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-center gap-x-3 px-[22px] pt-[18px] pb-[14px] has-data-[slot=card-action]:grid-cols-[1fr_auto]", className)}
+      className={cn(
+        "group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-xl px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing)",
+        className
+      )}
       {...props}
     />
   )
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<"h2">) {
-  return <h2 data-slot="card-title" className={cn("m-0 text-base font-extrabold tracking-[-0.02em] text-(--ggc-text-strong)", className)} {...props} />
+function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-title"
+      className={cn(
+        "font-heading text-(length:--ggc-h3-size) leading-snug font-bold tracking-[-0.02em] text-(--ggc-text-strong) group-data-[size=sm]/card:text-sm",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
-function CardDescription({ className, ...props }: React.ComponentProps<"p">) {
-  return <p data-slot="card-description" className={cn("m-0 mt-[3px] text-[12.5px] text-(--ggc-text-subtle)", className)} {...props} />
+function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-description"
+      className={cn("text-sm text-muted-foreground", className)}
+      {...props}
+    />
+  )
 }
 
 function CardAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-action"
-      className={cn("col-start-2 row-span-2 row-start-1 self-center justify-self-end text-[13px] font-semibold text-primary [&_a]:no-underline [&_a:hover]:underline", className)}
+      className={cn(
+        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
+        className
+      )}
       {...props}
     />
   )
 }
 
-function CardContent({ className, padded = false, ...props }: React.ComponentProps<"div"> & { padded?: boolean }) {
-  return <div data-slot="card-content" className={cn(padded && "p-(--ggc-card-pad)", className)} {...props} />
+function CardContent({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-content"
+      className={cn("px-(--card-spacing)", className)}
+      {...props}
+    />
+  )
 }
 
-function CardFooter({ className, inset = false, ...props }: React.ComponentProps<"div"> & { inset?: boolean }) {
+function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("flex items-center justify-between gap-3 border-t border-(--ggc-hairline) px-[22px] py-[13px] text-[13px] text-(--ggc-text-muted)", inset && "bg-(--ggc-surface-inset)", className)}
+      className={cn(
+        "flex items-center rounded-b-xl border-t bg-muted/50 p-(--card-spacing)",
+        className
+      )}
       {...props}
     />
   )
 }
 
-export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent }
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardAction,
+  CardDescription,
+  CardContent,
+}

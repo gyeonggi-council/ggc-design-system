@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "listbox",
   "title": "커스텀 리스트박스",
-  "description": "부제 · 검색 필터 · 다중 선택이 필요한 항상 보이는 목록 — aria-activedescendant 키보드 탐색, 선택은 배경 + 띠 + ✓.",
+  "description": "부제 · 검색 필터 · 다중 선택이 필요한 항상 보이는 목록 — aria-activedescendant 키보드 탐색.",
   "dependencies": [
     "lucide-react"
   ],

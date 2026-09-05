@@ -3,13 +3,10 @@
   "name": "ggc-actionbar",
   "title": "하단 스티키 액션바",
   "description": "Configure 슬롯 5. 임시저장 → 상신 순서 고정.",
-  "registryDependencies": [
-    "@ggc/button"
-  ],
   "files": [
     {
       "path": "registry/ggc/blocks/ggc-actionbar/ggc-actionbar.tsx",
-      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 하단 스티키 액션바 — ggc-components.css §20. Configure 슬롯 5.\n * <ShellMain> 의 마지막 자식으로 두면 sticky 로 바닥에 붙는다. 순서: 임시저장(secondary) → 상신(primary). */\nfunction ActionBar({ className, status, children, ...props }: React.ComponentProps<\"div\"> & { status?: React.ReactNode }) {\n  return (\n    <div\n      data-slot=\"actionbar\"\n      className={cn(\n        \"sticky bottom-0 z-40 -mx-8 -mb-12 mt-6 flex items-center justify-between gap-4 border-t border-border bg-[rgba(255,255,255,0.92)] px-8 py-[14px] shadow-[0_-4px_16px_rgba(20,30,50,0.06)] backdrop-blur-[8px] forced-colors:bg-[Canvas]\",\n        \"max-[900px]:-mx-4 max-[900px]:-mb-10 max-[900px]:px-4 max-[900px]:py-3\",\n        className\n      )}\n      {...props}\n    >\n      {status && <div className=\"min-w-0 text-[12.5px] text-(--ggc-text-subtle) max-[900px]:hidden\">{status}</div>}\n      <div className=\"ml-auto flex shrink-0 items-center gap-2 max-[900px]:w-full max-[900px]:[&>*]:flex-1\">{children}</div>\n    </div>\n  )\n}\n\nexport { ActionBar }\n",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 하단 스티키 액션바 — ggc-components.css §20. Configure 슬롯 5.\n * <ShellMain> 의 마지막 자식으로 두면 sticky 로 바닥에 붙는다. 순서: 임시저장(secondary) → 상신(primary). */\nfunction ActionBar({ className, status, children, ...props }: React.ComponentProps<\"div\"> & { status?: React.ReactNode }) {\n  return (\n    <div\n      data-slot=\"actionbar\"\n      className={cn(\n        \"sticky bottom-0 z-40 -mx-8 -mb-12 mt-6 flex items-center justify-between gap-4 border-t border-border bg-[rgba(255,255,255,0.92)] px-8 py-[14px] shadow-[0_-4px_16px_rgba(20,30,50,0.06)] backdrop-blur-[8px] forced-colors:bg-[Canvas]\",\n        \"max-[900px]:-mx-4 max-[900px]:-mb-10 max-[900px]:px-4 max-[900px]:py-3\",\n        className\n      )}\n      {...props}\n    >\n      {status && <div className=\"min-w-0 text-(length:--ggc-text-sm) text-(--ggc-text-subtle) max-[900px]:hidden\">{status}</div>}\n      <div className=\"ml-auto flex shrink-0 items-center gap-2 max-[900px]:w-full max-[900px]:[&>*]:flex-1\">{children}</div>\n    </div>\n  )\n}\n\nexport { ActionBar }\n",
       "type": "registry:component"
     }
   ],

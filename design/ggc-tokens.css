@@ -1,5 +1,5 @@
 /* =============================================================================
- * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v2.0 (2026-08-29)
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.0 (2026-09-05)
  * 근거: docs/contract.md (AUTHORITATIVE) · 구판 가이드는 archive/03-공통디자인가이드.md
  * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
  *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
@@ -7,6 +7,20 @@
  * 사용: 각 앱이 이 파일을 복사(또는 값 이식)해 자체 스타일의 최상단에 둔다.
  *       대민(공개) 화면은 <html data-ggc-profile="public"> 을 붙인다 — 그 외에는 같다.
  * 검사: python design/check_design.py --canon   /   --gate <서비스>
+ *
+ * ── v3.0 에서 바뀐 것 (업무 프로필을 shadcn 기본 밀도로 — 색은 하나도 바뀌지 않았다) ───
+ * v2.0 의 업무 치수는 Claude Design 목업의 실측값(버튼 42 · 입력 44 · 13.5px)이었다.
+ * 그 값은 shadcn/ui 기본(36 · 36 · 14px)보다 **성겨서** 업무 화면인데 한 화면에 행이 적게
+ * 들어왔고, shadcn 블록(sidebar · data-table)과 조립할 때마다 치수 보정이 필요했다.
+ * 사용자 결정(2026-09-05, ADR 0009): 업무 프로필 = shadcn 기본 밀도. 대민 블록은 KRDS 그대로.
+ *
+ *   변경  --ggc-control-h-sm/-h/-h-lg  34/42/46 → 32/36/40     --ggc-input-h · --ggc-search-h 44/40 → 36/36
+ *   변경  --ggc-control-font(-sm/-lg)  13.5/13/14 → 14/13/14   --ggc-label-font · --ggc-table-font 13 → 14
+ *   변경  --ggc-cell-pad 11px 10px → 8px 12px · --ggc-row-pad 15px 22px → 12px 16px · --ggc-card-pad 18px 22px → 16px 20px
+ *   신설  --ggc-text-xs~3xl · --ggc-leading-* · --ggc-h1/h2/h3-size · --ggc-kpi-size   타이포 스케일 (치수 — 프로필이 덮어쓸 수 있다)
+ *   신설  --ggc-icon · --ggc-icon-lg · --ggc-icon-stroke   아이콘 치수 (lucide 전용 — 이모지·유니코드 기호 금지, ADR 0009)
+ *   신설  --ggc-lnb-w-icon   접힌 사이드바 폭 (Tier 2 sidebar collapsible="icon")
+ *   ⚠ D1 — 바이트가 바뀌었다. v2 소비자는 사본을 재복사한다(docs/migration/v2-to-v3.md).
  *
  * ── v2.0 에서 바뀐 것 (프로필 층 신설 — 색은 하나도 바뀌지 않았다) ────────────────
  * 업무용과 대민용이 **같은 토큰 파일 하나**를 쓴다. 기본(속성 없음)이 업무 프로필이라
@@ -126,26 +140,52 @@
   /* --- 셸 치수 (계약 §2) --- */
   --ggc-gnb-h: 64px;
   --ggc-lnb-w: 256px;
+  --ggc-lnb-w-icon: 48px;        /* 접힌 사이드바 (v3.0 — Tier 2 sidebar collapsible="icon") */
   --ggc-main-max: 1320px;        /* 대시보드 */
   --ggc-main-max-wide: 1360px;   /* 기타 업무 화면 */
 
-  /* --- 컨트롤 치수·밀도·폭 (v2.0 — 프로필이 조정하는 유일한 층) ---
-   * 값은 컴포넌트 레이어의 실측 리터럴을 그대로 옮긴 것이다(리팩터 전후 렌더 동일).
-   * 대민 프로필은 아래 [data-ggc-profile="public"] 블록에서 **이 이름들만** 덮어쓴다. */
-  --ggc-control-h-sm:    34px;      /* .ggc-btn--sm */
-  --ggc-control-h:       42px;      /* .ggc-btn */
-  --ggc-control-h-lg:    46px;      /* .ggc-btn--lg */
-  --ggc-input-h:         44px;      /* .ggc-field input/select · .ggc-btn--dashed */
-  --ggc-search-h:        40px;      /* .ggc-search */
-  --ggc-control-font:    13.5px;    /* 버튼·입력 글자 */
+  /* --- 컨트롤 치수·밀도·폭 (v3.0 — 업무 = shadcn 기본 밀도, ADR 0009) ---
+   * 대민 프로필은 아래 [data-ggc-profile="public"] 블록에서 **이 이름들만** 덮어쓴다(KRDS 치수). */
+  --ggc-control-h-sm:    32px;      /* .ggc-btn--sm      (shadcn h-8) */
+  --ggc-control-h:       36px;      /* .ggc-btn          (shadcn h-9) */
+  --ggc-control-h-lg:    40px;      /* .ggc-btn--lg      (shadcn h-10) */
+  --ggc-input-h:         36px;      /* .ggc-field input/select · .ggc-btn--dashed */
+  --ggc-search-h:        36px;      /* .ggc-search */
+  --ggc-control-font:    14px;      /* 버튼·입력 글자  (shadcn text-sm) */
   --ggc-control-font-sm: 13px;
   --ggc-control-font-lg: 14px;
-  --ggc-label-font:      13px;      /* 폼 라벨 */
-  --ggc-table-font:      13px;      /* .ggc-table */
-  --ggc-cell-pad:        11px 10px; /* th · td */
-  --ggc-row-pad:         15px 22px; /* .ggc-list-row */
-  --ggc-card-pad:        18px 22px; /* .ggc-card--pad */
+  --ggc-label-font:      14px;      /* 폼 라벨 */
+  --ggc-table-font:      14px;      /* .ggc-table */
+  --ggc-cell-pad:        8px 12px;  /* th · td            (shadcn p-2 / px-3) */
+  --ggc-row-pad:         12px 16px; /* .ggc-list-row */
+  --ggc-card-pad:        16px 20px; /* .ggc-card--pad */
   --ggc-container-max:   1280px;    /* 유틸리티 바 · 푸터 inner */
+
+  /* --- 타이포 스케일 (v3.0 신설 — 위계는 색이 아니라 크기·굵기로 만든다) ---
+   * v2.0 까지 제목 토큰이 없어 h1 18 · 카드 제목 16 · 본문 13.5 로 비율이 1.3 에 그쳤다.
+   * 값은 shadcn/Tailwind 기본 스텝(12/14/16/18/20/24/30)에서 가져왔다 — 사이 값을 발명하지 않는다.
+   * 치수이므로 대민 프로필이 덮어쓴다(KRDS body 17 · title 스텝). */
+  --ggc-text-xs:   12px;   /* 캡션 · 표 보조 */
+  --ggc-text-sm:   13px;   /* 메타 · 부제 */
+  --ggc-text-base: 14px;   /* 본문 기본 */
+  --ggc-text-md:   16px;   /* 카드 제목 · 강조 본문 */
+  --ggc-text-lg:   18px;   /* 섹션 제목 */
+  --ggc-text-xl:   20px;   /* 모달 제목 */
+  --ggc-text-2xl:  24px;   /* 페이지 제목 */
+  --ggc-text-3xl:  30px;   /* KPI 숫자 */
+  --ggc-leading-tight:  1.25;
+  --ggc-leading-normal: 1.5;
+  --ggc-h1-size:  var(--ggc-text-2xl);   /* 본문 첫 줄의 <h1> (ADR 0010 — GNB 가 아니라 본문) */
+  --ggc-h2-size:  var(--ggc-text-lg);
+  --ggc-h3-size:  var(--ggc-text-md);
+  --ggc-kpi-size: var(--ggc-text-3xl);
+
+  /* --- 아이콘 (v3.0 신설 — lucide 전용) ---
+   * 정본 아이콘은 design/ggc-icons.svg(lucide 부분집합 스프라이트)다. 이모지 · 유니코드 기호(📋 ◷ ✕)를
+   * UI 아이콘으로 쓰지 않는다 — 글꼴 렌더러마다 모양이 갈리고 제품 인상이 가장 크게 흔들리는 지점이다. */
+  --ggc-icon:        16px;   /* 버튼 · 메뉴 · 표 안 */
+  --ggc-icon-lg:     20px;   /* 사이드바 · KPI 타일 · 빈 상태 */
+  --ggc-icon-stroke: 2;
 }
 
 /* =============================================================================
@@ -174,6 +214,16 @@
   --ggc-row-pad:         20px 24px;
   --ggc-card-pad:        24px 24px;
   --ggc-container-max:   1248px;
+  /* 타이포 스케일 (v3.0) — KRDS body.medium 17 · title small/medium/large = 20/24/32 */
+  --ggc-text-sm:   15px;
+  --ggc-text-base: 17px;
+  --ggc-text-md:   19px;
+  --ggc-text-lg:   20px;
+  --ggc-text-xl:   24px;
+  --ggc-text-2xl:  32px;
+  --ggc-text-3xl:  40px;
+  --ggc-icon:      20px;
+  --ggc-icon-lg:   24px;
 }
 
 /* --- 공통 포커스 규칙 (계약 §3) ---

@@ -1,0 +1,39 @@
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+/* 상세 배치 — Learn/Decide 격자(archetypes.md): 본문 1fr + 우측 레일 320(결재선 · 감사 이력).
+ * ≤1024 에서 한 단으로 접힌다(레일이 본문 아래). 레일은 sticky — 결재 버튼이 스크롤을 따라온다.
+ *
+ *   <DetailLayout rail={<Card>…결재선…</Card>}>
+ *     <Card>제목 · 메타</Card>
+ *     <Card><Prose>…</Prose></Card>
+ *   </DetailLayout> */
+function DetailLayout({ className, rail, railWidth = 320, children, ...props }: React.ComponentProps<"div"> & { rail?: React.ReactNode; railWidth?: number }) {
+  return (
+    <div
+      data-slot="detail-layout"
+      style={{ "--rail-w": `${railWidth}px` } as React.CSSProperties}
+      className={cn("grid grid-cols-[minmax(0,1fr)_var(--rail-w)] items-start gap-5 max-[1024px]:grid-cols-1", className)}
+      {...props}
+    >
+      <div data-slot="detail-main" className="flex min-w-0 flex-col gap-5">{children}</div>
+      {rail && <aside data-slot="detail-rail" className="sticky top-[calc(var(--ggc-gnb-h)+var(--ggc-space-5))] flex flex-col gap-5 max-[1024px]:static">{rail}</aside>}
+    </div>
+  )
+}
+
+/* 키-값 메타 목록 — 제목 카드 안 "소관 · 제안자 · 접수일". <dl> 이라 스크린리더가 짝으로 읽는다 */
+function MetaList({ className, ...props }: React.ComponentProps<"dl">) {
+  return <dl data-slot="meta-list" className={cn("m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-(length:--ggc-text-sm)", className)} {...props} />
+}
+function MetaItem({ label, children, className, ...props }: React.ComponentProps<"div"> & { label: React.ReactNode }) {
+  return (
+    <div data-slot="meta-item" className={cn("contents", className)} {...props}>
+      <dt className="font-semibold whitespace-nowrap text-muted-foreground">{label}</dt>
+      <dd className="m-0 min-w-0 text-foreground">{children}</dd>
+    </div>
+  )
+}
+
+export { DetailLayout, MetaList, MetaItem }

@@ -12,10 +12,10 @@ function SearchBox({
 }: React.ComponentProps<"input"> & { "aria-label": string; shortcut?: React.ReactNode }) {
   return (
     <div data-slot="search" className={cn("flex h-(--ggc-search-h) w-[300px] min-w-[120px] items-center gap-2 rounded-(--ggc-radius) border border-(--ggc-shell-border) bg-(--ggc-control-bg) px-3 max-[900px]:w-auto max-[900px]:min-w-0 max-[900px]:flex-1", className)}>
-      <SearchIcon aria-hidden="true" strokeWidth={2.2} className="size-[15px] shrink-0 text-(--ggc-text-faint)" />
-      <input data-slot="search-input" type="search" className="w-full min-w-0 border-none bg-transparent text-[13.5px] text-foreground placeholder:text-(--ggc-text-subtle)" {...props} />
+      <SearchIcon aria-hidden="true" strokeWidth={2.2} className="size-(--ggc-icon) shrink-0 text-(--ggc-text-faint)" />
+      <input data-slot="search-input" type="search" className="w-full min-w-0 border-none bg-transparent text-(length:--ggc-control-font) text-foreground placeholder:text-(--ggc-text-subtle)" {...props} />
       {shortcut && (
-        <kbd data-slot="search-kbd" className="shrink-0 font-mono text-[11px] text-(--ggc-text-subtle) max-[900px]:hidden">
+        <kbd data-slot="search-kbd" className="shrink-0 font-mono text-(length:--ggc-text-xs) text-(--ggc-text-subtle) max-[900px]:hidden">
           {shortcut}
         </kbd>
       )}

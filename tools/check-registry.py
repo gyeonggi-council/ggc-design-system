@@ -50,6 +50,9 @@ def main():
         fails += 1
 
     allow, rgba_bases = cd.build_allowset()
+    # R3 예외 — 값이 아니라 **남의 기본값을 고르는 속성 선택자**. chart.tsx 의 [stroke='#ccc'] 는 Recharts 가 그리는
+    # 격자선을 잡아 우리 토큰(stroke-border)으로 덮는 규칙이다. 색을 칠하는 것이 아니라 색을 지우는 자리다(v3.0).
+    R3_SELECTOR_ALLOW = {"chart": {"#ccc"}}
 
     for it in items:
         name = it["name"]
@@ -77,6 +80,8 @@ def main():
             for bf in built.get("files", []))
         for h in cd.HEX_RE.findall(blob):
             n = cd.norm_hex(h)
+            if n in R3_SELECTOR_ALLOW.get(name, ()):
+                continue
             if n in cd.RETIRED:
                 print(f"R3 FAIL  {name:<16} 폐기값 {h}")
                 fails += 1

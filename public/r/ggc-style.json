@@ -2,11 +2,12 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-style",
   "title": "GGC 스타일 — 한 번에 착지",
-  "description": "npx shadcn init @ggc/ggc-style 한 번으로 토큰 파일 · 테마 · P0 컴포넌트가 들어온다.",
+  "description": "npx shadcn add @ggc/ggc-style 한 번으로 토큰 파일 · 테마 · P0 컴포넌트 35종이 들어온다. 무거운 것(sidebar · command · calendar · chart · data-table)은 블록이 필요할 때 끌어온다.",
   "dependencies": [
     "radix-ui",
     "class-variance-authority",
-    "lucide-react"
+    "lucide-react",
+    "sonner"
   ],
   "registryDependencies": [
     "utils",
@@ -19,9 +20,12 @@
     "@ggc/label",
     "@ggc/textarea",
     "@ggc/select",
+    "@ggc/native-select",
     "@ggc/checkbox",
     "@ggc/radio-group",
+    "@ggc/switch",
     "@ggc/dialog",
+    "@ggc/alert-dialog",
     "@ggc/tabs",
     "@ggc/alert",
     "@ggc/breadcrumb",
@@ -31,10 +35,19 @@
     "@ggc/spinner",
     "@ggc/accordion",
     "@ggc/dropdown-menu",
-    "@ggc/listbox",
-    "@ggc/switch",
-    "@ggc/toast",
-    "@ggc/tooltip"
+    "@ggc/tooltip",
+    "@ggc/popover",
+    "@ggc/sheet",
+    "@ggc/separator",
+    "@ggc/avatar",
+    "@ggc/scroll-area",
+    "@ggc/collapsible",
+    "@ggc/toggle",
+    "@ggc/toggle-group",
+    "@ggc/sonner",
+    "@ggc/kbd",
+    "@ggc/field",
+    "@ggc/empty"
   ],
   "type": "registry:style"
 }

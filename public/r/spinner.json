@@ -2,11 +2,14 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "spinner",
   "title": "스피너",
-  "description": "role=status + sr 텍스트. sm/기본/lg.",
+  "description": "role=status + 이름. 버튼 안 · 카드 안.",
+  "dependencies": [
+    "lucide-react"
+  ],
   "files": [
     {
       "path": "registry/ggc/ui/spinner.tsx",
-      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/* 스피너 — ggc-components.css §21. role=status + sr 텍스트. 버튼 안에서는 aria-hidden + 버튼 글자가 상태를 말한다. */\nconst SIZE = { sm: \"size-4 border-2\", default: \"size-7 border-[3px]\", lg: \"size-10 border-4\" } as const\n\nfunction Spinner({ className, size = \"default\", label = \"불러오는 중\", ...props }: React.ComponentProps<\"span\"> & { size?: keyof typeof SIZE; label?: string | null }) {\n  return (\n    <span\n      data-slot=\"spinner\"\n      role={label ? \"status\" : undefined}\n      aria-hidden={label ? undefined : true}\n      className={cn(\"inline-block shrink-0 animate-spin rounded-full border-(--ggc-primary-light-strong) border-t-primary align-middle motion-reduce:animate-none\", SIZE[size], className)}\n      {...props}\n    >\n      {label && <span className=\"sr-only\">{label}</span>}\n    </span>\n  )\n}\n\nexport { Spinner }\n",
+      "content": "import { cn } from \"@/lib/utils\"\nimport { Loader2Icon } from \"lucide-react\"\n\nfunction Spinner({ className, ...props }: React.ComponentProps<\"svg\">) {\n  return (\n    <Loader2Icon data-slot=\"spinner\" role=\"status\" aria-label=\"불러오는 중\" className={cn(\"size-4 animate-spin\", className)} {...props} />\n  )\n}\n\nexport { Spinner }\n",
       "type": "registry:ui"
     }
   ],

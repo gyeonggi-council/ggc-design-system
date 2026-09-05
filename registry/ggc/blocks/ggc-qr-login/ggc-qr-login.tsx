@@ -86,7 +86,7 @@ function QrLogin({
         className="relative flex size-[232px] shrink-0 items-center justify-center self-center rounded-(--ggc-radius-lg) border border-(--ggc-border-strong) bg-card max-[420px]:w-full max-[420px]:max-w-[232px] forced-colors:border"
       >
         {state === "idle" && <span aria-hidden="true" className="absolute inset-4 rounded-(--ggc-radius) border-[1.5px] border-dashed border-(--ggc-border-strong)" />}
-        {state === "loading" && <Spinner label={null} />}
+        {state === "loading" && <Spinner className="size-6 text-primary" />}
         {showFrame && (
           <div
             data-slot="qr-login-frame"

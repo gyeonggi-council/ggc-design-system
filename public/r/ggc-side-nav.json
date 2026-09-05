@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-side-nav",
   "title": "사이드 내비게이션 (대민)",
-  "description": "PublicMain side 슬롯의 왼쪽 메뉴. 2단은 <details> — JS 0. 현재 항목이 든 그룹은 열어 둔다.",
+  "description": "<details> 2단 — JS 0.",
   "registryDependencies": [
     "@ggc/ggc-tokens"
   ],

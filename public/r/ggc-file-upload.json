@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-file-upload",
   "title": "파일 업로드",
-  "description": "선택 버튼 + 끌어놓기 + 파일 목록(이름 · 크기 · 삭제) — maxFiles 상한, 삭제 버튼 이름에 파일명.",
+  "description": "선택 버튼 + 끌어놓기 + 파일 목록(이름 · 크기 · 삭제).",
   "files": [
     {
       "path": "registry/ggc/blocks/ggc-file-upload/ggc-file-upload.tsx",

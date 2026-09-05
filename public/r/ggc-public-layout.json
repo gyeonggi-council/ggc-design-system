@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-public-layout",
   "title": "대민 본문 배치",
-  "description": "PublicPage(.ggc-public) · Inner(1248) · PublicMain(--side 240+본문 · bleed) · PageTitle · SectionTitle(.ggc-h2).",
+  "description": "PublicPage · Inner(1248) · PublicMain · PageTitle · SectionTitle.",
   "registryDependencies": [
     "@ggc/ggc-tokens"
   ],
@@ -13,6 +13,5 @@
       "type": "registry:component"
     }
   ],
-  "docs": "대민 치수는 <html data-ggc-profile=\"public\"> 이 켠다 — 컴포넌트는 토큰만 읽는다.",
   "type": "registry:block"
 }

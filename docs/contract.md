@@ -17,16 +17,18 @@
 
 ## 2. 공통 셸
 
-- 상단 GNB: 64px, 흰색, 하단 `#E2E7EE` 1px
-- GNB 제목부(2026-09-04 신설, ADR 0008): 브랜드 슬롯과 검색 사이 — 브레드크럼 + 페이지 제목. 업무 화면의 `<h1>` 은 여기 하나이고 `<main>` 은 `aria-labelledby` 로 잇는다. 줄바꿈 없음·말줄임(잘릴 수 있는 의안명은 본문에 전문). 900px 이하 브레드크럼 숨김, 480px 이하 제목 시각 숨김(접근성 트리 유지). Monitor 첫 화면은 브레드크럼 없이 제목만
-- 로고 슬롯/LNB: 256px
+- 상단 GNB(헤더): 64px, 흰색, 하단 `#E2E7EE` 1px — 화면마다 자리가 같은 것만: 브레드크럼(경로부) · 검색 · 알림. **제목은 헤더에 두지 않는다**
+- 페이지 제목(2026-09-05, ADR 0010 — 0008 대체): 본문 첫 줄 `.ggc-page-head` 의 `<h1 class="ggc-page-title">`, 크기 `--ggc-h1-size`(24) · 700. 화면의 h1 은 이것 하나이고 `<main aria-labelledby="page-title">`. 설명 한 줄(`.desc`) + 주 액션 하나. 900px 이하 브레드크럼 숨김(경로는 LNB drawer 의 현재 항목)
+- 로고 슬롯/LNB(사이드바): 256px · 접힘 48px(`--ggc-lnb-w-icon`, Tier 2 sidebar collapsible=icon). 항목은 lucide 아이콘 + 라벨, 높이 32
 - 페이지 배경: `#EEF1F5`
 - 본문: 대시보드 최대 1320px, 기타 업무 화면 최대 1360px
 - 카드: 흰색, 1px `#E6EBF1`, radius 14~16px, 카드 그림자 없음
-- 검색: 300×40, `#F3F5F9`, radius 10px
+- 검색: 300×`--ggc-search-h`(업무 36 · 대민 48), `#F3F5F9`, radius 10px
 - 사용자: 실명·역할·부서, UUID 금지
 - 모바일: 900px 이하 GNB 압축 + LNB drawer, 390px 가로 스크롤 0, 주요 업무 동선 도달 가능
 - 글꼴: 자체 호스팅 `Pretendard GOV`; 외부 CDN 금지
+- 아이콘: lucide 전용 — Tier 1 은 `design/ggc-icons.svg` 스프라이트, Tier 2 는 `lucide-react`. 이모지 · 유니코드 기호 아이콘 금지(ADR 0009)
+- 밀도(업무, v3.0): 버튼 32/36/40 · 입력 36 · 글자 14 · 표 셀 8×12 — shadcn 기본과 같다(ADR 0009). 값은 토큰
 
 ### 2-1. 와이드 모니터 확폭 (≥1680px — 2026-07-31 신설, 사용자 결정)
 
@@ -51,6 +53,8 @@
 - text-subtle `#5A6577`
 - text-faint `#8A94A3` — **비텍스트 전용**(아이콘·구분·장식). 텍스트에 쓰지 않는다
 - text-body `#3A4150` — 카드 안 긴 본문 단락(흰 위 10.23:1). v2.0 에서 컴포넌트 레이어로부터 승격
+- 타이포 스케일(v3.0, 값은 토큰 파일): `--ggc-text-xs` ~ `-3xl`(12/13/14/16/18/20/24/30) · `--ggc-h1-size` = 2xl · `--ggc-h2-size` = lg · `--ggc-h3-size` = md · `--ggc-kpi-size` = 3xl · `--ggc-leading-tight/normal`. 대민 프로필은 KRDS 스텝(17 · 20/24/32)으로 덮어쓴다
+- 아이콘 치수(v3.0): `--ggc-icon` 16 · `--ggc-icon-lg` 20 (대민 20/24) · `--ggc-icon-stroke` 2
 - border `#E6EBF1` · border-strong `#D5DCE5`
 - shell-border `#E2E7EE`
 - bg `#EEF1F5`
@@ -167,7 +171,7 @@ KRDS 의 `mode-high-contrast` 는 밝은 글자(`text.bolder #E6E8EA` 등)를 �
 - 프로필이 덮어쓸 수 있는 것은 **치수뿐**이다 — 컨트롤 높이(`--ggc-control-h*` ·
   `--ggc-input-h` · `--ggc-search-h`), 컨트롤·라벨·표 글자 크기(`--ggc-*-font`),
   셀·행·카드 패딩(`--ggc-cell-pad` · `--ggc-row-pad` · `--ggc-card-pad`), 컨테이너 폭
-  (`--ggc-container-max`). 검사기 D6 가 이 허용 목록으로 강제한다.
+  (`--ggc-container-max`), **타이포 스케일과 아이콘 치수**(v3.0 — `--ggc-text-*` · `--ggc-leading-*` · `--ggc-icon*`). 검사기 D6 가 이 허용 목록으로 강제한다.
 - **색·포커스·서체·간격 스케일·상태색은 프로필이 건드리지 못한다.** 대민도 기관 CI 네이비이며
   (2026-08-29 사용자 결정), 상태색은 §3-1 과 `docs/krds-alignment.md §2` 의 결정을 그대로 따른다.
 - 대민 프로필의 값은 **KRDS 토큰에서 기계적으로 옮긴다**(`html{font-size:62.5%}` 기준
@@ -176,3 +180,19 @@ KRDS 의 `mode-high-contrast` 는 밝은 글자(`text.bolder #E6E8EA` 등)를 �
   구조를 따르고 `design/ggc-public.css` 가 담당한다. 업무 셸(§2 GNB/LNB)은 대민에 쓰지 않는다.
 - 두 프로필을 **한 화면에 섞지 않는다.** 예외는 업무 화면 안의 도민 안내 구역처럼 명확히
   경계 지어진 서브트리뿐이다.
+
+## 10. 업무 프로필 v3 — shadcn 기본 밀도 · 제목은 본문 · 아이콘은 lucide (2026-09-05)
+
+사용자 지적("내부 업무지원용으로는 아쉽다 · 디자인이 한눈에 안 들어온다")을 실측 진단한 결과(`docs/audit/2026-09-05-shadcn-krds-audit.md`),
+색이 아니라 **위계 · 밀도 · 아이콘**이 원인이었다. 결정 셋([ADR 0009](decisions/0009-work-profile-shadcn-density.md) ·
+[0010](decisions/0010-page-title-in-content.md) · [0011](decisions/0011-tier2-primary-for-react.md)):
+
+- **업무 프로필 치수 = shadcn 기본**(버튼 36 · 입력 36 · 14px · 셀 8×12). 대민 프로필(KRDS 치수)은 무변경. 색은 불변.
+- **타이포 스케일 토큰**으로 위계를 만든다(h1 24 · h2 18 · h3 16 · 본문 14 · 메타 13 · KPI 30). 색은 강조 수단이 아니다.
+- **h1 은 본문 첫 줄**, 브레드크럼은 헤더. §2 개정.
+- **아이콘은 lucide 전용** — 이모지 · 유니코드 기호 금지. 정본 스프라이트 `design/ggc-icons.svg`(정본 6번째 파일, D1 대조).
+- **업무 프로필에서 KRDS 는 접근성 바닥만**(AA · `:focus-visible` · forced-colors · ARIA). 치수 · 셸 · 컴포넌트 마크업 참조는 제외. 표는 `docs/krds-alignment.md §9`.
+- **React 계열은 Tier 2 가 정본** — shadcn 공식 소스 + 토큰(Radix Select · Sonner · TanStack Table · react-hook-form · Recharts · sidebar). Tier 1 CSS 는 비-React 스택용.
+- **대외 발표용 PPT 템플릿**은 토큰의 생성물(`design/ppt/`, `docs/guides/ppt.md`).
+
+완료 정의 §8 에 추가: ⑩ 이모지 · 유니코드 기호 아이콘 0건 ⑪ 화면의 h1 이 본문 첫 줄 24px 에 하나.

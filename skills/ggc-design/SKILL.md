@@ -86,7 +86,7 @@ python "$ROOT/design/check_design.py" --report <서비스경로>
 ```bash
 CANON="$ROOT/design"
 cp "$CANON/ggc-fonts.css" "$CANON/fonts/PretendardGOVVariable.subset.woff2"  <정적루트>/fonts/   # 폰트는 두 파일을 나란히
-cp "$CANON/ggc-tokens.css" "$CANON/ggc-components.css" "$CANON/ggc-behaviors.js"  <정적루트>/
+cp "$CANON/ggc-tokens.css" "$CANON/ggc-components.css" "$CANON/ggc-behaviors.js" "$CANON/ggc-icons.svg"  <정적루트>/   # icons 는 v3 (D1 대조)
 cp "$CANON/ggc-public.css" <정적루트>/          # public 프로필만
 cp "$CANON/brand/dist/favicon-32.png" "$CANON/brand/dist/apple-touch-icon-180.png" <정적루트>/   # references/brand-assets.md
 ```
@@ -105,7 +105,7 @@ cp "$CANON/brand/dist/favicon-32.png" "$CANON/brand/dist/apple-touch-icon-180.pn
 Tailwind 서비스는 `@theme { --color-brand: var(--ggc-primary); }` 처럼 **참조**만 한다 — 값을 옮기면 정본이 둘이 된다.
 
 **Tier 2 (레지스트리)** — `references/registry.md`. 요약: `components.json` 의 `registries` 에 `@ggc` → `npx shadcn add @ggc/ggc-style -y`
-→ 손으로 셋(토큰 `@import` 첫 줄 · 폰트 복사 · `.dark` 삭제).
+→ 손으로 셋(토큰 `@import` 첫 줄 + `shadcn/tailwind.css` · 폰트 복사 · `.dark` 삭제). 셸은 `@ggc/ggc-shell`(사이드바) + `ggc-page-head`(h1), 목록은 `ggc-data-table`.
 
 ## 6. Phase 3 — 공통 셸
 
@@ -118,7 +118,7 @@ Tailwind 서비스는 `@theme { --color-brand: var(--ggc-primary); }` 처럼 **�
 
 ## 7. Phase 4 — 화면 조립
 
-**먼저 갤러리를 연다.** `dashboard.html`(Monitor) · `wizard.html`(Configure) · `public/list.html`(대민 목록) 이 실물이고,
+**먼저 갤러리를 연다.** `dashboard.html`(Monitor) · `explore.html`(Explore) · `wizard.html`(Configure) · `public/list.html`(대민 목록) 이 실물이고,
 `components*.html` 은 각 예제 아래에 **렌더된 그 DOM** 을 펼쳐 준다. 마크업을 짐작해 짜지 말고 거기서 가져온다.
 
 work 는 `references/archetypes.md` 의 슬롯 순서를, public 은 `references/public-patterns.md` 를 따른다. 규칙 넷:
@@ -126,6 +126,7 @@ work 는 `references/archetypes.md` 의 슬롯 순서를, public 은 `references
 1. **빈 상태 · 오류 · 로딩 3종을 함께 만든다.** 시연 당일에 드러나는 것이 이것이다. 로딩은 `.ggc-skeleton`/`.ggc-spinner`, 빈 상태는 다음 행동을 말한다.
 2. **정본에 없는 것을 정본이라 하지 않는다.** 디자인 원본(.dc.html)에는 반응형·접근성이 없다 — 그것은 계약 §2·§3 이 근거다.
 3. **`outline:none` 을 복제하지 않는다.** 토큰의 `:focus-visible` 규칙을 쓴다.
+5. **이모지·유니코드 기호를 아이콘으로 쓰지 않는다** — `.ggc-icon` + 스프라이트 / `lucide-react`(ADR 0009). **h1 은 본문 첫 줄** `.ggc-page-head` 24px 하나(ADR 0010).
 4. **Claude Design 산출물은 그대로 붙이지 않는다** — `style-hover` 등 런타임 속성은 CSS 가 아니다(`references/porting.md` 역변환표).
 
 ## 8. Phase 5 — 검증
@@ -151,6 +152,7 @@ python "$ROOT/design/check_design.py" --gate <서비스경로> --aa=observe     
 - [ ] 화면마다 패턴을 판정했고 슬롯 순서를 따랐다 · 빈 상태·오류·로딩 3종이 있다
 - [ ] 로그인 화면이 있다면 `.ggc-qr` 정본 컴포넌트다
 - [ ] `outline:none` 을 대체 없이 두지 않았다 · 외부 폰트 CDN 0건
+- [ ] 이모지·유니코드 기호 아이콘 0건 · h1 이 본문 첫 줄 24px 에 하나(헤더에는 브레드크럼만)
 - [ ] `check_design.py --gate` PASS · AA 기준선이 늘지 않았다 · (Tier 2) D7 PASS
 - [ ] 스크린샷 2종(또는 3종)과 콘솔 0건 증거가 `docs/design-evidence/` 에 있다
 - [ ] 어휘·밀도 판정 목록(`domain-language.md`)을 돌렸고 결과를 적었다

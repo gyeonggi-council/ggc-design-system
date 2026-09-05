@@ -43,7 +43,7 @@ CANON_BRAND = os.path.join(HERE, "brand")
 CANON_PUBLIC = os.path.join(HERE, "ggc-public.css")
 # 정본 파일 집합 (v2.0) — D1 은 이 이름의 사본 전부를 바이트 대조하고, D2·D5 는 사본을 건너뛴다.
 CANON_FILES = ("ggc-tokens.css", "ggc-components.css", "ggc-public.css",
-               "ggc-fonts.css", "ggc-behaviors.js")
+               "ggc-fonts.css", "ggc-behaviors.js", "ggc-icons.svg")   # v3.0: 아이콘 스프라이트(생성물)도 정본 사본 대조
 # 프로필별로 기대하는 공통 셸 (D3). 대민은 계약 §9 — 업무 GNB/LNB 를 쓰지 않는다.
 SHELL_EXPECT = {
     "work":   (("ggc-utility-bar", "유틸리티 바"), ("ggc-footer", "공통 푸터")),
@@ -267,6 +267,10 @@ PROFILE_VARS = {
     "control-h-sm", "control-h", "control-h-lg", "input-h", "search-h",
     "control-font", "control-font-sm", "control-font-lg", "label-font",
     "table-font", "cell-pad", "row-pad", "card-pad", "container-max",
+    # v3.0 — 타이포 스케일 · 아이콘 치수도 치수다(ADR 0009). 제목 토큰(h1/h2/h3/kpi)은
+    # 스케일을 참조하므로 프로필은 스케일만 덮어쓴다.
+    "text-xs", "text-sm", "text-base", "text-md", "text-lg", "text-xl", "text-2xl", "text-3xl",
+    "leading-tight", "leading-normal", "icon", "icon-lg",
 }
 PROFILE_NAMES = ("public",)
 
@@ -776,6 +780,12 @@ GENERATED = [
      "README 컴포넌트 미리보기 PNG (헤드리스 Chrome 촬영 · 입력 해시로 신선도 판정)"),
     ("../tools/build-design-md.py", "../DESIGN.md",
      "Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (v2.0)"),
+    ("build-icons.py", "ggc-icons.svg",
+     "아이콘 정본 스프라이트 + 갤러리 인라인 스프라이트 (lucide 부분집합, v3.0)"),
+    ("../tools/build-registry-json.py", "../registry.json",
+     "Tier 2 레지스트리 메타데이터 — 소스(registry/ggc/**)의 import 에서 의존성을 읽는다 (v3.0)"),
+    ("ppt/build-ppt.py", "ppt/dist/manifest.json",
+     "대외 발표용 PPT 템플릿 + 샘플 덱 — 토큰에서 생성 (v3.0, docs/guides/ppt.md)"),
     ("../tools/check-registry.py", "../public/r",
      "Tier 2 레지스트리 산출물 (npx shadcn build) — 소스와 어긋나면 소비자가 낡은 컴포넌트를 받는다"),
 ]

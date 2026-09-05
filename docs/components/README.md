@@ -11,7 +11,7 @@
 
 | 컴포넌트 | 문서 | 갤러리 | 상태 |
 |---|---|---|---|
-| 페이지 헤더 (메타 · 주 액션) `.ggc-page-head` | [page-head.md](page-head.md) | [components-nav](../../design/examples/components-nav.html) | 있음 |
+| 페이지 헤더 (h1 24 · 설명 · 주 액션) `.ggc-page-head` `.ggc-page-title` | [page-head.md](page-head.md) | [components-nav](../../design/examples/components-nav.html) | 있음 (v3) |
 | 브레드크럼 `.ggc-breadcrumb` | [breadcrumb.md](breadcrumb.md) | components-nav | 있음 |
 | 탭 `.ggc-tabs` | [tabs.md](tabs.md) | components-nav | 있음 |
 | 페이지네이션 `.ggc-pagination` | [pagination.md](pagination.md) | components-nav | 있음 |
@@ -43,7 +43,8 @@
 | 표 `.ggc-table` | [table.md](table.md) | components | 있음 |
 | 폼 필드 `.ggc-field` | [field.md](field.md) | components · components-forms | 있음 |
 | 스텝퍼 · 위저드 `.ggc-wizard` | [stepper.md](stepper.md) | components · wizard | 있음 |
-| 업무 셸 (유틸리티 바 · GNB · LNB · 검색 · 푸터) | [shell.md](shell.md) | dashboard | 있음 |
+| 업무 셸 (유틸리티 바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · 검색 · 푸터) | [shell.md](shell.md) | dashboard · explore | 있음 (v3) |
+| 타이포 스케일 · 아이콘 `.ggc-h1/h2/h3` `.ggc-icon` | [../guides/typography.md](../guides/typography.md) · [../guides/icons.md](../guides/icons.md) | tokens · 전 쪽 | 있음 (v3) |
 | QR 로그인 `.ggc-qr` | [qr-login.md](qr-login.md) | login | 있음 |
 
 ## 대민 셸 — `design/ggc-public.css` (대민 전용)
@@ -74,3 +75,15 @@
 - 색 단독으로 의미를 전달하지 않는다 — 기호·텍스트·테두리를 함께 둔다.
 - `:focus-visible` 링을 없애지 않는다. 고대비(`forced-colors`)에서 배경만으로 구분되는 것이 없어야 한다.
 - 대민 프로필(`<html data-ggc-profile="public">`)에서는 치수만 커진다. 마크업은 같다.
+
+## Tier 2 전용 — shadcn 레지스트리 블록 (React, v3.0)
+
+Tier 1 대응이 없는 것. UI 45종은 shadcn 문서 그대로이고(`registry.json` 의 title · description 이 색인), 블록만 여기 문서가 있다.
+
+| 블록 | 문서 | 무엇 |
+|---|---|---|
+| `@ggc/ggc-shell` + `sidebar` | [sidebar.md](sidebar.md) | 사이드바 셸 v3 — AppSidebar · ShellHeader · ShellMain |
+| `@ggc/ggc-data-table` | [data-table.md](data-table.md) | TanStack 표 — 정렬 · 검색 · 열 · 쪽 · 빈 상태 구분 |
+| `@ggc/ggc-filter-bar` | [filter-bar.md](filter-bar.md) | Explore 필터 스트립 + 결과 요약 |
+| `@ggc/ggc-detail-layout` | [detail-layout.md](detail-layout.md) | 본문 + 결재 레일 · MetaList |
+| `@ggc/ggc-wizard-layout` | [wizard-layout.md](wizard-layout.md) | 스텝퍼 → 본문 · 보조 → 액션바 |

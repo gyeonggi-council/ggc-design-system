@@ -4,9 +4,10 @@
 검사기**다. 11개 프런트엔드(Next 14/15/16 · React 18/19 · Vite · JSP/Tiles · Jinja2 ·
 FastAPI · 정적 HTML)가 이 한 벌을 소비한다.
 
-**현재 판: v2.0.0** (2026-08-30) — 업무·대민 프로필(단일 토큰), Tier 1 컴포넌트 48종,
-Tier 2 shadcn 레지스트리 47항목, 스킬 v2, CI. v1.2 소비자는
-[docs/migration/v1.2-to-v2.md](docs/migration/v1.2-to-v2.md) 대로 정본 5파일을 재복사한다(⚠ D1).
+**현재 판: v3.0.0** (2026-09-05) — 업무 프로필이 **shadcn 기본 밀도**로, 제목은 본문으로, 아이콘은 lucide 로(ADR 0009 · 0010 · 0011).
+타이포 스케일 토큰 신설, Tier 2 는 **shadcn 공식 소스 + 토큰** 74항목(sidebar · data-table · command · calendar · chart · sonner · form …),
+대외 발표용 PPT 템플릿(`design/ppt/`). 색은 하나도 바뀌지 않았다. v2 소비자는 [docs/migration/v2-to-v3.md](docs/migration/v2-to-v3.md) 대로 정본 6파일을 재복사한다(⚠ D1).
+진단은 [docs/audit/2026-09-05-shadcn-krds-audit.md](docs/audit/2026-09-05-shadcn-krds-audit.md).
 
 ![경기도의회 공통 디자인 시스템 팔레트](design/examples/preview-palette.svg)
 
@@ -22,9 +23,13 @@ Tier 2 shadcn 레지스트리 47항목, 스킬 v2, CI. v1.2 소비자는
 
 ### 실물 화면
 
-| Monitor — 대시보드 (GNB 제목부 · LNB · KPI) |
+| Monitor — 대시보드 (본문 h1 · 사이드바 아이콘 · KPI · v3.0 밀도) |
 |---|
 | ![대시보드](design/examples/shots/screen-dashboard.png) |
+
+| Explore — 의안 목록 (필터 스트립 · 표 20행 · 페이지네이션) |
+|---|
+| ![의안 목록](design/examples/shots/screen-explore.png) |
 
 | Configure — 조례 초안 위저드 | 대민 셸 — KRDS 패턴 + 기관 CI |
 |---|---|
@@ -32,9 +37,13 @@ Tier 2 shadcn 레지스트리 47항목, 스킬 v2, CI. v1.2 소비자는
 
 ### 컴포넌트
 
-| GNB 제목부 `.ggc-gnb-page` — 브레드크럼 + 페이지 제목 |
+| 페이지 헤더 `.ggc-page-head` — h1 24px + 설명 + 주 액션 (제목은 본문에, ADR 0010) |
 |---|
-| ![GNB 제목부](design/examples/shots/gnb-page.png) |
+| ![페이지 헤더](design/examples/shots/page-head.png) |
+
+| GNB 경로부 `.ggc-gnb-page` — 브레드크럼만 |
+|---|
+| ![GNB 경로부](design/examples/shots/gnb-page.png) |
 
 | 버튼 `.ggc-btn` | 배지 · 태그 `.ggc-badge` `.ggc-tag` |
 |---|---|
@@ -64,7 +73,7 @@ Tier 2 shadcn 레지스트리 47항목, 스킬 v2, CI. v1.2 소비자는
 | [`components-forms.html`](design/examples/components-forms.html) | 셀렉트 · 체크/라디오/칩 · 스위치 · 날짜 · 파일 업로드 · 리스트박스 |
 | [`components-nav.html`](design/examples/components-nav.html) | GNB 제목부 · 페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 · 아코디언 · 메뉴 · 링크 · 목차 |
 | [`components-overlay.html`](design/examples/components-overlay.html) | 알림 · 토스트 · 모달 · 툴팁 · 스피너 · 스켈레톤 · 빈 상태 · 액션바 |
-| [`dashboard.html`](design/examples/dashboard.html) · [`wizard.html`](design/examples/wizard.html) · [`login.html`](design/examples/login.html) | 실물 업무 화면 — Monitor · Configure · QR 로그인 |
+| [`dashboard.html`](design/examples/dashboard.html) · [`explore.html`](design/examples/explore.html) · [`wizard.html`](design/examples/wizard.html) · [`login.html`](design/examples/login.html) | 실물 업무 화면 — Monitor · Explore(v3 신설) · Configure · QR 로그인 |
 | [`public/index.html`](design/examples/public/index.html) 외 4쪽 | **대민 셸** — 마스트헤드 · 헤더 · 주 메뉴 · 공개 푸터 · 아이덴티파이어 (KRDS 패턴 + 기관 CI) |
 
 **파일 하나로 열고 싶으면** `design/examples/examples-standalone.html` 을 쓴다 —
@@ -92,7 +101,7 @@ Tier 2 shadcn 레지스트리 47항목, 스킬 v2, CI. v1.2 소비자는
 ```bash
 # 1. 정본 파일을 복사한다. 손으로 옮겨 적지 않는다 — 바이트 동일이어야 검사가 성립한다
 #    (토큰은 필수, 나머지는 쓰는 만큼. 대민 화면이면 ggc-public.css 까지)
-cp design/ggc-tokens.css design/ggc-components.css design/ggc-behaviors.js <서비스>/<정적루트>/
+cp design/ggc-tokens.css design/ggc-components.css design/ggc-behaviors.js design/ggc-icons.svg <서비스>/<정적루트>/
 
 # 2. 자기 스타일보다 먼저 로드한다. 순서가 곧 우선순위다
 #    <link rel="stylesheet" href="ggc-tokens.css">
@@ -116,24 +125,27 @@ React · Next · Vite + Tailwind v4 프로젝트는 **Tier 2 — shadcn 레지�
 
 ```bash
 # components.json 의 registries 에 "@ggc": "<서빙주소>/public/r/{name}.json" 을 넣고
-npx shadcn add @ggc/ggc-style -y      # 토큰 파일 + 테마 매핑 + UI 23종
+npx shadcn add @ggc/ggc-style -y      # 토큰 파일 + 테마 매핑 + P0 UI 35종 (shadcn 공식 소스 + 토큰, v3)
+npx shadcn add @ggc/ggc-shell @ggc/ggc-page-head @ggc/ggc-data-table   # 사이드바 셸 · 제목 · TanStack 표
 ```
 
-절차와 손으로 하는 셋(토큰 @import · 폰트 복사 · .dark 삭제)은 [docs/quickstart/react-tier2.md](docs/quickstart/react-tier2.md).
+절차와 손으로 하는 셋(토큰 @import + `shadcn/tailwind.css` · 폰트 복사 · .dark 삭제)은 [docs/quickstart/react-tier2.md](docs/quickstart/react-tier2.md).
 
 ## 무엇이 들어 있나
 
 | 경로 | 무엇 |
 |---|---|
-| `design/ggc-tokens.css` | **토큰 정본 v2.0** — 색·타이포·간격·형태·포커스·셸·컨트롤 치수 + 대민 프로필 블록 |
-| `design/ggc-components.css` | 컴포넌트 v2.0 — 셸·카드·버튼·표·폼·위저드부터 §12~§35(탭·모달·토스트·스위치·리스트박스 등)까지, 인벤토리 48종 |
+| `design/ggc-tokens.css` | **토큰 정본 v3.0** — 색·서체·간격·형태·포커스·셸·컨트롤 치수(shadcn 기본 밀도)·**타이포 스케일·아이콘 치수** + 대민 프로필 블록(KRDS) |
+| `design/ggc-components.css` | 컴포넌트 v3.0 — 셸(경로부 · 아이콘 사이드바 · 접힘)·페이지 헤더(h1 본문)·카드·버튼·표·폼·위저드 … §37(제목 유틸 · 아이콘) |
+| `design/ggc-icons.svg` + `design/icons/lucide/` | **아이콘 정본 v3.0** — lucide 부분집합 90종 스프라이트(생성물, `build-icons.py`). 이모지 금지 |
+| `design/ppt/` | **대외 발표용 PPT 템플릿**(생성물 — 토큰에서 `build-ppt.py`) · 레이아웃 10종 · 샘플 12장 · [docs/guides/ppt.md](docs/guides/ppt.md) |
 | `design/ggc-fonts.css` + `design/fonts/` | **폰트 정본 v1.0** — @font-face 하나와 가변 woff2 하나. 두 파일을 같은 폴더에 나란히 두고 토큰보다 먼저 링크한다 |
 | `design/check_design.py` | **검사기** — `diff -q` 를 대체하는 6종 검사 |
 | `design/brand/` | 파비콘 세트 · 의회 마크 · stdlib 전용 생성기 · 배포 매핑표 |
-| **`design/examples/`** | **예제 갤러리 13쪽**(업무 9 + 대민 4) — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
+| **`design/examples/`** | **예제 갤러리 14쪽**(업무 10 + 대민 4) — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
 | `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v2.0**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·대민 메뉴·토스트·드롭다운·파일·툴팁·리스트박스·목차) |
 | `design/components.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 |
-| `registry.json` · `registry/ggc/` · `public/r/` | **Tier 2 shadcn 레지스트리** — 소스(tsx) · 빌드 산출물(JSON, 서빙 대상). 검사는 `tools/check-registry.py` |
+| `registry.json` · `registry/ggc/` · `public/r/` | **Tier 2 shadcn 레지스트리 74항목** — shadcn 공식 소스 + 토큰(UI 45 · 블록 27 · 훅). `registry.json` 은 생성물(`tools/build-registry-json.py`). 검사는 `tools/check-registry.py` |
 | `DESIGN.md` | **생성물** — Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (`tools/build-design-md.py`) |
 | `skills/ggc-design/` | **디자인 가이드 본문** — 화면 처방·스택별 착지점·리스킨·검증 |
 | `docs/contract.md` | 단일 디자인 계약 (AUTHORITATIVE) |
@@ -161,7 +173,7 @@ bash tools/check-all.sh                                # 이 저장소 자체 �
 
 | ID | 검사 | 왜 필요했나 |
 |---|---|---|
-| D1 | 토큰 사본 바이트 동일 | |
+| D1 | 정본 6파일 사본 바이트 동일 (tokens · components · public · fonts · behaviors · icons) | |
 | **D2** | 색 리터럴이 허용집합 안인가 | `diff -q` 는 **값을 인라인 이식한 서비스를 원리상 판정 못 한다** |
 | D3 | 로드 순서 · 공통 셸 · 파비콘 | 순서 역전은 "왜 색이 안 먹지" 로만 나타난다 |
 | D4 | 외부 폰트 CDN 0 | 망분리에서 깨진다 |
@@ -212,6 +224,9 @@ placeholder 를 유일한 라벨로 쓰지 않기.
 (KRDS 가 전제하는 사용법이다), 간격 스케일은 KRDS 부분집합으로 일치하며,
 상태색·중립 램프·컨트롤 높이는 갈린다.
 
+**업무 프로필에서 KRDS 는 접근성 바닥만**(v3.0, ADR 0009) — 치수(48/17)·셸(마스트헤드·아이덴티파이어)·컴포넌트 마크업 참조는 대민 프로필에만.
+KWCAG 2.2 AA · `:focus-visible` · forced-colors · ARIA 는 「장애인차별금지법」상 내부 시스템에도 적용되므로 유지한다. 표는 [docs/krds-alignment.md §9](docs/krds-alignment.md).
+
 상태색은 **KRDS 로 수렴하지 않기로 결정했다**(2026-08-22). CIELAB 색차로 확인하니
 v1.2 가 AA 를 통과하는 값 중 **디자인 원본에 가장 가까운 집합**이고(ΔE 5.7~10.1,
 색상각 Δ0~2°), KRDS 값은 대비가 0.5~0.7 좋아지는 대신 경기도의회 CI 톤에서 멀어진다.
@@ -244,8 +259,8 @@ v1.2 가 AA 를 통과하는 값 중 **디자인 원본에 가장 가까운 집�
 (`ggc_ai_platform`)가 정본이고 여기가 공유용 배포판이었다 — 그 시기의 동기화 도구와
 구판 문서는 [`archive/`](archive/) 에 보존돼 있다.
 
-**브랜드 아이덴티티는 여기가 아니다.** CI 원본 색 · 로고 파생 · PPT 템플릿 · 열람용 가이드 사이트는
-별도 저장소 `ggc-design-guide` 가 정본이다(2026-08-30 결정). 이 저장소는 그 색을 **구현 토큰**
+**브랜드 아이덴티티는 여기가 아니다.** CI 원본 색 · 로고 파생 · 열람용 가이드 사이트는
+별도 저장소 `ggc-design-guide` 가 정본이다(2026-08-30 결정). 대외 발표용 PPT 템플릿은 **토큰의 생성물**이라 여기 `design/ppt/` 에 있다(2026-09-05). 이 저장소는 그 색을 **구현 토큰**
 (`design/ggc-tokens.css`)으로 갖고, 두 저장소의 값이 갈리면 그쪽의 `tools/check_drift.py` 가 잡는다.
 브랜드 색을 바꾸는 결정은 그쪽에서 나고 여기로 내려온다.
 

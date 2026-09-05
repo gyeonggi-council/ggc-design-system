@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-masthead",
   "title": "마스트헤드 (대민)",
-  "description": "공식 누리집 띠 — 문구 고정. 국가 상징은 flag 슬롯(정부 제공 자산), 비우면 기관색 원. 안내 접기는 <details>.",
+  "description": "공식 누리집 띠 — 문구 고정.",
   "registryDependencies": [
     "@ggc/ggc-tokens"
   ],

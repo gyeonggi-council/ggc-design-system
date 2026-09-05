@@ -39,19 +39,19 @@ function Empty({
           data-slot="empty-icon"
           aria-hidden="true"
           className={cn(
-            "mb-1.5 inline-flex size-11 items-center justify-center rounded-full bg-(--ggc-surface-inset) text-xl text-(--ggc-text-faint) forced-colors:border",
+            "mb-1.5 inline-flex size-11 items-center justify-center rounded-full bg-(--ggc-surface-inset) text-(--ggc-text-faint) forced-colors:border [&>svg]:size-(--ggc-icon-lg)",
             error && "bg-(--ggc-danger-tint) text-(--ggc-danger)",
-            compact && "size-9 text-base"
+            compact && "size-9 [&>svg]:size-(--ggc-icon)"
           )}
         >
           {icon}
         </span>
       )}
-      <p data-slot="empty-title" className={cn("m-0 text-[14.5px] font-bold text-(--ggc-text-strong)", error && "text-(--ggc-danger)")}>
+      <p data-slot="empty-title" className={cn("m-0 text-(length:--ggc-text-base) font-bold text-(--ggc-text-strong)", error && "text-(--ggc-danger)")}>
         {title}
       </p>
       {desc != null && (
-        <p data-slot="empty-desc" className="m-0 max-w-[440px] text-[13px] leading-[1.6] text-(--ggc-text-muted)">{desc}</p>
+        <p data-slot="empty-desc" className="m-0 max-w-[440px] text-(length:--ggc-text-sm) leading-(--ggc-leading-normal) text-(--ggc-text-muted)">{desc}</p>
       )}
       {actions != null && (
         <div data-slot="empty-actions" className="mt-3 flex flex-wrap justify-center gap-2">{actions}</div>

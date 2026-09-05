@@ -1,9 +1,12 @@
 /* registry/ggc/styles/ggc.css — 레지스트리 빌드용 스타일시트 (소비자에게 복사되지 않는다).
- * 소비 프로젝트의 globals.css 가 어떤 모습이어야 하는지의 **참고본**이다:
- *   ① 첫 줄에 토큰 정본 @import   ② tailwind   ③ ggc-theme 항목이 넣어 주는 :root 매핑 + @theme inline
- * 값(hex)은 여기에도 없다. */
+ * 소비 프로젝트의 globals.css 가 어떤 모습이어야 하는지의 **참고본**이다 (v3.0, ADR 0011):
+ *   ① 첫 줄에 토큰 정본 @import   ② tailwind + shadcn/tailwind.css(공식 컴포넌트가 쓰는 data-open · data-checked … 변형) + tw-animate-css
+ *   ③ ggc-theme 항목이 넣어 주는 :root 매핑 + @theme inline
+ * 값(hex)은 여기에도 없다. 다크 블록은 없다(계약 §3) — .dark 를 만들지 않으므로 공식 소스의 dark: 변형은 이식 때 지웠다. */
 @import "../../../design/ggc-tokens.css";
 @import "tailwindcss";
+@import "shadcn/tailwind.css";
+@import "tw-animate-css";
 
 :root {
   --background: var(--ggc-bg);
@@ -26,10 +29,24 @@
   --input: var(--ggc-border-strong);
   --ring: var(--ggc-primary);
   --radius: var(--ggc-radius);
+  --chart-1: var(--ggc-primary);
+  --chart-2: var(--ggc-info);
+  --chart-3: var(--ggc-success);
+  --chart-4: var(--ggc-warning);
+  --chart-5: var(--ggc-danger);
+  --sidebar: var(--ggc-surface);
+  --sidebar-foreground: var(--ggc-text);
+  --sidebar-primary: var(--ggc-primary);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--ggc-primary-light);
+  --sidebar-accent-foreground: var(--ggc-primary-deep);
+  --sidebar-border: var(--ggc-shell-border);
+  --sidebar-ring: var(--ggc-primary);
 }
 
 @theme inline {
   --font-sans: var(--ggc-font);
+  --font-heading: var(--ggc-font);
   --font-mono: var(--ggc-font-mono);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -50,12 +67,29 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  /* radius 스텝 — shadcn 공식 소스는 rounded-lg(컨트롤) · rounded-xl(카드·모달) · rounded-md(메뉴 항목) 을 쓴다.
+   * 그 이름에 토큰을 대 주면 컴포넌트 소스를 고치지 않아도 계약 §2 의 형태(컨트롤 10 · 카드 14 · 배지 6)가 나온다. */
   --radius-sm: var(--ggc-radius-sm);
-  --radius-md: var(--ggc-radius);
-  --radius-lg: var(--ggc-radius-lg);
-  --radius-xl: 16px;
+  --radius-md: var(--ggc-radius-sm);
+  --radius-lg: var(--ggc-radius);
+  --radius-xl: var(--ggc-radius-lg);
+  --radius-2xl: var(--ggc-radius-lg);
 }
 
 @layer base {
+  * { @apply border-border outline-ring/50; }
   body { font-family: var(--ggc-font); background-color: var(--ggc-bg); color: var(--ggc-text); -webkit-font-smoothing: antialiased; }
 }

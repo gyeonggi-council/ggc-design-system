@@ -41,19 +41,19 @@ function ListRow({
       type={Comp === "button" ? "button" : undefined}
       onClick={onClick}
       className={cn(
-        "flex w-full items-center gap-[14px] border-t border-(--ggc-hairline) p-(--ggc-row-pad) text-left font-sans hover:bg-(--ggc-row-hover)",
+        "flex w-full items-center gap-3 border-t border-(--ggc-hairline) p-(--ggc-row-pad) text-left font-sans hover:bg-(--ggc-row-hover)",
         (href || onClick) && "cursor-pointer text-inherit no-underline",
         className
       )}
       {...props}
     >
       {severity && <span aria-hidden="true" className={cn("w-[5px] shrink-0 self-stretch rounded-[3px]", SEV[severity])} />}
-      {icon && <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-(--ggc-radius) bg-(--ggc-control-bg) text-(--ggc-text-muted)">{icon}</span>}
+      {icon && <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-(--ggc-radius) bg-(--ggc-control-bg) text-(--ggc-text-muted) [&>svg]:size-(--ggc-icon-lg)">{icon}</span>}
       <div className="min-w-0 flex-1">
-        <div className="mb-[3px] truncate text-sm font-bold text-foreground">{title}</div>
-        {meta && <div className="text-xs text-(--ggc-text-subtle)">{meta}</div>}
+        <div className="mb-0.5 truncate text-(length:--ggc-text-base) font-semibold text-foreground">{title}</div>
+        {meta && <div className="text-(length:--ggc-text-xs) text-(--ggc-text-subtle)">{meta}</div>}
       </div>
-      {end && <div className="flex shrink-0 items-center gap-2.5 text-right text-xs text-(--ggc-text-subtle)">{end}</div>}
+      {end && <div className="flex shrink-0 items-center gap-2.5 text-right text-(length:--ggc-text-xs) text-(--ggc-text-subtle)">{end}</div>}
     </Comp>
   )
 }

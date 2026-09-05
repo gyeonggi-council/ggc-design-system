@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (557ebdbe) · design/components.tsv (3b73e338) -->
+<!-- 원천: design/ggc-tokens.css (b7b89677) · design/components.tsv (9d4bfc6b) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -94,11 +94,11 @@
 
 | 역할 | 업무 프로필 | 대민 프로필 |
 |---|---|---|
-| 버튼 · 입력 글자 `--ggc-control-font` | 13.5px | 17px |
+| 버튼 · 입력 글자 `--ggc-control-font` | 14px | 17px |
 | 버튼 sm `--ggc-control-font-sm` | 13px | 15px |
 | 버튼 lg `--ggc-control-font-lg` | 14px | 19px |
-| 폼 라벨 `--ggc-label-font` | 13px | 17px |
-| 표 `--ggc-table-font` | 13px | 17px |
+| 폼 라벨 `--ggc-label-font` | 14px | 17px |
+| 표 `--ggc-table-font` | 14px | 17px |
 
 업무 화면의 실측 스케일: 제목 16~17px/800 · 카드 제목 15px/700 · 행 제목 14px/700 · 본문 13.5px ·
 라벨 13px/700 · 메타 12px · 태그 10.5px/700 · KPI 수치 30px/800. 대민은 KRDS body 15/17/19px.
@@ -147,7 +147,7 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 사이드 내비게이션 (대민) | `.ggc-side-nav` | `ggc-side-nav` | public | P1 | 있음 |
 | 구조화 목록 | `.ggc-structured-list` | `ggc-structured-list` | public | P1 | 있음 |
 | 토글 스위치 | `.ggc-switch (--row)` | `switch` | both | P1 | 있음 |
-| 토스트 | `.ggc-toast-region .ggc-toast (--success --warning --danger --info)` | `toast` | both | P1 | 있음 |
+| 토스트 | `.ggc-toast-region .ggc-toast (--success --warning --danger --info)` | `sonner` | both | P1 | 있음 |
 | 아코디언 / 디스클로저 | `.ggc-accordion .ggc-accordion-group (<details>, --flush)` | `accordion` | both | P1 | 있음 |
 | 날짜 입력 (네이티브) | `.ggc-date .ggc-date-range (--inline)` | `input (date)` | both | P1 | 있음 |
 | 파일 업로드 | `.ggc-file .ggc-file-list (--compact)` | `ggc-file-upload` | both | P1 | 있음 |
@@ -158,18 +158,25 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 툴팁 | `.ggc-tooltip-wrap .ggc-tooltip (--bottom --start --end)` | `tooltip` | both | P2 | 있음 |
 | 페이지 내 내비게이션 | `.ggc-in-page-nav` | `—` | both | P2 | 있음 |
 | 텍스트 목록 | `.ggc-text-list (--dash --check --none --tight)` | `—` | both | P2 | 있음 |
-| 콤보박스 (입력 + 팝업 목록) | `.ggc-combobox` | `combobox` | both | P2 | 예정 |
+| 콤보박스 (입력 + 팝업 목록) | `.ggc-combobox` | `command popover` | both | P2 | 예정 |
 | 커스텀 달력 (범위 · 회기 표시) | `.ggc-calendar` | `calendar` | both | P2 | 예정 |
+| 페이지 제목 · 제목 스케일 | `.ggc-page-title .ggc-h1 .ggc-h2 .ggc-h3 .ggc-text-sm .ggc-text-xs` | `ggc-page-head` | both | P0 | 있음 |
+| 아이콘 (lucide 스프라이트) | `.ggc-icon (--lg --sm) .ggc-icon-sprite` | `—` | both | P0 | 있음 |
+| 접힌 사이드바 | `.ggc-lnb--icon` | `sidebar` | work | P1 | 있음 |
+| 데이터 표 (정렬 · 검색 · 열 · 쪽) | `—` | `ggc-data-table` | work | P0 | 있음 |
+| 필터 스트립 | `—` | `ggc-filter-bar` | work | P1 | 있음 |
+| 상세 배치 (본문 + 결재 레일) | `—` | `ggc-detail-layout` | work | P1 | 있음 |
+| 위저드 배치 | `—` | `ggc-wizard-layout` | work | P1 | 있음 |
 
 핵심 규칙:
 
-- 버튼: 기본 높이 `--ggc-control-h` 42px · radius 10px · primary 만 그림자
-  (`--ggc-shadow-primary`). sm 34px / lg 46px. 대민은 40px/48px/56px.
-- 입력: 높이 `--ggc-input-h` 44px · 1px `--ggc-border-strong` · radius 10px · 포커스는 공통 링.
+- 버튼: 기본 높이 `--ggc-control-h` 36px · radius 10px · primary 만 그림자
+  (`--ggc-shadow-primary`). sm 32px / lg 40px. 대민은 40px/48px/56px.
+- 입력: 높이 `--ggc-input-h` 36px · 1px `--ggc-border-strong` · radius 10px · 포커스는 공통 링.
   placeholder 를 유일한 라벨로 쓰지 않는다. 오류는 색 + 문구 + 아이콘.
 - 배지: 알약형, 텍스트·기호 병기(✓ 승인 · ◷ 대기 · ✕ 반려 · ● 회기 중 · ◆ 회의일 · ○ 비회기).
 - 카드: 흰 면 · 1px `--ggc-border` · radius 16px · 그림자 없음. 헤더는 제목 + 우측 액션 슬롯.
-- 표: 얇은 보더, thead 상단 2px `--ggc-primary-deep`, 셀 패딩 `--ggc-cell-pad` 11px 10px, 합계행 인셋 배경.
+- 표: 얇은 보더, thead 상단 2px `--ggc-primary-deep`, 셀 패딩 `--ggc-cell-pad` 8px 12px, 합계행 인셋 배경.
 - 셸(업무): GNB 64px 흰색 + LNB 256px + 본문 최대 1320/1360px. ≤900px 에서 LNB 는 drawer.
 - 셸(대민): KRDS masthead → header/주 메뉴 → 본문(최대 1248px) → footer → identifier.
 - 상태 3종(빈 상태 · 오류 · 로딩)을 화면마다 함께 만든다. 빈 상태 문구는 다음 행동을 말한다.
@@ -197,7 +204,7 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 
 - 2단 배치는 고정 격자 대신 `flex-wrap` + `flex-basis`(예: `flex: 1 1 560px`)로 짠다 — 미디어 쿼리 없이 접힌다.
 - 넓은 표·코드는 자기 컨테이너 안에서 스크롤(`.ggc-table-wrap`). 본문이 가로 스크롤되게 두지 않는다.
-- 밀도: 행 리스트 `--ggc-row-pad` 15px 22px · 카드 `--ggc-card-pad` 18px 22px. 대민은 20px 24px · 24px 24px.
+- 밀도: 행 리스트 `--ggc-row-pad` 12px 16px · 카드 `--ggc-card-pad` 16px 20px. 대민은 20px 24px · 24px 24px.
 - Surface Archetype(업무 화면 6종): Monitor(KPI 4열 + 큐) · Explore(필터 + 표) · Learn/Decide(상세 + 결재)
   · Configure(스텝퍼 + 스티키 액션바) · Converse(대화 + 출처) · Operate(실시간 상태 + 로그).
 

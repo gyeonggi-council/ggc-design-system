@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ggc-prose",
   "title": "문서 본문 조판",
-  "description": "조례 조문 · 검토보고서 같은 긴 글의 조판 — Typography 플러그인 없이 자손 셀렉터로 §23 을 이식.",
+  "description": "조례 조문 · 검토보고서 같은 긴 글.",
   "files": [
     {
       "path": "registry/ggc/blocks/ggc-prose/ggc-prose.tsx",

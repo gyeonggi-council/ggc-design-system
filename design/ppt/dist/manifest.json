@@ -1,0 +1,54 @@
+{
+  "_": "생성물이다. design/ppt/build-ppt.py 가 만든다 — 직접 고치지 말 것.",
+  "sha256": "7011218108879e0c7c70f0965eb289ddb7bfb61da8a3241246ebeac7e4488099",
+  "sources": [
+    "design/ggc-tokens.css",
+    "design/ppt/build-ppt.py",
+    "design/brand/dist/assembly-mark.png"
+  ],
+  "layouts": [
+    {
+      "id": "cover",
+      "name": "표지"
+    },
+    {
+      "id": "toc",
+      "name": "목차"
+    },
+    {
+      "id": "section",
+      "name": "섹션 구분"
+    },
+    {
+      "id": "bullets",
+      "name": "본문 · 불릿"
+    },
+    {
+      "id": "two-col",
+      "name": "본문 · 2단"
+    },
+    {
+      "id": "image",
+      "name": "이미지 강조"
+    },
+    {
+      "id": "table",
+      "name": "표"
+    },
+    {
+      "id": "chart",
+      "name": "차트"
+    },
+    {
+      "id": "kpi",
+      "name": "핵심 수치"
+    },
+    {
+      "id": "closing",
+      "name": "마무리"
+    }
+  ],
+  "font": "Pretendard GOV",
+  "font_fallback": "맑은 고딕",
+  "aspect": "16:9 (13.333 x 7.5 in)"
+}

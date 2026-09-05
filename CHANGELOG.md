@@ -3,6 +3,30 @@
 소비자(11개 서비스)에게 영향이 있는 변경을 적는다.
 **토큰 파일 바이트가 바뀌는 변경은 D1 재복사가 필요하다** — 그런 항목은 ⚠ D1 로 표시한다.
 
+## [3.0.0] — 2026-09-05 ⚠ D1 — 업무 프로필을 shadcn 기본에, 제목은 본문에, 아이콘은 lucide 로
+
+사용자 지적("내부 업무지원용으로는 아쉽다 · 디자인이 한눈에 안 들어온다")을 실측 진단([docs/audit/2026-09-05-shadcn-krds-audit.md](docs/audit/2026-09-05-shadcn-krds-audit.md))한 결과
+색이 아니라 **위계 · 밀도 · 아이콘**이 원인이었다. **색은 하나도 바뀌지 않았다.** 결정: ADR [0009](docs/decisions/0009-work-profile-shadcn-density.md) · [0010](docs/decisions/0010-page-title-in-content.md) · [0011](docs/decisions/0011-tier2-primary-for-react.md).
+
+- **토큰 v3.0** ⚠ D1 — 업무 치수 → shadcn 기본(버튼 32/36/40 · 입력 36 · 14px · 셀 8×12 · 행 12×16 · 카드 16×20). 신설 타이포 스케일
+  `--ggc-text-xs~3xl` · `--ggc-leading-*` · `--ggc-h1/h2/h3-size` · `--ggc-kpi-size`, 아이콘 `--ggc-icon(-lg/-stroke)`, `--ggc-lnb-w-icon`. 대민 블록은 KRDS 그대로 + 타이포 스텝.
+  검사기 `PROFILE_VARS` 에 타이포·아이콘 치수 추가.
+- **컴포넌트 v3.0** ⚠ D1 — §9 `.ggc-gnb-page` 는 브레드크럼만(`.ggc-gnb-page-title` 폐기 예정) · LNB 항목 32px + 아이콘 슬롯 + `.ggc-lnb--icon` 접힘 ·
+  §12 `.ggc-page-head` 가 `<h1 class="ggc-page-title">` 24px + `.desc` · §2·§3·§5·§6 리터럴 → 타이포 토큰 · §37 신설(`.ggc-h1/h2/h3` · `.ggc-icon`).
+- **아이콘 정본 신설** — `design/icons/lucide/`(lucide-static 1.41.0 부분집합 90종, ISC) → `design/build-icons.py` → `design/ggc-icons.svg`(정본 6번째 파일, D1) + 갤러리 인라인 스프라이트.
+  갤러리의 이모지·유니코드 기호(📋 ◷ ✕ ● ◆ ○ ▲ ＋ ← →) 전량 교체.
+- **갤러리** — 업무 8쪽 h1 을 본문으로 이동, LNB 아이콘 + 현재 항목, **`explore.html` 신설**(의안 목록 — 필터 스트립 · 표 20행 · 페이지네이션, 첫 화면 15행 이상),
+  `components-nav` GNB 절 개정. 합본은 쪽별 h1 id 분리 + 스프라이트 인라인. 스크린샷 18장(+ screen-explore · page-head).
+- **Tier 2 레지스트리 v3** — **shadcn 공식 소스(4.19 · nova) + 토큰**으로 재작성. UI 45종(신설 22: sidebar · sheet · popover · command · calendar · chart · sonner · field ·
+  separator · avatar · scroll-area · progress · collapsible · toggle · toggle-group · hover-card · kbd · empty · item · input-group · button-group · alert-dialog · native-select),
+  `select` = Radix · `toast` → `sonner`. 블록: `ggc-shell` 재작성(sidebar 기반 · `AppSidebar` · `ShellHeader` · `ShellMain`) · `ggc-page-head`(h1) · 신설 `ggc-data-table`(TanStack v8) ·
+  `ggc-filter-bar` · `ggc-detail-layout` · `ggc-wizard-layout` · 훅 `use-mobile`. 대민 블록 8종 무변경. `registry.json` 은 생성물(`tools/build-registry-json.py`). 항목 74 · R1~R5 PASS ·
+  `tsc` 통과. 테마에 `font-heading` · radius 스텝 매핑, 소비자 css 에 `@import "shadcn/tailwind.css"` · `tw-animate-css` 추가.
+- **PPT 가이드 신설** — `design/ppt/build-ppt.py`(python-pptx)가 토큰에서 16:9 발표용 템플릿(레이아웃 10종)과 샘플 덱 12장을 생성. `docs/guides/ppt.md`.
+- **문서** — 계약 §2·§3·§9·§10 · `krds-alignment.md §9`(업무 프로필의 KRDS 범위) · `guides/typography.md` · `icons.md` · `ppt.md` · `components/shell.md` · `page-head.md` · `breadcrumb.md` ·
+  신설 `data-table.md` · `sidebar.md` · `filter-bar.md` · `detail-layout.md` · `wizard-layout.md` · `quickstart/react-tier2.md` v3 · `migration/v2-to-v3.md` · 스킬 참조 · README · CLAUDE.md.
+- **검사기** — D1 정본 6파일 · D6 gen 에 `build-icons.py` · `build-registry-json.py` · `build-ppt.py` · check-registry R3 에 chart 의 Recharts 속성 선택자 예외 · CI branches `v3-*`.
+
 ## [Unreleased] — v2 재구성
 
 ### README 컴포넌트 미리보기 (2026-09-04)
