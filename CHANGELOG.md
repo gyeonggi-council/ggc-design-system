@@ -5,6 +5,14 @@
 
 ## [Unreleased] — v2 재구성
 
+### README 컴포넌트 미리보기 (2026-09-04)
+
+- `design/examples/build-shots.py` 신설 — 갤러리 실물 화면 3장 + 컴포넌트 13장을 헤드리스 Chrome 으로 찍어
+  `design/examples/shots/*.png` 를 만든다. README 상단 "컴포넌트 미리보기" 절이 이걸로 보인다(GitHub 웹은 HTML 을
+  렌더하지 않는다). 생성물이며 `manifest.json` 의 **입력 해시**로 신선도를 판정한다(픽셀은 환경마다 달라 바이트 비교 안 함).
+  `check_design.py --canon` D6 `gen` 에 편입 — `--check` 는 표준 라이브러리만 써 CI 에서 그대로 돈다
+- `.ggc-gnb-page` 브레드크럼 마지막 항목의 구분자 오른쪽 간격 보정(block 전환으로 빠진 gap) — ⚠ D1 `ggc-components.css`
+
 ### GNB 제목부 — 브레드크럼·페이지 제목을 GNB 로 (2026-09-04)
 
 - `ggc-components.css` §9 `.ggc-gnb-page` + `.ggc-gnb-page-title` 신설 — 브레드크럼 + `<h1>` 이 본문 첫 줄이 아니라

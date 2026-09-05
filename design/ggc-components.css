@@ -734,7 +734,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.ggc-gnb-page .ggc-breadcrumb li:last-child::before { display: inline-block; vertical-align: middle; }
+/* block 이 되면 li 의 gap 이 사라진다 — 앞 항목들과 같은 간격(margin 3 + gap)을 구분자 오른쪽에 준다 */
+.ggc-gnb-page .ggc-breadcrumb li:last-child::before {
+  display: inline-block; vertical-align: middle;
+  margin-right: calc(3px + var(--ggc-space-1));
+}
 .ggc-gnb-page-title {
   margin: 0;
   font-size: 18px;

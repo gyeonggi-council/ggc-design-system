@@ -14,6 +14,42 @@ Tier 2 shadcn 레지스트리 47항목, 스킬 v2, CI. v1.2 소비자는
 > 값을 옮겨 적지 않았고, 토큰이 바뀌면 다시 생성해야 하며,
 > 낡으면 `check_design.py --canon` 이 잡는다.
 
+## 컴포넌트 미리보기
+
+아래 그림은 전부 `design/examples/` 갤러리를 헤드리스 Chrome 으로 찍은 **생성물**이다
+(`design/examples/build-shots.py`). 정본 CSS·갤러리가 바뀌면 다시 찍어야 하고, 낡으면
+`check_design.py --canon` 이 잡는다. 손으로 찍어 넣지 말 것. 전체는 [갤러리](#먼저-눈으로-보기--designexamples) 에.
+
+### 실물 화면
+
+| Monitor — 대시보드 (GNB 제목부 · LNB · KPI) |
+|---|
+| ![대시보드](design/examples/shots/screen-dashboard.png) |
+
+| Configure — 조례 초안 위저드 | 대민 셸 — KRDS 패턴 + 기관 CI |
+|---|---|
+| ![위저드](design/examples/shots/screen-wizard.png) | ![대민 셸](design/examples/shots/screen-public.png) |
+
+### 컴포넌트
+
+| GNB 제목부 `.ggc-gnb-page` — 브레드크럼 + 페이지 제목 |
+|---|
+| ![GNB 제목부](design/examples/shots/gnb-page.png) |
+
+| 버튼 `.ggc-btn` | 배지 · 태그 `.ggc-badge` `.ggc-tag` |
+|---|---|
+| ![버튼](design/examples/shots/buttons.png) | ![배지](design/examples/shots/badges.png) |
+| **카드 `.ggc-card`** | **통계 타일 `.ggc-stat`** |
+| ![카드](design/examples/shots/cards.png) | ![통계](design/examples/shots/stats.png) |
+| **표 `.ggc-table`** | **위저드 `.ggc-wizard`** |
+| ![표](design/examples/shots/table.png) | ![위저드](design/examples/shots/wizard.png) |
+| **Explore 필터 스트립 (조립)** | **체크박스 · 라디오 `.ggc-check` `.ggc-radio`** |
+| ![필터 스트립](design/examples/shots/filter.png) | ![체크·라디오](design/examples/shots/checks.png) |
+| **탭 `.ggc-tabs`** | **페이지네이션 `.ggc-pagination`** |
+| ![탭](design/examples/shots/tabs.png) | ![페이지네이션](design/examples/shots/pagination.png) |
+| **알림 · 콜아웃 `.ggc-alert`** | **빈 상태 · 오류 · 로딩** |
+| ![알림](design/examples/shots/alerts.png) | ![상태 3종](design/examples/shots/states.png) |
+
 ## 먼저 눈으로 보기 — `design/examples/`
 
 **저장소를 내려받아 [`design/examples/index.html`](design/examples/index.html) 을
@@ -26,7 +62,7 @@ Tier 2 shadcn 레지스트리 47항목, 스킬 v2, CI. v1.2 소비자는
 | [`tokens.html`](design/examples/tokens.html) | 색 · 타이포 · 간격 · 형태 · 포커스 **전수**, 대비비 실측, 대민 프로필 토글 |
 | [`components.html`](design/examples/components.html) | 버튼 · 배지 · 카드 · 통계 · 행리스트 · 표 · 폼 · 위저드 · 상태 3종 |
 | [`components-forms.html`](design/examples/components-forms.html) | 셀렉트 · 체크/라디오/칩 · 스위치 · 날짜 · 파일 업로드 · 리스트박스 |
-| [`components-nav.html`](design/examples/components-nav.html) | 페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 · 아코디언 · 메뉴 · 링크 · 목차 |
+| [`components-nav.html`](design/examples/components-nav.html) | GNB 제목부 · 페이지 헤더 · 브레드크럼 · 탭 · 페이지네이션 · 아코디언 · 메뉴 · 링크 · 목차 |
 | [`components-overlay.html`](design/examples/components-overlay.html) | 알림 · 토스트 · 모달 · 툴팁 · 스피너 · 스켈레톤 · 빈 상태 · 액션바 |
 | [`dashboard.html`](design/examples/dashboard.html) · [`wizard.html`](design/examples/wizard.html) · [`login.html`](design/examples/login.html) | 실물 업무 화면 — Monitor · Configure · QR 로그인 |
 | [`public/index.html`](design/examples/public/index.html) 외 4쪽 | **대민 셸** — 마스트헤드 · 헤더 · 주 메뉴 · 공개 푸터 · 아이덴티파이어 (KRDS 패턴 + 기관 CI) |
