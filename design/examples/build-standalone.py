@@ -118,14 +118,19 @@ def build():
         mains.append((key, cls, body))
     assert claim_hits == 1, "index.html 문단 치환 실패"
 
+    # LNB 항목 아이콘 — 낱장 갤러리와 같은 lucide 심볼(v3.0). 스프라이트는 @@ICONS@@ 로 인라인된다
+    ICONS = {"index": "house", "tokens": "sliders-horizontal", "components": "columns-3", "forms": "square-check",
+             "nav": "list", "overlay": "message-square", "dashboard": "layout-dashboard", "explore": "table-2",
+             "wizard": "file-text", "login": "qr-code"}
     lnb_rows = []
     for key, _fn, label, _svc in PAGES:
         if key == "dashboard":
             lnb_rows.append('      <div class="ggc-lnb-divider"></div>')
             lnb_rows.append('      <div class="ggc-lnb-group">실물 화면</div>')
         lnb_rows.append(
-            '      <a class="ggc-lnb-item" href="#%s" data-page="%s">%s</a>'
-            % (key, key, label))
+            '      <a class="ggc-lnb-item" href="#%s" data-page="%s">'
+            '<svg class="ggc-icon" aria-hidden="true"><use href="#i-%s"/></svg><span class="label">%s</span></a>'
+            % (key, key, ICONS.get(key, "circle"), label))
 
     mains_html = "\n".join(
         '      <main class="%s" data-page="%s" aria-labelledby="page-title-%s"%s>%s</main>'
