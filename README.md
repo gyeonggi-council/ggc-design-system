@@ -15,6 +15,19 @@ FastAPI · 정적 HTML)가 이 한 벌을 소비한다.
 > 값을 옮겨 적지 않았고, 토큰이 바뀌면 다시 생성해야 하며,
 > 낡으면 `check_design.py --canon` 이 잡는다.
 
+## PC·모바일 업무 화면 개선
+
+검색·필터·페이지 이동이 동작하는 [의안 목록](design/examples/explore.html),
+단계별 입력과 임시저장을 지원하는 [초안 작성](design/examples/wizard.html),
+업무/일정 전환을 지원하는 [대시보드](design/examples/dashboard.html)를 확인할 수 있다.
+모바일에서도 표·카드 전환과 전체 상세 정보를 제공한다. 데이터는 모두 예시이며 실제 제출은 하지 않는다.
+
+| 모바일 대시보드 | 모바일 의안 목록 | 모바일 초안 작성 |
+|---|---|---|
+| ![모바일 대시보드](design/examples/shots/mobile-dashboard.png) | ![모바일 의안 목록](design/examples/shots/mobile-explore.png) | ![모바일 초안 작성](design/examples/shots/mobile-wizard.png) |
+
+[검토·개선 기록](docs/audit/2026-09-15-responsive-ux-review.md) · [반응형 업무 배치 적용](docs/components/work-layout.md)
+
 ## 컴포넌트 미리보기
 
 아래 그림은 전부 `design/examples/` 갤러리를 헤드리스 Chrome 으로 찍은 **생성물**이다

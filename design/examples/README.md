@@ -63,15 +63,24 @@ python design/examples/build-standalone.py    # 또는 --check
 
 ## `examples.css` / `examples.js` 는 서비스에 복사하지 않는다
 
-갤러리 페이지의 **설명 장치**(섹션 제목 · 스와치 격자 · 코드블록 · 주석 상자)일 뿐이다.
-서비스가 복사할 것은 `ggc-tokens.css` 와 `ggc-components.css` 두 개다.
+갤러리 설명 장치와 오프라인 예시 동작(의안 검색·정렬·CSV·초안 임시저장)을 담는다.
+서비스는 정본 CSS와 `ggc-behaviors.js`를 사용하고 업무 데이터 처리는 자신의 API에 연결한다.
+`gallery-fonts.css`는 `build-standalone.py`가 정본 폰트 선언에서 상대경로만 바꿔 생성한다.
 
 `examples.css` 는 `--ggc-*` 를 하나도 정의하지 않고 색·간격·형태를 직접 쓰지도 않는다.
 전부 `var()` 로 정본을 참조한다.
 
-> `dashboard.html` · `wizard.html` 의 **본문**에는 갤러리 전용 클래스가 없다.
-> 토큰과 컴포넌트만으로 그려진다 — 2단 배치만 `flex-wrap` + `flex-basis` 로 직접 짰고,
-> 그것도 미디어 쿼리 없이 접힌다.
+업무 화면은 정본의 `.ggc-work` 배치를 사용한다. PC는 본문과 참고 자료를 나란히 보여주고,
+모바일은 전환 버튼으로 같은 데이터에 접근한다. 개발자용 설명은 화면 하단 가이드로 접는다.
+의안 목록은 실제 예시 데이터에 대해 검색·필터·정렬·페이지 이동·상세·CSV가 동작한다.
+초안 작성은 단계 이동, 입력 보존, 기기 임시저장, 텍스트 다운로드를 지원한다. 실제 제출은 하지 않는다.
+
+```bash
+npm install --no-save --package-lock=false playwright-core
+node tools/check-responsive.cjs
+```
+
+브라우저 경로는 `GGC_CHROME`으로 지정한다. 검사 결과와 화면 이미지는 `docs/design-evidence/after/`에 생성된다.
 
 ## 검사
 

@@ -7,6 +7,7 @@
 
 | 과업 | Tier 1 | Tier 2 | 문서 · 갤러리 |
 |---|---|---|---|
+| 업무 화면 밀도 · 모바일 기능 유지 | `.ggc-work` `.ggc-work-grid` `.ggc-work-switch` `.ggc-work-actions` | 기존 shell·data-table 사용 | components/work-layout.md · explore.html · wizard.html |
 | 업무 셸 (유틸리티바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · 본문) | `.ggc-utility-bar` `.ggc-gnb` `.ggc-gnb-page` `.ggc-lnb(--icon)` `.ggc-shell-main(--wide)` | `ggc-shell` (`AppSidebar` `ShellHeader` `ShellMain`) + `sidebar` | components/shell.md · sidebar.md · dashboard.html · explore.html |
 | 대민 셸 (마스트헤드 · 헤더 · 주 메뉴 · 공개 푸터 · 아이덴티파이어) | `.ggc-masthead` `.ggc-header` `.ggc-main-menu` `.ggc-footer--public` `.ggc-identifier` | `ggc-masthead` `ggc-public-header` `ggc-public-footer` `ggc-identifier` | guides/public-shell.md · public/index.html |
 | 페이지 헤더 (**h1 24** · 설명 · 주 액션 — 브레드크럼은 헤더) | `.ggc-page-head` `.ggc-page-title` | `ggc-page-head` (`PageHead` `SectionTitle`) | components/page-head.md |

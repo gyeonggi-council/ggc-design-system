@@ -1,3 +1,5 @@
+@import url("gallery-fonts.css");
+
 /* =============================================================================
  * examples.css — 예제 갤러리 **전용** 껍데기 (2026-08-22)
  *
@@ -100,7 +102,7 @@ body { margin: 0; }
 .ex-grid {
   display: grid;
   gap: var(--ggc-space-4);
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
 }
 
 /* --- 마크업 코드블록 -------------------------------------------------------
@@ -253,7 +255,7 @@ body { margin: 0; }
 .ex-scale .px  { font-family: var(--ggc-font-mono); font-size: 11.5px; color: var(--ggc-text-subtle); }
 
 /* --- 갤러리 색인 카드 (index.html) ------------------------------------------ */
-.ex-index { display: grid; gap: var(--ggc-space-5); grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.ex-index { display: grid; gap: var(--ggc-space-5); grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
 .ex-index a {
   display: flex;
   flex-direction: column;
@@ -316,3 +318,14 @@ body { margin: 0; }
 /* 페이지 내 내비 데모 — 넓으면 본문 + 목차 2열, ≤1024 는 목차가 가로 칩(§34)이 되므로 1열 */
 .ex-ipn-grid { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: var(--ggc-space-6); }
 @media (max-width: 1024px) { .ex-ipn-grid { display: flex; flex-direction: column-reverse; } }
+
+.ex-work-guide { margin-top: var(--ggc-space-4); color: var(--ggc-text-muted); font-size: var(--ggc-text-sm); }
+.ex-work-guide > summary { cursor: pointer; padding: var(--ggc-space-3) 0; }
+.ex-work-review { white-space: pre-wrap; overflow-wrap: anywhere; line-height: var(--ggc-leading-normal); }
+.ex-note code { overflow-wrap: anywhere; }
+.ggc-work-tools > select, .ggc-pagination > select { font: inherit; color: var(--ggc-text); background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-sm); min-height: var(--ggc-control-h); max-width: 100%; padding: var(--ggc-space-1) var(--ggc-space-2); }
+@media (max-width: 600px) {
+  .ex-demo { padding: var(--ggc-space-3); }
+  .ex-section > h2 .cls { display: block; margin-left: 0; overflow-wrap: anywhere; }
+  .ex-row > *, .ex-demo > * { min-width: 0; max-width: 100%; }
+}

@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (b7b89677) · design/components.tsv (9d4bfc6b) -->
+<!-- 원천: design/ggc-tokens.css (b7b89677) · design/components.tsv (82f505bf) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -167,6 +167,8 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 필터 스트립 | `—` | `ggc-filter-bar` | work | P1 | 있음 |
 | 상세 배치 (본문 + 결재 레일) | `—` | `ggc-detail-layout` | work | P1 | 있음 |
 | 위저드 배치 | `—` | `ggc-wizard-layout` | work | P1 | 있음 |
+| 반응형 업무 배치 | `.ggc-work .ggc-work-grid .ggc-work-switch .ggc-work-filter .ggc-work-results .ggc-work-actions` | `—` | work | P0 | 있음 |
+| 업무 메뉴 오버레이 | `.ggc-drawer-backdrop .ggc-drawer-close` | `—` | work | P0 | 있음 |
 
 핵심 규칙:
 

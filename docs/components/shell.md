@@ -75,11 +75,16 @@ v3.0(ADR 0010): **브레드크럼은 GNB 경로부에, `<h1>` 은 본문 첫 줄
 | `.ggc-search` | 300×`--ggc-search-h`(36). 아이콘은 스프라이트 |
 | `.ggc-icon-btn` | `--ggc-control-h`(36) 정사각 아이콘 버튼 — `aria-label` 필수 |
 | `.ggc-lnb-group` · `.ggc-lnb-item` (`svg` · `.label` · `.count`) · `.ggc-lnb-divider` | 캡션 · 항목(높이 32 · 14px · 아이콘 16 · 우측 건수) · 구분선. 현재 항목은 `aria-current="page"` |
-| `.ggc-lnb--icon` | 접힌 사이드바 48px — 라벨·캡션·건수는 시각만 숨김. 토글은 서비스 몫(`ggc-behaviors.js` 는 drawer 만) |
+| `.ggc-lnb--icon` | 접힌 사이드바 — 라벨·캡션·건수는 시각만 숨김. `ggc-behaviors.js`가 PC 접기와 모바일 drawer를 함께 처리 |
 | `.ggc-shell-main` (`--wide` `--split`) | 본문 1320 / 1360. Converse 화면만 `--split` |
 | `.ggc-scroll` | 커스텀 스크롤바 (LNB · 대화 스트림) |
 
 ## 규칙
+
+`ggc-behaviors.js`를 로드하면 누락된 메뉴 버튼과 모바일 닫기 버튼·배경을 생성한다.
+닫힌 모바일 메뉴는 `inert`로 포커스 진입을 차단한다. 열면 메뉴로 포커스를 옮기고
+Tab 순환, Escape·배경 클릭 닫기, 여는 버튼으로 복귀를 지원한다.
+화면을 PC 폭으로 바꾸면 메뉴 잠금을 해제한다. 기존 선언형 토글도 그대로 사용할 수 있다.
 
 - 유틸리티 바의 스위처 항목 이름은 통합서비스 목록과 같아야 한다. 현재 시스템은 `.active`.
 - 사용자 표기(GNB 우측)는 **실명 · 역할 · 부서** — UUID 금지.

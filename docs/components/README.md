@@ -11,6 +11,7 @@
 
 | 컴포넌트 | 문서 | 갤러리 | 상태 |
 |---|---|---|---|
+| 반응형 업무 배치 `.ggc-work` | [work-layout.md](work-layout.md) | [의안 목록](../../design/examples/explore.html) · [위저드](../../design/examples/wizard.html) | 있음 |
 | 페이지 헤더 (h1 24 · 설명 · 주 액션) `.ggc-page-head` `.ggc-page-title` | [page-head.md](page-head.md) | [components-nav](../../design/examples/components-nav.html) | 있음 (v3) |
 | 브레드크럼 `.ggc-breadcrumb` | [breadcrumb.md](breadcrumb.md) | components-nav | 있음 |
 | 탭 `.ggc-tabs` | [tabs.md](tabs.md) | components-nav | 있음 |

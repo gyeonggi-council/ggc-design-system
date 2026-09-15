@@ -280,6 +280,8 @@
 .ggc-hero .lead { margin: 0 0 var(--ggc-space-6); font-size: 17px; color: var(--ggc-text-muted); }
 .ggc-hero form { display: flex; gap: var(--ggc-space-2); max-width: 720px; }
 .ggc-hero form input {
+  min-width: 0;
+  width: 100%;
   flex: 1; min-width: 0;
   height: 56px;
   padding: 0 20px;
@@ -360,7 +362,7 @@
  *   </ul> */
 .ggc-structured-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: var(--ggc-space-5);
   margin: 0; padding: 0; list-style: none;
 }

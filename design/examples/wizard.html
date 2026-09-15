@@ -72,7 +72,7 @@
       <a class="ggc-lnb-item" href="public/index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">대민 셸 · Public</span></a>
     </nav>
 
-    <main class="ggc-shell-main ggc-shell-main--wide" id="main" aria-labelledby="page-title">
+    <main class="ggc-shell-main ggc-shell-main--wide ggc-work ggc-work-wizard" id="main" aria-labelledby="page-title">
 
       <div class="ex-note" style="margin-top:0">
         <p><b>Configure archetype 이다.</b> 순서가 있는 다단계 입력 — 단계 표시가
@@ -91,8 +91,8 @@
             </p>
           </div>
           <div class="actions">
-            <span style="font-size:12px;color:var(--ggc-text-subtle)">08-22 14:07 자동저장됨</span>
-            <button class="ggc-btn ggc-btn--secondary" type="button">임시저장</button>
+            <span class="ggc-work-save-status" role="status" style="font-size:var(--ggc-text-xs);color:var(--ggc-text-subtle)">예시 초안 · 저장 전</span>
+            <button class="ggc-btn ggc-btn--secondary" type="button" data-work-save>임시저장</button>
           </div>
         </div>
       </div>
@@ -118,11 +118,15 @@
       </div>
 
       <!-- ── 본문: 편집 + 참조 레일 ──────────────────────────────────── -->
-      <div style="display:flex;flex-wrap:wrap;gap:var(--ggc-space-5);margin-top:var(--ggc-space-5);align-items:flex-start">
+      <div class="ggc-work-switch" aria-label="작성 화면 보기">
+        <button class="ggc-btn ggc-btn--secondary" type="button" data-work-pane="primary" aria-pressed="true">초안 작성</button>
+        <button class="ggc-btn ggc-btn--secondary" type="button" data-work-pane="secondary" aria-pressed="false">참고 자료 · 검토</button>
+      </div>
+      <div class="ggc-work-grid">
 
         <!-- 좌: 편집 — flex:1 1 520px 아래로는 한 단으로 접힌다 -->
-        <div class="ggc-card ggc-card--pad" style="flex:1 1 520px;min-width:0">
-          <div class="ggc-card-head--band" style="margin:-18px -22px var(--ggc-space-5);border-radius:var(--ggc-radius-lg) var(--ggc-radius-lg) 0 0;display:flex;align-items:center;justify-content:space-between;gap:var(--ggc-space-3)">
+        <div class="ggc-card ggc-work-editor ggc-work-primary">
+          <div class="ggc-work-editor-head">
             <div style="font-size:15px;font-weight:700;color:var(--ggc-text-strong)">3단계 · 조문 작성</div>
             <span class="ggc-tag ggc-tag--info">본칙 8조</span>
           </div>
@@ -166,8 +170,8 @@
           </div>
 
           <!-- 하단 이동 바 — 항상 같은 자리 -->
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--ggc-space-4);margin:var(--ggc-space-6) -22px -18px;padding:var(--ggc-space-4) var(--ggc-space-5);background:var(--ggc-surface-inset);border-top:1px solid var(--ggc-hairline);border-radius:0 0 var(--ggc-radius-lg) var(--ggc-radius-lg)">
-            <button class="ggc-btn ggc-btn--secondary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>이전</button>
+          <div class="ggc-work-actions">
+            <button class="ggc-btn ggc-btn--secondary" type="button" data-work-prev><svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>이전</button>
             <div class="ggc-wizard-mini">
               <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
               <span class="step is-done"><span class="dot"></span><span class="line"></span></span>
@@ -175,12 +179,12 @@
               <span class="step"><span class="dot"></span><span class="line"></span></span>
               <span class="stage">3 / 4</span>
             </div>
-            <button class="ggc-btn ggc-btn--primary" type="button">다음<svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+            <button class="ggc-btn ggc-btn--primary" type="button" data-work-next>다음<svg class="ggc-icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
           </div>
         </div>
 
         <!-- 우: 참조 레일 -->
-        <div style="flex:1 1 300px;max-width:460px;min-width:0;display:flex;flex-direction:column;gap:var(--ggc-space-5)">
+        <div class="ggc-work-stack ggc-work-secondary">
 
           <div class="ggc-card">
             <div class="ggc-card-head">
@@ -280,6 +284,7 @@
   </footer>
 </div>
 
+<script src="../ggc-behaviors.js"></script>
 <script src="examples.js"></script>
 </body>
 </html>

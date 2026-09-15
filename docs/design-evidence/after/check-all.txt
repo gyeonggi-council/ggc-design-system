@@ -1,0 +1,84 @@
+━━━ 정본 자체 (D6, strict)
+=== D6 CANON — 정본 자체 검사 ===
+
+--- 계약 문서 <-> 토큰 파일 ---
+D6 INFO  contract  계약 문서가 선언한 값이 전부 토큰 파일과 일치
+D6 INFO  focus     포커스 링 알파가 계약과 일치
+
+--- 토큰 자체 AA (상태색: 자기 틴트 위 / 중립: 흰·페이지bg 위) ---
+D6 INFO  aa        --ggc-success  #0a7b4e on #e6f4ee =  4.69:1  OK
+D6 INFO  aa        --ggc-warning  #9d5e00 on #fbeed2 =  4.53:1  OK
+D6 INFO  aa        --ggc-danger   #cd2d2d on #fdeaea =  4.52:1  OK
+D6 INFO  aa        --ggc-info     #1f6a97 on #e2f0f8 =  5.06:1  OK
+D6 INFO  aa        --ggc-text-strong #131722  흰 17.90 · bg 15.80  OK
+D6 INFO  aa        --ggc-text        #1a1f29  흰 16.51 · bg 14.57  OK
+D6 INFO  aa        --ggc-text-muted  #4a5566  흰  7.55 · bg  6.66  OK
+D6 INFO  aa        --ggc-text-subtle #5a6577  흰  5.89 · bg  5.20  OK
+D6 INFO  aa        --ggc-text-faint  #8a94a3  비텍스트 전용(3:1 대상) — 텍스트에 쓰지 않는다
+
+--- 프로필 블록 (치수만 덮어쓴다 — 계약 §9) ---
+D6 INFO  profile   public   23종 덮어씀 — 전부 치수 토큰
+
+--- 컴포넌트 인벤토리 (components.tsv <-> CSS) ---
+D6 INFO  inventory 있음 57종 전부 CSS 에 정의됨 · 표 59행
+
+--- 브랜드 자산 정본 ---
+D6 INFO  brand     정본 자산 4종 모두 있음
+D6 INFO  brand     MANIFEST.sha256 일치
+
+--- 예제 갤러리 생성물 ---
+D6 INFO  gen       design/examples/preview-palette.svg 정본과 일치
+D6 INFO  gen       design/examples/examples-standalone.html 정본과 일치
+D6 INFO  gen       design/examples/shots/manifest.json 정본과 일치
+D6 INFO  gen       DESIGN.md                  정본과 일치
+D6 INFO  gen       design/ggc-icons.svg       정본과 일치
+D6 INFO  gen       registry.json              정본과 일치
+D6 INFO  gen       design/ppt/dist/manifest.json 정본과 일치
+D6 INFO  gen       public/r                   정본과 일치
+
+--- 브랜드 자산 배포 (ASSET-MAP.tsv) ---
+D6 INFO  assets    서비스 루트 미지정 — 해당 없음 (GGC_SERVICES 환경변수로 지정하면 배포 상태를 대조한다)
+
+--- D6 CANON  FAIL 0 · WARN 0
+    ✔ 정본 자체 (D6, strict)
+
+━━━ 갤러리 · 업무 (D1~D5)
+
+=== [examples] 3.인라인형 ===
+  D1 INFO copy     -  정본 사본 없음 (인라인형/독자형)
+  D3 INFO shell    work  유틸리티 바 있음
+  D3 INFO shell    work  공통 푸터 있음
+  D3 INFO shell    public  스킵 링크 있음
+  D3 INFO shell    public  마스트헤드 있음
+  D3 INFO shell    public  공개 푸터 있음
+  D3 INFO shell    public  아이덴티파이어 있음
+  D3 INFO favicon  -  파비콘 선언 있음
+  D5 INFO focus    -  :focus-visible 있음
+  D5 INFO aa       examples-standalone.html:301  #c9d6ea  흰 1.47:1 · 페이지bg 1.30:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
+  D5 INFO aa       examples-standalone.html:312  #9cb0cd  흰 2.21:1 · 페이지bg 1.95:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
+  D5 INFO aa       examples-standalone.html:318  #7d90ad  흰 3.25:1 · 페이지bg 2.87:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
+  --- D1 PASS  D2 PASS  D3 PASS  D4 PASS  D5 PASS  -> G-DESIGN PASS
+    ✔ 갤러리 · 업무 (D1~D5)
+
+━━━ 갤러리 · 대민 (D1~D5)
+
+=== [public] 3.인라인형 ===
+  D1 INFO copy     -  정본 사본 없음 (인라인형/독자형)
+  D3 INFO shell    public  스킵 링크 있음
+  D3 INFO shell    public  마스트헤드 있음
+  D3 INFO shell    public  공개 푸터 있음
+  D3 INFO shell    public  아이덴티파이어 있음
+  D3 INFO favicon  -  파비콘 선언 있음
+  D5 INFO focus    -  :focus-visible 있음 (링크된 CSS)
+  --- D1 PASS  D2 PASS  D3 PASS  D4 PASS  D5 PASS  -> G-DESIGN PASS
+    ✔ 갤러리 · 대민 (D1~D5)
+
+━━━ 문서 링크 · 금지 문자열
+check-links: 깨진 링크 0 · 금지 문자열 0
+    ✔ 문서 링크 · 금지 문자열
+
+━━━ Tier 2 레지스트리 (R1~R5)
+check-registry: 항목 74 · FAIL 0 · WARN 0
+    ✔ Tier 2 레지스트리 (R1~R5)
+
+check-all: 전부 통과

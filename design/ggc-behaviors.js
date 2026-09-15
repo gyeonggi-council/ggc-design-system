@@ -145,18 +145,78 @@
 
   /* --------------------------------------------------------------- ③ drawer */
   function lnb() { return document.querySelector(".ggc-lnb"); }
+  var drawerMedia = window.matchMedia('(max-width: 900px)');
+  var drawerOpener, drawerBackdrop;
+
+  function initDrawer() {
+    var nav = lnb(), header = document.querySelector('.ggc-shell > .ggc-gnb');
+    if (!nav || !header || nav.__ggcDrawer) return;
+    nav.__ggcDrawer = true;
+    if (!nav.id) nav.id = 'ggc-navigation';
+    var toggle = header.querySelector('[data-ggc-drawer-toggle]');
+    if (!toggle) {
+      toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'ggc-icon-btn';
+      toggle.setAttribute('data-ggc-drawer-toggle', '');
+      toggle.innerHTML = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
+      header.prepend(toggle);
+    }
+    toggle.classList.remove('ex-only-narrow');
+    toggle.setAttribute('aria-controls', nav.id);
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'ggc-btn ggc-btn--secondary ggc-drawer-close';
+    close.textContent = '메뉴 닫기';
+    close.addEventListener('click', function () { setDrawer(false); });
+    nav.prepend(close);
+    drawerBackdrop = document.createElement('div');
+    drawerBackdrop.className = 'ggc-drawer-backdrop';
+    drawerBackdrop.hidden = true;
+    drawerBackdrop.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(drawerBackdrop);
+    function sync() {
+      setDrawer(false);
+      nav.classList.remove('ggc-lnb--icon');
+      toggle.setAttribute('aria-expanded', drawerMedia.matches ? 'false' : 'true');
+      toggle.setAttribute('aria-label', drawerMedia.matches ? '메뉴 열기' : '메뉴 접기');
+    }
+    drawerMedia.addEventListener('change', sync);
+    sync();
+  }
 
   function setDrawer(open) {
     var nav = lnb();
     if (!nav) return;
+    var wasOpen = nav.getAttribute('data-open') === 'true';
+    open = open && drawerMedia.matches;
+    if (open && !wasOpen) drawerOpener = document.activeElement;
     if (open) nav.setAttribute("data-open", "true"); else nav.removeAttribute("data-open");
+    if (drawerBackdrop) drawerBackdrop.hidden = !open;
+    document.documentElement.toggleAttribute('data-ggc-drawer-active', open);
+    nav.inert = drawerMedia.matches && !open;
+    if (open) { nav.setAttribute('role', 'dialog'); nav.setAttribute('aria-modal', 'true'); }
+    else { nav.removeAttribute('role'); nav.removeAttribute('aria-modal'); }
     document.querySelectorAll("[data-ggc-drawer-toggle]").forEach(function (b) {
-      b.setAttribute("aria-expanded", open ? "true" : "false");
+      var collapsed = nav.classList.contains('ggc-lnb--icon');
+      b.setAttribute("aria-expanded", (drawerMedia.matches ? open : !collapsed) ? "true" : "false");
+      b.setAttribute('aria-label', open ? '메뉴 닫기' : (drawerMedia.matches ? '메뉴 열기' : (collapsed ? '메뉴 펼치기' : '메뉴 접기')));
     });
+    if (open) { var first = nav.querySelector('button, a'); if (first) first.focus(); }
+    else if (wasOpen && drawerOpener && drawerOpener.isConnected) drawerOpener.focus();
   }
 
   function toggleDrawer() {
     var nav = lnb();
+    if (nav && !drawerMedia.matches) {
+      var collapsed = nav.classList.toggle('ggc-lnb--icon');
+      document.querySelectorAll('[data-ggc-drawer-toggle]').forEach(function (b) {
+        b.setAttribute('aria-expanded', String(!collapsed));
+        b.setAttribute('aria-label', collapsed ? '메뉴 펼치기' : '메뉴 접기');
+      });
+      nav.querySelectorAll('a').forEach(function (a) { a.title = a.textContent.trim(); });
+      return;
+    }
     if (nav) setDrawer(nav.getAttribute("data-open") !== "true");
   }
 
@@ -165,12 +225,19 @@
     if (t) { e.preventDefault(); toggleDrawer(); return; }
     var nav = lnb();
     if (nav && nav.getAttribute("data-open") === "true" && !nav.contains(e.target)) setDrawer(false);
+    if (nav && e.target.closest && e.target.closest('.ggc-lnb a')) setDrawer(false);
   });
 
   document.addEventListener("keydown", function (e) {
-    if (e.key !== "Escape") return;
     var nav = lnb();
-    if (nav && nav.getAttribute("data-open") === "true") setDrawer(false);
+    if (!nav || nav.getAttribute('data-open') !== 'true') return;
+    if (e.key === 'Escape') { e.preventDefault(); setDrawer(false); }
+    if (e.key === 'Tab') {
+      var focusable = [].slice.call(nav.querySelectorAll('a[href], button, input, select, [tabindex="0"]')).filter(function (el) { return !el.disabled && el.getClientRects().length; });
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
   });
 
   /* ------------------------------------------ ④ 대민 주 메뉴 · 통합검색 (ggc-public.css) */
@@ -628,6 +695,18 @@
   GGC.initListboxes = initListboxes;
   GGC.initInPageNav = initInPageNav;
   GGC.init = function (root) {
+    initDrawer();
+    (root || document).querySelectorAll('.ggc-tooltip-wrap').forEach(function (wrap) {
+      if (wrap.__ggcPosition) return; wrap.__ggcPosition = true;
+      function position() {
+        var tip = wrap.querySelector('.ggc-tooltip'); if (!tip) return;
+        tip.style.marginLeft = '0px';
+        var rect = tip.getBoundingClientRect(), edge = 12;
+        var shift = rect.right > window.innerWidth - edge ? window.innerWidth - edge - rect.right : rect.left < edge ? edge - rect.left : 0;
+        tip.style.marginLeft = shift + 'px';
+      }
+      wrap.addEventListener('mouseenter', position); wrap.addEventListener('focusin', position);
+    });
     initTabs(root); initModals(root); initMenus(root); initFiles(root); initListboxes(root); initInPageNav(root);
   };
 

@@ -1,0 +1,9 @@
+{
+  "interactions": [
+    "10 shell pages: menu open/close, focus trap/restore, resize unlock, desktop collapse",
+    "390: search, filters, reset, empty, sort, 21 records, 8 fields, detail, CSV, view switch, wizard steps, reference, persistence, additional clauses, validation, export",
+    "1440: search, filters, reset, empty, sort, 21 records, 8 fields, detail, CSV, view switch, wizard steps, reference, persistence, additional clauses, validation, export",
+    "Dashboard secondary content and standalone cross-page navigation"
+  ],
+  "errors": []
+}

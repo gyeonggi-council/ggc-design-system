@@ -425,7 +425,7 @@
           정한다(ADR 0006) — 화면마다 다르므로 클래스로 굳히면 반드시 누군가 자기 것을 새로 만든다.
           <b>세 가지를 처음부터 함께 만든다.</b> 자세한 것은 <a href="components-overlay.html">오버레이 · 상태</a>.</p>
         <div class="ex-demo ex-demo--bg" id="d-states">
-          <div class="ex-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+          <div class="ex-grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))">
 
             <div class="ggc-card">
               <div class="ggc-empty">
@@ -491,6 +491,7 @@
   </footer>
 </div>
 
+<script src="../ggc-behaviors.js"></script>
 <script src="examples.js"></script>
 </body>
 </html>

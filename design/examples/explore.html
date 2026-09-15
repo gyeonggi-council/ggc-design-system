@@ -72,7 +72,7 @@
       <a class="ggc-lnb-item" href="public/index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">대민 셸 · Public</span></a>
     </nav>
 
-    <main class="ggc-shell-main ggc-shell-main--wide" id="main" aria-labelledby="page-title">
+    <main class="ggc-shell-main ggc-shell-main--wide ggc-work ggc-work-explore" id="main" aria-labelledby="page-title">
 
       <div class="ex-note" style="margin-top:0">
         <p><b>Explore archetype 이다.</b> 업무 시스템에서 가장 많은 화면 — 필터 스트립 + 표 + 페이지네이션.
@@ -84,35 +84,39 @@
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title">의안 목록</h1>
-            <p class="desc">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
+            <p class="desc">제12대 · 제380회 정례회 · 예시 의안 21건</p>
           </div>
           <div class="actions">
-            <button class="ggc-btn ggc-btn--secondary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>엑셀 내려받기</button>
-            <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>의안 등록</button>
+            <button class="ggc-btn ggc-btn--secondary" type="button" data-work-export><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>CSV 내려받기</button>
+            <a class="ggc-btn ggc-btn--primary" href="wizard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>의안 등록</a>
           </div>
         </div>
       </div>
 
       <!-- ── 필터 스트립 (Explore 슬롯 2) ─────────────────────────────── -->
-      <form class="ggc-card ggc-card--pad" role="search" aria-label="의안 검색 조건" onsubmit="return false" style="margin-bottom:var(--ggc-space-4)">
-        <div class="ex-row" style="align-items:flex-end;gap:var(--ggc-space-3)">
-          <div class="ggc-field" style="flex:1 1 260px">
-            <label for="f-q">의안명 · 의안번호</label>
-            <input id="f-q" type="search" placeholder="예: 청년 기본 조례, 2026-0117">
-          </div>
-          <div class="ggc-field" style="flex:0 1 200px">
-            <label for="f-c">소관위원회</label>
-            <div class="ggc-select"><select id="f-c"><option>내 소관</option><option>전체</option><option>기획재정위원회</option><option>경제노동위원회</option><option>문화체육관광위원회</option><option>보건복지위원회</option><option>건설교통위원회</option></select></div>
-          </div>
-          <div class="ggc-field" style="flex:0 1 170px">
-            <label for="f-s">처리 상태</label>
-            <div class="ggc-select"><select id="f-s"><option>처리 대기</option><option>전체</option><option>접수</option><option>회부</option><option>심사</option><option>의결</option></select></div>
-          </div>
-          <div class="ggc-field" style="flex:0 1 170px">
-            <label for="f-t">회기</label>
-            <div class="ggc-select"><select id="f-t"><option>제380회 (정례회)</option><option>제379회 (임시회)</option><option>제12대 전체</option></select></div>
+      <form class="ggc-card ggc-card--pad ggc-work-filter" role="search" aria-label="의안 검색 조건">
+        <div class="ggc-work-tools">
+          <div class="ggc-field">
+            <label for="work-q">의안명 · 의안번호</label>
+            <input id="work-q" type="search" placeholder="의안명 또는 의안번호 검색">
           </div>
           <button class="ggc-btn ggc-btn--primary" type="submit">검색</button>
+        </div>
+        <details>
+          <summary>상세 필터 <span data-work-filter-count></span></summary>
+          <div class="ggc-work-filter-grid">
+          <div class="ggc-field">
+            <label for="work-c">소관위원회</label>
+            <div class="ggc-select"><select id="work-c"><option>내 소관</option><option>전체</option><option>기획재정위원회</option><option>경제노동위원회</option><option>문화체육관광위원회</option><option>보건복지위원회</option><option>건설교통위원회</option></select></div>
+          </div>
+          <div class="ggc-field">
+            <label for="work-s">처리 상태</label>
+            <div class="ggc-select"><select id="work-s"><option>처리 대기</option><option>전체</option><option>접수</option><option>회부</option><option>심사</option><option>의결</option></select></div>
+          </div>
+          <div class="ggc-field">
+            <label for="work-t">회기</label>
+            <div class="ggc-select"><select id="work-t"><option>제380회 (정례회)</option><option>제379회 (임시회)</option><option>제12대 전체</option></select></div>
+          </div>
           <button class="ggc-btn ggc-btn--ghost" type="reset"><svg class="ggc-icon" aria-hidden="true"><use href="#i-refresh-cw"/></svg>초기화</button>
         </div>
         <fieldset class="ggc-check-group" style="gap:var(--ggc-space-2);margin-top:var(--ggc-space-3)">
@@ -123,16 +127,21 @@
           <label class="ggc-chip"><input type="checkbox"><span class="text">건의안</span></label>
           <label class="ggc-chip"><input type="checkbox"><span class="text">청원</span></label>
         </fieldset>
+        </details>
       </form>
 
       <!-- ── 결과 요약 (슬롯 3) + 표 (슬롯 4) ───────────────────────────── -->
-      <div class="ggc-card">
+      <div class="ggc-card ggc-work-results">
         <div class="ggc-card-head">
           <div>
-            <div class="title">처리 대기 의안</div>
-            <div class="sub">총 <b style="color:var(--ggc-text-strong)">21건</b> · 내 소관 · 조례안 · 동의안 · 정렬 최근 접수순</div>
+            <div class="title">의안 검색 결과</div>
+            <div class="sub" role="status" data-work-count>총 21건 · 최근 접수순</div>
           </div>
-          <a class="action" href="#main">열 설정</a>
+          <div class="ggc-work-tools">
+            <label class="ggc-sr" for="work-sort">정렬</label>
+            <select id="work-sort" aria-label="정렬"><option value="recent">최근 접수순</option><option value="oldest">오래된 접수순</option><option value="title">의안명순</option></select>
+            <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-work-view aria-pressed="false">카드 보기</button>
+          </div>
         </div>
         <div class="ggc-table-wrap">
           <table class="ggc-table">
@@ -147,7 +156,7 @@
                 <th scope="col" class="nowrap">접수일</th>
                 <th scope="col" class="num">경과(일)</th>
                 <th scope="col">상태</th>
-                <th scope="col" class="ggc-sr">동작</th>
+                <th scope="col">동작</th>
               </tr>
             </thead>
             <tbody>
@@ -207,6 +216,7 @@
   </footer>
 </div>
 
+<script src="../ggc-behaviors.js"></script>
 <script src="examples.js"></script>
 </body>
 </html>

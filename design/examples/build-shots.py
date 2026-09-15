@@ -43,9 +43,12 @@ MANIFEST = os.path.join(OUT_DIR, "manifest.json")
 SHOTS = [
     # 실물 화면 — 셸이 붙은 모습
     ("screen-dashboard", "dashboard.html", None,          (1440, 720), "Monitor — 대시보드 · 본문 h1 + KPI + 큐 (v3.0 밀도)"),
-    ("screen-explore",   "explore.html",   None,          (1440, 900), "Explore — 의안 목록 · 필터 스트립 + 표 20행 + 페이지네이션"),
+    ("screen-explore",   "explore.html",   None,          (1440, 900), "Explore — 의안 목록 · 검색 + 표 15행 + 페이지네이션"),
     ("screen-wizard",    "wizard.html",    None,          (1440, 640), "Configure — 조례 초안 위저드 · 브레드크럼(헤더) + h1(본문) + 단계 표시"),
     ("screen-public",    "public/index.html", None,       (1440, 720), "대민 셸 — 마스트헤드 · 헤더 · 주 메뉴 (KRDS 패턴)"),
+    ("mobile-dashboard", "dashboard.html", None,          (390, 844), "모바일 — 통계 2열 · 결재/일정 전환"),
+    ("mobile-explore",   "explore.html", None,            (390, 844), "모바일 — 검색 · 카드/표 전환 · 전체 정보"),
+    ("mobile-wizard",    "wizard.html", None,             (390, 844), "모바일 — 단계별 작성 · 참고 전환 · 하단 작업"),
     # 컴포넌트 — 갤러리 데모 상자를 그대로 잘라낸다
     ("gnb-page",   "components-nav.html",     "#d-gnbpage",   (1440, 900), "GNB 경로부 `.ggc-gnb-page` (브레드크럼 — 제목은 본문)"),
     ("page-head",  "components-nav.html",     "#d-head",      (1440, 900), "페이지 헤더 `.ggc-page-head` — h1 24px + 설명 + 주 액션"),
@@ -68,6 +71,7 @@ SOURCES = [
     "design/ggc-tokens.css", "design/ggc-components.css", "design/ggc-public.css",
     "design/ggc-behaviors.js", "design/ggc-fonts.css", "design/examples/examples.css",
     "design/examples/examples.js", "design/examples/build-shots.py",
+    "design/examples/gallery-fonts.css", "design/fonts/PretendardGOVVariable.subset.woff2",
 ] + sorted({"design/examples/" + page for _k, page, _sel, _vp, _cap in SHOTS})
 
 DPR = 2  # README 에서 절반 폭으로 보이므로 2배로 찍어야 글자가 선명하다
