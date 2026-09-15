@@ -177,7 +177,11 @@ def build():
     return html
 
 
-SHELL = """<meta charset="utf-8">
+SHELL = """<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>경기도의회 디자인 시스템</title>
 <!-- =============================================================================
   생성물이다. design/examples/build-standalone.py 가 정본에서 만든다.
@@ -187,9 +191,8 @@ SHELL = """<meta charset="utf-8">
   examples.css · examples.js · 의회 마크(data URI) · 갤러리 9쪽의 본문.
   외부 요청 0 — 망분리 환경과 오프라인에서도 그대로 열린다.
 
-  <meta charset> 을 반드시 첫 줄에 둔다. 이 파일은 <head> 없이 쓰이므로,
-  없으면 브라우저가 인코딩을 추측해 **한글이 통째로 깨진다**(로컬 파일로
-  열거나 charset 없는 서버가 줄 때 실제로 그랬다).
+  <meta charset> 은 head 첫머리에 둔다. 표준 모드와 모바일 viewport를 선언해
+  휴대폰에서도 실제 화면 폭에 맞게 배치한다.
 ============================================================================= -->
 <style>
 /* ---- design/ggc-tokens.css (정본) ---------------------------------------- */
@@ -210,6 +213,8 @@ body {
 }
 [hidden] { display: none !important; }
 </style>
+</head>
+<body>
 
 <a class="ggc-skip-link" href="#main">본문 바로가기</a>
 @@ICONS@@
@@ -315,6 +320,8 @@ body {
   fromHash();
 })();
 </script>
+</body>
+</html>
 """
 
 

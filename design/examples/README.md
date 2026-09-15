@@ -58,8 +58,8 @@ python design/examples/build-standalone.py    # 또는 --check
 > 인라인해 놓고 그 말을 그대로 두면 페이지가 거짓말을 하게 된다.
 > 원문이 바뀌면 생성기가 `assert` 로 즉시 멈춘다.
 >
-> ⚠ `<meta charset="utf-8">` 이 합본 첫 줄에 있다. 이 파일은 `<head>` 없이 쓰이므로
-> 없으면 브라우저가 인코딩을 추측해 **한글이 통째로 깨진다**(실제로 그랬다).
+> 합본은 HTML 표준 모드와 한국어 언어, UTF-8 인코딩, 모바일 viewport를 선언한다.
+> 휴대폰에서도 실제 화면 폭을 사용하며 한글 인코딩을 추측하지 않는다.
 
 ## `examples.css` / `examples.js` 는 서비스에 복사하지 않는다
 

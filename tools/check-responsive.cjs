@@ -138,12 +138,26 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
       await page.locator('#work-q').fill('청년'); assert.match(await page.locator('[data-work-count]').innerText(), /2건/);
       await page.locator('main.ggc-work-explore .ggc-work-record h2 a').first().click();
       await page.getByRole('link', { name: '초안 작성 화면', exact: true }).click();
+      await page.locator('main.ggc-work-wizard').waitFor({ state: 'visible' });
       assert.equal(await page.locator('main.ggc-work-wizard').isVisible(), true); await noOverflow();
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.locator('.ggc-shell > .ggc-gnb [data-ggc-drawer-toggle]').click();
       await page.locator('.ggc-lnb-item[data-page=explore]').click();
       assert.equal(await page.locator('.ggc-shell > .ggc-gnb [data-ggc-drawer-toggle]').getAttribute('aria-expanded'), 'false');
       interactions.push('Dashboard secondary content and standalone cross-page navigation');
+      const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 });
+      const phonePage = await phone.newPage();
+      for (const name of ['dashboard', 'explore', 'wizard', 'examples-standalone']) {
+        await phonePage.goto(url(name) + (name === 'examples-standalone' ? '#explore' : ''));
+        assert.equal(await phonePage.evaluate(() => innerWidth), 390, name + ' must use the device viewport');
+        assert.equal(await phonePage.evaluate(() => document.compatMode), 'CSS1Compat', name + ' must use standards mode');
+        assert.equal(await phonePage.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), 0);
+      }
+      await phonePage.locator('#work-q').fill('청년');
+      await phonePage.locator('.ggc-work-record h2 a').first().tap();
+      assert.equal(await phonePage.locator('#work-dialog').isVisible(), true);
+      await phone.close();
+      interactions.push('Touch device emulation: device viewport, standards mode, no overflow, standalone detail tap');
       assert.equal(errors.length, 0);
       fs.writeFileSync(path.join(out, 'interactions.json'), JSON.stringify({ interactions, errors }, null, 2) + '\n');
       console.log('Interaction checks passed: ' + interactions.length + ' suites');

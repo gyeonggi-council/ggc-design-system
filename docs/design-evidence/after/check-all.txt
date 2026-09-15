@@ -54,9 +54,9 @@ D6 INFO  assets    서비스 루트 미지정 — 해당 없음 (GGC_SERVICES �
   D3 INFO shell    public  아이덴티파이어 있음
   D3 INFO favicon  -  파비콘 선언 있음
   D5 INFO focus    -  :focus-visible 있음
-  D5 INFO aa       examples-standalone.html:301  #c9d6ea  흰 1.47:1 · 페이지bg 1.30:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
-  D5 INFO aa       examples-standalone.html:312  #9cb0cd  흰 2.21:1 · 페이지bg 1.95:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
-  D5 INFO aa       examples-standalone.html:318  #7d90ad  흰 3.25:1 · 페이지bg 2.87:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
+  D5 INFO aa       examples-standalone.html:304  #c9d6ea  흰 1.47:1 · 페이지bg 1.30:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
+  D5 INFO aa       examples-standalone.html:315  #9cb0cd  흰 2.21:1 · 페이지bg 1.95:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
+  D5 INFO aa       examples-standalone.html:321  #7d90ad  흰 3.25:1 · 페이지bg 2.87:1  (AA 4.5 미만 — 배경을 흰색/페이지로 가정한 값이다)
   --- D1 PASS  D2 PASS  D3 PASS  D4 PASS  D5 PASS  -> G-DESIGN PASS
     ✔ 갤러리 · 업무 (D1~D5)
 
