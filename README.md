@@ -9,44 +9,85 @@ FastAPI · 정적 HTML)가 이 한 벌을 소비한다.
 대외 발표용 PPT 템플릿(`design/ppt/`). 색은 하나도 바뀌지 않았다. v2 소비자는 [docs/migration/v2-to-v3.md](docs/migration/v2-to-v3.md) 대로 정본 6파일을 재복사한다(⚠ D1).
 진단은 [docs/audit/2026-09-05-shadcn-krds-audit.md](docs/audit/2026-09-05-shadcn-krds-audit.md).
 
+## 의안 스튜디오 2.0 B안 (참고 시안)
+
+의안 작성부터 심의·의결·이송·공포까지의 업무 흐름과 도민용 화면을 검토하는
+**독립 실행형 디자인 참고 시안**이다. 네이비 사이드바, 문서 중심 작업 영역, 단계별 진행 안내를
+기준으로 실제 UI 개편을 요청한다. 기존 디자인 시스템의 정본이나 운영 서비스를 대체하는 코드는 아니다.
+
+| 자료 | 용도 |
+|---|---|
+| [B안 참고 HTML](docs/design-evidence/ggc-legislative-studio-v2.html) | 업무·도민 화면과 주요 처리 흐름을 브라우저에서 확인 |
+| [상세 적용 요청서](docs/design-evidence/legislative-studio-v2-implementation.md) | 메뉴 매핑, 구현 범위, 보존 조건, 검증·마이그레이션 기준 |
+| [디자인 구현 이슈 #5](https://github.com/gyeonggi-council/ggc-design-system/issues/5) | 실제 UI 개편 작업과 완료 조건 추적 |
+| [참고자료 PR #6](https://github.com/gyeonggi-council/ggc-design-system/pull/6) | 참고 시안·적용 명세·README 안내의 변경 내역 |
+
+### 시안 확인 방법
+
+1. 위 **B안 참고 HTML** 파일을 내려받아 브라우저로 연다. 서버·빌드·패키지 설치는 필요 없다.
+2. GitHub 파일 보기에서는 HTML이 실행되지 않고 소스로 표시된다. 파일 화면의 **Download raw file**을 이용한다.
+3. 가상 데이터로 화면과 흐름을 확인한다. 입력 내용은 브라우저의 `localStorage`에 저장될 수 있으므로
+   개인정보·민감정보·운영 데이터는 입력하지 않는다.
+
+### 실제 서비스 적용 시 구분할 사항
+
+- **참고자료 등록과 실제 디자인 구현은 별개다.** 이 자료나 README의 추가만으로 운영 UI 적용이 완료되는 것은 아니다.
+- HTML을 통째로 덮어쓰지 않고 기존 토큰·공통 컴포넌트로 재구성한다. 기존 업무 로직·데이터·경로·API·인증·권한은 보존한다.
+- 가상 데이터와 `localStorage`, 모의 서명·AI·접수·알림·외부 연계는 시연용이다. 운영 기능은 별도로 구현·연결·검증한다.
+- 데스크톱·390px 모바일·키보드 접근성과 기존 테스트를 검증하고, 별도 구현 브랜치와 PR로 제출한다. `main` 직접 변경·자동 병합·운영 자동 배포는 하지 않는다.
+- ISP PPT 원본·내부 자료·자격증명은 공개 저장소에 포함하지 않는다.
+
+## B안 실제 화면 캡처
+
+아래는 [의안 스튜디오 2.0 B안 원본](docs/design-evidence/ggc-legislative-studio-v2.html)을
+**가상 데이터 초기 상태에서 실행하여 새로 캡처한 화면**이다. 운영 서비스 적용 완료 화면이 아니다.
+업무용 화면과 도민용 화면을 구분했으며, 기존 정본 컴포넌트 이미지는 아래의 접힌 참고 영역에 남겼다.
+[캡처 기준·화면 경로](docs/design-evidence/screenshots/README.md)
+
+### PC 화면 · 1440 × 900
+
+**오늘의 의정: 대시보드와 이어서 작업하기**
+
+![B안 PC 대시보드: 오늘의 의정](docs/design-evidence/screenshots/desktop-dashboard.png)
+
+**의안 현황·조회: 검색·상태 필터와 의안 목록**
+
+![B안 PC 의안 현황·조회](docs/design-evidence/screenshots/desktop-bills.png)
+
+**문서 작업대: 초안 편집·처리 단계·다음 절차 안내**
+
+![B안 PC 문서 작업대: 가상 비공개 초안](docs/design-evidence/screenshots/desktop-editor.png)
+
+**도민 브리핑: 공개 예시 의안과 생활 중심 설명**
+
+![B안 PC 도민 브리핑: 공개 예시 데이터](docs/design-evidence/screenshots/desktop-public.png)
+
+### 모바일 화면 · 390 × 844
+
+| 오늘의 의정 | 의안 현황·조회 | 문서 작업대 |
+|---|---|---|
+| ![B안 모바일 대시보드](docs/design-evidence/screenshots/mobile-dashboard.png) | ![B안 모바일 의안 목록](docs/design-evidence/screenshots/mobile-bills.png) | ![B안 모바일 문서 작업대](docs/design-evidence/screenshots/mobile-editor.png) |
+
+모바일은 실제 390px 뷰포트의 첫 화면이다. 긴 목록·문서는 세로로, 넓은 표·처리 단계는 가로로 스크롤하여 확인한다.
+전체 화면과 동작은 참고 HTML을 내려받아 확인한다.
+
+## 기존 정본 컴포넌트 (별도 참고)
+
+아래 이미지는 현재 정본 디자인 시스템의 컴포넌트 자료이며, 위 B안 화면과는 구분된다.
+참고 시안의 추가만으로 토큰·컴포넌트·기존 예제가 변경된 것은 아니다.
+
+<details>
+<summary>기존 정본 팔레트와 컴포넌트 펼쳐보기</summary>
+
 ![경기도의회 공통 디자인 시스템 팔레트](design/examples/preview-palette.svg)
 
 > 위 그림은 **정본에서 생성된 것**이다(`design/examples/build-preview.py`).
 > 값을 옮겨 적지 않았고, 토큰이 바뀌면 다시 생성해야 하며,
 > 낡으면 `check_design.py --canon` 이 잡는다.
 
-## PC·모바일 업무 화면 개선
-
-검색·필터·페이지 이동이 동작하는 [의안 목록](design/examples/explore.html),
-단계별 입력과 임시저장을 지원하는 [초안 작성](design/examples/wizard.html),
-업무/일정 전환을 지원하는 [대시보드](design/examples/dashboard.html)를 확인할 수 있다.
-모바일에서도 표·카드 전환과 전체 상세 정보를 제공한다. 데이터는 모두 예시이며 실제 제출은 하지 않는다.
-
-| 모바일 대시보드 | 모바일 의안 목록 | 모바일 초안 작성 |
-|---|---|---|
-| ![모바일 대시보드](design/examples/shots/mobile-dashboard.png) | ![모바일 의안 목록](design/examples/shots/mobile-explore.png) | ![모바일 초안 작성](design/examples/shots/mobile-wizard.png) |
-
-[검토·개선 기록](docs/audit/2026-09-15-responsive-ux-review.md) · [반응형 업무 배치 적용](docs/components/work-layout.md)
-
-## 컴포넌트 미리보기
-
-아래 그림은 전부 `design/examples/` 갤러리를 헤드리스 Chrome 으로 찍은 **생성물**이다
-(`design/examples/build-shots.py`). 정본 CSS·갤러리가 바뀌면 다시 찍어야 하고, 낡으면
-`check_design.py --canon` 이 잡는다. 손으로 찍어 넣지 말 것. 전체는 [갤러리](#먼저-눈으로-보기--designexamples) 에.
-
-### 실물 화면
-
-| Monitor — 대시보드 (본문 h1 · 사이드바 아이콘 · KPI · v3.0 밀도) |
-|---|
-| ![대시보드](design/examples/shots/screen-dashboard.png) |
-
-| Explore — 의안 목록 (필터 스트립 · 표 20행 · 페이지네이션) |
-|---|
-| ![의안 목록](design/examples/shots/screen-explore.png) |
-
-| Configure — 조례 초안 위저드 | 대민 셸 — KRDS 패턴 + 기관 CI |
-|---|---|
-| ![위저드](design/examples/shots/screen-wizard.png) | ![대민 셸](design/examples/shots/screen-public.png) |
+컴포넌트 이미지는 `design/examples/` 갤러리를 `design/examples/build-shots.py`로 캡처한 생성물이다.
+정본 CSS·갤러리가 바뀌면 기존 빌드 도구로 다시 생성하며, `check_design.py --canon`으로 검사한다.
+[기존 갤러리](design/examples/index.html) · [기존 반응형 개선 기록](docs/audit/2026-09-15-responsive-ux-review.md) · [업무 배치 적용](docs/components/work-layout.md)
 
 ### 컴포넌트
 
@@ -71,6 +112,8 @@ FastAPI · 정적 HTML)가 이 한 벌을 소비한다.
 | ![탭](design/examples/shots/tabs.png) | ![페이지네이션](design/examples/shots/pagination.png) |
 | **알림 · 콜아웃 `.ggc-alert`** | **빈 상태 · 오류 · 로딩** |
 | ![알림](design/examples/shots/alerts.png) | ![상태 3종](design/examples/shots/states.png) |
+
+</details>
 
 ## 먼저 눈으로 보기 — `design/examples/`
 
