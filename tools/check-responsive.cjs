@@ -62,6 +62,8 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
         assert.equal(await toggle.evaluate(e => e === document.activeElement), true);
         await toggle.click();
         await page.setViewportSize({ width: 1440, height: 900 });
+        // The matchMedia change handler can run after viewport sizing resolves.
+        await page.waitForFunction(() => !document.documentElement.hasAttribute('data-ggc-drawer-active'));
         assert.equal(await page.evaluate(() => document.documentElement.hasAttribute('data-ggc-drawer-active')), false);
         await toggle.click(); assert.equal(await page.locator('.ggc-lnb').evaluate(e => e.classList.contains('ggc-lnb--icon')), true);
         await toggle.click();
