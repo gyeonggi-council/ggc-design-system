@@ -19,7 +19,7 @@ const VEIL: Record<"expired" | "unregistered" | "error", { variant: "pending" | 
 
 /* 3단계 안내 — 화면 안 매뉴얼(별도 도움말 페이지로 빼지 않는다). */
 const DEFAULT_STEPS: React.ReactNode[] = [
-  <>휴대폰에서 <strong>경기도의정포털</strong> 앱을 실행합니다</>,
+  <>휴대폰에서 <strong>모바일 의정지원서비스</strong> 앱을 실행합니다</>,
   <>앱 메뉴에서 <strong>QR 로그인</strong>을 선택합니다</>,
   <>위 코드를 화면에 맞춰 스캔합니다</>,
 ]
@@ -28,7 +28,7 @@ function QrLogin({
   className,
   state = "showing",
   eyebrow = "경기도의회사무처",
-  title = "경기도의정포털 앱으로 로그인",
+  title = "모바일 의정지원서비스 앱으로 로그인",
   lead,
   qr,
   veilText,

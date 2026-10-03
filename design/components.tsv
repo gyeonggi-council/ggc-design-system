@@ -21,7 +21,7 @@ table	표	.ggc-table-wrap .ggc-table (--flat --kv .num tr.total)	table	기존 §
 field	폼 필드 (라벨 · 입력 · 힌트 · 오류)	.ggc-field (.hint .error .is-error)	input label textarea form-field	기존 §7 · KRDS text_input/textarea	both	P0	있음	1
 search	검색창	.ggc-search	ggc-search	기존 §9	work	P1	있음	1
 stepper	스텝퍼 / 위저드	.ggc-wizard (--vertical) .ggc-wizard-mini	ggc-stepper	기존 §4 · KRDS step_indicator	both	P0	있음	1
-qr-login	QR 로그인 블록	.ggc-qr .ggc-login	ggc-qr-login	기존 §11	work	P1	있음	1
+qr-login	QR 로그인 블록	.ggc-qr .ggc-qr-install .ggc-login .ggc-login-credentials	ggc-qr-login	기존 §11	work	P1	있음	1
 prose	본문 조판	.ggc-prose	ggc-prose	기존 §10 (확폭 캡만)	both	P1	있음	3
 actionbar	하단 스티키 액션바	.ggc-actionbar	ggc-actionbar	archetypes Configure 슬롯 5	work	P0	있음	3
 modal	모달 / 다이얼로그	.ggc-modal (<dialog>)	dialog alert-dialog	KRDS modal	both	P0	있음	3

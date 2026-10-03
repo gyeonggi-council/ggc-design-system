@@ -996,7 +996,7 @@
 }
 
 /* =============================================================================
- * 11. .ggc-qr — 경기도의정포털 앱 QR 로그인 블록  (v1.2, 2026-08-22 신설)
+ * 11. .ggc-qr — 모바일 의정지원서비스 앱 QR 로그인 블록  (v1.2, 2026-08-22 신설)
  *
  * 왜 정본에 넣나 — 이 화면은 **9개 시스템이 전부 노출한다.** 그런데 v1.1 까지
  * 정본에 없었고, 그 결과 9벌이 각자 발명해 시각 언어가 셋으로 갈렸다
@@ -1005,22 +1005,37 @@
  *
  * -- 마크업 계약 (스택 7종 공통) -------------------------------------------
  *   <div class="ggc-qr">
- *     <div class="ggc-qr-head">
- *       <p  class="ggc-qr-eyebrow">경기도의회사무처</p>
- *       <h2 class="ggc-qr-title">경기도의정포털 앱으로 로그인</h2>
- *       <p  class="ggc-qr-lead">…</p>
- *     </div>
- *     <div class="ggc-qr-stage" data-state="showing" role="status" aria-live="polite">
- *       <div class="ggc-qr-frame"> QR 200x200 </div>
- *       <div class="ggc-qr-veil">
- *         <span class="ggc-badge ggc-badge--pending">만료</span>
- *         <p class="ggc-qr-veil-text">유효시간이 지났습니다</p>
+ *     <div class="ggc-qr-main">                       <!-- 왼쪽: 찍는 것 -->
+ *       <div class="ggc-qr-stage" data-state="showing" role="status" aria-live="polite">
+ *         <div class="ggc-qr-frame"> QR 200x200 </div>
+ *         <div class="ggc-qr-veil">
+ *           <span class="ggc-badge ggc-badge--pending">만료</span>
+ *           <p class="ggc-qr-veil-text">유효시간이 지났습니다</p>
+ *         </div>
  *       </div>
+ *       <p class="ggc-qr-meta">남은 시간 <span class="ggc-qr-timer">4:32</span> · 1회용</p>
  *     </div>
- *     <p  class="ggc-qr-meta">남은 시간 <span class="ggc-qr-timer">4:32</span> · 1회용</p>
- *     <ol class="ggc-qr-steps"> 3단계 안내 </ol>
- *     <div class="ggc-qr-actions"> .ggc-btn </div>
+ *     <div class="ggc-qr-aside">                      <!-- 오른쪽: 읽는 것 -->
+ *       <div class="ggc-qr-head">
+ *         <p  class="ggc-qr-eyebrow">경기도의회사무처</p>
+ *         <h2 class="ggc-qr-title">모바일 의정지원서비스 앱으로 로그인</h2>
+ *         <p  class="ggc-qr-lead">…</p>
+ *       </div>
+ *       <ol class="ggc-qr-steps"> 3단계 안내 </ol>
+ *       <details class="ggc-qr-install"> 앱 설치 </details>
+ *       <p class="ggc-qr-callout" hidden></p>
+ *       <p class="ggc-qr-usercode" hidden></p>
+ *       <div class="ggc-qr-actions"> .ggc-btn </div>
+ *     </div>
  *   </div>
+ *
+ * -- 두 래퍼는 v1.3(2026-08-28)에 생겼고 **선택**이다 -----------------------
+ * 래퍼가 있으면 900px 이상에서 **왼쪽 QR · 오른쪽 안내** 2단이 되고, 없으면
+ * v1.2 그대로 한 줄로 쌓인다(`:has()` 가드). 그래서 서비스를 하나씩 옮길 수 있다.
+ * 2단으로 바꾼 이유는 미관이 아니라 **높이**다 — 한 줄로 쌓으면 PC 에서 700px 을
+ * 넘겨 노트북(768px)에서 QR 을 보려면 스크롤해야 했다. 로그인 화면에서 스크롤은
+ * "찍을 것이 어디 있나" 를 묻게 만든다.
+ * `:has()` 미지원 브라우저는 v1.2 배치로 떨어질 뿐 기능에 영향이 없다.
  *
  * -- 상태는 .ggc-qr-stage 의 data-state 하나가 몬다 -------------------------
  * 여섯 이름은 플랫폼 정본이다: idle · loading · showing · expired ·
@@ -1057,6 +1072,16 @@
   max-width: 380px;
   margin: 0 auto;
 }
+
+/* --- 두 래퍼 (v1.3) — 좁은 화면에서는 그냥 한 줄로 쌓인다 --- */
+.ggc-qr-main,
+.ggc-qr-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ggc-space-4);
+  min-width: 0;                       /* flex 자식이 내용 때문에 안 줄어드는 것을 막는다 */
+}
+.ggc-qr-main { align-items: center; }
 
 /* --- 머리 — 기관 맥락을 로그인 첫 화면에 둔다 --- */
 .ggc-qr-head { text-align: center; }
@@ -1202,7 +1227,7 @@
 }
 /* ⚠ 2026-08-22 수정: 여기는 flex 면 안 된다.
    flex 컨테이너는 **연속된 텍스트 런마다 익명 항목**을 만든다. 그래서 이 컴포넌트가
-   전제하는 마크업(`휴대폰에서 <strong>경기도의정포털</strong> 앱을 실행합니다`)에서
+   전제하는 마크업(`휴대폰에서 <strong>모바일 의정지원서비스</strong> 앱을 실행합니다`)에서
    텍스트·<strong>·텍스트가 각각 항목이 되고 그 사이가 gap 만큼(12px) 벌어졌다 —
    화면에서는 "단어 사이가 이상하게 뜬" 것으로 보인다(예산 집행현황에서 실측).
    번호는 흐름에서 빼고(absolute) 본문은 보통 인라인 흐름으로 둔다. 그러면 강조·링크·
@@ -1239,7 +1264,9 @@
    틀린 안내다 — 스캔할 것이 없고, 문제도 거기 있지 않다. 그때만 접는다.
    :has() 미지원 브라우저에서는 안내가 남을 뿐이라 기능에 영향이 없다. */
 .ggc-qr:has(.ggc-qr-stage[data-state="unregistered"]) .ggc-qr-steps,
-.ggc-qr:has(.ggc-qr-stage[data-state="error"]) .ggc-qr-steps { display: none; }
+.ggc-qr:has(.ggc-qr-stage[data-state="unregistered"]) .ggc-qr-install,
+.ggc-qr:has(.ggc-qr-stage[data-state="error"]) .ggc-qr-steps,
+.ggc-qr:has(.ggc-qr-stage[data-state="error"]) .ggc-qr-install { display: none; }
 
 /* --- 액션 --- */
 .ggc-qr-actions { display: flex; flex-direction: column; gap: var(--ggc-space-2); }
@@ -1302,6 +1329,102 @@
   background: var(--ggc-border);
 }
 
+/* --- 앱 설치 안내 (접힘) — 앱이 아직 없는 사람의 다음 행동 ---
+ * 로그인 화면에는 이미 로그인용 QR 이 크게 있다. 설치용 QR 을 나란히 두면 처음 쓰는
+ * 사람이 어느 것을 찍어야 하는지 헷갈린다. 그래서 기본은 한 줄로 접고, 펼친 사람에게만
+ * 두 번째 QR 을 보인다 — <details> 라 자바스크립트가 없고, 스택 7종에서 같은 마크업이
+ * 그대로 동작한다(JSP·Jinja2·Tauri 포함).
+ * 문구·URL·QR 자산은 배포 플랫폼의 앱 설치 정본 데이터(경기도의회 업무플랫폼은 ggc-app-install.json)를
+ * 따른다. 여기서 지어내지 않는다. */
+.ggc-qr-install {
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface-inset);
+}
+.ggc-qr-install > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--ggc-space-2);
+  min-height: 44px;                 /* 터치 타깃 */
+  padding: 0 var(--ggc-space-4);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ggc-primary);
+  cursor: pointer;
+  list-style: none;                 /* Firefox 기본 삼각형 */
+  word-break: keep-all;
+}
+.ggc-qr-install > summary::-webkit-details-marker { display: none; }
+/* 마커를 없앤 대신 방향을 직접 그린다 — 접힘/펼침이 색 말고 형태로도 읽혀야 한다 */
+.ggc-qr-install > summary::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+.ggc-qr-install[open] > summary::before { transform: rotate(-135deg); }
+.ggc-qr-install > summary:hover { background: var(--ggc-primary-light); }
+.ggc-qr-install > summary:focus-visible {
+  outline: 2px solid var(--ggc-primary);
+  outline-offset: -2px;
+}
+
+.ggc-qr-install-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ggc-space-3);
+  padding: 0 var(--ggc-space-4) var(--ggc-space-4);
+  text-align: center;
+}
+/* QR 은 어느 배경에서도 흰 바탕에 검은 모듈이어야 한다 — 대비가 곧 인식률이다 */
+.ggc-qr-install-qr {
+  padding: var(--ggc-space-3);
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  line-height: 0;
+}
+.ggc-qr-install-qr img,
+.ggc-qr-install-qr svg { display: block; width: 120px; height: 120px; }
+
+.ggc-qr-install-url {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ggc-text-muted);
+  word-break: keep-all;
+}
+.ggc-qr-install-url a {
+  font-family: var(--ggc-font-mono);
+  word-break: break-all;
+}
+.ggc-qr-install-stores {
+  display: flex;
+  gap: var(--ggc-space-2);
+  margin: 0;
+}
+.ggc-qr-install-stores a {
+  padding: var(--ggc-space-2) var(--ggc-space-3);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--ggc-border-strong);
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.ggc-qr-install-stores a:hover {
+  border-color: var(--ggc-primary);
+  background: var(--ggc-primary-light);
+}
+
 /* --- 로그인 화면 셸 — QR 이 유일한 입구인 서비스용 ---
  * 카드를 페이지 폭(1320px)에 그대로 두면 380px 짜리 QR 블록이 허허벌판에 놓인다.
  * 아홉 서비스가 각자 이 폭을 정하지 않도록 여기서 한 번만 정한다.
@@ -1310,19 +1433,93 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: var(--ggc-space-7) var(--ggc-space-4) 64px;
+  padding: var(--ggc-space-5) var(--ggc-space-4) var(--ggc-space-6);
 }
 .ggc-login > .ggc-card {
   width: 100%;
   max-width: 440px;
-  padding: var(--ggc-space-7) var(--ggc-space-6);
+  padding: var(--ggc-space-6) var(--ggc-space-6);
 }
 
-/* --- 좁은 화면 — 의원 개인 휴대폰이 주 사용처인 서비스가 있다 --- */
-@media (max-width: 420px) {
+/* =============================================================================
+ * 2단 배치 (v1.3, 2026-08-28) — 왼쪽 QR · 오른쪽 안내
+ *
+ * 목표는 **로그인 화면에서 스크롤을 없애는 것**이다. v1.2 의 한 줄 배치는
+ * 머리(90) + 무대(232) + 안내(130) + 설치(44) + 버튼(96) + 간격 ≈ 700px 이라
+ * 노트북(768px)에서 QR 을 보려면 스크롤해야 했다. 나란히 놓으면 **가장 높은 쪽**
+ * 하나만큼만 든다.
+ *
+ * 900px 을 경계로 잡은 이유 — 240(QR) + 32(간격) + 360(안내 최소) + 카드 여백
+ * 96 + 페이지 여백 64 ≈ 792. 여기에 여유를 둔 값이다. 태블릿 세로(768)는
+ * 한 줄로 남는 편이 낫다 — 2단으로 우겨넣으면 안내 컬럼이 글자 한두 개 폭이 된다.
+ * ============================================================================= */
+/* ⚠ **뷰포트가 넓다고 컨테이너까지 넓은 것은 아니다.** 미디어 쿼리는 뷰포트만 보므로,
+ *   좁은 카드 안에 들어간 서비스에서는 2단이 펴지면서 안내 컬럼이 짓눌린다.
+ *   2026-08-28 실측(1440x900): 표창관리 62px · 인사관리 134px · 예산 108px —
+ *   글자 서너 개 폭이라 읽을 수 없고, 세로로는 오히려 스크롤이 458px 생겼다.
+ *   **그래서 wrap 으로 스스로 접히게 한다** — 안내에 320px 을 못 주는 컨테이너에서는
+ *   aside 가 다음 줄로 내려가 v1.2 한 줄 배치로 되돌아간다. 컨테이너 쿼리 없이,
+ *   서비스마다 고쳐 넣지 않고, 앞으로 생길 서비스까지 함께 지킨다.
+ *   (2단을 실제로 보려면 카드가 넓어야 한다 — .ggc-login 셸을 쓰면 자동으로 820px 이다.) */
+@media (min-width: 900px) {
+  .ggc-qr:has(.ggc-qr-main) {
+    flex-direction: row;
+    flex-wrap: wrap;                  /* 자리가 모자라면 접힌다 — 짓눌리지 않는다 */
+    justify-content: center;          /* 접힌 뒤 QR 이 가운데로 온다 */
+    align-items: flex-start;
+    gap: var(--ggc-space-7);
+    max-width: 720px;
+  }
+  .ggc-qr:has(.ggc-qr-main) .ggc-qr-main {
+    flex: 0 0 240px;
+    position: sticky;                 /* 안내가 길어져도 QR 은 눈앞에 남는다 */
+    top: var(--ggc-space-4);
+  }
+  /* 320px 이 안내 컬럼의 하한이다. 이보다 좁아질 바에는 다음 줄로 내려간다. */
+  .ggc-qr:has(.ggc-qr-main) .ggc-qr-aside { flex: 1 1 320px; }
+  /* 2단에서는 가운데 정렬이 어색하다 — 읽는 컬럼은 왼쪽 정렬이 자연스럽다 */
+  .ggc-qr:has(.ggc-qr-main) .ggc-qr-head { text-align: left; }
+  .ggc-login:has(.ggc-qr-main) > .ggc-card { max-width: 820px; }
+}
+
+/* --- 좁은 화면 — 의원 개인 휴대폰이 주 사용처인 서비스가 있다 ---
+ * 여기서도 목표는 스크롤 최소화다. 지우는 것이 아니라 **조인다** —
+ * 안내 3단계는 처음 쓰는 사람이 막히는 유일한 지점이라 접거나 빼지 않는다. */
+@media (max-width: 480px) {
   .ggc-qr { gap: var(--ggc-space-3); }
-  .ggc-qr-stage { width: 100%; max-width: 232px; }
-  .ggc-qr-steps { padding: var(--ggc-space-3); }
+  .ggc-qr-main,
+  .ggc-qr-aside { gap: var(--ggc-space-3); }
+  .ggc-qr-stage { width: 100%; max-width: 216px; height: 216px; }
+  .ggc-qr-frame { width: 184px; height: 184px; }
+  .ggc-qr-frame svg,
+  .ggc-qr-frame img,
+  .ggc-qr-frame canvas { width: 184px; height: 184px; }
+  .ggc-qr-lead { font-size: 13px; }
+  .ggc-qr-steps { padding: var(--ggc-space-3); gap: var(--ggc-space-2); }
+  .ggc-qr-steps li { font-size: 12.5px; }
+  .ggc-qr-install > summary { min-height: 40px; }
+  .ggc-login { padding: var(--ggc-space-3) var(--ggc-space-3) var(--ggc-space-5); }
+  .ggc-login > .ggc-card { padding: var(--ggc-space-5) var(--ggc-space-4); }
+}
+/* 세로가 짧은 **휴대폰**(≈667px 이하 — iPhone SE 계열, 브라우저 주소창을 뺀 실측 높이).
+   위 480px 압축만으로는 로그인 화면이 한 화면에 안 들어가는 기기가 남는다(2026-08-28 실측:
+   360x640 에서 58px, 375x667 에서 31px 넘쳤다). **줄이는 순서가 정해져 있다** —
+   여백 → 간격 → 글자 → 무대. 무대와 QR 은 앱 인식률이 걸려 있어 마지막이고, 여기서는
+   손대지 않는다. 로그인 화면에서 스크롤은 "찍을 것이 어디 있나"를 묻게 만든다. */
+@media (max-width: 480px) and (max-height: 700px) {
+  .ggc-login { padding: var(--ggc-space-2) var(--ggc-space-3) var(--ggc-space-3); }
+  .ggc-login > .ggc-card { padding: var(--ggc-space-4); }
+  .ggc-qr { gap: var(--ggc-space-2); }
+  .ggc-qr-main,
+  .ggc-qr-aside { gap: var(--ggc-space-2); }
+  .ggc-qr-steps { padding: var(--ggc-space-2) var(--ggc-space-3); }
+}
+
+/* 세로가 짧은 화면(가로로 든 휴대폰·낮은 해상도 노트북)에서는 무대부터 줄인다 —
+   QR 은 184px 이라도 앱이 읽지만, 화면 밖으로 나가면 아예 못 읽는다. */
+@media (max-height: 720px) and (min-width: 900px) {
+  .ggc-login { padding-top: var(--ggc-space-3); padding-bottom: var(--ggc-space-4); }
+  .ggc-login > .ggc-card { padding: var(--ggc-space-5) var(--ggc-space-6); }
 }
 
 /* §10 이 animation-iteration-count 를 1 로 강제하므로 여기서 회전 속도를 늦춰 봐야
@@ -1350,6 +1547,48 @@
   .ggc-qr-stage[data-state="error"]        .ggc-qr-frame { opacity: 1; filter: none; }
 }
 
+/* --- Login v1.5 (2026-09-11) — 아이디 로그인을 지원하는 서비스는 QR 과 **같은 카드**에 폼을 둔다 ---
+ * 폼은 접거나 탭·다른 화면 뒤로 숨기지 않는다. PC(900px 이상)는 QR 왼쪽 · 안내 오른쪽 · 그 아래 한 행에
+ * 아이디 · 비밀번호 · 로그인 버튼, 모바일은 QR → 안내 → 폼 순서로 쌓는다. 아이디 로그인이 없는 서비스는
+ * 이 블록을 쓰지 않는다 — 없는 인증 방식을 화면 때문에 새로 만들지 않는다. */
+.ggc-qr, .ggc-qr *, .ggc-login-credentials, .ggc-login-credentials * { box-sizing: border-box; }
+.ggc-qr-actions .ggc-btn { white-space: normal; text-align: center; }
+.ggc-login { flex: 1; min-width: 0; width: 100%; box-sizing: border-box; }
+.ggc-login > .ggc-card { box-sizing: border-box; }
+.ggc-login-credentials [hidden] { display: none !important; }
+.ggc-login-credentials {
+  min-width: 0;
+  width: 100%;
+  margin-top: var(--ggc-space-6);
+  padding-top: var(--ggc-space-6);
+  border-top: 1px solid var(--ggc-border);
+  color: var(--ggc-text);
+  font-family: var(--ggc-font);
+}
+.ggc-login-credentials > h2 {
+  margin: 0 0 var(--ggc-space-4);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ggc-text-strong);
+}
+.ggc-login-credentials form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ggc-space-4);
+  margin: 0;
+  width: 100%;
+  max-width: none;
+}
+.ggc-login-credentials .ggc-field { min-width: 0; }
+.ggc-login-credentials input:not([type="hidden"]) { width: 100%; min-width: 0; box-sizing: border-box; }
+@media (min-width: 900px) {
+  .ggc-login-credentials form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    align-items: end;
+  }
+  .ggc-login-credentials form > :not(.ggc-field):not(button):not(input[type="hidden"]) { grid-column: 1 / -1; }
+}
 
 /* =============================================================================
  * 12. .ggc-page-head — 페이지 헤더 (제목 · 설명 · 주 액션)   (v3.0, ADR 0010)
