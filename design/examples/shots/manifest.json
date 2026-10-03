@@ -1,6 +1,6 @@
 {
   "_": "생성물이다. design/examples/build-shots.py 가 만든다 — 직접 고치지 말 것.",
-  "sha256": "c7105e91a7b00cd2a041c87552777f81cd69dfbfedef8043574c775794f99ceb",
+  "sha256": "885ec5e8fd7607d97bba2569c64b83775cd4345e302e56b743f9ec99c9dadda7",
   "sources": [
     "design/ggc-tokens.css",
     "design/ggc-components.css",

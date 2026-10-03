@@ -1115,7 +1115,7 @@
       "name": "ggc-qr-login",
       "type": "registry:block",
       "title": "QR 로그인 블록",
-      "description": "경기도의정포털 앱 QR 로그인 — 9개 시스템 공통 입구.",
+      "description": "모바일 의정지원서비스 앱 QR 로그인 — 전 시스템 공통 입구.",
       "registryDependencies": [
         "@ggc/badge",
         "@ggc/button",

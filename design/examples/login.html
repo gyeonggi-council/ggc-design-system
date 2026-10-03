@@ -69,8 +69,8 @@
 
     <main class="ggc-shell-main" id="main">
 
-      <h1 class="ex-h1">QR 로그인<span class="ver">.ggc-qr · 컴포넌트 v1.2</span></h1>
-      <p class="ex-lede">경기도의정포털 앱으로 들어오는 <b>전 시스템 공통 입구</b>다.
+      <h1 class="ex-h1">QR 로그인<span class="ver">.ggc-qr · 컴포넌트 v1.5</span></h1>
+      <p class="ex-lede">모바일 의정지원서비스 앱으로 들어오는 <b>전 시스템 공통 입구</b>다.
       9개 서비스가 같은 화면을 노출하므로, 여기가 갈라지면 사용자는 서비스마다
       다른 제품을 쓰는 것처럼 느낀다.</p>
 
@@ -84,28 +84,57 @@
       <!-- ============================================================ 실물 -->
       <section class="ex-section">
         <h2>실물 <span class="cls">.ggc-qr</span></h2>
-        <p>카드 안에 그대로 넣으면 된다. 폭은 <code class="ex-inline">max-width:380px</code>
-        로 스스로 잡고 가운데 정렬한다 — 감싸는 쪽이 폭을 정하지 않아도 된다.</p>
+        <p>카드 안에 그대로 넣으면 된다. 폭은 스스로 잡고 가운데 정렬한다 —
+        감싸는 쪽이 폭을 정하지 않아도 된다.</p>
+        <p><b>v1.3(2026-08-28)부터 두 래퍼를 쓴다</b> —
+        <code class="ex-inline">.ggc-qr-main</code>(왼쪽: 찍는 것) ·
+        <code class="ex-inline">.ggc-qr-aside</code>(오른쪽: 읽는 것).
+        <b>900px 이상에서 2단</b>이 되고 그 아래에서는 한 줄로 쌓인다.
+        바꾼 이유는 미관이 아니라 <b>높이</b>다 — 한 줄로 쌓으면 PC 에서 700px 을 넘겨
+        노트북(768px)에서 QR 을 보려면 스크롤해야 했고, 로그인 화면의 스크롤은
+        “찍을 것이 어디 있나”를 묻게 만든다. 래퍼는 <b>선택</b>이라
+        (<code class="ex-inline">:has()</code> 가드) 아직 안 옮긴 서비스는 한 줄 배치 그대로 뜬다.
+        아래 창을 넓혔다 좁혔다 해 보면 두 배치가 다 보인다.</p>
+        <p><b>앱 설치 안내</b>(<code class="ex-inline">.ggc-qr-install</code>)는 접어 둔다 — 로그인용 QR 옆에
+        설치용 QR 을 펼쳐 두면 처음 쓰는 사람이 어느 것을 찍어야 하는지 헷갈린다.
+        <code class="ex-inline">&lt;details&gt;</code> 라 자바스크립트가 없다. 미등록·오류 상태에서는 저절로 접힌다.</p>
         <div class="ex-demo ex-demo--bg" id="d-qr">
       <div class="ggc-card ggc-card--pad">
         <div class="ggc-qr">
-          <div class="ggc-qr-head">
-            <p class="ggc-qr-eyebrow">경기도의회사무처</p>
-            <h2 class="ggc-qr-title">경기도의정포털 앱으로 로그인</h2>
-            <p class="ggc-qr-lead">이 서비스는 앱 QR 로그인만 지원합니다.</p>
-          </div>
+          <div class="ggc-qr-main">
           <div class="ggc-qr-stage" data-state="showing" role="status" aria-live="polite">
             <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div>
           </div>
           <p class="ggc-qr-meta">남은 시간 <span class="ggc-qr-timer">4:32</span> · 이 코드는 1회용입니다</p>
+          </div>
+
+          <div class="ggc-qr-aside">
+          <div class="ggc-qr-head">
+            <p class="ggc-qr-eyebrow">경기도의회사무처</p>
+            <h2 class="ggc-qr-title">모바일 의정지원서비스 앱으로 로그인</h2>
+            <p class="ggc-qr-lead">이 서비스는 앱 QR 로그인만 지원합니다.</p>
+          </div>
           <ol class="ggc-qr-steps">
-            <li>휴대폰에서 <strong>경기도의정포털</strong> 앱을 실행합니다</li>
+            <li>휴대폰에서 <strong>모바일 의정지원서비스</strong> 앱을 실행합니다</li>
             <li>앱 메뉴에서 <strong>QR 로그인</strong>을 선택합니다</li>
-            <li>위 코드를 화면에 맞춰 스캔합니다</li>
+            <li>화면의 QR 을 앱으로 스캔합니다</li>
           </ol>
+          <details class="ggc-qr-install">
+            <summary>앱이 없으신가요? 설치하기</summary>
+            <div class="ggc-qr-install-body">
+              <div class="ggc-qr-install-qr"><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="모바일 의정지원서비스 앱 설치 QR 코드" viewBox="0 0 296 296"><path transform="scale(8)" stroke="#000" d="M4 4.5h7m2 0h1m2 0h1m3 0h5m1 0h7m-29 1h1m5 0h1m2 0h2m1 0h1m1 0h5m3 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m1 0h2m2 0h1m3 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m2 0h1m3 0h1m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h3m3 0h1m2 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h1m6 0h4m1 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-21 1h1m2 0h2m3 0h1m1 0h3m-21 1h1m1 0h5m2 0h2m6 0h3m2 0h5m-27 1h2m1 0h3m2 0h2m3 0h1m2 0h9m3 0h1m-27 1h1m2 0h3m4 0h4m1 0h1m2 0h1m1 0h3m-24 1h1m1 0h2m3 0h2m1 0h3m1 0h2m2 0h7m1 0h1m-27 1h2m1 0h4m1 0h1m2 0h1m1 0h1m2 0h1m7 0h2m-27 1h2m1 0h1m5 0h2m1 0h1m3 0h1m1 0h3m1 0h3m3 0h1m-29 1h1m2 0h1m1 0h3m3 0h1m3 0h1m2 0h1m4 0h1m1 0h2m-24 1h1m1 0h1m8 0h1m1 0h1m2 0h3m1 0h2m2 0h1m-27 1h3m1 0h6m1 0h1m4 0h1m1 0h1m1 0h1m3 0h2m-27 1h4m6 0h2m1 0h2m1 0h1m2 0h1m1 0h4m1 0h1m1 0h1m-29 1h1m2 0h1m1 0h3m1 0h1m3 0h4m1 0h1m1 0h1m1 0h3m1 0h1m-27 1h1m1 0h2m3 0h1m2 0h4m2 0h1m1 0h2m1 0h2m1 0h1m2 0h1m-28 1h1m1 0h1m1 0h1m1 0h3m1 0h3m1 0h4m2 0h5m1 0h3m-21 1h2m1 0h1m4 0h1m3 0h1m3 0h5m-29 1h7m2 0h2m1 0h1m2 0h2m1 0h3m1 0h1m1 0h3m-27 1h1m5 0h1m1 0h1m5 0h1m1 0h1m1 0h3m3 0h1m-25 1h1m1 0h3m1 0h1m1 0h5m4 0h2m1 0h5m1 0h1m-27 1h1m1 0h3m1 0h1m1 0h3m1 0h3m1 0h5m4 0h4m-29 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-28 1h1m5 0h1m2 0h1m1 0h1m1 0h4m3 0h1m2 0h3m1 0h1m-28 1h7m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1"/></svg></div>
+              <p class="ggc-qr-install-url">휴대폰 카메라로 QR 을 찍거나 아래 주소로 접속하세요.<br>
+                <a href="https://magent.ggc.go.kr/app/download">magent.ggc.go.kr/app/download</a></p>
+              <p class="ggc-qr-install-stores">
+                <a href="https://play.google.com/store/apps/details?id=kr.go.ggc.portal.app">Google Play</a>
+                <a href="https://apps.apple.com/kr/app/%EA%B2%BD%EA%B8%B0%EB%8F%84%EC%9D%98%ED%9A%8C-%EB%AA%A8%EB%B0%94%EC%9D%BC-%EC%9D%98%EC%A0%95%EC%A7%80%EC%9B%90%EC%84%9C%EB%B9%84%EC%8A%A4/id6788616270">App Store</a>
+              </p>
+            </div>
+          </details>
           <p class="ggc-qr-alt">앱을 쓸 수 없는 경우</p>
           <div class="ggc-qr-actions">
             <button class="ggc-btn ggc-btn--secondary ggc-btn--block" type="button">담당자에게 문의</button>
+          </div>
           </div>
         </div>
       </div>
@@ -113,6 +142,84 @@
         <details class="ex-reveal" data-src="#d-qr"><summary>마크업</summary><pre class="ex-code"></pre></details>
       </section>
 
+      <!-- ============================================================ 화면 전체 -->
+      <section class="ex-section">
+        <h2>화면 전체 · 아이디 로그인 함께 <span class="cls">.ggc-login · .ggc-login-credentials</span></h2>
+        <p><b>v1.4(2026-09-10) — 화면 전체와 문구까지 고정했다.</b> 서비스마다 머리 문구·버튼·배치가
+        조금씩 달라 “같은 컴포넌트인데 다른 화면”이 되어 있었다. 셸은 상단바 → 브랜드만 있는 GNB(LNB·계정 표시 없음) →
+        <code class="ex-inline">main.ggc-login &gt; .ggc-card.ggc-card--pad &gt; .ggc-qr</code> 이고,
+        서비스마다 바꾸는 것은 <b>머리의 서비스명</b>과 <b>통합 로그인의 <code class="ex-inline">next</code></b> 뿐이다.
+        카드 직계 자식이 <code class="ex-inline">.ggc-qr</code> 여야 900px 이상에서 카드가 820px 로 넓어져 2단이 선다.</p>
+        <p><b>v1.5(2026-09-11) — 아이디 로그인을 지원하는 서비스는 같은 카드에 폼을 둔다.</b>
+        QR 다음에 <code class="ex-inline">.ggc-login-credentials</code> 를 놓고, 접거나 탭·다른 화면 뒤로 숨기지 않는다.
+        PC 는 QR 왼쪽 · 안내 오른쪽 · 그 아래 한 행에 아이디 · 비밀번호 · 로그인 버튼, 모바일은 QR → 안내 → 폼 순서로 쌓인다.
+        아이디 로그인이 없는 서비스는 이 폼을 두지 않는다 — 화면 때문에 새 인증 방식을 만들지 않는다.
+        <b>통합 로그인</b> 버튼도 중앙 SSO 가 있는 배포에만 둔다(작동하지 않는 버튼을 만들지 않는다).</p>
+        <p>이 예제는 갤러리 안에 있어 <code class="ex-inline">&lt;div class="ggc-login"&gt;</code> 로 썼다 —
+        실제 화면에서는 <code class="ex-inline">&lt;main class="ggc-login" id="main"&gt;</code> 이고
+        머리 제목은 그 화면의 유일한 <code class="ex-inline">h1</code> 이다.</p>
+        <div class="ex-demo ex-demo--bg" id="d-login">
+  <div class="ggc-login">
+    <div class="ggc-card ggc-card--pad">
+      <div class="ggc-qr">
+        <div class="ggc-qr-main">
+          <div class="ggc-qr-stage" data-state="showing" role="status" aria-live="polite">
+            <div class="ggc-qr-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"><path transform="scale(5)" stroke="#000" d="M4 4.5h7m2 0h1m1 0h2m2 0h2m5 0h2m3 0h1m1 0h3m4 0h1m1 0h7m-45 1h1m5 0h1m5 0h1m1 0h1m4 0h1m3 0h2m1 0h1m1 0h2m5 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m1 0h5m1 0h1m1 0h1m2 0h1m1 0h1m3 0h2m1 0h2m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h2m4 0h8m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m1 0h1m1 0h3m2 0h1m2 0h1m1 0h1m3 0h1m3 0h2m1 0h3m4 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h1m5 0h2m1 0h4m3 0h1m1 0h3m1 0h1m1 0h2m1 0h2m-37 1h1m1 0h5m3 0h3m1 0h3m1 0h8m3 0h3m1 0h3m2 0h5m-43 1h1m4 0h1m1 0h3m1 0h3m1 0h4m5 0h2m2 0h3m1 0h1m3 0h2m1 0h1m4 0h1m-44 1h1m1 0h5m2 0h4m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1m3 0h2m1 0h1m1 0h2m1 0h2m-43 1h2m1 0h1m4 0h1m1 0h1m2 0h1m2 0h5m4 0h1m1 0h1m4 0h2m1 0h2m3 0h5m-44 1h1m2 0h1m1 0h1m1 0h2m4 0h5m1 0h1m1 0h2m3 0h1m1 0h1m8 0h1m5 0h1m-42 1h1m4 0h2m1 0h1m1 0h1m5 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h2m2 0h2m1 0h1m1 0h1m-44 1h1m1 0h2m1 0h4m4 0h1m1 0h2m1 0h2m2 0h2m1 0h2m1 0h1m2 0h1m1 0h1m2 0h2m1 0h4m-43 1h1m3 0h1m2 0h2m3 0h1m1 0h1m1 0h2m2 0h1m2 0h1m2 0h2m1 0h4m2 0h2m2 0h4m-44 1h5m1 0h1m2 0h2m1 0h1m2 0h2m1 0h3m5 0h1m4 0h1m2 0h1m3 0h2m3 0h2m-45 1h3m6 0h3m1 0h3m1 0h1m3 0h1m5 0h7m2 0h2m1 0h2m1 0h3m-45 1h1m4 0h2m3 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m1 0h4m1 0h1m3 0h1m2 0h2m-42 1h1m2 0h1m4 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h2m1 0h1m1 0h2m3 0h1m1 0h6m-44 1h8m1 0h2m1 0h1m4 0h8m1 0h1m2 0h1m3 0h1m1 0h5m-40 1h1m2 0h1m3 0h3m2 0h3m4 0h1m3 0h1m3 0h6m1 0h2m3 0h1m1 0h1m-41 1h1m1 0h1m1 0h1m1 0h4m1 0h2m2 0h1m1 0h2m1 0h1m1 0h2m5 0h6m1 0h1m1 0h1m2 0h1m-43 1h4m3 0h2m1 0h2m1 0h1m5 0h1m3 0h5m1 0h1m1 0h1m3 0h1m3 0h3m1 0h1m-43 1h8m1 0h3m2 0h2m1 0h6m1 0h1m3 0h1m3 0h8m1 0h2m-44 1h1m1 0h1m8 0h1m3 0h1m1 0h7m3 0h3m4 0h1m3 0h1m1 0h4m-45 1h2m4 0h1m2 0h2m1 0h1m7 0h3m3 0h1m1 0h1m2 0h4m1 0h1m2 0h2m1 0h2m-44 1h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h3m4 0h2m1 0h1m2 0h4m1 0h1m2 0h3m1 0h1m1 0h1m-44 1h1m1 0h5m1 0h2m2 0h5m2 0h1m3 0h1m2 0h1m8 0h2m2 0h1m2 0h2m-45 1h3m1 0h2m2 0h2m1 0h2m3 0h1m4 0h3m6 0h1m5 0h2m3 0h2m1 0h1m-44 1h1m1 0h4m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m3 0h3m6 0h3m-44 1h2m1 0h1m1 0h1m1 0h1m1 0h2m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h3m1 0h3m-45 1h2m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m2 0h2m1 0h1m2 0h1m1 0h1m4 0h1m2 0h3m1 0h2m-43 1h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h3m1 0h2m1 0h1m1 0h1m4 0h5m1 0h1m1 0h2m2 0h2m1 0h1m-41 1h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m3 0h1m6 0h2m2 0h1m3 0h1m1 0h1m-43 1h4m2 0h2m1 0h1m2 0h3m1 0h1m3 0h6m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m2 0h4m-45 1h1m2 0h2m1 0h1m4 0h2m3 0h1m1 0h1m1 0h5m1 0h2m3 0h1m1 0h2m1 0h5m2 0h1m-36 1h1m1 0h2m1 0h4m2 0h2m3 0h4m2 0h3m3 0h1m3 0h3m1 0h1m-45 1h7m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m1 0h1m4 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h2m-44 1h1m5 0h1m1 0h1m1 0h2m2 0h5m1 0h1m3 0h1m2 0h2m3 0h1m3 0h1m3 0h5m-45 1h1m1 0h3m1 0h1m1 0h2m3 0h2m2 0h1m2 0h5m1 0h1m2 0h2m3 0h1m1 0h6m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h4m1 0h1m2 0h1m4 0h1m1 0h2m1 0h1m6 0h2m1 0h1m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h2m5 0h1m2 0h1m1 0h1m1 0h3m2 0h4m1 0h1m4 0h1m-44 1h1m5 0h1m3 0h1m4 0h1m1 0h1m1 0h2m5 0h1m1 0h1m1 0h4m5 0h2m1 0h1m-43 1h7m1 0h1m2 0h1m1 0h2m1 0h2m1 0h1m3 0h3m8 0h2m1 0h3m1 0h1m1 0h1"/></svg></div>
+            <div class="ggc-qr-spinner"></div>
+            <div class="ggc-qr-veil">
+              <span class="ggc-badge ggc-badge--pending">만료</span>
+              <p class="ggc-qr-veil-text">유효시간이 지났습니다</p>
+            </div>
+          </div>
+          <p class="ggc-qr-meta">남은 시간 <span class="ggc-qr-timer">4:32</span> · 이 코드는 1회용입니다</p>
+        </div>
+        <div class="ggc-qr-aside">
+          <div class="ggc-qr-head">
+            <p class="ggc-qr-eyebrow">경기도의회 업무플랫폼 · 인사관리</p>
+            <h2 class="ggc-qr-title">모바일 의정지원서비스 앱으로 로그인</h2>
+            <p class="ggc-qr-lead">휴대폰에서 모바일 의정지원서비스 앱을 열고 QR 코드를 스캔해 주세요.</p>
+          </div>
+          <ol class="ggc-qr-steps">
+            <li>휴대폰에서 <strong>모바일 의정지원서비스</strong> 앱을 실행합니다</li>
+            <li>앱 메뉴에서 <strong>QR 로그인</strong>을 선택합니다</li>
+            <li>화면의 QR 을 앱으로 스캔합니다</li>
+          </ol>
+          <details class="ggc-qr-install">
+          <summary>앱이 없으신가요? 설치하기</summary>
+          <div class="ggc-qr-install-body">
+            <div class="ggc-qr-install-qr"><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="모바일 의정지원서비스 앱 설치 QR 코드" viewBox="0 0 296 296"><path transform="scale(8)" stroke="#000" d="M4 4.5h7m2 0h1m2 0h1m3 0h5m1 0h7m-29 1h1m5 0h1m2 0h2m1 0h1m1 0h5m3 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m1 0h2m2 0h1m3 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m2 0h1m3 0h1m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h3m3 0h1m2 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h1m6 0h4m1 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-21 1h1m2 0h2m3 0h1m1 0h3m-21 1h1m1 0h5m2 0h2m6 0h3m2 0h5m-27 1h2m1 0h3m2 0h2m3 0h1m2 0h9m3 0h1m-27 1h1m2 0h3m4 0h4m1 0h1m2 0h1m1 0h3m-24 1h1m1 0h2m3 0h2m1 0h3m1 0h2m2 0h7m1 0h1m-27 1h2m1 0h4m1 0h1m2 0h1m1 0h1m2 0h1m7 0h2m-27 1h2m1 0h1m5 0h2m1 0h1m3 0h1m1 0h3m1 0h3m3 0h1m-29 1h1m2 0h1m1 0h3m3 0h1m3 0h1m2 0h1m4 0h1m1 0h2m-24 1h1m1 0h1m8 0h1m1 0h1m2 0h3m1 0h2m2 0h1m-27 1h3m1 0h6m1 0h1m4 0h1m1 0h1m1 0h1m3 0h2m-27 1h4m6 0h2m1 0h2m1 0h1m2 0h1m1 0h4m1 0h1m1 0h1m-29 1h1m2 0h1m1 0h3m1 0h1m3 0h4m1 0h1m1 0h1m1 0h3m1 0h1m-27 1h1m1 0h2m3 0h1m2 0h4m2 0h1m1 0h2m1 0h2m1 0h1m2 0h1m-28 1h1m1 0h1m1 0h1m1 0h3m1 0h3m1 0h4m2 0h5m1 0h3m-21 1h2m1 0h1m4 0h1m3 0h1m3 0h5m-29 1h7m2 0h2m1 0h1m2 0h2m1 0h3m1 0h1m1 0h3m-27 1h1m5 0h1m1 0h1m5 0h1m1 0h1m1 0h3m3 0h1m-25 1h1m1 0h3m1 0h1m1 0h5m4 0h2m1 0h5m1 0h1m-27 1h1m1 0h3m1 0h1m1 0h3m1 0h3m1 0h5m4 0h4m-29 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-28 1h1m5 0h1m2 0h1m1 0h1m1 0h4m3 0h1m2 0h3m1 0h1m-28 1h7m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1"/></svg></div>
+            <p class="ggc-qr-install-url">휴대폰 카메라로 QR 을 찍거나 아래 주소로 접속하세요.<br>
+              <a href="https://magent.ggc.go.kr/app/download">magent.ggc.go.kr/app/download</a></p>
+            <p class="ggc-qr-install-stores">
+              <a href="https://play.google.com/store/apps/details?id=kr.go.ggc.portal.app">Google Play</a>
+              <a href="https://apps.apple.com/kr/app/%EA%B2%BD%EA%B8%B0%EB%8F%84%EC%9D%98%ED%9A%8C-%EB%AA%A8%EB%B0%94%EC%9D%BC-%EC%9D%98%EC%A0%95%EC%A7%80%EC%9B%90%EC%84%9C%EB%B9%84%EC%8A%A4/id6788616270">App Store</a>
+            </p>
+          </div>
+          </details>
+          <!-- 이유(미등록·오류)는 여기 — 평소엔 숨긴다 -->
+          <p class="ggc-qr-callout ggc-qr-callout--danger" role="alert" hidden></p>
+          <p class="ggc-qr-usercode" hidden></p>
+          <div class="ggc-qr-actions">
+            <!-- expired · unregistered · error 에서만 보인다: 만료·미등록은 "새 QR 발급", 오류는 "다시 시도" -->
+            <button class="ggc-btn ggc-btn--primary ggc-btn--block" type="button" hidden>새 QR 발급</button>
+            <!-- 중앙 SSO 가 있는 배포에만 둔다. href 는 SSO 로그인 → 이 서비스의 교환 주소 → 원래 경로 -->
+            <a class="ggc-btn ggc-btn--secondary ggc-btn--block" href="#">통합 로그인</a>
+          </div>
+        </div>
+      </div>
+      <section class="ggc-login-credentials" aria-labelledby="ex-password-title">
+        <h2 id="ex-password-title">아이디 로그인</h2>
+        <form onsubmit="event.preventDefault()">
+          <div class="ggc-field"><label for="ex-login-id">아이디</label><input id="ex-login-id" autocomplete="username" required></div>
+          <div class="ggc-field"><label for="ex-login-password">비밀번호</label><input id="ex-login-password" type="password" autocomplete="current-password" required></div>
+          <button type="submit" class="ggc-btn ggc-btn--primary ggc-btn--block">로그인</button>
+        </form>
+      </section>
+    </div>
+  </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-login"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
       <!-- ============================================================ 상태 -->
       <section class="ex-section">
         <h2>상태 6종 <span class="cls">data-state</span></h2>
@@ -167,7 +274,7 @@
       </div>
       <p class="ggc-qr-meta">남은 시간 <span class="ggc-qr-timer">4:32</span> · 이 코드는 1회용입니다</p>
       <ol class="ggc-qr-steps">
-        <li>휴대폰에서 <strong>경기도의정포털</strong> 앱을 실행합니다</li>
+        <li>휴대폰에서 <strong>모바일 의정지원서비스</strong> 앱을 실행합니다</li>
         <li>앱 메뉴에서 <strong>QR 로그인</strong>을 선택합니다</li>
         <li>위 코드를 화면에 맞춰 스캔합니다</li>
       </ol>

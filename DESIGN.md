@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (b7b89677) · design/components.tsv (82f505bf) -->
+<!-- 원천: design/ggc-tokens.css (b7b89677) · design/components.tsv (4e7f7a04) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -125,7 +125,7 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 폼 필드 (라벨 · 입력 · 힌트 · 오류) | `.ggc-field (.hint .error .is-error)` | `input label textarea form-field` | both | P0 | 있음 |
 | 검색창 | `.ggc-search` | `ggc-search` | work | P1 | 있음 |
 | 스텝퍼 / 위저드 | `.ggc-wizard (--vertical) .ggc-wizard-mini` | `ggc-stepper` | both | P0 | 있음 |
-| QR 로그인 블록 | `.ggc-qr .ggc-login` | `ggc-qr-login` | work | P1 | 있음 |
+| QR 로그인 블록 | `.ggc-qr .ggc-qr-install .ggc-login .ggc-login-credentials` | `ggc-qr-login` | work | P1 | 있음 |
 | 본문 조판 | `.ggc-prose` | `ggc-prose` | both | P1 | 있음 |
 | 하단 스티키 액션바 | `.ggc-actionbar` | `ggc-actionbar` | work | P0 | 있음 |
 | 모달 / 다이얼로그 | `.ggc-modal (<dialog>)` | `dialog alert-dialog` | both | P0 | 있음 |
