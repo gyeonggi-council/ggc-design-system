@@ -74,7 +74,10 @@ RETIRED = {"#256ef4": "계약 v1.0 에서 폐기된 KRDS 기본 파랑",
 UNIVERSAL = {"#fff", "#ffffff", "#000", "#000000",
              "transparent", "currentcolor", "inherit"}
 
-HEX_RE = re.compile(r"#[0-9a-fA-F]{3,8}\b")
+# CSS 색 hex 는 3·4·6·8 자리뿐이다. HTML 숫자 문자 참조(&#039; · &#10003;)는 색이 아니다 —
+# 그 둘을 색으로 세어 서비스마다 D2 FAIL 이 났다(2026-10-18 자막 서비스 v3 수렴에서 발견).
+HEX_RE = re.compile(r"(?<!&)#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b")
+assert HEX_RE.findall("&#039; &#10003; #3c5d93 #fff #abcd #12345") == ["#3c5d93", "#fff", "#abcd"], "HEX_RE 자기 점검"
 RGBA_RE = re.compile(r"rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)", re.I)
 ICON_DECL_RE = re.compile(r'rel=["\'](?:shortcut )?icon')
 ALLOW_RE = re.compile(r"ggc-design-allow:\s*(#?[0-9a-zA-Z]+)\s*[-—]+\s*([^*\n]+)")
