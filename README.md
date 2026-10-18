@@ -17,7 +17,7 @@
 
 「전」은 여러 서비스의 개선 사례를 한 화면에 모아 **다시 만든 예시**다(실제 운영 화면의 캡처가 아니다). 자료는 전부 가상이다.
 그림의 번호는 [`less.html`](design/examples/less.html) 아래 「무엇을 어디로 옮겼나」 표와 짝이고, 공통 규칙은 [덜어내기 가이드](docs/guides/less.md)의 R번호로 이어진다.
-브라우저로 직접 바꿔 보려면 그 파일을 연다(아래 「먼저 화면으로 보기」).
+브라우저로 직접 바꿔 보려면 [이 주소](https://gyeonggi-council.github.io/ggc-design-system/design/examples/less.html)를 누른다(인터넷이 되는 PC·휴대폰).
 
 ## 이 저장소가 하는 일
 
@@ -26,6 +26,14 @@
 - **복사해 쓰는 파일** — 서비스가 같은 색·글꼴·부품을 쓰도록 그대로 복사하는 파일 몇 개와, 잘 복사했는지 보는 검사기.
 
 ## 먼저 화면으로 보기
+
+**가장 쉬운 방법 — 주소를 누른다**(인터넷이 되는 PC·휴대폰. 망분리 업무망 PC 에서는 열리지 않는다):
+
+- 화면 예제 처음: <https://gyeonggi-council.github.io/ggc-design-system/design/examples/index.html>
+- 덜어내기 전/후 바꿔 보기: <https://gyeonggi-council.github.io/ggc-design-system/design/examples/less.html>
+- 실시간 회의 화면: <https://gyeonggi-council.github.io/ggc-design-system/design/examples/operate.html>
+
+업무망 PC 처럼 인터넷이 안 되는 곳에서는 아래처럼 파일로 연다.
 
 1. **파일 하나만 받으려면** [`design/examples/examples-standalone.html`](design/examples/examples-standalone.html)(합본)을 내려받아 브라우저로 연다. 모든 업무 화면 예제가 한 파일에 들어 있다(약 1.4MB, 인터넷 연결 없이 열린다). GitHub 파일 화면의 **Download raw file** 단추로 받는다.
 2. **여러 파일로 된 원래 예제**를 보려면 저장소 전체를 내려받아(초록색 **Code → Download ZIP**) 압축을 풀고 [`design/examples/index.html`](design/examples/index.html)을 연다. 설치할 것은 없다.
