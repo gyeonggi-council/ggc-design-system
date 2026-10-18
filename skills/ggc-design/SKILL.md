@@ -40,10 +40,15 @@ description: 경기도의회 공통 디자인 시스템을 화면에 적용·검
 │               예 → Tier 2 레지스트리 (references/registry.md)
 │               아니오 (JSP · Jinja2 · FastAPI · 정적 HTML · Tailwind 없는 React) → Tier 1 CSS 복사 (references/porting.md)
 ├─ ② 셸      — work: 유틸리티 바 + GNB/LNB   public: 마스트헤드 + 헤더/주 메뉴 + 공개 푸터 (docs/guides/public-shell.md)
-├─ ③ 화면    — work: archetypes.md 6종 중 구성요소로 판정   public: public-patterns.md 6종
+├─ ③ 화면    — 먼저 "누가 · 무엇을 하러 오나" 한 줄 → work: archetypes.md 6종   public: public-patterns.md 6종
+├─ ③' 덜어내기 — 각 정보가 언제 필요한가 (docs/guides/less.md R1~R10 · 군더더기 10가지)   ← v3.1
 ├─ ④ 컴포넌트 — references/components.md 색인 → docs/components/<name>.md → 마크업은 갤러리 DOM 에서 복사
 └─ ⑤ 검증    — check_design.py --gate  + 스크린샷 + 콘솔 0 + 오버플로 0   (references/verify.md)
 ```
+
+> **v3.1 (ADR 0012)** — 슬롯 표·셸 목록·예제 화면은 "넣을 것 목록"이 아니다. 예제의 인사말·요약 숫자·단계 막대·설명 줄을
+> 그대로 옮기지 않는다. 그 정보로 사용자가 무엇을 고르고·비교하고·처리하는지 말할 수 있을 때만 둔다.
+> 화면이 복잡하다는 지적은 대개 밀도(치수)가 아니라 **정보 종류의 수** 때문이었다.
 
 ## 3. Phase 0 — 판정 (추측하지 말고 실측한다)
 
@@ -121,7 +126,11 @@ Tailwind 서비스는 `@theme { --color-brand: var(--ggc-primary); }` 처럼 **�
 **먼저 갤러리를 연다.** `dashboard.html`(Monitor) · `explore.html`(Explore) · `wizard.html`(Configure) · `public/list.html`(대민 목록) 이 실물이고,
 `components*.html` 은 각 예제 아래에 **렌더된 그 DOM** 을 펼쳐 준다. 마크업을 짐작해 짜지 말고 거기서 가져온다.
 
-work 는 `references/archetypes.md` 의 슬롯 순서를, public 은 `references/public-patterns.md` 를 따른다. 규칙 넷:
+work 는 `references/archetypes.md` 의 슬롯 순서를, public 은 `references/public-patterns.md` 를 따른다 — **쓰는 슬롯만**(빈 슬롯 자리에 빈 카드·여백을 남기지 않는다). 규칙:
+
+0. **덜어내기부터**(v3.1). 화면을 다 짜면 [`docs/guides/less.md`](../../docs/guides/less.md) 의 「군더더기 열 가지」를 대 보고, 판정 목록을 `design-decisions.md` 에 적는다.
+   설명 줄(`.desc`)은 기본 없음, 제목은 화면군마다 기본형/간결형, 단계 막대는 사용자가 단계를 오가는 입력에만.
+   **오류 사유 · 저장 상태 · 출처 · 외부 발송 미리보기 · 낯선 말의 한 줄 풀이는 덜어낼 대상이 아니다.**
 
 1. **빈 상태 · 오류 · 로딩 3종을 함께 만든다.** 시연 당일에 드러나는 것이 이것이다. 로딩은 `.ggc-skeleton`/`.ggc-spinner`, 빈 상태는 다음 행동을 말한다.
 2. **정본에 없는 것을 정본이라 하지 않는다.** 디자인 원본(.dc.html)에는 반응형·접근성이 없다 — 그것은 계약 §2·§3 이 근거다.
@@ -149,7 +158,8 @@ python "$ROOT/design/check_design.py" --gate <서비스경로> --aa=observe     
 - [ ] 새 색을 만들지 않았다. 예외는 전부 `ggc-design-allow` 로 등록됐다
 - [ ] 셸이 붙었다 (work: 유틸리티바·GNB/LNB·푸터 / public: 마스트헤드·헤더·공개 푸터·아이덴티파이어)
 - [ ] 파비콘이 붙었다
-- [ ] 화면마다 패턴을 판정했고 슬롯 순서를 따랐다 · 빈 상태·오류·로딩 3종이 있다
+- [ ] 화면마다 "누가 · 무엇을 하러 오나"를 적고 패턴을 판정했다 · 쓰는 슬롯만 순서대로 · 빈 상태·오류·로딩 3종이 있다
+- [ ] 덜어내기 판정 목록(`docs/guides/less.md`)을 돌렸다 — 설명 줄·중복 정보·장식 숫자·상시 단계 막대가 없거나 그 쓰임을 적었다
 - [ ] 로그인 화면이 있다면 `.ggc-qr` 정본 컴포넌트다
 - [ ] `outline:none` 을 대체 없이 두지 않았다 · 외부 폰트 CDN 0건
 - [ ] 이모지·유니코드 기호 아이콘 0건 · h1 이 본문 첫 줄 24px 에 하나(헤더에는 브레드크럼만)
@@ -167,10 +177,11 @@ python "$ROOT/design/check_design.py" --gate <서비스경로> --aa=observe     
 | `references/public-patterns.md` | Phase 4 (public) — 화면 6종 슬롯 |
 | `references/components.md` | Phase 4 — 컴포넌트 색인(과업 → 클래스 → 문서) |
 | `references/domain-language.md` | Phase 1·4 — 어휘·밀도 판정 목록 (업무 · 대민) |
+| `$ROOT/docs/guides/less.md` | Phase 4 — **덜어내기**(v3.1): 규칙 10개 · 군더더기 열 가지 · 제목 기본형/간결형 · 판정 목록 |
 | `references/porting.md` | Phase 2·3 — Tier 1 스택별 착지점 · .dc.html 역변환 |
 | `references/registry.md` | Phase 2 — Tier 2 레지스트리 |
 | `references/brand-assets.md` | Phase 2 — 파비콘·마크 |
 | `references/reskin.md` | ❹ 독자형 — 가동 중 서비스 수렴 절차 |
 | `references/verify.md` | Phase 5 — 검사 7종 · 증거 · 오버플로 스크립트 · 복귀 지점 |
 | `$ROOT/docs/contract.md` | **AUTHORITATIVE** 계약 — 셸 치수 · archetype · 프로필 · 완료 정의 |
-| `$ROOT/design/examples/` | 실물 갤러리 (업무 9쪽 · 대민 4쪽) |
+| `$ROOT/design/examples/` | 실물 갤러리 (업무 12쪽 · 대민 4쪽) — v3.1 `less.html`(덜어내기 전/후) · `operate.html`(Operate) |

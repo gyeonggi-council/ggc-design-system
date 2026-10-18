@@ -15,6 +15,8 @@
 | `dashboard.html` | Monitor archetype 실물 화면 |
 | `wizard.html` | Configure archetype 실물 화면 |
 | `login.html` | **QR 로그인 화면** — 전 시스템 공통 입구. 상태 6종 · 화면 안 3단계 안내 |
+| `less.html` | **덜어내기 전/후**(v3.1) — 같은 업무 화면을 두 번 그렸다. 「뺀 자리 번호」를 켜면 무엇을 왜 옮겼는지 표와 짝. `?state=after` · `?annot=on` 으로 시작 상태를 고른다 |
+| `operate.html` | **Operate**(v3.1 정본) — 실시간 시청(연결 끊김 상태 전환) · 반복 처리 작업대(자막 입히기 미리보기) |
 | `public/index.html` · `list.html` · `detail.html` · `form.html` | **대민(공개) 실물 화면 4쪽** (v2.0) — `<html data-ggc-profile="public">` + `ggc-public.css`. 메인 · 의안 검색 · 의안 상세 · 의견 제출. 업무 셸과 다르므로 합본에는 들어가지 않는다 |
 
 ## 이 갤러리의 규칙 — 값을 옮겨 적지 않는다
@@ -40,7 +42,7 @@
 |---|---|---|
 | `preview-palette.svg` | 팔레트 한 장 | GitHub 웹은 HTML 을 렌더하지 않는다. README 가 이걸로 보인다 |
 | `shots/*.png` + `shots/manifest.json` | **컴포넌트·실물 화면 미리보기 16장** | 같은 이유 — 컴포넌트는 CSS 가 그리므로 브라우저가 찍어야 정본과 같다. README 상단이 이걸로 보인다 |
-| `examples-standalone.html` | **9쪽 합본 (약 440KB)** | 링크 하나로 열기 위한 판. 정본 CSS·JS·마크를 인라인해 **외부 요청 0** |
+| `examples-standalone.html` | **업무 갤러리 전 쪽 합본 (약 1.4MB — 글꼴 포함)** | 링크 하나로 열기 위한 판. 정본 CSS·JS·마크를 인라인해 **외부 요청 0** |
 
 ```bash
 python design/examples/build-preview.py       # 또는 --check

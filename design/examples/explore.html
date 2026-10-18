@@ -69,6 +69,8 @@
       <a class="ggc-lnb-item" href="explore.html" aria-current="page"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록 · Explore</span></a>
       <a class="ggc-lnb-item" href="wizard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">위저드 · Configure</span></a>
       <a class="ggc-lnb-item" href="login.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-qr-code"/></svg><span class="label">QR 로그인 · Entry</span></a>
+      <a class="ggc-lnb-item" href="less.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-eye-off"/></svg><span class="label">덜어내기 전/후 · Less</span></a>
+      <a class="ggc-lnb-item" href="operate.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg><span class="label">실시간 회의 · Operate</span></a>
       <a class="ggc-lnb-item" href="public/index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">대민 셸 · Public</span></a>
     </nav>
 
@@ -76,7 +78,7 @@
 
       <div class="ex-note" style="margin-top:0">
         <p><b>Explore archetype 이다.</b> 업무 시스템에서 가장 많은 화면 — 필터 스트립 + 표 + 페이지네이션.
-        담당자는 스크롤보다 대조를 하므로 <b>첫 화면에 15행 이상</b>이 들어와야 한다(v3.0 밀도: 셀 8×12 · 14px).
+        담당자는 스크롤보다 대조를 하므로 첫 화면에 15행 안팎을 <b>참고 목표</b>로 둔다(v3.0 밀도: 셀 8×12 · 14px). 건수는 결과 요약 「총 N건」 한 곳에만 쓴다(v3.1 덜어내기 R3).
         식별자(의안번호)는 왼쪽 첫 열, 숫자는 우정렬, 날짜는 <code>YYYY-MM-DD</code>, 상태는 배지 + 텍스트. 예시 데이터다.</p>
       </div>
 
@@ -84,7 +86,7 @@
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title">의안 목록</h1>
-            <p class="desc">제12대 · 제380회 정례회 · 예시 의안 21건</p>
+            <p class="desc">제12대 · 제380회 정례회</p>
           </div>
           <div class="actions">
             <button class="ggc-btn ggc-btn--secondary" type="button" data-work-export><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>CSV 내려받기</button>
@@ -186,7 +188,7 @@
         </div>
         <div class="ggc-card-foot ggc-card-foot--inset" style="justify-content:center">
           <nav class="ggc-pagination" aria-label="페이지" style="width:100%">
-            <span class="summary">총 21건 · 1 / 2쪽 · 20건씩</span>
+            <span class="summary">1 / 2쪽</span>
             <a class="nav" href="#main" aria-disabled="true" tabindex="-1"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>이전</a>
             <ol class="pages">
               <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>1</a></li>

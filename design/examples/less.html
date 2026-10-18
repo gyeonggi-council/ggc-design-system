@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>덜어내기 전/후 · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+<style>
+/* less.html 전용 — 예시 업무 화면 틀(값은 전부 정본 토큰 var()) */
+.lx-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); margin: var(--ggc-space-5) 0 var(--ggc-space-4); }
+.lx-controls [aria-pressed="true"] { background: var(--ggc-primary-light); border-color: var(--ggc-primary); color: var(--ggc-primary-deep); }
+.lx-annot { margin-left: var(--ggc-space-3); }
+.lx-screen { display: grid; grid-template-columns: 200px minmax(0, 1fr); min-height: 560px; background: var(--ggc-bg); border: 1px solid var(--ggc-border-strong); border-radius: var(--ggc-radius-lg); overflow: hidden; }
+.lx-screen[data-state="before"] [data-only="after"],
+.lx-screen[data-state="after"] [data-only="before"] { display: none !important; }
+.lx-side { background: var(--ggc-surface); border-right: 1px solid var(--ggc-shell-border); padding: var(--ggc-space-3); display: flex; flex-direction: column; gap: var(--ggc-space-3); min-width: 0; }
+.lx-brand { display: flex; gap: var(--ggc-space-2); align-items: center; padding: var(--ggc-space-1) var(--ggc-space-1) var(--ggc-space-2); border-bottom: 1px solid var(--ggc-hairline); }
+.lx-brand img { width: 28px; height: 28px; }
+.lx-brand span { display: flex; flex-direction: column; font-size: var(--ggc-text-sm); color: var(--ggc-text); line-height: 1.3; }
+.lx-brand small { color: var(--ggc-text-subtle); font-size: var(--ggc-text-xs); }
+.lx-menu { display: flex; flex-direction: column; gap: 2px; }
+.lx-count { margin-left: auto; font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.lx-status { position: relative; border-top: 1px solid var(--ggc-hairline); padding-top: var(--ggc-space-3); font-size: var(--ggc-text-xs); color: var(--ggc-text-muted); }
+.lx-status-h { font-weight: 700; color: var(--ggc-text); margin-bottom: var(--ggc-space-2); }
+.lx-status-h small { display: block; font-weight: 400; color: var(--ggc-text-subtle); }
+.lx-status ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.lx-status li { display: flex; justify-content: space-between; gap: var(--ggc-space-2); }
+.lx-main { padding: var(--ggc-space-4) var(--ggc-space-5); min-width: 0; display: flex; flex-direction: column; gap: var(--ggc-space-3); }
+.lx-head { position: relative; margin: 0; }
+.lx-band { position: relative; display: flex; align-items: center; gap: var(--ggc-space-2); background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius); padding: var(--ggc-space-2) var(--ggc-space-3); font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.lx-band b { color: var(--ggc-text); }
+.lx-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2) var(--ggc-space-4); }
+.lx-toolbar .ggc-tabs { flex: 0 1 auto; }
+.lx-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); margin-left: auto; }
+.lx-due { margin: 0; font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.lx-split { display: grid; grid-template-columns: minmax(0, 340px) auto minmax(0, 1fr); gap: var(--ggc-space-3); align-items: start; }
+.lx-screen[data-state="before"] .lx-split { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); }
+.lx-list { display: flex; flex-direction: column; gap: var(--ggc-space-3); min-width: 0; }
+.lx-card { position: relative; background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); padding: var(--ggc-space-3); display: grid; gap: var(--ggc-space-3); }
+.lx-steps .ggc-wizard { margin: 0; }
+.lx-btnrows { position: relative; display: grid; gap: var(--ggc-space-2); }
+.lx-hint { margin: 0; font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); display: flex; justify-content: space-between; gap: var(--ggc-space-2); position: relative; }
+.lx-link { color: var(--ggc-text-muted); display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+.lx-drop { position: relative; display: flex; align-items: center; justify-content: center; gap: var(--ggc-space-2); min-height: 64px; border: 1px dashed var(--ggc-border-strong); border-radius: var(--ggc-radius); color: var(--ggc-text-subtle); font-size: var(--ggc-text-sm); }
+.lx-listhead { position: relative; font-size: var(--ggc-text-sm); font-weight: 700; color: var(--ggc-text); }
+.lx-listhead small { display: block; font-weight: 400; color: var(--ggc-text-subtle); }
+.lx-rows { list-style: none; margin: 0; padding: 0; background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); overflow: hidden; }
+.lx-rows li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px var(--ggc-space-2); align-items: center; padding: var(--ggc-space-3); border-top: 1px solid var(--ggc-hairline); }
+.lx-rows li:first-child { border-top: 0; }
+.lx-rows li.is-selected { background: var(--ggc-primary-light); box-shadow: inset 3px 0 0 var(--ggc-primary); }
+.lx-rows .t { font-size: var(--ggc-text-base); font-weight: 600; color: var(--ggc-text); min-width: 0; }
+.lx-rows .m { grid-column: 1 / -1; grid-row: 2; font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); position: relative; }
+.lx-handle { align-self: stretch; display: flex; align-items: center; color: var(--ggc-text-faint); cursor: col-resize; }
+.lx-doc { background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); padding: var(--ggc-space-3) var(--ggc-space-4); display: grid; gap: var(--ggc-space-3); min-width: 0; }
+.lx-dochead { display: grid; gap: var(--ggc-space-2); }
+.lx-dochead > .t { font-size: var(--ggc-text-md); font-weight: 700; color: var(--ggc-text-strong); }
+.lx-docmeta { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.lx-docbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); }
+.lx-saved { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.lx-gap { flex: 1; }
+.lx-paper { background: var(--ggc-surface-inset); border: 1px solid var(--ggc-hairline); border-radius: var(--ggc-radius-sm); padding: var(--ggc-space-5); font-size: var(--ggc-text-sm); line-height: 1.8; color: var(--ggc-text-body); min-height: 260px; }
+.lx-paper p { margin: 0; }
+.lx-paper .h { font-weight: 700; color: var(--ggc-text); margin-top: var(--ggc-space-2); }
+.lx-paper .h:first-child { margin-top: 0; }
+.lx-foot { display: block; }
+/* 뺀 자리 번호 — 켤 때만 보인다 */
+.lx-mark { display: none; position: absolute; top: -8px; left: -8px; z-index: 1; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: var(--ggc-danger); color: var(--ggc-surface); font-size: var(--ggc-text-xs); font-weight: 700; line-height: 22px; text-align: center; }
+.lx-screen[data-annotate="on"] .lx-mark { display: inline-block; }
+.lx-screen[data-annotate="on"][data-state="before"] [data-only="before"]:not(.lx-count):not(.lx-mark) { outline: 2px dashed var(--ggc-danger); outline-offset: 2px; }
+.lx-rows .m .lx-mark, .lx-docmeta .lx-mark, .lx-foot .lx-mark { position: static; margin-right: 4px; }
+@media (max-width: 900px) {
+  .lx-screen { grid-template-columns: minmax(0, 1fr); }
+  .lx-side { border-right: 0; border-bottom: 1px solid var(--ggc-shell-border); }
+  .lx-menu { flex-direction: row; flex-wrap: wrap; }
+  .lx-split, .lx-screen[data-state="before"] .lx-split { grid-template-columns: minmax(0, 1fr); }
+  .lx-handle { display: none; }
+  .lx-tools { margin-left: 0; }
+}
+@media (max-width: 480px) {
+  .lx-main { padding: var(--ggc-space-3); }
+  .lx-status { display: none; }
+}
+</style>
+</head>
+<body class="ex-body">
+<!-- ggc-icons:begin — 생성물. design/build-icons.py 가 갈아 끼운다. 손으로 고치지 말 것 -->
+<svg xmlns="http://www.w3.org/2000/svg" class="ggc-icon-sprite" aria-hidden="true" focusable="false"><symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol><symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol><symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol><symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol><symbol id="i-badge-check" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol><symbol id="i-building-2" viewBox="0 0 24 24"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></symbol><symbol id="i-calendar-check" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="m9 15 2 2 4-4"/></symbol><symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></symbol><symbol id="i-chart-column" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol><symbol id="i-chevrons-left" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></symbol><symbol id="i-chevrons-right" viewBox="0 0 24 24"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></symbol><symbol id="i-chevrons-up-down" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol><symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-circle-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></symbol><symbol id="i-circle-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-clipboard-list" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol><symbol id="i-columns-3" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol><symbol id="i-ellipsis-vertical" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></symbol><symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol><symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol><symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><symbol id="i-funnel" viewBox="0 0 24 24"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></symbol><symbol id="i-gavel" viewBox="0 0 24 24"><path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381"/><path d="m16 16 6-6"/><path d="m21.5 10.5-8-8"/><path d="m8 8 6-6"/><path d="m8.5 7.5 8 8"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol><symbol id="i-grip-vertical" viewBox="0 0 24 24"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol><symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol><symbol id="i-landmark" viewBox="0 0 24 24"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></symbol><symbol id="i-layout-dashboard" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></symbol><symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></symbol><symbol id="i-loader-circle" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-log-in" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/></symbol><symbol id="i-log-out" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></symbol><symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol><symbol id="i-message-square" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol><symbol id="i-panel-left" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></symbol><symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></symbol><symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></symbol><symbol id="i-qr-code" viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></symbol><symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol><symbol id="i-save" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></symbol><symbol id="i-scroll-text" viewBox="0 0 24 24"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></symbol><symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol><symbol id="i-square-check" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-table-2" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></symbol><symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol><symbol id="i-trending-down" viewBox="0 0 24 24"><path d="M16 17h6v-6"/><path d="m22 17-8.5-8.5-5 5L2 7"/></symbol><symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol><symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol></svg>
+<!-- ggc-icons:end -->
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">주간 보고(예시)</span>
+      </span>
+    </a>
+    <div class="ggc-gnb-page">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="index.html">갤러리</a></li><li aria-current="page">덜어내기 전/후</li></ol>
+      </nav>
+    </div>
+    <div class="ggc-search">
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-search"/></svg>
+      <label for="q" class="ggc-sr">의안 · 조례 검색</label>
+      <input id="q" type="search" placeholder="의안 · 조례 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-bell"/></svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ggc-lnb-group">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-house"/></svg><span class="label">개요</span></a>
+      <a class="ggc-lnb-item" href="tokens.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg><span class="label">토큰 · 팔레트</span></a>
+      <a class="ggc-lnb-item" href="components.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-columns-3"/></svg><span class="label">컴포넌트 카탈로그</span></a>
+      <a class="ggc-lnb-item" href="components-forms.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-square-check"/></svg><span class="label">폼 컨트롤</span></a>
+      <a class="ggc-lnb-item" href="components-nav.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-list"/></svg><span class="label">내비게이션 · 탭</span></a>
+      <a class="ggc-lnb-item" href="components-overlay.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-message-square"/></svg><span class="label">오버레이 · 상태 · 본문</span></a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ggc-lnb-group">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg><span class="label">대시보드 · Monitor</span></a>
+      <a class="ggc-lnb-item" href="explore.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록 · Explore</span></a>
+      <a class="ggc-lnb-item" href="wizard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">위저드 · Configure</span></a>
+      <a class="ggc-lnb-item" href="login.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-qr-code"/></svg><span class="label">QR 로그인 · Entry</span></a>
+      <a class="ggc-lnb-item" href="less.html" aria-current="page"><svg class="ggc-icon" aria-hidden="true"><use href="#i-eye-off"/></svg><span class="label">덜어내기 전/후 · Less</span></a>
+      <a class="ggc-lnb-item" href="operate.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg><span class="label">실시간 회의 · Operate</span></a>
+      <a class="ggc-lnb-item" href="public/index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">대민 셸 · Public</span></a>
+    </nav>
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main" aria-labelledby="page-title">
+
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title">덜어내기 전/후</h1>
+            <p class="desc">v3.1 · ADR 0012 · 규칙은 <code class="ex-inline">docs/guides/less.md</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-note" style="margin-top:0">
+        <p><b>같은 자료로 같은 일을 하는 화면 하나를 두 번 그렸다.</b> 「전」은 실제 서비스에서 사용자가 빼라고 한 것들을 모아 다시 만든 예시다(운영 화면 캡처가 아니다).
+        「후」는 같은 일을 하되 <b>각 정보가 필요한 때에만</b> 보이게 했다. 기능은 하나도 빼지 않았다 — 자리만 옮겼다.
+        아래 단추로 바꿔 보고, 「뺀 자리 번호」를 켜면 무엇을 왜 옮겼는지 표의 번호와 맞춰 볼 수 있다. 자료는 전부 가상이다.</p>
+      </div>
+
+      <div class="lx-controls" role="group" aria-label="보기 바꾸기">
+        <button class="ggc-btn ggc-btn--secondary" type="button" data-lx-state="before" aria-pressed="true">덜어내기 전</button>
+        <button class="ggc-btn ggc-btn--secondary" type="button" data-lx-state="after" aria-pressed="false">덜어내기 후</button>
+        <label class="ggc-switch lx-annot"><input type="checkbox" id="lx-annot" role="switch"><span class="track"></span>
+          <span class="text">뺀 자리 번호 보기 <span class="state"></span></span></label>
+      </div>
+
+      <!-- 가상의 업무 화면 — 주간 보고 「내 보고」 -->
+      <div class="lx-screen" id="lx-screen" data-state="before" data-annotate="off" aria-label="예시 업무 화면">
+        <aside class="lx-side" aria-label="예시 메뉴">
+          <div class="lx-brand">
+            <img src="../brand/dist/assembly-mark.png" alt="">
+            <span><b>경기도의회사무처</b><small>주간 보고</small></span>
+          </div>
+          <nav class="lx-menu">
+            <a class="ggc-lnb-item" href="#lx-screen" aria-current="page"><svg class="ggc-icon" aria-hidden="true"><use href="#i-folder"/></svg><span class="label">내 보고</span><span class="lx-count" data-only="before">3</span></a>
+            <a class="ggc-lnb-item" href="#lx-screen"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clipboard-list"/></svg><span class="label">현안 보고</span><span class="lx-count" data-only="before">0</span></a>
+            <a class="ggc-lnb-item" href="#lx-screen"><svg class="ggc-icon" aria-hidden="true"><use href="#i-book-open"/></svg><span class="label">내 지식</span></a>
+            <a class="ggc-lnb-item" href="#lx-screen"><svg class="ggc-icon" aria-hidden="true"><use href="#i-landmark"/></svg><span class="label">기관 티타임</span></a>
+          </nav>
+          <div class="lx-status" data-only="before">
+            <span class="lx-mark" aria-hidden="true">9</span>
+            <div class="lx-status-h">과별 제출 현황 <small>3주차 · 1. 19.~1. 25.</small></div>
+            <ul>
+              <li><span>총무과</span><span>보고 없음</span></li>
+              <li><span>의정담당관</span><span>보고 없음</span></li>
+              <li><span>입법정책담당관</span><span>작성 중 3건</span></li>
+              <li><span>의사담당관</span><span>보고 없음</span></li>
+              <li><span>예산정책담당관</span><span>보고 없음</span></li>
+            </ul>
+          </div>
+        </aside>
+
+        <section class="lx-main">
+          <!-- 전: 큰 제목 + 설명 줄 / 후: 제목은 화면 낭독기만 (간결형 — 왼쪽 메뉴의 현재 항목이 이름을 말해 준다) -->
+          <div class="ggc-page-head lx-head" data-only="before">
+            <span class="lx-mark" aria-hidden="true">1</span>
+            <div class="row"><div>
+              <h2 class="ggc-page-title">내 보고</h2>
+              <p class="desc">이번 주 보고를 작성하고 제출합니다. 서식을 받아 한글에서 작성한 뒤 파일을 올리면 됩니다.</p>
+            </div></div>
+          </div>
+          <h2 class="ggc-sr" data-only="after">내 보고</h2>
+
+          <div class="lx-band" data-only="before">
+            <span class="lx-mark" aria-hidden="true">4</span>
+            <svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar"/></svg>
+            <b>3주차 보고</b> 1. 19.~1. 25. · 작성자 제출 마감 1. 15.(목) 12:00
+          </div>
+
+          <div class="lx-toolbar">
+            <div class="ggc-tabs"><div class="ggc-tablist" role="tablist" aria-label="내 보고 보기">
+              <button class="ggc-tab" role="tab" aria-selected="true" type="button">이번 주 <span class="count">3</span></button>
+              <button class="ggc-tab" role="tab" aria-selected="false" tabindex="-1" type="button">지난 보고</button>
+            </div></div>
+            <div class="lx-tools" data-only="after">
+              <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-help"/></svg>사용 안내</button>
+              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>서식 받기</button>
+              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-ggc-modal-open="#lx-upload"><svg class="ggc-icon" aria-hidden="true"><use href="#i-upload"/></svg>한글 파일 올리기</button>
+              <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-send"/></svg>3건 제출하기</button>
+            </div>
+          </div>
+
+          <div class="lx-split">
+            <div class="lx-list">
+              <p class="lx-due" data-only="after">3주차(1. 19.~1. 25.) · 제출 마감 1. 15.(목) 12:00</p>
+              <div class="lx-card lx-steps" data-only="before">
+                <span class="lx-mark" aria-hidden="true">3</span>
+                <div class="ggc-wizard">
+                  <div class="ggc-wizard-step is-done"><div class="track"><span class="line"></span><button class="dot" type="button" tabindex="-1">✓</button><span class="line"></span></div><div class="meta"><div class="label">서식 받기</div></div></div>
+                  <div class="ggc-wizard-step is-done"><div class="track"><span class="line"></span><button class="dot" type="button" tabindex="-1">✓</button><span class="line"></span></div><div class="meta"><div class="label">한글에서 작성</div></div></div>
+                  <div class="ggc-wizard-step is-done"><div class="track"><span class="line"></span><button class="dot" type="button" tabindex="-1">✓</button><span class="line"></span></div><div class="meta"><div class="label">파일 올리기</div></div></div>
+                  <div class="ggc-wizard-step is-current" aria-current="step"><div class="track"><span class="line"></span><button class="dot" type="button" tabindex="-1">4</button><span class="line"></span></div><div class="meta"><div class="label">확인 후 제출</div></div></div>
+                </div>
+                <div class="lx-btnrows">
+                  <span class="lx-mark" aria-hidden="true">7</span>
+                  <div class="ex-row">
+                    <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-send"/></svg>제출하기</button>
+                    <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-upload"/></svg>한글 파일 올리기</button>
+                  </div>
+                  <div class="ex-row">
+                    <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>이번 주 서식 받기</button>
+                  </div>
+                  <p class="lx-hint">작성 중인 보고 3건을 확인하고 제출합니다 <span class="lx-link">작성 방법 <svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></p>
+                </div>
+                <div class="lx-drop">
+                  <span class="lx-mark" aria-hidden="true">8</span>
+                  <svg class="ggc-icon" aria-hidden="true"><use href="#i-upload"/></svg> 한글 파일을 여기에 끌어 놓아도 됩니다
+                </div>
+              </div>
+
+              <div class="lx-listhead" data-only="before">
+                <span class="lx-mark" aria-hidden="true">2</span>
+                이번 주 내 보고 · 3건 <small>제출할 보고가 3건 남았습니다</small>
+              </div>
+
+              <ul class="lx-rows" aria-label="이번 주 내 보고">
+                <li class="is-selected">
+                  <div class="t">2026년 하반기 업무 정보시스템 만족도 조사 결과</div>
+                  <div class="m" data-only="before"><span class="lx-mark" aria-hidden="true">5</span>3주차 · 1. 19.~1. 25. · 파일 3건 · 다음 · 제출하기</div>
+                  <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-pencil"/></svg>작성 중</span>
+                </li>
+                <li>
+                  <div class="t">디지털 업무 시행계획 수립(계속)</div>
+                  <div class="m" data-only="before">3주차 · 1. 19.~1. 25. · 파일 3건 · 다음 · 제출하기</div>
+                  <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-pencil"/></svg>작성 중</span>
+                </li>
+                <li>
+                  <div class="t">업무 정보시스템 운영 계획 수립(계속)</div>
+                  <div class="m" data-only="before">3주차 · 1. 19.~1. 25. · 파일 3건 · 다음 · 제출하기</div>
+                  <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-pencil"/></svg>작성 중</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="lx-handle" data-only="after" aria-hidden="true"><svg class="ggc-icon"><use href="#i-grip-vertical"/></svg></div>
+
+            <div class="lx-doc">
+              <div class="lx-dochead">
+                <div class="t">2026년 하반기 업무 정보시스템 만족도 조사 결과</div>
+                <div class="lx-docmeta" data-only="before">
+                  <span class="lx-mark" aria-hidden="true">6</span>
+                  <span class="ggc-badge ggc-badge--pending">작성 중</span>
+                  다음 · 제출하기 · 한 파일 · □ 3건 함께 제출합니다 · 1쪽 · 고친 뒤 멈추면 자동 저장됩니다
+                </div>
+                <div class="ex-row" data-only="before">
+                  <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar"/></svg>행사 등록하기</button>
+                  <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sparkles"/></svg>AI 도움</button>
+                  <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-save"/></svg>임시 저장</button>
+                  <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-send"/></svg>3건 제출하기</button>
+                  <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" aria-label="더보기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></button>
+                </div>
+                <div class="lx-docbar" data-only="after">
+                  <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-pencil"/></svg>작성 중</span>
+                  <span class="lx-saved">자동 저장됨</span>
+                  <span class="lx-gap"></span>
+                  <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sparkles"/></svg>AI 도움</button>
+                  <details class="ggc-menu ggc-menu--end">
+                    <summary class="ggc-btn ggc-btn--ghost ggc-btn--sm" aria-label="더보기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></summary>
+                    <ul class="list" role="menu" aria-label="보고 동작">
+                      <li role="none"><button role="menuitem" type="button">행사 등록하기</button></li>
+                      <li role="none"><button role="menuitem" type="button">한글 파일로 내려받기</button></li>
+                    </ul>
+                  </details>
+                </div>
+              </div>
+              <div class="lx-paper" aria-label="문서 미리보기(예시)">
+                <p class="h">□ 2026년 하반기 업무 정보시스템 만족도 조사 결과</p>
+                <p>○ 조사기간 : 2025. 12. 15.(월) ~ 12. 24.(수) &lt;10일간&gt;</p>
+                <p>○ 조사방법 : 온라인 설문조사</p>
+                <p>○ 조사결과 : 전반적 만족도 상승, 사용자 편의성 개선 요구 지속 제기</p>
+                <p class="h">□ 디지털 업무 시행계획 수립(계속)</p>
+                <p>○ 추진근거 : 관련 조례에 따른 연차별 시행계획 수립</p>
+                <p>○ 주요내용 : 디지털 업무 운영, 정보시스템 운영관리, 역량 강화 교육 등</p>
+                <p class="h">□ 업무 정보시스템 운영 계획 수립(계속)</p>
+                <p>○ 대상사업 : 홈페이지, 회의록시스템, 업무포털 등</p>
+              </div>
+              <p class="lx-hint lx-foot" data-only="before"><span class="lx-mark" aria-hidden="true">10</span>□ 하나가 보고 한 건입니다. □ 제목 줄을 새로 쓰면 보고가 더해지고, □ 를 지우면 저장할 때 확인한 뒤 그 보고를 지웁니다.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <dialog class="ggc-modal" id="lx-upload" aria-labelledby="lx-upload-t">
+        <div class="head"><h2 class="title" id="lx-upload-t">한글 파일 올리기</h2>
+          <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button></div>
+        <div class="body">
+          <div class="ggc-file" data-ggc-file data-ggc-file-max="1">
+            <div class="drop">
+              <label class="cta" for="lx-f">
+                <input id="lx-f" type="file" accept=".hwpx,.hwp" aria-describedby="lx-f-h">
+                <span class="ggc-btn ggc-btn--secondary ggc-btn--sm">파일 선택</span>
+                <span class="or">또는 여기에 끌어놓기</span>
+              </label>
+              <span class="rule" id="lx-f-h">받은 서식에 쓴 한글 파일 하나 · □ 하나가 보고 한 건이 된다</span>
+            </div>
+            <ul class="ggc-file-list" aria-label="선택한 파일"></ul>
+          </div>
+        </div>
+        <div class="foot"><button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>취소</button>
+          <button class="ggc-btn ggc-btn--primary" type="button" data-ggc-modal-close>올리기</button></div>
+      </dialog>
+
+      <section class="ex-section">
+        <h2>무엇을 어디로 옮겼나</h2>
+        <p>「뺀 자리 번호 보기」를 켜면 「전」 화면에 번호가 붙는다. 「후」에서 사라진 정보는 <b>지운 것이 아니라 필요한 때·한 곳으로 옮긴 것</b>이다.
+        규칙 번호(R)는 <code class="ex-inline">docs/guides/less.md</code>.</p>
+        <div class="ggc-card" style="overflow-x:auto">
+        <table class="ggc-table">
+          <thead><tr><th scope="col">#</th><th scope="col">「전」에 있던 것</th><th scope="col">「후」</th><th scope="col">규칙</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>큰 제목 + 설명 문장("이번 주 보고를 작성하고 제출합니다 …")</td><td>제목은 화면 낭독기만 읽는다(간결형). 왼쪽 메뉴의 현재 항목이 화면 이름을 말해 준다. 설명은 없앴다</td><td>R2 · R5 · R6</td></tr>
+            <tr><td class="num">2</td><td>목록 머리 「이번 주 내 보고 · 3건 · 제출할 보고가 3건 남았습니다」</td><td>건수는 탭 「이번 주 3」 한 곳</td><td>R3</td></tr>
+            <tr><td class="num">3</td><td>처리 단계 막대(서식 받기 → 작성 → 올리기 → 제출)</td><td>상태 배지 「작성 중」 하나 + 지금 할 일 단추 「3건 제출하기」</td><td>R4</td></tr>
+            <tr><td class="num">4</td><td>마감을 알리는 상시 띠</td><td>목록 위 한 곳에 짧게(임박할 때만 강조하는 것도 된다)</td><td>R2 · R3</td></tr>
+            <tr><td class="num">5</td><td>목록 줄마다 같은 주차·기간·파일 수·「다음 · 제출하기」</td><td>모든 줄에 같은 값이라 목록 위 한 곳으로 올렸다. 줄에는 제목과 상태만</td><td>R3</td></tr>
+            <tr><td class="num">6</td><td>보기 칸 머리에 목록과 같은 정보 + 긴 설명</td><td>제목 / 상태 · 저장 상태 · 단추 한 줄. 드문 동작(행사 등록)은 ⋯ 안</td><td>R3 · R7</td></tr>
+            <tr><td class="num">7</td><td>두 줄로 흩어진 단추와 설명</td><td>탭과 같은 한 줄. 주 단추는 「3건 제출하기」 하나</td><td>R1 · R7</td></tr>
+            <tr><td class="num">8</td><td>늘 펼쳐진 끌어 놓기 영역</td><td>「한글 파일 올리기」 단추 → 창. 끝나면 원래 화면</td><td>R7</td></tr>
+            <tr><td class="num">9</td><td>메뉴 옆 숫자와 과별 제출 현황(작성자에게는 쓸 일이 없다)</td><td>메뉴만. 과별 현황은 그 숫자를 쓰는 서무·총괄 화면에</td><td>R2</td></tr>
+            <tr><td class="num">10</td><td>문서 아래 사용법 문장</td><td>「사용 안내」 단추 뒤로. 올리기 창의 입력 조건 한 줄로</td><td>R5</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </section>
+
+      <section class="ex-section">
+        <h2>덜어내지 않은 것</h2>
+        <p>상태 배지 · <b>자동 저장 상태</b> · 마감 시각(한 곳) · 문서 실제 모양 · 파일 올리기의 입력 조건 · 화면 낭독기용 제목은 「후」에도 있다.
+        오류 사유와 복구 방법, 밖으로 나가는 문안의 미리보기, AI 결과의 출처도 마찬가지다(R10). 덜어내기는 "적게"가 아니라 <b>"필요한 것만, 필요한 때에"</b>다.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      예시 데이터다 · 의안명 · 숫자 · 이름은 전부 가상 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.0
+    </div>
+  </footer>
+</div>
+
+<script src="../ggc-behaviors.js"></script>
+<script src="examples.js"></script>
+<script>
+/* less.html — 「전/후」 바꾸기 · 뺀 자리 번호. 상태는 화면 하나의 data-* 두 개뿐이다 */
+(function () {
+  var screen = document.getElementById('lx-screen');
+  var btns = document.querySelectorAll('[data-lx-state]');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      screen.setAttribute('data-state', b.getAttribute('data-lx-state'));
+      btns.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+    });
+  });
+  var annot = document.getElementById('lx-annot');
+  annot.addEventListener('change', function () { screen.setAttribute('data-annotate', annot.checked ? 'on' : 'off'); });
+  /* 주소로 시작 상태를 고른다 — less.html?state=after · ?annot=on (README 미리보기 생성기가 쓴다) */
+  var q = new URLSearchParams(location.search);
+  var st = q.get('state');
+  btns.forEach(function (b) { if (b.getAttribute('data-lx-state') === st) b.click(); });
+  if (q.get('annot') === 'on') { annot.checked = true; screen.setAttribute('data-annotate', 'on'); }
+})();
+</script>
+</body>
+</html>

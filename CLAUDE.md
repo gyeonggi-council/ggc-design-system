@@ -50,7 +50,7 @@ bash tools/check-all.sh     # 정본 D6(strict) · 갤러리 업무/대민 D1~D5
 
 ## 지도
 
-- `design/` — 정본 6파일(tokens·components·public·behaviors·fonts·**icons**) + 검사기 `check_design.py` + 갤러리 14쪽(업무 10 + 대민 4) + `ppt/`(발표 템플릿 생성기)
+- `design/` — 정본 6파일(tokens·components·public·behaviors·fonts·**icons**) + 검사기 `check_design.py` + 갤러리 16쪽(업무 12 + 대민 4) + `ppt/`(발표 템플릿 생성기)
 - `registry/ggc/` + `public/r/` — Tier 2 shadcn 레지스트리 74항목: UI 45(shadcn 공식 + 토큰) · 블록 27 · 훅 1 · 토큰/테마/스타일 (생성 `tools/build-registry-json.py` · 검사 `tools/check-registry.py`)
 - `docs/` — contract(AUTHORITATIVE) · quickstart 7종 · guides · components 40종 · decisions(ADR) · migration
 - `skills/ggc-design/` — Claude Code 스킬 + references 11종

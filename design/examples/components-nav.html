@@ -72,6 +72,8 @@
       <a class="ggc-lnb-item" href="explore.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록 · Explore</span></a>
       <a class="ggc-lnb-item" href="wizard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">위저드 · Configure</span></a>
       <a class="ggc-lnb-item" href="login.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-qr-code"/></svg><span class="label">QR 로그인 · Entry</span></a>
+      <a class="ggc-lnb-item" href="less.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-eye-off"/></svg><span class="label">덜어내기 전/후 · Less</span></a>
+      <a class="ggc-lnb-item" href="operate.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg><span class="label">실시간 회의 · Operate</span></a>
       <a class="ggc-lnb-item" href="public/index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">대민 셸 · Public</span></a>
     </nav>
 
@@ -129,18 +131,18 @@
 
       <section class="ex-section">
         <h2>페이지 헤더 <span class="cls">.ggc-page-head</span></h2>
-        <p>본문 첫 줄 — <b><code class="ex-inline">&lt;h1 class="ggc-page-title"&gt;</code>(24px) + 설명 한 줄 + 주 액션 하나</b>.
+        <p>본문 첫 줄 — <b><code class="ex-inline">&lt;h1 class="ggc-page-title"&gt;</code>(24px) + 주 액션 하나</b>(핵심 행동이 있을 때).
           화면의 h1 은 여기 하나이고 <code class="ex-inline">&lt;main aria-labelledby="page-title"&gt;</code> 로 본문 랜드마크에 잇는다.
           제목은 그 화면에서 가장 큰 글자다 — 위계는 색이 아니라 크기·굵기로 만든다(ADR 0009).
-          설명(<code class="ex-inline">.desc</code>)에는 기관 맥락(제N대 · 제NNN회 · 소관)과 건수를 적는다. Monitor 첫 화면은
-          h1 이 화면 이름("대시보드")이고 인사말이 설명 자리에 온다 — 인사말을 h1 으로 쓰지 않는다.
+          설명(<code class="ex-inline">.desc</code>)은 <b>기본 없음</b>(v3.1) — 쓴다면 판단에 쓰이는 기관 맥락(제N대 · 제NNN회 · 소관) 한 줄이고, 화면에 이미 있는 건수·인사말은 넣지 않는다.
+          반복 작업 화면은 제목을 <code class="ex-inline">.ggc-sr</code> 로 남기는 간결형도 고를 수 있다(<a href="less.html">덜어내기 전/후</a>).
           레코드 화면(의안 상세)은 의안명이 h1 이며 두 줄까지 허용한다 — 잘리면 다른 의안이 된다.</p>
         <div class="ex-demo ex-demo--bg" id="d-head">
           <div class="ggc-page-head">
             <div class="row">
               <div>
                 <h1 class="ggc-page-title">의안 목록</h1>
-                <p class="desc">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
+                <p class="desc">제12대 · 제380회 정례회</p>
               </div>
               <div class="actions">
                 <button class="ggc-btn ggc-btn--secondary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>엑셀 내려받기</button>
