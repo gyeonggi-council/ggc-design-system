@@ -9,7 +9,7 @@
   직접 고치지 말 것 — 다음 생성에서 덮어써진다.
 
   담긴 것: ggc-tokens.css v2.0 · ggc-components.css v2.0 · ggc-behaviors.js ·
-  examples.css · examples.js · 의회 마크(data URI) · 갤러리 9쪽의 본문.
+  examples.css · examples.js · 의회 마크(data URI) · 업무 갤러리 전 쪽의 본문과 쪽 전용 스타일·스크립트.
   외부 요청 0 — 망분리 환경과 오프라인에서도 그대로 열린다.
 
   <meta charset> 은 head 첫머리에 둔다. 표준 모드와 모바일 viewport를 선언해
@@ -3940,6 +3940,149 @@ body { margin: 0; }
   .ex-row > *, .ex-demo > * { min-width: 0; max-width: 100%; }
 }
 
+/* ---- 쪽 전용 스타일 (각 쪽 head 의 <style>) ------------------------------- */
+/* ---- design/examples/login.html (쪽 전용) ---- */
+/* 이 페이지 전용 — 상태 6종을 나란히 놓기 위한 격자다. 정본이 아니다. */
+.ex-qr-grid { display: flex; flex-wrap: wrap; gap: var(--ggc-space-6); }
+.ex-qr-cell { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: var(--ggc-space-2); }
+.ex-qr-cap { font-size: 12.5px; font-weight: 700; color: var(--ggc-text-strong); }
+.ex-qr-desc { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--ggc-text-subtle); word-break: keep-all; }
+/* ---- design/examples/less.html (쪽 전용) ---- */
+/* less.html 전용 — 예시 업무 화면 틀(값은 전부 정본 토큰 var()) */
+.lx-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); margin: var(--ggc-space-5) 0 var(--ggc-space-4); }
+.lx-controls [aria-pressed="true"] { background: var(--ggc-primary-light); border-color: var(--ggc-primary); color: var(--ggc-primary-deep); }
+.lx-annot { margin-left: var(--ggc-space-3); }
+.lx-screen { display: grid; grid-template-columns: 200px minmax(0, 1fr); min-height: 560px; background: var(--ggc-bg); border: 1px solid var(--ggc-border-strong); border-radius: var(--ggc-radius-lg); overflow: hidden; }
+.lx-screen[data-state="before"] [data-only="after"],
+.lx-screen[data-state="after"] [data-only="before"] { display: none !important; }
+.lx-side { background: var(--ggc-surface); border-right: 1px solid var(--ggc-shell-border); padding: var(--ggc-space-3); display: flex; flex-direction: column; gap: var(--ggc-space-3); min-width: 0; }
+.lx-brand { display: flex; gap: var(--ggc-space-2); align-items: center; padding: var(--ggc-space-1) var(--ggc-space-1) var(--ggc-space-2); border-bottom: 1px solid var(--ggc-hairline); }
+.lx-brand img { width: 28px; height: 28px; }
+.lx-brand span { display: flex; flex-direction: column; font-size: var(--ggc-text-sm); color: var(--ggc-text); line-height: 1.3; }
+.lx-brand small { color: var(--ggc-text-subtle); font-size: var(--ggc-text-xs); }
+.lx-menu { display: flex; flex-direction: column; gap: 2px; }
+.lx-count { margin-left: auto; font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.lx-status { position: relative; border-top: 1px solid var(--ggc-hairline); padding-top: var(--ggc-space-3); font-size: var(--ggc-text-xs); color: var(--ggc-text-muted); }
+.lx-status-h { font-weight: 700; color: var(--ggc-text); margin-bottom: var(--ggc-space-2); }
+.lx-status-h small { display: block; font-weight: 400; color: var(--ggc-text-subtle); }
+.lx-status ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.lx-status li { display: flex; justify-content: space-between; gap: var(--ggc-space-2); }
+.lx-main { padding: var(--ggc-space-4) var(--ggc-space-5); min-width: 0; display: flex; flex-direction: column; gap: var(--ggc-space-3); }
+.lx-head { position: relative; margin: 0; }
+.lx-band { position: relative; display: flex; align-items: center; gap: var(--ggc-space-2); background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius); padding: var(--ggc-space-2) var(--ggc-space-3); font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.lx-band b { color: var(--ggc-text); }
+.lx-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2) var(--ggc-space-4); }
+.lx-toolbar .ggc-tabs { flex: 0 1 auto; }
+.lx-tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); margin-left: auto; }
+.lx-due { margin: 0; font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.lx-split { display: grid; grid-template-columns: minmax(0, 340px) auto minmax(0, 1fr); gap: var(--ggc-space-3); align-items: start; }
+.lx-screen[data-state="before"] .lx-split { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); }
+.lx-list { display: flex; flex-direction: column; gap: var(--ggc-space-3); min-width: 0; }
+.lx-card { position: relative; background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); padding: var(--ggc-space-3); display: grid; gap: var(--ggc-space-3); }
+.lx-steps .ggc-wizard { margin: 0; }
+.lx-btnrows { position: relative; display: grid; gap: var(--ggc-space-2); }
+.lx-hint { margin: 0; font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); display: flex; justify-content: space-between; gap: var(--ggc-space-2); position: relative; }
+.lx-link { color: var(--ggc-text-muted); display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+.lx-drop { position: relative; display: flex; align-items: center; justify-content: center; gap: var(--ggc-space-2); min-height: 64px; border: 1px dashed var(--ggc-border-strong); border-radius: var(--ggc-radius); color: var(--ggc-text-subtle); font-size: var(--ggc-text-sm); }
+.lx-listhead { position: relative; font-size: var(--ggc-text-sm); font-weight: 700; color: var(--ggc-text); }
+.lx-listhead small { display: block; font-weight: 400; color: var(--ggc-text-subtle); }
+.lx-rows { list-style: none; margin: 0; padding: 0; background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); overflow: hidden; }
+.lx-rows li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px var(--ggc-space-2); align-items: center; padding: var(--ggc-space-3); border-top: 1px solid var(--ggc-hairline); }
+.lx-rows li:first-child { border-top: 0; }
+.lx-rows li.is-selected { background: var(--ggc-primary-light); box-shadow: inset 3px 0 0 var(--ggc-primary); }
+.lx-rows .t { font-size: var(--ggc-text-base); font-weight: 600; color: var(--ggc-text); min-width: 0; }
+.lx-rows .m { grid-column: 1 / -1; grid-row: 2; font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); position: relative; }
+.lx-handle { align-self: stretch; display: flex; align-items: center; color: var(--ggc-text-faint); cursor: col-resize; }
+.lx-doc { background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); padding: var(--ggc-space-3) var(--ggc-space-4); display: grid; gap: var(--ggc-space-3); min-width: 0; }
+.lx-dochead { display: grid; gap: var(--ggc-space-2); }
+.lx-dochead > .t { font-size: var(--ggc-text-md); font-weight: 700; color: var(--ggc-text-strong); }
+.lx-docmeta { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.lx-docbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); }
+.lx-saved { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.lx-gap { flex: 1; }
+.lx-paper { background: var(--ggc-surface-inset); border: 1px solid var(--ggc-hairline); border-radius: var(--ggc-radius-sm); padding: var(--ggc-space-5); font-size: var(--ggc-text-sm); line-height: 1.8; color: var(--ggc-text-body); min-height: 260px; }
+.lx-paper p { margin: 0; }
+.lx-paper .h { font-weight: 700; color: var(--ggc-text); margin-top: var(--ggc-space-2); }
+.lx-paper .h:first-child { margin-top: 0; }
+.lx-foot { display: block; }
+/* 뺀 자리 번호 — 켤 때만 보인다 */
+.lx-mark { display: none; position: absolute; top: -8px; left: -8px; z-index: 1; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: var(--ggc-danger); color: var(--ggc-surface); font-size: var(--ggc-text-xs); font-weight: 700; line-height: 22px; text-align: center; }
+.lx-screen[data-annotate="on"] .lx-mark { display: inline-block; }
+.lx-screen[data-annotate="on"][data-state="before"] [data-only="before"]:not(.lx-count):not(.lx-mark) { outline: 2px dashed var(--ggc-danger); outline-offset: 2px; }
+.lx-rows .m .lx-mark, .lx-docmeta .lx-mark, .lx-foot .lx-mark { position: static; margin-right: 4px; }
+@media (max-width: 900px) {
+  .lx-screen { grid-template-columns: minmax(0, 1fr); }
+  .lx-side { border-right: 0; border-bottom: 1px solid var(--ggc-shell-border); }
+  .lx-menu { flex-direction: row; flex-wrap: wrap; }
+  .lx-split, .lx-screen[data-state="before"] .lx-split { grid-template-columns: minmax(0, 1fr); }
+  .lx-handle { display: none; }
+  .lx-tools { margin-left: 0; }
+}
+@media (max-width: 480px) {
+  .lx-main { padding: var(--ggc-space-3); }
+  .lx-status { display: none; }
+}
+/* ---- design/examples/operate.html (쪽 전용) ---- */
+/* operate.html 전용 — 예시 시청 화면·작업대 틀(값은 전부 정본 토큰 var()) */
+.lx-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); margin: var(--ggc-space-4) 0; }
+.lx-controls [aria-pressed="true"] { background: var(--ggc-primary-light); border-color: var(--ggc-primary); color: var(--ggc-primary-deep); }
+.lx-gap { flex: 1; }
+.op-screen { background: var(--ggc-surface); border: 1px solid var(--ggc-border-strong); border-radius: var(--ggc-radius-lg); overflow: hidden; display: flex; flex-direction: column; height: 560px; }
+.op-head { display: flex; align-items: center; gap: var(--ggc-space-2); padding: var(--ggc-space-2) var(--ggc-space-3); border-bottom: 1px solid var(--ggc-shell-border); min-width: 0; }
+.op-back { display: inline-flex; color: var(--ggc-text-muted); }
+.op-title { margin: 0; font-size: var(--ggc-text-md); font-weight: 700; color: var(--ggc-text-strong); white-space: nowrap; }
+.op-agenda { min-width: 0; max-width: 360px; }
+.op-agenda b { font-variant-numeric: tabular-nums; }
+.op-agenda-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; color: var(--ggc-text-muted); font-weight: 400; }
+.op-search { width: 220px; }
+.op-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--ggc-space-3); padding: var(--ggc-space-3); background: var(--ggc-bg); }
+.op-video { position: relative; background: var(--ggc-text-strong); border-radius: var(--ggc-radius); display: flex; align-items: center; justify-content: center; color: var(--ggc-text-faint); font-size: var(--ggc-text-sm); aspect-ratio: 16 / 9; align-self: start; }
+.op-sub { min-height: 0; display: flex; flex-direction: column; background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); overflow: hidden; }
+.op-tabs { display: flex; align-items: center; gap: var(--ggc-space-2); padding: 0 var(--ggc-space-2); border-bottom: 1px solid var(--ggc-border-strong); }
+.op-tabs .ggc-tablist { border-bottom: 0; }
+.op-tabs .ggc-tabs { flex: 1; min-width: 0; }
+.op-lines { flex: 1; min-height: 0; overflow-y: auto; list-style: none; margin: 0; padding: 0; }
+.op-lines li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--ggc-space-3); padding: var(--ggc-space-2) var(--ggc-space-3); border-top: 1px solid var(--ggc-hairline); }
+.op-lines li:first-child { border-top: 0; }
+.op-lines time, .op-now time { font-family: var(--ggc-font-mono); font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); padding-top: 3px; font-variant-numeric: tabular-nums; }
+.op-lines p { margin: 0; font-size: var(--ggc-text-base); line-height: 1.6; color: var(--ggc-text-body); }
+.op-now { display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: var(--ggc-space-2); align-items: start; padding: var(--ggc-space-3); background: var(--ggc-primary-light); border-top: 1px solid var(--ggc-border); }
+.op-now p { grid-column: 1 / -1; margin: 0; font-size: var(--ggc-text-lg); font-weight: 700; line-height: 1.5; color: var(--ggc-text-strong); }
+.op-conn { display: none; align-items: center; gap: var(--ggc-space-2); padding: var(--ggc-space-2) var(--ggc-space-3); background: var(--ggc-warning-tint); color: var(--ggc-warning); font-size: var(--ggc-text-sm); border-top: 1px solid var(--ggc-border); }
+.op-conn span { flex: 1; min-width: 0; }
+.op-screen[data-conn="lost"] .op-conn { display: flex; }
+.op-agenda-list { margin: 0; padding-left: 1.4em; display: grid; gap: var(--ggc-space-2); }
+.op-notes { margin-top: var(--ggc-space-4); }
+.op-notes .ex-note { margin: 0; }
+.op-bench { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: var(--ggc-space-4); background: var(--ggc-bg); border: 1px solid var(--ggc-border-strong); border-radius: var(--ggc-radius-lg); padding: var(--ggc-space-4); }
+.op-bench-list, .op-bench-work { display: flex; flex-direction: column; gap: var(--ggc-space-3); min-width: 0; }
+.op-bench-h { font-size: var(--ggc-text-sm); font-weight: 700; color: var(--ggc-text); }
+.op-bench-h small { font-weight: 400; color: var(--ggc-text-subtle); margin-left: var(--ggc-space-2); }
+.lx-rows { list-style: none; margin: 0; padding: 0; background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); overflow: hidden; }
+.lx-rows li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--ggc-space-2); align-items: center; padding: var(--ggc-space-3); border-top: 1px solid var(--ggc-hairline); }
+.lx-rows li:first-child { border-top: 0; }
+.lx-rows li.is-selected { background: var(--ggc-primary-light); box-shadow: inset 3px 0 0 var(--ggc-primary); }
+.lx-rows .t { font-size: var(--ggc-text-base); font-weight: 600; color: var(--ggc-text); min-width: 0; }
+.lx-rows .t small { display: block; font-weight: 400; }
+.op-dur { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); font-variant-numeric: tabular-nums; }
+.op-fail { color: var(--ggc-danger); font-size: var(--ggc-text-xs); }
+.op-video--sm { max-width: 420px; width: 100%; }
+.op-cap { position: absolute; left: 8%; right: 8%; bottom: 8%; text-align: center; background: var(--ggc-text-strong); color: var(--ggc-surface); font-size: var(--ggc-text-xs); padding: 4px 8px; border-radius: var(--ggc-radius-sm); }
+.op-bench[data-cap="off"] .op-cap { display: none; }
+.op-bench-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--ggc-space-3); background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); padding: var(--ggc-space-3); }
+.op-bench-form .ggc-field { width: 120px; margin: 0; }
+@media (max-width: 900px) {
+  .op-screen { height: 760px; }
+  .op-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .op-search, .op-agenda-t { display: none; }
+  .op-bench { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 480px) {
+  .op-body { padding: 0; gap: 0; background: var(--ggc-surface); }
+  .op-video { border-radius: 0; }
+  .op-sub { border: 0; border-radius: 0; }
+  .op-agenda > span:first-of-type { display: none; }
+}
 /* ---- 합본 전용 ------------------------------------------------------------
  * 이 디자인은 **단일 라이트 세계로 확정**돼 있다 — 계약이 다크모드를 비범위로 뒀고,
  * 고대비는 팔레트를 하나 더 만드는 대신 forced-colors·prefers-contrast 로 대응한다
@@ -4009,11 +4152,13 @@ body {
       <a class="ggc-lnb-item" href="#explore" data-page="explore"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록 · Explore</span></a>
       <a class="ggc-lnb-item" href="#wizard" data-page="wizard"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">위저드 · Configure</span></a>
       <a class="ggc-lnb-item" href="#login" data-page="login"><svg class="ggc-icon" aria-hidden="true"><use href="#i-qr-code"/></svg><span class="label">QR 로그인 · Entry</span></a>
+      <a class="ggc-lnb-item" href="#less" data-page="less"><svg class="ggc-icon" aria-hidden="true"><use href="#i-eye-off"/></svg><span class="label">덜어내기 전/후 · Less</span></a>
+      <a class="ggc-lnb-item" href="#operate" data-page="operate"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg><span class="label">실시간 회의 · Operate</span></a>
     </nav>
 
       <main class="ggc-shell-main" data-page="index" aria-labelledby="page-title-index">
       <div class="ex-note ex-note--warn">
-        <p><b>이 파일은 생성물이다.</b> 갤러리 9쪽과 정본 CSS·JS·브랜드 자산을
+        <p><b>이 파일은 생성물이다.</b> 업무 갤러리 전 쪽과 정본 CSS·JS·브랜드 자산을
         한 파일로 합친 것이고, <code>design/examples/build-standalone.py</code> 가
         정본에서 다시 만든다. <b>직접 고치지 말 것</b> — 다음 생성에서 덮어써진다.</p>
         <p>저장소의 원본 갤러리는 정본을 <b>상대경로로 직접 링크</b>해 사본을 두지 않는다.
@@ -5320,18 +5465,18 @@ body {
 
       <section class="ex-section">
         <h2>페이지 헤더 <span class="cls">.ggc-page-head</span></h2>
-        <p>본문 첫 줄 — <b><code class="ex-inline">&lt;h1 class="ggc-page-title"&gt;</code>(24px) + 설명 한 줄 + 주 액션 하나</b>.
+        <p>본문 첫 줄 — <b><code class="ex-inline">&lt;h1 class="ggc-page-title"&gt;</code>(24px) + 주 액션 하나</b>(핵심 행동이 있을 때).
           화면의 h1 은 여기 하나이고 <code class="ex-inline">&lt;main aria-labelledby="page-title"&gt;</code> 로 본문 랜드마크에 잇는다.
           제목은 그 화면에서 가장 큰 글자다 — 위계는 색이 아니라 크기·굵기로 만든다(ADR 0009).
-          설명(<code class="ex-inline">.desc</code>)에는 기관 맥락(제N대 · 제NNN회 · 소관)과 건수를 적는다. Monitor 첫 화면은
-          h1 이 화면 이름("대시보드")이고 인사말이 설명 자리에 온다 — 인사말을 h1 으로 쓰지 않는다.
+          설명(<code class="ex-inline">.desc</code>)은 <b>기본 없음</b>(v3.1) — 쓴다면 판단에 쓰이는 기관 맥락(제N대 · 제NNN회 · 소관) 한 줄이고, 화면에 이미 있는 건수·인사말은 넣지 않는다.
+          반복 작업 화면은 제목을 <code class="ex-inline">.ggc-sr</code> 로 남기는 간결형도 고를 수 있다(<a href="#less">덜어내기 전/후</a>).
           레코드 화면(의안 상세)은 의안명이 h1 이며 두 줄까지 허용한다 — 잘리면 다른 의안이 된다.</p>
         <div class="ex-demo ex-demo--bg" id="d-head">
           <div class="ggc-page-head">
             <div class="row">
               <div>
                 <h1 class="ggc-page-title">의안 목록</h1>
-                <p class="desc">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
+                <p class="desc">제12대 · 제380회 정례회</p>
               </div>
               <div class="actions">
                 <button class="ggc-btn ggc-btn--secondary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>엑셀 내려받기</button>
@@ -6000,8 +6145,7 @@ body {
           <div>
             <h1 class="ggc-page-title" id="page-title-dashboard">대시보드</h1>
             <p class="desc">
-              이○○님, 오늘 처리할 의안 <b style="color:var(--ggc-text-strong)">3건</b>이 있습니다 ·
-              제12대 제3차 정례회 2026-08-18 ~ 2026-09-05 · 오늘 <b style="color:var(--ggc-text-strong)">18일차</b>
+              제12대 제3차 정례회 2026-08-18 ~ 2026-09-05 · 18일차
               <span class="ggc-badge ggc-badge--session" style="margin-left:8px"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span>
             </p>
           </div>
@@ -6256,7 +6400,7 @@ body {
 
       <div class="ex-note" style="margin-top:0">
         <p><b>Explore archetype 이다.</b> 업무 시스템에서 가장 많은 화면 — 필터 스트립 + 표 + 페이지네이션.
-        담당자는 스크롤보다 대조를 하므로 <b>첫 화면에 15행 이상</b>이 들어와야 한다(v3.0 밀도: 셀 8×12 · 14px).
+        담당자는 스크롤보다 대조를 하므로 첫 화면에 15행 안팎을 <b>참고 목표</b>로 둔다(v3.0 밀도: 셀 8×12 · 14px). 건수는 결과 요약 「총 N건」 한 곳에만 쓴다(v3.1 덜어내기 R3).
         식별자(의안번호)는 왼쪽 첫 열, 숫자는 우정렬, 날짜는 <code>YYYY-MM-DD</code>, 상태는 배지 + 텍스트. 예시 데이터다.</p>
       </div>
 
@@ -6264,7 +6408,7 @@ body {
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title-explore">의안 목록</h1>
-            <p class="desc">제12대 · 제380회 정례회 · 예시 의안 21건</p>
+            <p class="desc">제12대 · 제380회 정례회</p>
           </div>
           <div class="actions">
             <button class="ggc-btn ggc-btn--secondary" type="button" data-work-export><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>CSV 내려받기</button>
@@ -6366,7 +6510,7 @@ body {
         </div>
         <div class="ggc-card-foot ggc-card-foot--inset" style="justify-content:center">
           <nav class="ggc-pagination" aria-label="페이지" style="width:100%">
-            <span class="summary">총 21건 · 1 / 2쪽 · 20건씩</span>
+            <span class="summary">1 / 2쪽</span>
             <a class="nav" href="#main" aria-disabled="true" tabindex="-1"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>이전</a>
             <ol class="pages">
               <li><a href="#main" aria-current="page"><span class="ggc-sr">현재 페이지 </span>1</a></li>
@@ -6885,6 +7029,378 @@ body {
       </section>
 
     </main>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="less" aria-labelledby="page-title-less" hidden>
+
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-less">덜어내기 전/후</h1>
+            <p class="desc">v3.1 · ADR 0012 · 규칙은 <code class="ex-inline">docs/guides/less.md</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-note" style="margin-top:0">
+        <p><b>같은 자료로 같은 일을 하는 화면 하나를 두 번 그렸다.</b> 「전」은 실제 서비스에서 사용자가 빼라고 한 것들을 모아 다시 만든 예시다(운영 화면 캡처가 아니다).
+        「후」는 같은 일을 하되 <b>각 정보가 필요한 때에만</b> 보이게 했다. 단추와 동작은 그대로 두고 자리만 옮겼다(옮긴 곳은 아래 표). 이 예시의 단추·손잡이는 모양만 있고 실제로 동작하지 않는다.
+        아래 단추로 바꿔 보고, 「뺀 자리 번호」를 켜면 무엇을 왜 옮겼는지 표의 번호와 맞춰 볼 수 있다. 자료는 전부 가상이다.</p>
+      </div>
+
+      <div class="lx-controls" role="group" aria-label="보기 바꾸기">
+        <button class="ggc-btn ggc-btn--secondary" type="button" data-lx-state="before" aria-pressed="true">덜어내기 전</button>
+        <button class="ggc-btn ggc-btn--secondary" type="button" data-lx-state="after" aria-pressed="false">덜어내기 후</button>
+        <label class="ggc-switch lx-annot"><input type="checkbox" id="lx-annot" role="switch"><span class="track"></span>
+          <span class="text">뺀 자리 번호 보기 <span class="state"></span></span></label>
+      </div>
+
+      <!-- 가상의 업무 화면 — 주간 보고 「내 보고」 -->
+      <div class="lx-screen" id="lx-screen" data-state="before" data-annotate="off" aria-label="예시 업무 화면">
+        <aside class="lx-side" aria-label="예시 메뉴">
+          <div class="lx-brand">
+            <img src="../brand/dist/assembly-mark.png" alt="">
+            <span><b>경기도의회사무처</b><small>주간 보고</small></span>
+          </div>
+          <nav class="lx-menu">
+            <a class="ggc-lnb-item" href="#lx-screen" aria-current="page"><svg class="ggc-icon" aria-hidden="true"><use href="#i-folder"/></svg><span class="label">내 보고</span><span class="lx-count" data-only="before">3</span></a>
+            <a class="ggc-lnb-item" href="#lx-screen"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clipboard-list"/></svg><span class="label">현안 보고</span><span class="lx-count" data-only="before">0</span></a>
+            <a class="ggc-lnb-item" href="#lx-screen"><svg class="ggc-icon" aria-hidden="true"><use href="#i-book-open"/></svg><span class="label">내 지식</span></a>
+            <a class="ggc-lnb-item" href="#lx-screen"><svg class="ggc-icon" aria-hidden="true"><use href="#i-landmark"/></svg><span class="label">기관 티타임</span></a>
+          </nav>
+          <div class="lx-status" data-only="before">
+            <span class="lx-mark" aria-hidden="true">9</span>
+            <div class="lx-status-h">과별 제출 현황 <small>3주차 · 1. 19.~1. 25.</small></div>
+            <ul>
+              <li><span>총무과</span><span>보고 없음</span></li>
+              <li><span>의정담당관</span><span>보고 없음</span></li>
+              <li><span>입법정책담당관</span><span>작성 중 3건</span></li>
+              <li><span>의사담당관</span><span>보고 없음</span></li>
+              <li><span>예산정책담당관</span><span>보고 없음</span></li>
+            </ul>
+          </div>
+        </aside>
+
+        <section class="lx-main">
+          <!-- 전: 큰 제목 + 설명 줄 / 후: 제목은 화면 낭독기만 (간결형 — 왼쪽 메뉴의 현재 항목이 이름을 말해 준다) -->
+          <div class="ggc-page-head lx-head" data-only="before">
+            <span class="lx-mark" aria-hidden="true">1</span>
+            <div class="row"><div>
+              <h2 class="ggc-page-title">내 보고</h2>
+              <p class="desc">이번 주 보고를 작성하고 제출합니다. 서식을 받아 한글에서 작성한 뒤 파일을 올리면 됩니다.</p>
+            </div></div>
+          </div>
+          <h2 class="ggc-sr" data-only="after">내 보고</h2>
+
+          <div class="lx-band" data-only="before">
+            <span class="lx-mark" aria-hidden="true">4</span>
+            <svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar"/></svg>
+            <b>3주차 보고</b> 1. 19.~1. 25. · 작성자 제출 마감 1. 22.(목) 12:00
+          </div>
+
+          <div class="lx-toolbar">
+            <div class="ggc-tabs"><div class="ggc-tablist" role="tablist" aria-label="내 보고 보기">
+              <button class="ggc-tab" role="tab" aria-selected="true" type="button">이번 주 <span class="count">3</span></button>
+              <button class="ggc-tab" role="tab" aria-selected="false" tabindex="-1" type="button">지난 보고</button>
+            </div></div>
+            <div class="lx-tools" data-only="after">
+              <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-help"/></svg>사용 안내</button>
+              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>서식 받기</button>
+              <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-ggc-modal-open="#lx-upload"><svg class="ggc-icon" aria-hidden="true"><use href="#i-upload"/></svg>한글 파일 올리기</button>
+              <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-send"/></svg>3건 제출하기</button>
+            </div>
+          </div>
+
+          <div class="lx-split">
+            <div class="lx-list">
+              <p class="lx-due" data-only="after">3주차(1. 19.~1. 25.) · 제출 마감 1. 22.(목) 12:00</p>
+              <div class="lx-card lx-steps" data-only="before">
+                <span class="lx-mark" aria-hidden="true">3</span>
+                <div class="ggc-wizard">
+                  <div class="ggc-wizard-step is-done"><div class="track"><span class="line"></span><button class="dot" type="button" tabindex="-1">✓</button><span class="line"></span></div><div class="meta"><div class="label">서식 받기</div></div></div>
+                  <div class="ggc-wizard-step is-done"><div class="track"><span class="line"></span><button class="dot" type="button" tabindex="-1">✓</button><span class="line"></span></div><div class="meta"><div class="label">한글에서 작성</div></div></div>
+                  <div class="ggc-wizard-step is-done"><div class="track"><span class="line"></span><button class="dot" type="button" tabindex="-1">✓</button><span class="line"></span></div><div class="meta"><div class="label">파일 올리기</div></div></div>
+                  <div class="ggc-wizard-step is-current" aria-current="step"><div class="track"><span class="line"></span><button class="dot" type="button" tabindex="-1">4</button><span class="line"></span></div><div class="meta"><div class="label">확인 후 제출</div></div></div>
+                </div>
+                <div class="lx-btnrows">
+                  <span class="lx-mark" aria-hidden="true">7</span>
+                  <div class="ex-row">
+                    <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-send"/></svg>제출하기</button>
+                    <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-upload"/></svg>한글 파일 올리기</button>
+                  </div>
+                  <div class="ex-row">
+                    <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>이번 주 서식 받기</button>
+                  </div>
+                  <p class="lx-hint">작성 중인 보고 3건을 확인하고 제출합니다 <span class="lx-link">작성 방법 <svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span></p>
+                </div>
+                <div class="lx-drop">
+                  <span class="lx-mark" aria-hidden="true">8</span>
+                  <svg class="ggc-icon" aria-hidden="true"><use href="#i-upload"/></svg> 한글 파일을 여기에 끌어 놓아도 됩니다
+                </div>
+              </div>
+
+              <div class="lx-listhead" data-only="before">
+                <span class="lx-mark" aria-hidden="true">2</span>
+                이번 주 내 보고 · 3건 <small>제출할 보고가 3건 남았습니다</small>
+              </div>
+
+              <ul class="lx-rows" aria-label="이번 주 내 보고">
+                <li class="is-selected">
+                  <div class="t">2025년 하반기 업무 정보시스템 만족도 조사 결과</div>
+                  <div class="m" data-only="before"><span class="lx-mark" aria-hidden="true">5</span>3주차 · 1. 19.~1. 25. · 한글 파일 1개 · 다음 · 제출하기</div>
+                  <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-pencil"/></svg>작성 중</span>
+                </li>
+                <li>
+                  <div class="t">디지털 업무 시행계획 수립(계속)</div>
+                  <div class="m" data-only="before">3주차 · 1. 19.~1. 25. · 한글 파일 1개 · 다음 · 제출하기</div>
+                  <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-pencil"/></svg>작성 중</span>
+                </li>
+                <li>
+                  <div class="t">업무 정보시스템 운영 계획 수립(계속)</div>
+                  <div class="m" data-only="before">3주차 · 1. 19.~1. 25. · 한글 파일 1개 · 다음 · 제출하기</div>
+                  <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-pencil"/></svg>작성 중</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="lx-handle" data-only="after" aria-hidden="true"><svg class="ggc-icon"><use href="#i-grip-vertical"/></svg></div>
+
+            <div class="lx-doc">
+              <div class="lx-dochead">
+                <div class="t">2025년 하반기 업무 정보시스템 만족도 조사 결과</div>
+                <div class="lx-docmeta" data-only="before">
+                  <span class="lx-mark" aria-hidden="true">6</span>
+                  <span class="ggc-badge ggc-badge--pending">작성 중</span>
+                  다음 · 제출하기 · 한 파일 · □ 3건 함께 제출합니다 · 1쪽 · 고친 뒤 멈추면 자동 저장됩니다
+                </div>
+                <div class="ex-row" data-only="before">
+                  <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar"/></svg>행사 등록하기</button>
+                  <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sparkles"/></svg>AI 도움</button>
+                  <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-save"/></svg>임시 저장</button>
+                  <button class="ggc-btn ggc-btn--primary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-send"/></svg>3건 제출하기</button>
+                  <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" aria-label="더보기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></button>
+                </div>
+                <div class="lx-docbar" data-only="after">
+                  <span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-pencil"/></svg>작성 중</span>
+                  <span class="lx-saved">자동 저장됨</span>
+                  <span class="lx-gap"></span>
+                  <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sparkles"/></svg>AI 도움</button>
+                  <details class="ggc-menu ggc-menu--end">
+                    <summary class="ggc-btn ggc-btn--ghost ggc-btn--sm" aria-label="더보기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></summary>
+                    <ul class="list" role="menu" aria-label="보고 동작">
+                      <li role="none"><button role="menuitem" type="button">임시 저장</button></li>
+                      <li role="none"><button role="menuitem" type="button">행사 등록하기</button></li>
+                      <li role="none"><button role="menuitem" type="button">한글 파일로 내려받기</button></li>
+                    </ul>
+                  </details>
+                </div>
+              </div>
+              <div class="lx-paper" aria-label="문서 미리보기(예시)">
+                <p class="h">□ 2025년 하반기 업무 정보시스템 만족도 조사 결과</p>
+                <p>○ 조사기간 : 2025. 12. 1.(월) ~ 12. 12.(금) &lt;12일간&gt;</p>
+                <p>○ 조사방법 : 온라인 설문조사</p>
+                <p>○ 조사결과 : 전반적 만족도 상승, 사용자 편의성 개선 요구 지속 제기</p>
+                <p class="h">□ 디지털 업무 시행계획 수립(계속)</p>
+                <p>○ 추진근거 : 관련 조례에 따른 연차별 시행계획 수립</p>
+                <p>○ 주요내용 : 디지털 업무 운영, 정보시스템 운영관리, 역량 강화 교육 등</p>
+                <p class="h">□ 업무 정보시스템 운영 계획 수립(계속)</p>
+                <p>○ 대상사업 : 홈페이지, 회의록시스템, 업무포털 등</p>
+              </div>
+              <p class="lx-hint lx-foot" data-only="before"><span class="lx-mark" aria-hidden="true">10</span>□ 하나가 보고 한 건입니다. □ 제목 줄을 새로 쓰면 보고가 더해지고, □ 를 지우면 저장할 때 확인한 뒤 그 보고를 지웁니다.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <dialog class="ggc-modal" id="lx-upload" aria-labelledby="lx-upload-t">
+        <div class="head"><h2 class="title" id="lx-upload-t">한글 파일 올리기</h2>
+          <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button></div>
+        <div class="body">
+          <div class="ggc-file" data-ggc-file data-ggc-file-max="1">
+            <div class="drop">
+              <label class="cta" for="lx-f">
+                <input id="lx-f" type="file" accept=".hwpx,.hwp" aria-describedby="lx-f-h">
+                <span class="ggc-btn ggc-btn--secondary ggc-btn--sm">파일 선택</span>
+                <span class="or">또는 여기에 끌어놓기</span>
+              </label>
+              <span class="rule" id="lx-f-h">받은 서식에 쓴 한글 파일 하나 · □ 하나가 보고 한 건이 된다</span>
+            </div>
+            <ul class="ggc-file-list" aria-label="선택한 파일"></ul>
+          </div>
+        </div>
+        <div class="foot"><button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>취소</button>
+          <button class="ggc-btn ggc-btn--primary" type="button" data-ggc-modal-close>올리기</button></div>
+      </dialog>
+
+      <section class="ex-section">
+        <h2>무엇을 어디로 옮겼나</h2>
+        <p>「뺀 자리 번호 보기」를 켜면 「전」 화면에 번호가 붙는다. 「후」에서 사라진 정보는 <b>지운 것이 아니라 필요한 때·한 곳으로 옮긴 것</b>이다.
+        규칙 번호(R)는 <code class="ex-inline">docs/guides/less.md</code>.</p>
+        <div class="ggc-card" style="overflow-x:auto">
+        <table class="ggc-table">
+          <thead><tr><th scope="col">#</th><th scope="col">「전」에 있던 것</th><th scope="col">「후」</th><th scope="col">규칙</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>큰 제목 + 설명 문장("이번 주 보고를 작성하고 제출합니다 …")</td><td>제목은 화면 낭독기만 읽는다(간결형). 왼쪽 메뉴의 현재 항목이 화면 이름을 말해 준다. 설명은 없앴다</td><td>R2 · R5 · R6</td></tr>
+            <tr><td class="num">2</td><td>목록 머리 「이번 주 내 보고 · 3건 · 제출할 보고가 3건 남았습니다」</td><td>건수는 탭 「이번 주 3」 한 곳</td><td>R3</td></tr>
+            <tr><td class="num">3</td><td>처리 단계 막대(서식 받기 → 작성 → 올리기 → 제출)</td><td>상태 배지 「작성 중」 하나 + 지금 할 일 단추 「3건 제출하기」</td><td>R4</td></tr>
+            <tr><td class="num">4</td><td>마감을 알리는 상시 띠</td><td>목록 위 한 곳에 짧게(임박할 때만 강조하는 것도 된다)</td><td>R2 · R3</td></tr>
+            <tr><td class="num">5</td><td>목록 줄마다 같은 주차·기간·파일 수·「다음 · 제출하기」</td><td>주차·기간은 모든 줄에 같아 목록 위 한 곳으로 올렸다. 파일 수와 「다음 · 제출하기」는 「3건 제출하기」 단추가 대신 말한다. 줄에는 제목과 상태만</td><td>R3</td></tr>
+            <tr><td class="num">6</td><td>보기 칸 머리에 목록과 같은 부가정보 + 긴 설명</td><td>제목 / 상태 · 저장 상태 · 단추 한 줄로 줄였다(고른 보고가 무엇인지는 남긴다). 드문 동작(임시 저장 · 행사 등록)은 ⋯ 안</td><td>R3 · R7</td></tr>
+            <tr><td class="num">7</td><td>두 줄로 흩어진 단추와 설명</td><td>탭과 같은 한 줄. 주 단추는 「3건 제출하기」 하나</td><td>R1 · R7</td></tr>
+            <tr><td class="num">8</td><td>늘 펼쳐진 끌어 놓기 영역</td><td>「한글 파일 올리기」 단추 → 창. 끝나면 원래 화면</td><td>R7</td></tr>
+            <tr><td class="num">9</td><td>메뉴 옆 숫자와 과별 제출 현황(작성자에게는 쓸 일이 없다)</td><td>메뉴만. 과별 현황은 그 숫자를 쓰는 서무·총괄 화면에</td><td>R2</td></tr>
+            <tr><td class="num">10</td><td>문서 아래 사용법 문장</td><td>사용법은 「사용 안내」 단추 뒤로, 입력 조건은 올리기 창 안 한 줄로. □ 를 지운 보고는 저장할 때 <b>확인 창이 묻는다</b> — 실행 결과 안내는 그 자리에 남는다(R10)</td><td>R5</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </section>
+
+      <section class="ex-section">
+        <h2>덜어내지 않은 것</h2>
+        <p>상태 배지 · <b>자동 저장 상태</b> · 마감 시각(한 곳) · 문서 실제 모양 · 파일 올리기의 입력 조건 · 화면 낭독기용 제목은 「후」에도 있다.
+        오류 사유와 복구 방법, 밖으로 나가는 문안의 미리보기, AI 결과의 출처도 마찬가지다(R10). 덜어내기는 "적게"가 아니라 <b>"필요한 것만, 필요한 때에"</b>다.</p>
+      </section>
+
+    </main>
+      <main class="ggc-shell-main ggc-shell-main--wide" data-page="operate" aria-labelledby="page-title-operate" hidden>
+
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title-operate">실시간 회의 · Operate</h1>
+            <p class="desc">v3.1 정본 · ADR 0012 · 슬롯은 <code class="ex-inline">skills/ggc-design/references/archetypes.md</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-note" style="margin-top:0">
+        <p><b>Operate 는 계속 변하는 것을 보거나 같은 처리를 되풀이하는 화면이다.</b> 원본 디자인에는 없었고,
+        회의 실시간 자막 서비스가 2026년 8~10월 담당자와 화면을 고치며 굳힌 배치를 정본으로 올렸다.
+        두 배치가 있다 — 종일 띄워 두고 읽는 <b>실시간 시청</b>, 고르고·설정하고·실행하는 <b>반복 처리 작업대</b>.
+        영상·자막·발언자는 전부 가상이다.</p>
+      </div>
+
+      <section class="ex-section">
+        <h2>실시간 시청</h2>
+        <p>영상 바로 아래가 자막이다. 보조 기능은 탭으로 같은 자리를 나눠 쓰고, 새 알림은 탭의 건수로 알린다. 자막 위아래에 띠를 새로 만들지 않는다(띠 하나 = 자막 3~4줄).
+        연결이 정상이면 상태 줄은 보이지 않는다 — 아래 단추로 끊긴 상태를 바꿔 볼 수 있다.</p>
+
+        <div class="lx-controls" role="group" aria-label="연결 상태 바꾸기">
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-op-conn="ok" aria-pressed="true">연결 정상</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-op-conn="lost" aria-pressed="false">연결 끊김</button>
+        </div>
+
+        <div class="op-screen" id="op-screen" data-conn="ok" aria-label="예시 실시간 시청 화면">
+          <div class="op-head">
+            <a class="op-back" href="#op-screen" aria-label="채널 목록"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></a>
+            <h3 class="op-title">의회운영위원회</h3>
+            <span class="ggc-badge ggc-badge--rejected op-live"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>방송 중</span>
+            <button class="ggc-btn ggc-btn--secondary ggc-btn--sm op-agenda" type="button" data-ggc-modal-open="#op-agenda-m">
+              <svg class="ggc-icon" aria-hidden="true"><use href="#i-list"/></svg><span>의사일정</span><b>2</b><span class="op-agenda-t">행정기구 설치 조례 일부개정조례안</span>
+            </button>
+            <span class="lx-gap"></span>
+            <div class="ggc-search op-search">
+              <svg class="ggc-icon" aria-hidden="true"><use href="#i-search"/></svg>
+              <label for="op-q" class="ggc-sr">자막 검색</label>
+              <input id="op-q" type="search" placeholder="자막 검색">
+            </div>
+          </div>
+          <div class="op-body">
+            <div class="op-video" role="img" aria-label="회의 영상(예시)">
+              <span>회의 영상</span>
+            </div>
+            <div class="op-sub">
+              <div class="op-tabs">
+                <div class="ggc-tabs"><div class="ggc-tablist" role="tablist" aria-label="자막 보기">
+                  <button class="ggc-tab" role="tab" aria-selected="true" type="button">자막 <span class="count">40</span></button>
+                  <button class="ggc-tab" role="tab" aria-selected="false" tabindex="-1" type="button">검색결과</button>
+                  <button class="ggc-tab" role="tab" aria-selected="false" tabindex="-1" type="button">요구자료 <span class="count">2</span></button>
+                </div></div>
+                <details class="ggc-menu ggc-menu--end">
+                  <summary class="ggc-btn ggc-btn--ghost ggc-btn--sm"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg>자막 도구</summary>
+                  <ul class="list" role="menu" aria-label="자막 도구">
+                    <li role="none"><button role="menuitem" type="button">관심 키워드 설정</button></li>
+                    <li role="none"><button role="menuitem" type="button">지금까지 자막 받기</button></li>
+                    <li role="none"><button role="menuitem" type="button">글자 크기</button></li>
+                  </ul>
+                </details>
+              </div>
+              <ol class="op-lines ggc-scroll" aria-label="자막">
+                <li><time>10:21:08</time><p>다음은 의사일정 제2항 행정기구 설치 조례 일부개정조례안을 상정합니다.</p></li>
+                <li><time>10:21:19</time><p>제안설명은 소관 국장께서 해 주시기 바랍니다.</p></li>
+                <li><time>10:21:31</time><p>이번 개정안은 정보화 업무를 맡는 부서의 명칭과 분장 사무를 정비하려는 것입니다.</p></li>
+                <li><time>10:21:52</time><p>지난 회의에서 요구한 자료를 아직 받지 못했습니다. 다음 회의 전까지 제출해 주시기 바랍니다.</p></li>
+              </ol>
+              <div class="op-now">
+                <span class="ggc-badge ggc-badge--rejected"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>지금 발언</span>
+                <time>10:22:04</time>
+                <p>분장 사무 가운데 개인정보 처리 부분은 별도 조항으로 두는 것이 맞다고 봅니다.</p>
+              </div>
+              <div class="op-conn" role="status">
+                <svg class="ggc-icon" aria-hidden="true"><use href="#i-triangle-alert"/></svg>
+                <span>자막 연결이 끊겼습니다 — 마지막 자막 10:22:04. 다시 연결하는 중입니다.</span>
+                <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">지금 다시 연결</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <dialog class="ggc-modal" id="op-agenda-m" aria-labelledby="op-agenda-mt">
+          <div class="head"><h2 class="title" id="op-agenda-mt">의사일정</h2>
+            <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button></div>
+          <div class="body">
+            <ol class="op-agenda-list">
+              <li>회의록 서명 의원 선출</li>
+              <li aria-current="true"><b>행정기구 설치 조례 일부개정조례안</b> <span class="ggc-badge ggc-badge--session">지금</span></li>
+              <li>사무처 정원 조례 일부개정조례안</li>
+              <li>업무보고 청취</li>
+            </ol>
+          </div>
+          <div class="foot"><button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>닫기</button></div>
+        </dialog>
+
+        <div class="ex-grid op-notes">
+          <div class="ex-note"><p><b>한 줄 머리.</b> 지금 안건은 머리에 늘 보이고, 전체 일정은 단추 → 창. 좁아지면 안건 제목부터 줄어들고 단추는 눌리지 않는다.</p></div>
+          <div class="ex-note"><p><b>시각은 하나.</b> 실시간은 실제 시각, 지난 영상은 영상 시각. 누르면 그 자리로 간다.</p></div>
+          <div class="ex-note"><p><b>넣지 않은 것.</b> 영상 위 자막·시계 · 영상 크기/접기 단추 · 운영 로그 · 근거 없는 발언자 이름 · 휴대폰의 내보내기·요약.</p></div>
+        </div>
+      </section>
+
+      <section class="ex-section">
+        <h2>반복 처리 작업대</h2>
+        <p>대상을 고르고 → 미리 보고 → 설정하고 → 실행하고 → 결과를 받는 일을 되풀이한다(예: 의원 발언 영상 추출).
+        <b>담당자 모니터 한 장에 목록과 「추출하기」가 함께 보여야 한다</b> — 그래서 영상 미리보기를 줄였다. 결과에 영향을 주는 선택(자막 입히기)은 미리보기에서 바로 보인다.</p>
+
+        <div class="op-bench" aria-label="예시 반복 처리 작업대">
+          <div class="op-bench-list">
+            <div class="op-bench-h">발언 <small>제393회 의회운영위원회 제2차</small></div>
+            <ul class="lx-rows" aria-label="발언 목록">
+              <li class="is-selected"><div class="t">이○○ 의원 · 정보화 부서 분장 사무</div><span class="op-dur">10:21:52 · 1분 12초</span></li>
+              <li><div class="t">김○○ 의원 · 개인정보 처리 조항</div><span class="op-dur">10:24:10 · 2분 03초</span></li>
+              <li><div class="t">박○○ 의원 · 정원 조정 근거</div><span class="op-dur">10:31:45 · 0분 48초</span></li>
+              <li><div class="t">이○○ 의원 · 자료 제출 요구</div><span class="op-dur">10:40:02 · 1분 30초</span></li>
+            </ul>
+          </div>
+          <div class="op-bench-work">
+            <div class="op-video op-video--sm" role="img" aria-label="미리보기(예시)">
+              <span>미리보기</span>
+              <span class="op-cap" id="op-cap">정보화 업무를 맡는 부서의 분장 사무를 정비해야 합니다</span>
+            </div>
+            <div class="op-bench-form">
+              <div class="ggc-field"><label for="op-s">시작</label><input id="op-s" value="10:21:52"></div>
+              <div class="ggc-field"><label for="op-e">끝</label><input id="op-e" value="10:23:04"></div>
+              <label class="ggc-check"><input type="checkbox" id="op-capon" checked><span class="box"></span><span class="text">영상에 자막 입히기</span></label>
+              <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>추출하기</button>
+            </div>
+            <div class="op-bench-h">추출 기록</div>
+            <ul class="lx-rows" aria-label="추출 기록">
+              <li><div class="t">이○○ 의원 · 정보화 부서 분장 사무 <small class="op-dur">자막 입힘</small></div><span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>완료</span></li>
+              <li><div class="t">김○○ 의원 · 개인정보 처리 조항</div><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>추출 중</span></li>
+              <li><div class="t">박○○ 의원 · 정원 조정 근거 <small class="op-fail">영상 서버가 응답하지 않았습니다 — 잠시 뒤 다시 시도</small></div><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-refresh-cw"/></svg>다시 시도</button></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
   </div>
 
 <template data-gnb-page="index">
@@ -6926,6 +7442,16 @@ body {
       </nav>
     </template>
 <template data-gnb-page="login"></template>
+<template data-gnb-page="less">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#index">갤러리</a></li><li aria-current="page">덜어내기 전/후</li></ol>
+      </nav>
+    </template>
+<template data-gnb-page="operate">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="#index">갤러리</a></li><li aria-current="page">실시간 회의 · Operate</li></ol>
+      </nav>
+    </template>
 
   <footer class="ggc-footer">
     <div class="inner">
@@ -8155,10 +8681,46 @@ body {
 
 </script>
 <script>
+/* ---- design/examples/less.html (쪽 전용) ---- */
+/* less.html — 「전/후」 바꾸기 · 뺀 자리 번호. 상태는 화면 하나의 data-* 두 개뿐이다 */
+(function () {
+  var screen = document.getElementById('lx-screen');
+  var btns = document.querySelectorAll('[data-lx-state]');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      screen.setAttribute('data-state', b.getAttribute('data-lx-state'));
+      btns.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+    });
+  });
+  var annot = document.getElementById('lx-annot');
+  annot.addEventListener('change', function () { screen.setAttribute('data-annotate', annot.checked ? 'on' : 'off'); });
+  /* 주소로 시작 상태를 고른다 — less.html?state=after · ?annot=on (README 미리보기 생성기가 쓴다) */
+  var q = new URLSearchParams(location.search);
+  var st = q.get('state');
+  btns.forEach(function (b) { if (b.getAttribute('data-lx-state') === st) b.click(); });
+  if (q.get('annot') === 'on') { annot.checked = true; screen.setAttribute('data-annotate', 'on'); }
+})();
+/* ---- design/examples/operate.html (쪽 전용) ---- */
+/* operate.html — 연결 상태 바꾸기 · 자막 입히기 미리보기. 상태는 data-* 하나씩이다 */
+(function () {
+  var screen = document.getElementById('op-screen');
+  var btns = document.querySelectorAll('[data-op-conn]');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      screen.setAttribute('data-conn', b.getAttribute('data-op-conn'));
+      btns.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+    });
+  });
+  var bench = document.querySelector('.op-bench');
+  var cap = document.getElementById('op-capon');
+  cap.addEventListener('change', function () { bench.setAttribute('data-cap', cap.checked ? 'on' : 'off'); });
+})();
+</script>
+<script>
 /* 쪽 전환 — 합본 전용. 원본 갤러리는 파일이 나뉘어 있어 이 코드가 없다. */
 (function () {
   "use strict";
-  var SVC = {index: "공통 디자인 시스템", tokens: "공통 디자인 시스템", components: "공통 디자인 시스템", forms: "공통 디자인 시스템", nav: "공통 디자인 시스템", overlay: "공통 디자인 시스템", dashboard: "의정지원 플랫폼", explore: "의안관리", wizard: "조례 초안 작성", login: "공통 디자인 시스템"};
+  var SVC = {index: "공통 디자인 시스템", tokens: "공통 디자인 시스템", components: "공통 디자인 시스템", forms: "공통 디자인 시스템", nav: "공통 디자인 시스템", overlay: "공통 디자인 시스템", dashboard: "의정지원 플랫폼", explore: "의안관리", wizard: "조례 초안 작성", login: "공통 디자인 시스템", less: "주간 보고(예시)", operate: "회의 실시간 자막(예시)"};
   var mains = document.querySelectorAll("main[data-page]");
   var items = document.querySelectorAll(".ggc-lnb-item[data-page]");
   var svc = document.getElementById("svc");

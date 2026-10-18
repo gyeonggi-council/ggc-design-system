@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>실시간 회의 · Operate · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+<style>
+/* operate.html 전용 — 예시 시청 화면·작업대 틀(값은 전부 정본 토큰 var()) */
+.lx-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); margin: var(--ggc-space-4) 0; }
+.lx-controls [aria-pressed="true"] { background: var(--ggc-primary-light); border-color: var(--ggc-primary); color: var(--ggc-primary-deep); }
+.lx-gap { flex: 1; }
+.op-screen { background: var(--ggc-surface); border: 1px solid var(--ggc-border-strong); border-radius: var(--ggc-radius-lg); overflow: hidden; display: flex; flex-direction: column; height: 560px; }
+.op-head { display: flex; align-items: center; gap: var(--ggc-space-2); padding: var(--ggc-space-2) var(--ggc-space-3); border-bottom: 1px solid var(--ggc-shell-border); min-width: 0; }
+.op-back { display: inline-flex; color: var(--ggc-text-muted); }
+.op-title { margin: 0; font-size: var(--ggc-text-md); font-weight: 700; color: var(--ggc-text-strong); white-space: nowrap; }
+.op-agenda { min-width: 0; max-width: 360px; }
+.op-agenda b { font-variant-numeric: tabular-nums; }
+.op-agenda-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; color: var(--ggc-text-muted); font-weight: 400; }
+.op-search { width: 220px; }
+.op-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--ggc-space-3); padding: var(--ggc-space-3); background: var(--ggc-bg); }
+.op-video { position: relative; background: var(--ggc-text-strong); border-radius: var(--ggc-radius); display: flex; align-items: center; justify-content: center; color: var(--ggc-text-faint); font-size: var(--ggc-text-sm); aspect-ratio: 16 / 9; align-self: start; }
+.op-sub { min-height: 0; display: flex; flex-direction: column; background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); overflow: hidden; }
+.op-tabs { display: flex; align-items: center; gap: var(--ggc-space-2); padding: 0 var(--ggc-space-2); border-bottom: 1px solid var(--ggc-border-strong); }
+.op-tabs .ggc-tablist { border-bottom: 0; }
+.op-tabs .ggc-tabs { flex: 1; min-width: 0; }
+.op-lines { flex: 1; min-height: 0; overflow-y: auto; list-style: none; margin: 0; padding: 0; }
+.op-lines li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--ggc-space-3); padding: var(--ggc-space-2) var(--ggc-space-3); border-top: 1px solid var(--ggc-hairline); }
+.op-lines li:first-child { border-top: 0; }
+.op-lines time, .op-now time { font-family: var(--ggc-font-mono); font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); padding-top: 3px; font-variant-numeric: tabular-nums; }
+.op-lines p { margin: 0; font-size: var(--ggc-text-base); line-height: 1.6; color: var(--ggc-text-body); }
+.op-now { display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: var(--ggc-space-2); align-items: start; padding: var(--ggc-space-3); background: var(--ggc-primary-light); border-top: 1px solid var(--ggc-border); }
+.op-now p { grid-column: 1 / -1; margin: 0; font-size: var(--ggc-text-lg); font-weight: 700; line-height: 1.5; color: var(--ggc-text-strong); }
+.op-conn { display: none; align-items: center; gap: var(--ggc-space-2); padding: var(--ggc-space-2) var(--ggc-space-3); background: var(--ggc-warning-tint); color: var(--ggc-warning); font-size: var(--ggc-text-sm); border-top: 1px solid var(--ggc-border); }
+.op-conn span { flex: 1; min-width: 0; }
+.op-screen[data-conn="lost"] .op-conn { display: flex; }
+.op-agenda-list { margin: 0; padding-left: 1.4em; display: grid; gap: var(--ggc-space-2); }
+.op-notes { margin-top: var(--ggc-space-4); }
+.op-notes .ex-note { margin: 0; }
+.op-bench { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: var(--ggc-space-4); background: var(--ggc-bg); border: 1px solid var(--ggc-border-strong); border-radius: var(--ggc-radius-lg); padding: var(--ggc-space-4); }
+.op-bench-list, .op-bench-work { display: flex; flex-direction: column; gap: var(--ggc-space-3); min-width: 0; }
+.op-bench-h { font-size: var(--ggc-text-sm); font-weight: 700; color: var(--ggc-text); }
+.op-bench-h small { font-weight: 400; color: var(--ggc-text-subtle); margin-left: var(--ggc-space-2); }
+.lx-rows { list-style: none; margin: 0; padding: 0; background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); overflow: hidden; }
+.lx-rows li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--ggc-space-2); align-items: center; padding: var(--ggc-space-3); border-top: 1px solid var(--ggc-hairline); }
+.lx-rows li:first-child { border-top: 0; }
+.lx-rows li.is-selected { background: var(--ggc-primary-light); box-shadow: inset 3px 0 0 var(--ggc-primary); }
+.lx-rows .t { font-size: var(--ggc-text-base); font-weight: 600; color: var(--ggc-text); min-width: 0; }
+.lx-rows .t small { display: block; font-weight: 400; }
+.op-dur { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); font-variant-numeric: tabular-nums; }
+.op-fail { color: var(--ggc-danger); font-size: var(--ggc-text-xs); }
+.op-video--sm { max-width: 420px; width: 100%; }
+.op-cap { position: absolute; left: 8%; right: 8%; bottom: 8%; text-align: center; background: var(--ggc-text-strong); color: var(--ggc-surface); font-size: var(--ggc-text-xs); padding: 4px 8px; border-radius: var(--ggc-radius-sm); }
+.op-bench[data-cap="off"] .op-cap { display: none; }
+.op-bench-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--ggc-space-3); background: var(--ggc-surface); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); padding: var(--ggc-space-3); }
+.op-bench-form .ggc-field { width: 120px; margin: 0; }
+@media (max-width: 900px) {
+  .op-screen { height: 760px; }
+  .op-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+  .op-search, .op-agenda-t { display: none; }
+  .op-bench { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 480px) {
+  .op-body { padding: 0; gap: 0; background: var(--ggc-surface); }
+  .op-video { border-radius: 0; }
+  .op-sub { border: 0; border-radius: 0; }
+  .op-agenda > span:first-of-type { display: none; }
+}
+</style>
+</head>
+<body class="ex-body">
+<!-- ggc-icons:begin — 생성물. design/build-icons.py 가 갈아 끼운다. 손으로 고치지 말 것 -->
+<svg xmlns="http://www.w3.org/2000/svg" class="ggc-icon-sprite" aria-hidden="true" focusable="false"><symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol><symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol><symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol><symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol><symbol id="i-badge-check" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol><symbol id="i-building-2" viewBox="0 0 24 24"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></symbol><symbol id="i-calendar-check" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="m9 15 2 2 4-4"/></symbol><symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></symbol><symbol id="i-chart-column" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol><symbol id="i-chevrons-left" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></symbol><symbol id="i-chevrons-right" viewBox="0 0 24 24"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></symbol><symbol id="i-chevrons-up-down" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol><symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-circle-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></symbol><symbol id="i-circle-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-clipboard-list" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol><symbol id="i-columns-3" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol><symbol id="i-ellipsis-vertical" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></symbol><symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol><symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol><symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><symbol id="i-funnel" viewBox="0 0 24 24"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></symbol><symbol id="i-gavel" viewBox="0 0 24 24"><path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381"/><path d="m16 16 6-6"/><path d="m21.5 10.5-8-8"/><path d="m8 8 6-6"/><path d="m8.5 7.5 8 8"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol><symbol id="i-grip-vertical" viewBox="0 0 24 24"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol><symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol><symbol id="i-landmark" viewBox="0 0 24 24"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></symbol><symbol id="i-layout-dashboard" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></symbol><symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></symbol><symbol id="i-loader-circle" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-log-in" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/></symbol><symbol id="i-log-out" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></symbol><symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol><symbol id="i-message-square" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol><symbol id="i-panel-left" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></symbol><symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></symbol><symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></symbol><symbol id="i-qr-code" viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></symbol><symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol><symbol id="i-save" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></symbol><symbol id="i-scroll-text" viewBox="0 0 24 24"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></symbol><symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol><symbol id="i-square-check" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-table-2" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></symbol><symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol><symbol id="i-trending-down" viewBox="0 0 24 24"><path d="M16 17h6v-6"/><path d="m22 17-8.5-8.5-5 5L2 7"/></symbol><symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol><symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol></svg>
+<!-- ggc-icons:end -->
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">회의 실시간 자막(예시)</span>
+      </span>
+    </a>
+    <div class="ggc-gnb-page">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="index.html">갤러리</a></li><li aria-current="page">실시간 회의 · Operate</li></ol>
+      </nav>
+    </div>
+    <div class="ggc-search">
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-search"/></svg>
+      <label for="q" class="ggc-sr">의안 · 조례 검색</label>
+      <input id="q" type="search" placeholder="의안 · 조례 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-bell"/></svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ggc-lnb-group">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-house"/></svg><span class="label">개요</span></a>
+      <a class="ggc-lnb-item" href="tokens.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg><span class="label">토큰 · 팔레트</span></a>
+      <a class="ggc-lnb-item" href="components.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-columns-3"/></svg><span class="label">컴포넌트 카탈로그</span></a>
+      <a class="ggc-lnb-item" href="components-forms.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-square-check"/></svg><span class="label">폼 컨트롤</span></a>
+      <a class="ggc-lnb-item" href="components-nav.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-list"/></svg><span class="label">내비게이션 · 탭</span></a>
+      <a class="ggc-lnb-item" href="components-overlay.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-message-square"/></svg><span class="label">오버레이 · 상태 · 본문</span></a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ggc-lnb-group">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg><span class="label">대시보드 · Monitor</span></a>
+      <a class="ggc-lnb-item" href="explore.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록 · Explore</span></a>
+      <a class="ggc-lnb-item" href="wizard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">위저드 · Configure</span></a>
+      <a class="ggc-lnb-item" href="login.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-qr-code"/></svg><span class="label">QR 로그인 · Entry</span></a>
+      <a class="ggc-lnb-item" href="less.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-eye-off"/></svg><span class="label">덜어내기 전/후 · Less</span></a>
+      <a class="ggc-lnb-item" href="operate.html" aria-current="page"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg><span class="label">실시간 회의 · Operate</span></a>
+      <a class="ggc-lnb-item" href="public/index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">대민 셸 · Public</span></a>
+    </nav>
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main" aria-labelledby="page-title">
+
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title">실시간 회의 · Operate</h1>
+            <p class="desc">v3.1 정본 · ADR 0012 · 슬롯은 <code class="ex-inline">skills/ggc-design/references/archetypes.md</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-note" style="margin-top:0">
+        <p><b>Operate 는 계속 변하는 것을 보거나 같은 처리를 되풀이하는 화면이다.</b> 원본 디자인에는 없었고,
+        회의 실시간 자막 서비스가 2026년 8~10월 담당자와 화면을 고치며 굳힌 배치를 정본으로 올렸다.
+        두 배치가 있다 — 종일 띄워 두고 읽는 <b>실시간 시청</b>, 고르고·설정하고·실행하는 <b>반복 처리 작업대</b>.
+        영상·자막·발언자는 전부 가상이다.</p>
+      </div>
+
+      <section class="ex-section">
+        <h2>실시간 시청</h2>
+        <p>영상 바로 아래가 자막이다. 보조 기능은 탭으로 같은 자리를 나눠 쓰고, 새 알림은 탭의 건수로 알린다. 자막 위아래에 띠를 새로 만들지 않는다(띠 하나 = 자막 3~4줄).
+        연결이 정상이면 상태 줄은 보이지 않는다 — 아래 단추로 끊긴 상태를 바꿔 볼 수 있다.</p>
+
+        <div class="lx-controls" role="group" aria-label="연결 상태 바꾸기">
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-op-conn="ok" aria-pressed="true">연결 정상</button>
+          <button class="ggc-btn ggc-btn--secondary" type="button" data-op-conn="lost" aria-pressed="false">연결 끊김</button>
+        </div>
+
+        <div class="op-screen" id="op-screen" data-conn="ok" aria-label="예시 실시간 시청 화면">
+          <div class="op-head">
+            <a class="op-back" href="#op-screen" aria-label="채널 목록"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></a>
+            <h3 class="op-title">의회운영위원회</h3>
+            <span class="ggc-badge ggc-badge--rejected op-live"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>방송 중</span>
+            <button class="ggc-btn ggc-btn--secondary ggc-btn--sm op-agenda" type="button" data-ggc-modal-open="#op-agenda-m">
+              <svg class="ggc-icon" aria-hidden="true"><use href="#i-list"/></svg><span>의사일정</span><b>2</b><span class="op-agenda-t">행정기구 설치 조례 일부개정조례안</span>
+            </button>
+            <span class="lx-gap"></span>
+            <div class="ggc-search op-search">
+              <svg class="ggc-icon" aria-hidden="true"><use href="#i-search"/></svg>
+              <label for="op-q" class="ggc-sr">자막 검색</label>
+              <input id="op-q" type="search" placeholder="자막 검색">
+            </div>
+          </div>
+          <div class="op-body">
+            <div class="op-video" role="img" aria-label="회의 영상(예시)">
+              <span>회의 영상</span>
+            </div>
+            <div class="op-sub">
+              <div class="op-tabs">
+                <div class="ggc-tabs"><div class="ggc-tablist" role="tablist" aria-label="자막 보기">
+                  <button class="ggc-tab" role="tab" aria-selected="true" type="button">자막 <span class="count">40</span></button>
+                  <button class="ggc-tab" role="tab" aria-selected="false" tabindex="-1" type="button">검색결과</button>
+                  <button class="ggc-tab" role="tab" aria-selected="false" tabindex="-1" type="button">요구자료 <span class="count">2</span></button>
+                </div></div>
+                <details class="ggc-menu ggc-menu--end">
+                  <summary class="ggc-btn ggc-btn--ghost ggc-btn--sm"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg>자막 도구</summary>
+                  <ul class="list" role="menu" aria-label="자막 도구">
+                    <li role="none"><button role="menuitem" type="button">관심 키워드 설정</button></li>
+                    <li role="none"><button role="menuitem" type="button">지금까지 자막 받기</button></li>
+                    <li role="none"><button role="menuitem" type="button">글자 크기</button></li>
+                  </ul>
+                </details>
+              </div>
+              <ol class="op-lines ggc-scroll" aria-label="자막">
+                <li><time>10:21:08</time><p>다음은 의사일정 제2항 행정기구 설치 조례 일부개정조례안을 상정합니다.</p></li>
+                <li><time>10:21:19</time><p>제안설명은 소관 국장께서 해 주시기 바랍니다.</p></li>
+                <li><time>10:21:31</time><p>이번 개정안은 정보화 업무를 맡는 부서의 명칭과 분장 사무를 정비하려는 것입니다.</p></li>
+                <li><time>10:21:52</time><p>지난 회의에서 요구한 자료를 아직 받지 못했습니다. 다음 회의 전까지 제출해 주시기 바랍니다.</p></li>
+              </ol>
+              <div class="op-now">
+                <span class="ggc-badge ggc-badge--rejected"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>지금 발언</span>
+                <time>10:22:04</time>
+                <p>분장 사무 가운데 개인정보 처리 부분은 별도 조항으로 두는 것이 맞다고 봅니다.</p>
+              </div>
+              <div class="op-conn" role="status">
+                <svg class="ggc-icon" aria-hidden="true"><use href="#i-triangle-alert"/></svg>
+                <span>자막 연결이 끊겼습니다 — 마지막 자막 10:22:04. 다시 연결하는 중입니다.</span>
+                <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button">지금 다시 연결</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <dialog class="ggc-modal" id="op-agenda-m" aria-labelledby="op-agenda-mt">
+          <div class="head"><h2 class="title" id="op-agenda-mt">의사일정</h2>
+            <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button></div>
+          <div class="body">
+            <ol class="op-agenda-list">
+              <li>회의록 서명 의원 선출</li>
+              <li aria-current="true"><b>행정기구 설치 조례 일부개정조례안</b> <span class="ggc-badge ggc-badge--session">지금</span></li>
+              <li>사무처 정원 조례 일부개정조례안</li>
+              <li>업무보고 청취</li>
+            </ol>
+          </div>
+          <div class="foot"><button class="ggc-btn ggc-btn--secondary" type="button" data-ggc-modal-close>닫기</button></div>
+        </dialog>
+
+        <div class="ex-grid op-notes">
+          <div class="ex-note"><p><b>한 줄 머리.</b> 지금 안건은 머리에 늘 보이고, 전체 일정은 단추 → 창. 좁아지면 안건 제목부터 줄어들고 단추는 눌리지 않는다.</p></div>
+          <div class="ex-note"><p><b>시각은 하나.</b> 실시간은 실제 시각, 지난 영상은 영상 시각. 누르면 그 자리로 간다.</p></div>
+          <div class="ex-note"><p><b>넣지 않은 것.</b> 영상 위 자막·시계 · 영상 크기/접기 단추 · 운영 로그 · 근거 없는 발언자 이름 · 휴대폰의 내보내기·요약.</p></div>
+        </div>
+      </section>
+
+      <section class="ex-section">
+        <h2>반복 처리 작업대</h2>
+        <p>대상을 고르고 → 미리 보고 → 설정하고 → 실행하고 → 결과를 받는 일을 되풀이한다(예: 의원 발언 영상 추출).
+        <b>담당자 모니터 한 장에 목록과 「추출하기」가 함께 보여야 한다</b> — 그래서 영상 미리보기를 줄였다. 결과에 영향을 주는 선택(자막 입히기)은 미리보기에서 바로 보인다.</p>
+
+        <div class="op-bench" aria-label="예시 반복 처리 작업대">
+          <div class="op-bench-list">
+            <div class="op-bench-h">발언 <small>제393회 의회운영위원회 제2차</small></div>
+            <ul class="lx-rows" aria-label="발언 목록">
+              <li class="is-selected"><div class="t">이○○ 의원 · 정보화 부서 분장 사무</div><span class="op-dur">10:21:52 · 1분 12초</span></li>
+              <li><div class="t">김○○ 의원 · 개인정보 처리 조항</div><span class="op-dur">10:24:10 · 2분 03초</span></li>
+              <li><div class="t">박○○ 의원 · 정원 조정 근거</div><span class="op-dur">10:31:45 · 0분 48초</span></li>
+              <li><div class="t">이○○ 의원 · 자료 제출 요구</div><span class="op-dur">10:40:02 · 1분 30초</span></li>
+            </ul>
+          </div>
+          <div class="op-bench-work">
+            <div class="op-video op-video--sm" role="img" aria-label="미리보기(예시)">
+              <span>미리보기</span>
+              <span class="op-cap" id="op-cap">정보화 업무를 맡는 부서의 분장 사무를 정비해야 합니다</span>
+            </div>
+            <div class="op-bench-form">
+              <div class="ggc-field"><label for="op-s">시작</label><input id="op-s" value="10:21:52"></div>
+              <div class="ggc-field"><label for="op-e">끝</label><input id="op-e" value="10:23:04"></div>
+              <label class="ggc-check"><input type="checkbox" id="op-capon" checked><span class="box"></span><span class="text">영상에 자막 입히기</span></label>
+              <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>추출하기</button>
+            </div>
+            <div class="op-bench-h">추출 기록</div>
+            <ul class="lx-rows" aria-label="추출 기록">
+              <li><div class="t">이○○ 의원 · 정보화 부서 분장 사무 <small class="op-dur">자막 입힘</small></div><span class="ggc-badge ggc-badge--approved"><svg class="ggc-icon" aria-hidden="true"><use href="#i-check"/></svg>완료</span></li>
+              <li><div class="t">김○○ 의원 · 개인정보 처리 조항</div><span class="ggc-badge ggc-badge--pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-clock"/></svg>추출 중</span></li>
+              <li><div class="t">박○○ 의원 · 정원 조정 근거 <small class="op-fail">영상 서버가 응답하지 않았습니다 — 잠시 뒤 다시 시도</small></div><button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-refresh-cw"/></svg>다시 시도</button></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      예시 데이터다 · 의안명 · 숫자 · 이름은 전부 가상 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.0
+    </div>
+  </footer>
+</div>
+
+<script src="../ggc-behaviors.js"></script>
+<script src="examples.js"></script>
+<script>
+/* operate.html — 연결 상태 바꾸기 · 자막 입히기 미리보기. 상태는 data-* 하나씩이다 */
+(function () {
+  var screen = document.getElementById('op-screen');
+  var btns = document.querySelectorAll('[data-op-conn]');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      screen.setAttribute('data-conn', b.getAttribute('data-op-conn'));
+      btns.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+    });
+  });
+  var bench = document.querySelector('.op-bench');
+  var cap = document.getElementById('op-capon');
+  cap.addEventListener('change', function () { bench.setAttribute('data-cap', cap.checked ? 'on' : 'off'); });
+})();
+</script>
+</body>
+</html>

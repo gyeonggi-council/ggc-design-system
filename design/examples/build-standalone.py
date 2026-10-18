@@ -41,12 +41,19 @@ PAGES = [
     ("explore",    "explore.html",    "의안 목록 · Explore", "의안관리"),
     ("wizard",     "wizard.html",     "위저드 · Configure",  "조례 초안 작성"),
     ("login",      "login.html",      "QR 로그인 · Entry",   "공통 디자인 시스템"),
+    ("less",       "less.html",       "덜어내기 전/후 · Less", "주간 보고(예시)"),
+    ("operate",    "operate.html",    "실시간 회의 · Operate", "회의 실시간 자막(예시)"),
 ]
 
 MAIN_RE = re.compile(r"<main\b([^>]*)>(.*)</main>", re.S)
 # GNB 경로부(브레드크럼) — 쪽마다 다르므로 <main> 처럼 떼어 와 전환 시 갈아 끼운다(v3.0: 제목 h1 은 본문 안에 있다 — ADR 0010).
 # 슬롯 안에 <div> 가 없어 non-greedy 로 충분하다. login 은 GNB 가 없어 슬롯이 없다(빈 문자열).
 GNBPAGE_RE = re.compile(r'<div class="ggc-gnb-page">(.*?)</div>', re.S)
+# 쪽 전용 <style>(head 안)과 인라인 <script>(src 없는 것) — 합본에 그대로 실어 나른다.
+# 클래스 이름이 쪽마다 고유(ex-qr- · lx- · op-)라 한 문서에 모아도 부딪히지 않는다(2026-10-18 — 그 전에는 login 의 격자가 합본에서 빠져 있었다).
+HEAD_RE = re.compile(r"<head>(.*?)</head>", re.S)
+STYLE_RE = re.compile(r"<style>(.*?)</style>", re.S)
+INLINE_JS_RE = re.compile(r"<script>(.*?)</script>", re.S)
 CLASS_RE = re.compile(r'class="([^"]*)"')
 
 # 원본 index.html 의 "이 페이지가 예제다" 문단은 **상대경로 링크**를 근거로 삼는다.
@@ -59,7 +66,7 @@ CLAIM_NEW = """        <p><b>지금 보고 있는 이 페이지가 예제다.</b
 
 STANDALONE_NOTE = """
       <div class="ex-note ex-note--warn">
-        <p><b>이 파일은 생성물이다.</b> 갤러리 9쪽과 정본 CSS·JS·브랜드 자산을
+        <p><b>이 파일은 생성물이다.</b> 업무 갤러리 전 쪽과 정본 CSS·JS·브랜드 자산을
         한 파일로 합친 것이고, <code>design/examples/build-standalone.py</code> 가
         정본에서 다시 만든다. <b>직접 고치지 말 것</b> — 다음 생성에서 덮어써진다.</p>
         <p>저장소의 원본 갤러리는 정본을 <b>상대경로로 직접 링크</b>해 사본을 두지 않는다.
@@ -88,6 +95,7 @@ def build():
 
     # --- 각 쪽의 <main> 만 떼어 온다 -----------------------------------------
     mains, gnb_pages, claim_hits = [], {}, 0
+    page_css, page_js = [], []
     for key, fn, _label, _svc in PAGES:
         src = read(os.path.join(HERE, fn))
         if key == "index":
@@ -99,6 +107,11 @@ def build():
             claim_hits += 1
         m = MAIN_RE.search(src)
         assert m, "%s: <main> 을 찾지 못했다" % fn
+        head = HEAD_RE.search(src)
+        for css in STYLE_RE.findall(head.group(1) if head else ""):
+            page_css.append("/* ---- design/examples/%s (쪽 전용) ---- */\n%s" % (fn, css.strip()))
+        for js in INLINE_JS_RE.findall(src[m.end():]):
+            page_js.append("/* ---- design/examples/%s (쪽 전용) ---- */\n%s" % (fn, js.strip()))
         g = GNBPAGE_RE.search(src)
         assert g or key == "login", "%s: .ggc-gnb-page 를 찾지 못했다" % fn
         gp = g.group(1) if g else ""
@@ -121,7 +134,7 @@ def build():
     # LNB 항목 아이콘 — 낱장 갤러리와 같은 lucide 심볼(v3.0). 스프라이트는 @@ICONS@@ 로 인라인된다
     ICONS = {"index": "house", "tokens": "sliders-horizontal", "components": "columns-3", "forms": "square-check",
              "nav": "list", "overlay": "message-square", "dashboard": "layout-dashboard", "explore": "table-2",
-             "wizard": "file-text", "login": "qr-code"}
+             "wizard": "file-text", "login": "qr-code", "less": "eye-off", "operate": "circle-dot"}
     lnb_rows = []
     for key, _fn, label, _svc in PAGES:
         if key == "dashboard":
@@ -161,6 +174,8 @@ def build():
         # 합본에서 동작 스크립트 전체가 SyntaxError 로 죽어 있었다. 정본을 고치지 않고 인라인할 때만 이스케이프한다.
         "@@BEHAVIORS_JS@@": inline_js(read(os.path.join(DESIGN, "ggc-behaviors.js"))),
         "@@EXAMPLES_JS@@": inline_js(read(os.path.join(HERE, "examples.js"))),
+        "@@PAGE_CSS@@": "\n".join(page_css),
+        "@@PAGE_JS@@": inline_js("\n".join(page_js)),
         "@@MARK@@": mark,
         "@@LNB@@": "\n".join(lnb_rows),
         "@@MAINS@@": mains_html,
@@ -188,7 +203,7 @@ SHELL = """<!doctype html>
   직접 고치지 말 것 — 다음 생성에서 덮어써진다.
 
   담긴 것: ggc-tokens.css v2.0 · ggc-components.css v2.0 · ggc-behaviors.js ·
-  examples.css · examples.js · 의회 마크(data URI) · 갤러리 9쪽의 본문.
+  examples.css · examples.js · 의회 마크(data URI) · 업무 갤러리 전 쪽의 본문과 쪽 전용 스타일·스크립트.
   외부 요청 0 — 망분리 환경과 오프라인에서도 그대로 열린다.
 
   <meta charset> 은 head 첫머리에 둔다. 표준 모드와 모바일 viewport를 선언해
@@ -201,6 +216,8 @@ SHELL = """<!doctype html>
 @@COMPONENTS@@
 /* ---- design/examples/examples.css (갤러리 전용) -------------------------- */
 @@EXAMPLES_CSS@@
+/* ---- 쪽 전용 스타일 (각 쪽 head 의 <style>) ------------------------------- */
+@@PAGE_CSS@@
 /* ---- 합본 전용 ------------------------------------------------------------
  * 이 디자인은 **단일 라이트 세계로 확정**돼 있다 — 계약이 다크모드를 비범위로 뒀고,
  * 고대비는 팔레트를 하나 더 만드는 대신 forced-colors·prefers-contrast 로 대응한다
@@ -279,6 +296,9 @@ body {
 </script>
 <script>
 @@EXAMPLES_JS@@
+</script>
+<script>
+@@PAGE_JS@@
 </script>
 <script>
 /* 쪽 전환 — 합본 전용. 원본 갤러리는 파일이 나뉘어 있어 이 코드가 없다. */

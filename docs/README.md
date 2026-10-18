@@ -17,6 +17,11 @@
 
 전부 같은 다섯 단계다: **복사 → 링크 순서 → 프로필 속성 → 파비콘 → 검사**.
 
+## 화면에 무엇을 둘지 — 먼저 덜어내기
+
+[guides/less.md](guides/less.md) — 정보는 쓰임이 확인될 때 보인다(v3.1, ADR 0012). 규칙 10개 · 사용자가 실제로 빼라고 한 군더더기 열 가지 · 제목 기본형/간결형 · 판정 목록.
+같은 화면의 덜어내기 전/후는 갤러리 `design/examples/less.html`.
+
 ## 업무용인가 대민용인가
 
 [guides/profiles.md](guides/profiles.md) — 판정 질문 3개, 무엇이 같고 무엇이 다른지 한 표. 대민이면 [guides/public-shell.md](guides/public-shell.md).
@@ -35,6 +40,7 @@
 | [guides/accessibility.md](guides/accessibility.md) | AA · 색 단독 금지 · 포커스 · 고대비 · 키보드 |
 | [guides/fonts.md](guides/fonts.md) | Pretendard GOV 자체 호스팅 |
 | [guides/brand-assets.md](guides/brand-assets.md) | 파비콘 · 마크 |
+| [guides/less.md](guides/less.md) | **덜어내기** — 필요한 정보부터, 언제 보여 주나 (v3.1) |
 | [guides/layout-shell.md](guides/layout-shell.md) | 업무 셸 (헤더 · 사이드바 · 본문 · 아키타입) |
 | [guides/typography.md](guides/typography.md) | 타이포 스케일 — 위계는 크기·굵기로 (v3.0) |
 | [guides/icons.md](guides/icons.md) | 아이콘 — lucide 스프라이트, 이모지 금지 (v3.0) |

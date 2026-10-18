@@ -49,9 +49,12 @@ SHOTS = [
     ("mobile-dashboard", "dashboard.html", None,          (390, 844), "모바일 — 통계 2열 · 결재/일정 전환"),
     ("mobile-explore",   "explore.html", None,            (390, 844), "모바일 — 검색 · 카드/표 전환 · 전체 정보"),
     ("mobile-wizard",    "wizard.html", None,             (390, 844), "모바일 — 단계별 작성 · 참고 전환 · 하단 작업"),
+    ("screen-less-before", "less.html?state=before&annot=on", "#lx-screen", (1440, 900), "덜어내기 전 — 사용자가 빼라고 한 군더더기(번호는 표와 짝)"),
+    ("screen-less-after",  "less.html?state=after",           "#lx-screen", (1440, 900), "덜어내기 후 — 같은 자료 · 같은 일 · 기능은 그대로"),
+    ("screen-operate",     "operate.html",                    "#op-screen", (1440, 900), "Operate 실시간 시청 — 영상 아래 자막 · 탭으로 나눠 쓰기 · 지금 발언"),
     # 컴포넌트 — 갤러리 데모 상자를 그대로 잘라낸다
     ("gnb-page",   "components-nav.html",     "#d-gnbpage",   (1440, 900), "GNB 경로부 `.ggc-gnb-page` (브레드크럼 — 제목은 본문)"),
-    ("page-head",  "components-nav.html",     "#d-head",      (1440, 900), "페이지 헤더 `.ggc-page-head` — h1 24px + 설명 + 주 액션"),
+    ("page-head",  "components-nav.html",     "#d-head",      (1440, 900), "페이지 헤더 `.ggc-page-head` — 기본형(제목 보임) · 설명과 주 단추는 필요할 때만"),
     ("buttons",    "components.html",         "#d-btn",       (1440, 900), "버튼 `.ggc-btn`"),
     ("badges",     "components.html",         "#d-badge",     (1440, 900), "배지 · 태그 `.ggc-badge` `.ggc-tag`"),
     ("cards",      "components.html",         "#d-card",      (1440, 900), "카드 `.ggc-card`"),
@@ -72,7 +75,7 @@ SOURCES = [
     "design/ggc-behaviors.js", "design/ggc-fonts.css", "design/examples/examples.css",
     "design/examples/examples.js", "design/examples/build-shots.py",
     "design/examples/gallery-fonts.css", "design/fonts/PretendardGOVVariable.subset.woff2",
-] + sorted({"design/examples/" + page for _k, page, _sel, _vp, _cap in SHOTS})
+] + sorted({"design/examples/" + page.split("?")[0] for _k, page, _sel, _vp, _cap in SHOTS})
 
 DPR = 2  # README 에서 절반 폭으로 보이므로 2배로 찍어야 글자가 선명하다
 
