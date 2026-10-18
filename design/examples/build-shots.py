@@ -54,7 +54,7 @@ SHOTS = [
     ("screen-operate",     "operate.html",                    "#op-screen", (1440, 900), "Operate 실시간 시청 — 영상 아래 자막 · 탭으로 나눠 쓰기 · 지금 발언"),
     # 컴포넌트 — 갤러리 데모 상자를 그대로 잘라낸다
     ("gnb-page",   "components-nav.html",     "#d-gnbpage",   (1440, 900), "GNB 경로부 `.ggc-gnb-page` (브레드크럼 — 제목은 본문)"),
-    ("page-head",  "components-nav.html",     "#d-head",      (1440, 900), "페이지 헤더 `.ggc-page-head` — h1 24px + 설명 + 주 액션"),
+    ("page-head",  "components-nav.html",     "#d-head",      (1440, 900), "페이지 헤더 `.ggc-page-head` — 기본형(제목 보임) · 설명과 주 단추는 필요할 때만"),
     ("buttons",    "components.html",         "#d-btn",       (1440, 900), "버튼 `.ggc-btn`"),
     ("badges",     "components.html",         "#d-badge",     (1440, 900), "배지 · 태그 `.ggc-badge` `.ggc-tag`"),
     ("cards",      "components.html",         "#d-card",      (1440, 900), "카드 `.ggc-card`"),

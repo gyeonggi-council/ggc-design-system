@@ -129,7 +129,7 @@ Tailwind 서비스는 `@theme { --color-brand: var(--ggc-primary); }` 처럼 **�
 work 는 `references/archetypes.md` 의 슬롯 순서를, public 은 `references/public-patterns.md` 를 따른다 — **쓰는 슬롯만**(빈 슬롯 자리에 빈 카드·여백을 남기지 않는다). 규칙:
 
 0. **덜어내기부터**(v3.1). 화면을 다 짜면 [`docs/guides/less.md`](../../docs/guides/less.md) 의 「군더더기 열 가지」를 대 보고, 판정 목록을 `design-decisions.md` 에 적는다.
-   설명 줄(`.desc`)은 기본 없음, 제목은 화면군마다 기본형/간결형, 단계 막대는 사용자가 단계를 오가는 입력에만.
+   설명 줄(`.desc`)은 기본 없음, 제목은 화면군마다 기본형/간결형, 단계 막대는 사용자가 단계를 오가는 입력과 사용 안내에만.
    **오류 사유 · 저장 상태 · 출처 · 외부 발송 미리보기 · 낯선 말의 한 줄 풀이는 덜어낼 대상이 아니다.**
 
 1. **빈 상태 · 오류 · 로딩 3종을 함께 만든다.** 시연 당일에 드러나는 것이 이것이다. 로딩은 `.ggc-skeleton`/`.ggc-spinner`, 빈 상태는 다음 행동을 말한다.
@@ -162,7 +162,7 @@ python "$ROOT/design/check_design.py" --gate <서비스경로> --aa=observe     
 - [ ] 덜어내기 판정 목록(`docs/guides/less.md`)을 돌렸다 — 설명 줄·중복 정보·장식 숫자·상시 단계 막대가 없거나 그 쓰임을 적었다
 - [ ] 로그인 화면이 있다면 `.ggc-qr` 정본 컴포넌트다
 - [ ] `outline:none` 을 대체 없이 두지 않았다 · 외부 폰트 CDN 0건
-- [ ] 이모지·유니코드 기호 아이콘 0건 · h1 이 본문 첫 줄 24px 에 하나(헤더에는 브레드크럼만)
+- [ ] 이모지·유니코드 기호 아이콘 0건 · 화면마다 본문에 h1 하나 — 기본형은 보이고, 간결형은 `.ggc-sr` 로 남긴다(간결형은 좁은 화면에서도 현재 화면 이름이 계속 보일 때만, v3.1)(헤더에는 브레드크럼만)
 - [ ] `check_design.py --gate` PASS · AA 기준선이 늘지 않았다 · (Tier 2) D7 PASS
 - [ ] 스크린샷 2종(또는 3종)과 콘솔 0건 증거가 `docs/design-evidence/` 에 있다
 - [ ] 어휘·밀도 판정 목록(`domain-language.md`)을 돌렸고 결과를 적었다

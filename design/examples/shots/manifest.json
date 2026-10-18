@@ -1,6 +1,6 @@
 {
   "_": "생성물이다. design/examples/build-shots.py 가 만든다 — 직접 고치지 말 것.",
-  "sha256": "a15431610f9375b740dccd14de3fb4ec883995a891292bc7842c4036348a9952",
+  "sha256": "ad5aec90bba18be628ac86f9a3befeda2c5b428784461e25b3976c791cb2474d",
   "sources": [
     "design/ggc-tokens.css",
     "design/ggc-components.css",
@@ -62,7 +62,7 @@
     "screen-less-after": "덜어내기 후 — 같은 자료 · 같은 일 · 기능은 그대로",
     "screen-operate": "Operate 실시간 시청 — 영상 아래 자막 · 탭으로 나눠 쓰기 · 지금 발언",
     "gnb-page": "GNB 경로부 `.ggc-gnb-page` (브레드크럼 — 제목은 본문)",
-    "page-head": "페이지 헤더 `.ggc-page-head` — h1 24px + 설명 + 주 액션",
+    "page-head": "페이지 헤더 `.ggc-page-head` — 기본형(제목 보임) · 설명과 주 단추는 필요할 때만",
     "buttons": "버튼 `.ggc-btn`",
     "badges": "배지 · 태그 `.ggc-badge` `.ggc-tag`",
     "cards": "카드 `.ggc-card`",
