@@ -1,6 +1,6 @@
 /* =============================================================================
- * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.0 (2026-09-05)
- * 전제: design/ggc-tokens.css v3.0 을 먼저 로드할 것 (--ggc-* 변수 의존)
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.2 (2026-10-24)
+ * 전제: design/ggc-tokens.css v3.2 를 먼저 로드할 것 (--ggc-* 변수 의존)
  * 출처: Claude Design 산출물(.dc.html) 실측 추출
  *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
  *   정본 2  design_경기도의회_의정지원_플랫폼/조례초안 작성 위저드.dc.html
@@ -26,6 +26,13 @@
  *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
  *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
  *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ *
+ * -- v3.2 에서 바뀐 것 (ADR 0013) ---------------------------------------------
+ *   GitHub 식 정돈 — 제목 굵기 700/800 → 600(카드 머리 · 행 제목 · 페이지 제목 · 알림 · 모달 · 토스트 · 빈 상태 · .ggc-h1~3).
+ *             흰 바탕 · 테두리 · 모서리 · 주 버튼 그림자는 토큰 값이 바뀌어 따라온다(ggc-tokens.css v3.2).
+ *   §20       ≤900px 액션바가 저장 상태(.status)를 숨기지 않는다 — 한 줄 위로 접는다(less.md R10 과 맞춤).
+ *   §38~§44  파일 끝에 덧붙임 — .ggc-progress · .ggc-job(긴 작업 진행) · .ggc-solo(휴대폰 1인 링크 화면) + .ggc-modal--full ·
+ *             .ggc-signature(서명 패드) · .ggc-viewer(문서 미리보기 틀) · .ggc-split(좌우 두 칸 작업대) · 고대비 보강.
  *
  * -- v3.0 에서 바뀐 것 (ADR 0009 · 0010) -------------------------------------
  *   업무 프로필이 shadcn 기본 밀도로 갔다 — 치수는 전부 토큰이라 이 파일의 컨트롤·표·행·카드는
@@ -142,7 +149,7 @@
 .ggc-card-head .title {
   margin: 0;
   font-size: var(--ggc-h3-size);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--ggc-text-strong);
 }
@@ -420,7 +427,7 @@
 .ggc-list-row .body { flex: 1; min-width: 0; }
 .ggc-list-row .title {
   font-size: var(--ggc-text-base);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--ggc-text);
   margin-bottom: 3px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -1625,7 +1632,7 @@
 .ggc-page-head .title {
   margin: 0;
   font-size: var(--ggc-h1-size);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   line-height: var(--ggc-leading-tight);
   color: var(--ggc-text-strong);
@@ -1901,7 +1908,7 @@
   flex-shrink: 0;
   width: 20px; height: 20px;
   margin-top: 1px;
-  border: 1.5px solid var(--ggc-border-strong);
+  border: 1.5px solid var(--ggc-text-faint);   /* v3.2: border-strong(흰 위 1.38:1) → 비텍스트 3:1(3.07) — 상자 경계가 곧 조작 표시다(WCAG 1.4.11) */
   background: var(--ggc-surface);
   position: relative;
   transition: background .12s, border-color .12s;
@@ -2013,7 +2020,7 @@
 }
 .ggc-alert .icon { flex-shrink: 0; font-size: 15px; line-height: 1.3; }
 .ggc-alert .body { flex: 1; min-width: 0; }
-.ggc-alert .title { display: block; font-weight: 700; color: var(--ggc-text-strong); margin-bottom: 2px; }
+.ggc-alert .title { display: block; font-weight: 600; color: var(--ggc-text-strong); margin-bottom: 2px; }
 .ggc-alert .body p { margin: 0; }
 .ggc-alert .body p + p { margin-top: 4px; }
 .ggc-alert .actions { display: flex; align-items: center; gap: var(--ggc-space-2); flex-shrink: 0; }
@@ -2085,7 +2092,7 @@
 .ggc-modal .title {
   margin: 0;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--ggc-text-strong);
 }
@@ -2168,9 +2175,10 @@ html[data-ggc-modal-active] { overflow: hidden; }
   margin: 0;
 }
 @media (max-width: 900px) {
-  .ggc-actionbar { margin-left: calc(-1 * var(--ggc-space-4)); margin-right: calc(-1 * var(--ggc-space-4)); margin-bottom: -40px; padding: 12px var(--ggc-space-4); }
+  .ggc-actionbar { margin-left: calc(-1 * var(--ggc-space-4)); margin-right: calc(-1 * var(--ggc-space-4)); margin-bottom: -40px; padding: 12px var(--ggc-space-4); flex-wrap: wrap; row-gap: var(--ggc-space-2); }
   .ggc-actionbar--fixed { left: 0; }
-  .ggc-actionbar .status { display: none; }
+  .ggc-actionbar .status { flex-basis: 100%; }   /* v3.2: 숨기지 않는다 — 저장 상태는 덜어내지 않는다(less.md R10) */
+  .ggc-actionbar .status:empty { display: none; }   /* 비었으면 줄을 차지하지 않는다 */
   .ggc-actionbar .actions { width: 100%; }
   .ggc-actionbar .actions .ggc-btn { flex: 1; }
 }
@@ -2422,7 +2430,7 @@ html[data-ggc-modal-active] { overflow: hidden; }
   color: var(--ggc-text-muted);
 }
 .ggc-toast .body { flex: 1; min-width: 0; }
-.ggc-toast .title { display: block; font-weight: 700; color: var(--ggc-text-strong); }
+.ggc-toast .title { display: block; font-weight: 600; color: var(--ggc-text-strong); }
 .ggc-toast .desc { display: block; margin-top: 2px; font-size: 12.5px; color: var(--ggc-text-muted); overflow-wrap: anywhere; }
 .ggc-toast .action {
   flex-shrink: 0;
@@ -2781,7 +2789,7 @@ html[data-ggc-modal-active] { overflow: hidden; }
   color: var(--ggc-text-faint);
   font-size: 20px;
 }
-.ggc-empty .title { margin: 0; font-size: 14.5px; font-weight: 700; color: var(--ggc-text-strong); }
+.ggc-empty .title { margin: 0; font-size: 14.5px; font-weight: 600; color: var(--ggc-text-strong); }
 .ggc-empty .desc { margin: 0; max-width: 440px; font-size: 13px; line-height: 1.6; color: var(--ggc-text-muted); }
 .ggc-empty .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--ggc-space-2); margin-top: var(--ggc-space-3); }
 .ggc-empty--error .icon { background: var(--ggc-danger-tint); color: var(--ggc-danger); }
@@ -3054,7 +3062,7 @@ html[data-ggc-modal-active] { overflow: hidden; }
 .ggc-h1, .ggc-h2, .ggc-h3 {
   margin: 0;
   font-family: var(--ggc-font);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   line-height: var(--ggc-leading-tight);
   color: var(--ggc-text-strong);
@@ -3212,4 +3220,357 @@ html[data-ggc-drawer-active] { overflow: hidden; }
   .ggc-work[data-pane] .ggc-work-primary, .ggc-work[data-pane] .ggc-work-secondary { display: block; }
   .ggc-work-results .ggc-table-wrap { max-height: none; overflow: visible; }
   .ggc-work { max-width: none; padding: 0; }
+}
+
+/* =============================================================================
+ * v3.2 (2026-10-24, ADR 0013) — 서비스들이 각자 만들던 부품을 정본으로
+ * 근거: 18개 서비스 실측 — 긴 작업 진행 4곳(단계 배지까지 6곳) · 휴대폰 1인 링크 화면 4곳 · 서명 패드 3곳 · 문서 미리보기 6곳 ·
+ *       좌우 분할 작업대 2곳이 각자 구현돼 있었다. 공통 분모만 올린다(흐름·렌더러·내보내기는 서비스 몫).
+ * 이 아래 절은 파일 끝에 덧붙였다 — 위의 기존 선택자는 한 줄도 바꾸지 않았다.
+ * 동작은 ggc-behaviors.js ⑪~⑮ — 없어도 화면은 깨지지 않는다(상태 글자·두 칸 쌓임으로 남는다).
+ * ============================================================================= */
+
+/* =============================================================================
+ * 38. .ggc-progress — 진행 막대 (네이티브 <progress>)
+ * 마크업: <progress class="ggc-progress" max="12" value="3" aria-label="쪽을 그리는 중"></progress>
+ * 값을 모르면 막대를 두지 않는다 — 스피너(§21)를 쓴다. 지어낸 % 는 "멈췄다"는 오해를 만든다.
+ * <div role="progressbar" style="width:%"> 를 쓰지 않는 이유: style 속성은 eGovFrame CSP 에서 막힌다.
+ * ============================================================================= */
+.ggc-progress {
+  display: block;
+  width: 100%;
+  height: var(--ggc-space-2);
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  border-radius: var(--ggc-radius-sm);
+  overflow: hidden;
+  background: var(--ggc-primary-light-strong);
+  color: var(--ggc-primary);
+}
+.ggc-progress::-webkit-progress-bar { background: var(--ggc-primary-light-strong); border-radius: var(--ggc-radius-sm); }
+.ggc-progress::-webkit-progress-value { background: var(--ggc-primary); border-radius: var(--ggc-radius-sm); }
+.ggc-progress::-moz-progress-bar { background: var(--ggc-primary); border-radius: var(--ggc-radius-sm); }
+
+/* =============================================================================
+ * 39. .ggc-job — 긴 작업 진행 (시스템이 이 화면에서 3초 넘게 돌리는 일)
+ * 경계: 사용자가 단계를 오가는 입력 = .ggc-wizard · 레코드의 처리 상태(접수→심사) = 배지 하나 ·
+ *       1~3초 = 스피너 · 목록 자리 = 스켈레톤. 이것은 "지금 돌고 있는 작업" 하나에만 쓴다.
+ * 마크업:
+ *   <div class="ggc-job" data-ggc-job data-state="running" data-ggc-job-start="2026-10-24T22:10:00+09:00" data-ggc-job-slow="60">
+ *     <div class="head">
+ *       <span class="ggc-spinner ggc-spinner--sm when-busy" aria-hidden="true"></span>
+ *       <strong class="now" role="status">조문을 검토하는 중</strong>
+ *       <span class="step">2/4단계</span>
+ *       <span class="elapsed">경과 <time>0초</time></span>
+ *       <span class="actions when-running"><button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button">중지</button></span>
+ *       <span class="ggc-badge ggc-badge--approved when-ended">완료</span>          ← 끝 상태 배지(서비스가 바꿔 넣는다)
+ *     </div>
+ *     <progress class="ggc-progress" max="12" value="5" aria-label="조문 검토 진행"></progress>   (센 값이 있을 때만 — 단계 2/4 를 50% 로 바꾸지 않는다)
+ *     <p class="slow">평소보다 오래 걸리고 있습니다. 창을 닫아도 작업은 계속됩니다.</p>
+ *     <p class="msg">…결과·실패 사유…</p>
+ *     <details class="steps"><summary>과정 보기</summary><ol><li data-state="done">…</li></ol></details>
+ *   </div>
+ * data-state: queued · running · stopping(중지 요청 중) · unknown(상태 확인 불가 — 실패가 아니다) · done · failed · partial · stopped
+ *   (서비스가 바꾼다. 연결이 끊겼다고 failed 로 두지 않고, 중지를 눌렀다고 stopped 로 두지 않는다)
+ * ============================================================================= */
+.ggc-job {
+  display: grid;
+  gap: var(--ggc-space-2);
+  padding: var(--ggc-space-3) var(--ggc-space-4);
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-lg);
+  background: var(--ggc-surface);
+  font-family: var(--ggc-font);
+  font-size: var(--ggc-text-base);
+  color: var(--ggc-text);
+}
+.ggc-job--compact { padding: var(--ggc-space-2) 0; border: 0; border-radius: 0; background: none; }
+.ggc-job .head { display: flex; align-items: center; flex-wrap: wrap; gap: var(--ggc-space-2); min-width: 0; }
+.ggc-job .now { font-weight: 600; color: var(--ggc-text-strong); }
+.ggc-job .step, .ggc-job .elapsed { font-size: var(--ggc-text-sm); color: var(--ggc-text-subtle); font-variant-numeric: tabular-nums; }
+.ggc-job .actions, .ggc-job .head > .ggc-badge { margin-left: auto; }
+.ggc-job .slow, .ggc-job .msg { margin: 0; font-size: var(--ggc-text-sm); line-height: var(--ggc-leading-normal); color: var(--ggc-text-muted); }
+.ggc-job .slow { display: none; }
+.ggc-job[data-slow][data-state="running"] .slow { display: block; color: var(--ggc-warning); }
+.ggc-job .msg:empty { display: none; }
+.ggc-job[data-state="failed"] .msg { color: var(--ggc-danger); }
+.ggc-job .when-busy, .ggc-job .when-running, .ggc-job .when-ended { display: none; }
+.ggc-job[data-state="queued"] .when-busy, .ggc-job[data-state="running"] .when-busy, .ggc-job[data-state="stopping"] .when-busy,
+.ggc-job[data-state="queued"] .when-running, .ggc-job[data-state="running"] .when-running { display: inline-flex; }
+.ggc-job[data-state="unknown"] .msg { color: var(--ggc-warning); }
+.ggc-job[data-state="done"] .when-ended, .ggc-job[data-state="failed"] .when-ended,
+.ggc-job[data-state="partial"] .when-ended, .ggc-job[data-state="stopped"] .when-ended { display: inline-flex; }
+.ggc-job .steps > summary { cursor: pointer; width: fit-content; font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.ggc-job .steps ol { list-style: none; margin: var(--ggc-space-2) 0 0; padding: 0; display: grid; gap: var(--ggc-space-1); font-size: var(--ggc-text-sm); }
+.ggc-job .steps li { display: flex; align-items: center; gap: var(--ggc-space-2); color: var(--ggc-text-muted); }
+.ggc-job .steps li .ggc-icon { color: var(--ggc-text-faint); }
+.ggc-job .steps li[data-state="done"] .ggc-icon { color: var(--ggc-success); }
+.ggc-job .steps li[data-state="failed"] { color: var(--ggc-danger); }
+.ggc-job .steps li[data-state="failed"] .ggc-icon { color: var(--ggc-danger); }
+.ggc-job .steps li[aria-current="step"] { font-weight: 600; color: var(--ggc-text-strong); }
+.ggc-job .steps li time { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--ggc-text-subtle); }
+
+/* =============================================================================
+ * 40. .ggc-solo — 휴대폰 1인 링크 화면 (로그인 없는 개인 링크: 서명 · 설문 · 신청 확인)
+ * <html data-ggc-profile="public"> 이되 대민 셸(마스트헤드 · 아이덴티파이어 · 공개 푸터)을 생략한다(계약 §9 예외).
+ * 마크업:
+ *   <div class="ggc-solo">
+ *     <header class="ggc-solo-head"><span class="org">경기도의회</span>
+ *       <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-text-toggle aria-pressed="false" hidden>글자 크게</button></header>
+ *     <main class="ggc-solo-main" id="main"> 상태마다 <section hidden> 하나 — 열 수 없는 링크 · 확인 · 작성 · 완료 </main>
+ *     <footer class="ggc-solo-bar">
+ *       <div class="prog"><span>3 / 6 작성</span><progress class="ggc-progress" max="6" value="3" aria-label="작성한 칸"></progress></div>   (선택 — 칸이 여럿일 때만)
+ *       <p class="status" role="status"></p>
+ *       <button class="ggc-btn ggc-btn--primary ggc-btn--lg ggc-btn--block" type="button">다음 칸<small>연락처</small></button>
+ *     </footer>
+ *   </div>
+ * viewport: <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+ * ============================================================================= */
+.ggc-solo {
+  /* 글자 크게 — 바깥 층에서 지금 값을 잡아 두고 안쪽 층에서 곱한다(한 층에서 자기 자신을 참조하면 순환이다) */
+  --ggc-solo-xs: var(--ggc-text-xs); --ggc-solo-sm: var(--ggc-text-sm); --ggc-solo-base: var(--ggc-text-base);
+  --ggc-solo-md: var(--ggc-text-md); --ggc-solo-lg: var(--ggc-text-lg); --ggc-solo-xl: var(--ggc-text-xl);
+  --ggc-solo-2xl: var(--ggc-text-2xl); --ggc-solo-control: var(--ggc-control-font); --ggc-solo-control-lg: var(--ggc-control-font-lg);
+  --ggc-solo-label: var(--ggc-label-font);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;       /* dvh 는 주소창이 오르내릴 때마다 높이가 바뀌어 화면이 흔들린다 — 가장 작은 높이(svh)로 둔다 */
+  background: var(--ggc-bg);
+  color: var(--ggc-text);
+  font-family: var(--ggc-font);
+}
+.ggc-solo[data-ggc-text="lg"] > * {
+  --ggc-text-xs: calc(var(--ggc-solo-xs) * 1.25); --ggc-text-sm: calc(var(--ggc-solo-sm) * 1.25);
+  --ggc-text-base: calc(var(--ggc-solo-base) * 1.25); --ggc-text-md: calc(var(--ggc-solo-md) * 1.25);
+  --ggc-text-lg: calc(var(--ggc-solo-lg) * 1.25); --ggc-text-xl: calc(var(--ggc-solo-xl) * 1.25);
+  --ggc-text-2xl: calc(var(--ggc-solo-2xl) * 1.25); --ggc-control-font: calc(var(--ggc-solo-control) * 1.25);
+  --ggc-control-font-lg: calc(var(--ggc-solo-control-lg) * 1.25); --ggc-label-font: calc(var(--ggc-solo-label) * 1.25);
+}
+.ggc-solo-head {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--ggc-space-3);
+  padding: calc(var(--ggc-space-2) + env(safe-area-inset-top)) var(--ggc-space-4) var(--ggc-space-2);
+  border-bottom: 1px solid var(--ggc-border);
+  font-size: var(--ggc-text-base); font-weight: 600; color: var(--ggc-text-strong);
+}
+.ggc-solo-main {
+  flex: 1;
+  width: 100%;
+  max-width: calc(var(--ggc-space-11) * 8);
+  margin: 0 auto;
+  padding: var(--ggc-space-5) var(--ggc-space-4);
+  font-size: var(--ggc-text-base);
+  line-height: var(--ggc-leading-normal);
+}
+.ggc-solo-main h1 { margin: 0 0 var(--ggc-space-3); font-size: var(--ggc-text-xl); font-weight: 600; line-height: var(--ggc-leading-tight); color: var(--ggc-text-strong); }
+.ggc-solo-main h1:focus { outline: none; }
+.ggc-solo-bar {
+  position: sticky; bottom: 0; z-index: 10;
+  display: grid; gap: var(--ggc-space-2);
+  padding: var(--ggc-space-3) var(--ggc-space-4) max(var(--ggc-space-3), env(safe-area-inset-bottom));
+  border-top: 1px solid var(--ggc-border);
+  background: var(--ggc-surface);
+}
+.ggc-solo-bar > * { width: 100%; max-width: calc(var(--ggc-space-11) * 8 - var(--ggc-space-7)); margin: 0 auto; }
+.ggc-solo-bar .prog { display: flex; align-items: center; gap: var(--ggc-space-3); font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ggc-solo-bar .prog .ggc-progress { flex: 1; }
+.ggc-solo-bar .status { margin-top: 0; margin-bottom: 0; font-size: var(--ggc-text-sm); color: var(--ggc-text-subtle); }
+.ggc-solo-bar .status:empty { display: none; }
+.ggc-solo [hidden] { display: none !important; }   /* 띠·상태 section 의 display 가 hidden 을 이기지 않게 */
+.ggc-solo .ggc-btn { height: auto; min-height: var(--ggc-control-h); white-space: normal; }
+.ggc-solo .ggc-btn--sm { min-height: var(--ggc-control-h-sm); }
+.ggc-solo .ggc-btn--lg { min-height: var(--ggc-control-h-lg); }   /* 크기 변형을 잃지 않게 — 주 행동은 큰 단추 */
+/* 흰 바탕 위 흰 입력칸 — 경계가 곧 입력 영역 표시다. 1인 링크 화면에서는 3:1(--ggc-text-faint)로 (WCAG 1.4.11). 초점이면 primary */
+.ggc-solo .ggc-field:not(.is-error) :is(input, select, textarea):not(:focus) { border-color: var(--ggc-text-faint); }   /* 오류 칸의 위험색은 그대로 */
+.ggc-solo-bar .ggc-btn small { margin-left: var(--ggc-space-2); font-size: var(--ggc-text-sm); font-weight: 400; }
+/* 초점 간 입력칸이 바닥 띠 뒤에 숨지 않게 · 브라우저 기본 body 여백(8px)에 기대지 않게(320 폭에서 넘친다) */
+html:has(.ggc-solo) { scroll-padding-bottom: calc(var(--ggc-control-h-lg) + var(--ggc-space-11)); }
+html:has(.ggc-solo) body { margin: 0; }
+/* 키보드가 화면을 덮는 브라우저(iOS)에서 입력 중에는 띠를 고정하지 않고 문서 끝에 둔다 — 키보드 위에 떠서 입력칸을 가리지 않게.
+ * 숨기지 않는다: 다음 행동과 저장 상태는 스크롤하면 늘 닿는다. 칸 이동은 키보드의 「다음」(enterkeyhint="next") */
+html[data-ggc-typing] .ggc-solo-bar { position: static; }
+@media (max-height: 500px) {
+  .ggc-solo-bar .prog { display: none; }   /* 상태 칸은 낮은 화면에서도 남긴다 — 저장 상태는 덜어내지 않는다 */
+}
+
+/* 전체 화면 창 — 서명 · 제출 전 확인 · 문서 크게 보기. 100svh = 주소창이 보일 때의 높이(카톡 인앱에서 흔들리지 않는다) */
+.ggc-modal--full {
+  width: 100vw; max-width: none;
+  height: 100vh; height: 100svh; max-height: none;
+  margin: 0; inset: 0;
+  border: 0; border-radius: 0;
+}
+.ggc-modal--full > .head { padding-top: calc(var(--ggc-space-3) + env(safe-area-inset-top)); }
+.ggc-modal--full > .body { flex: 1; min-height: 0; display: flex; flex-direction: column; }   /* 자식만 — 안에 넣은 부품의 .head/.body 를 건드리지 않게 */
+.ggc-modal--full > .foot { border-radius: 0; padding-bottom: max(var(--ggc-space-3), env(safe-area-inset-bottom)); }
+/* 열려 있는 동안 뒤 문서를 고정한다 — overflow 만으로는 iOS·카톡이 뒤를 끌어 올린다. top 은 behaviors 가 CSSOM 으로 넣는다 */
+html[data-ggc-modal-lock] body { position: fixed; inset-inline: 0; overflow: hidden; }
+
+/* =============================================================================
+ * 41. .ggc-signature — 서명 패드
+ * 마크업:
+ *   <div class="ggc-signature" data-ggc-signature>
+ *     <p class="alt" id="sg-alt">직접 서명하기 어려우신가요? <a href="…">다른 방법으로 확인하기</a></p>   ← 패드 앞, 늘 보인다 · 실제 있는 절차로
+ *     <div class="ggc-signature-pad">
+ *       <canvas aria-label="서명 칸 — 손가락이나 마우스로 서명" aria-describedby="sg-alt"></canvas>
+ *       <span class="ph" aria-hidden="true">여기에 서명해 주십시오</span>
+ *     </div>
+ *     <div class="tools"><span class="status" aria-live="polite"></span>
+ *       <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-ggc-signature-clear>다시 쓰기</button></div>
+ *   </div>
+ * 내보내기(PNG 자르기 · 크기 상한 · 저장)는 서비스 몫 — behaviors 는 ggc:signature 이벤트로 <canvas> 를 넘긴다.
+ * ============================================================================= */
+.ggc-signature { display: grid; gap: var(--ggc-space-2); font-family: var(--ggc-font); }
+.ggc-signature-pad {
+  position: relative;
+  aspect-ratio: 5 / 2;
+  min-height: calc(var(--ggc-space-11) * 2);
+  border: 2px dashed var(--ggc-text-faint);   /* 그리는 자리의 경계 — 비텍스트 3:1 */
+  border-radius: var(--ggc-radius);
+  background: var(--ggc-surface);
+}
+.ggc-signature-pad canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; color: var(--ggc-text-strong); }
+.ggc-signature-pad .ph {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--ggc-text-base); color: var(--ggc-text-subtle);
+  pointer-events: none;
+}
+.ggc-signature[data-state="inked"] .ph { display: none; }
+.ggc-signature[data-state="inked"] .ggc-signature-pad { border-style: solid; }
+.ggc-signature .tools { display: flex; align-items: center; justify-content: space-between; gap: var(--ggc-space-2); min-height: var(--ggc-control-h-sm); }
+.ggc-signature .status { font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.ggc-signature .alt { margin: 0; font-size: var(--ggc-text-sm); line-height: var(--ggc-leading-normal); color: var(--ggc-text-muted); }
+.ggc-modal--full .ggc-signature { flex: 1; min-height: 0; grid-template-rows: auto minmax(0, 1fr) auto; }
+.ggc-modal--full .ggc-signature-pad { aspect-ratio: auto; }
+
+/* =============================================================================
+ * 42. .ggc-viewer — 문서 미리보기 틀 (한글 · PDF — 렌더러는 서비스 몫)
+ * 마크업:
+ *   <figure class="ggc-viewer" data-ggc-viewer data-state="ready">
+ *     <div class="ggc-viewer-tools" role="group" aria-label="문서 도구">
+ *       <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-viewer-page="prev">이전 쪽</button>
+ *       <span class="page"><output>1</output> / 12쪽</span>
+ *       <button … data-ggc-viewer-page="next">다음 쪽</button>
+ *       <button … data-ggc-viewer-zoom="out" aria-label="작게"><svg class="ggc-icon"><use href="#i-minus"/></svg></button>
+ *       <output class="zoom" aria-live="polite">100%</output>
+ *       <button … data-ggc-viewer-zoom="in" aria-label="크게">…plus…</button>
+ *       <button … data-ggc-viewer-zoom="fit" aria-pressed="true">폭 맞춤</button>
+ *       <a class="ggc-btn ggc-btn--secondary ggc-btn--sm download" href="…" download>내려받기</a>
+ *     </div>
+ *     <div class="ggc-viewer-body" tabindex="0" role="region" aria-label="문서 쪽">
+ *       <div class="ggc-viewer-pages"><div class="ggc-viewer-page"><img|svg|canvas></div> …</div>
+ *       <div class="ggc-viewer-state">불러오는 중 · 실패 · 일부만 — 서비스가 채운다</div>
+ *     </div>
+ *     <figcaption class="ggc-viewer-note">글꼴이 달라 줄바꿈이 원본과 조금 다를 수 있습니다 · 정확한 모양은 내려받아 한글에서</figcaption>
+ *   </figure>
+ * data-state: loading · ready · partial · failed. 내려받기는 어느 상태에서도 살아 있다(실패했을 때의 대안이다).
+ * ============================================================================= */
+.ggc-viewer {
+  display: flex; flex-direction: column;
+  min-height: 0; margin: 0;
+  border: 1px solid var(--ggc-border);
+  border-radius: var(--ggc-radius-lg);
+  background: var(--ggc-surface);
+  overflow: hidden;
+  font-family: var(--ggc-font);
+}
+.ggc-viewer-tools {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--ggc-space-1) var(--ggc-space-2);
+  padding: var(--ggc-space-2) var(--ggc-space-3);
+  border-bottom: 1px solid var(--ggc-border);
+  font-size: var(--ggc-text-sm); color: var(--ggc-text-muted);
+}
+.ggc-viewer-tools .group { display: inline-flex; align-items: center; flex-wrap: nowrap; gap: var(--ggc-space-1); }   /* 이전·쪽·다음 / 작게·배율·크게 는 한 묶음으로 줄바꿈 */
+.ggc-viewer-tools .page, .ggc-viewer-tools .zoom { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ggc-viewer-tools .zoom { min-width: calc(var(--ggc-space-8) + var(--ggc-space-1)); text-align: center; }
+.ggc-viewer-tools .download { margin-left: auto; }
+.ggc-viewer-body {
+  position: relative;
+  flex: 1; min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--ggc-space-4);
+  background: var(--ggc-surface-inset);
+}
+.ggc-viewer-pages { display: grid; gap: var(--ggc-space-4); width: calc(var(--ggc-viewer-zoom, 1) * 100%); margin: 0 auto; }
+.ggc-viewer-page { background: var(--ggc-surface); border: 1px solid var(--ggc-border); }   /* 그림자 없음 — 작업면(inset) 위 테두리로 가른다 */
+.ggc-viewer-page > img, .ggc-viewer-page > svg, .ggc-viewer-page > canvas { display: block; width: 100%; height: auto; }
+.ggc-viewer-page:empty { aspect-ratio: var(--ggc-viewer-page-ratio, 210 / 297); }   /* 아직 그리지 않은 쪽 — 자리를 먼저 잡는다. 쪽 비율을 알면 렌더러가 변수로 넘긴다(가로 문서) */
+.ggc-viewer-state { display: none; }
+.ggc-viewer:not([data-state="ready"]) .ggc-viewer-state { display: block; }
+.ggc-viewer[data-state="loading"] .ggc-viewer-pages,
+.ggc-viewer[data-state="failed"] .ggc-viewer-pages { display: none; }
+.ggc-viewer[data-state="partial"] .ggc-viewer-state { margin-top: var(--ggc-space-4); }
+.ggc-viewer-note { padding: var(--ggc-space-2) var(--ggc-space-3); border-top: 1px solid var(--ggc-border); font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.ggc-viewer--frame .ggc-viewer-body { padding: 0; }
+.ggc-viewer--frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.ggc-modal--full .ggc-viewer { flex: 1; border: 0; border-radius: 0; }
+.ggc-modal--full .ggc-viewer-body { touch-action: manipulation; }   /* 두 손가락 확대는 막지 않는다(두 번 눌러 확대만 끈다) */
+
+/* =============================================================================
+ * 43. .ggc-split — 좌우 두 칸 작업대 (목록 + 보기, less.md R9)
+ * 마크업:
+ *   <div class="ggc-split" data-ggc-split="저장키">
+ *     <section class="ggc-split-list" id="sp-list" aria-label="보고 목록">…</section>
+ *     <div class="ggc-split-handle" role="separator" aria-orientation="vertical" aria-controls="sp-list" aria-label="목록 폭"></div>
+ *       (tabindex · aria-value* 는 behaviors 가 붙인다 — 스크립트가 없으면 아무 일도 안 하는 탭 정지가 남지 않게)
+ *     <section class="ggc-split-view" aria-label="보기">
+ *       <button class="ggc-btn ggc-btn--ghost ggc-btn--sm ggc-split-back" type="button" data-ggc-split-show="list">목록으로</button>
+ *       <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-split-toggle aria-controls="sp-list" aria-expanded="true">목록 접기</button> (선택)
+ *       <button … data-ggc-split-step="-80">목록 좁게</button> <button … data-ggc-split-step="80">목록 넓게</button>   (선택 — 끌기의 한 번 누르기 대안, WCAG 2.5.7)
+ *       …
+ *     </section>
+ *   </div>
+ * 높이는 쓰는 쪽이 준다(예: main 안에서 calc(100dvh - 머리)) — 그래야 두 칸이 따로 스크롤된다.
+ * 기본 폭 400(--ggc-split-w) · 최소 240 · 최대 min(560, 45%). 남는 폭은 오른쪽 보기 칸이 가진다(큰 모니터).
+ * 경계: ←/→ 10px · Shift 50px · Home/End · Enter 접기/펼치기(APG window splitter) · 더블클릭 기본 폭. 폭만 기억하고 접힘은 기억하지 않는다.
+ * ≤1100px: 한 칸씩(data-pane="list|view"). 스크립트가 없으면 두 칸이 위아래로 쌓인다.
+ * ============================================================================= */
+.ggc-split {
+  --ggc-split-w: calc(var(--ggc-space-11) * 5);
+  display: grid;
+  grid-template-columns: clamp(calc(var(--ggc-space-11) * 3), var(--ggc-split-w), min(calc(var(--ggc-space-11) * 7), 45%)) var(--ggc-space-3) minmax(0, 1fr);
+  min-height: 0;
+}
+.ggc-split-list, .ggc-split-view { min-width: 0; min-height: 0; overflow: auto; }
+.ggc-split-handle { position: relative; cursor: col-resize; touch-action: none; border-radius: var(--ggc-radius-sm); }
+.ggc-split-handle::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--ggc-border); }
+.ggc-split-handle:hover::before, .ggc-split-handle:focus-visible::before, .ggc-split[data-dragging] .ggc-split-handle::before { width: 2px; background: var(--ggc-primary); }
+.ggc-split[data-dragging] { cursor: col-resize; user-select: none; }
+.ggc-split[data-dragging]::after { content: ""; position: fixed; inset: 0; z-index: 100; cursor: col-resize; }   /* 오른쪽 iframe 이 포인터를 가져가지 않게 */
+.ggc-split-back { display: none; }
+@media (min-width: 1101px) {
+  .ggc-split[data-collapsed] { grid-template-columns: minmax(0, 1fr); }
+  .ggc-split[data-collapsed] .ggc-split-list, .ggc-split[data-collapsed] .ggc-split-handle,
+  .ggc-split[data-collapsed] [data-ggc-split-step] { display: none; }
+}
+@media (max-width: 1100px) {
+  .ggc-split { grid-template-columns: minmax(0, 1fr); }
+  .ggc-split-handle, .ggc-split [data-ggc-split-toggle], .ggc-split [data-ggc-split-step] { display: none; }
+  .ggc-split[data-pane="list"] .ggc-split-view, .ggc-split[data-pane="view"] .ggc-split-list { display: none; }
+  .ggc-split[data-pane="view"] .ggc-split-back { display: inline-flex; }
+}
+
+/* =============================================================================
+ * 44. 고대비 보강 — §38~§43 (§36 은 이 절들보다 앞이라 같은 특이도에서 덮인다 — 그래서 여기 둔다)
+ * ============================================================================= */
+@media (forced-colors: active) {
+  .ggc-progress { border: 1px solid CanvasText; }
+  .ggc-progress::-webkit-progress-value { background: Highlight; }
+  .ggc-progress::-moz-progress-bar { background: Highlight; }
+  .ggc-job--compact { border-bottom: 1px solid CanvasText; }
+  .ggc-split-handle::before { background: CanvasText; }
+  .ggc-split-handle:focus-visible::before { background: Highlight; }
+  /* 서명 잉크와 문서 쪽 그림은 내용 그대로 — 검은 바탕에서 잉크가 사라지거나 흰 잉크로 저장되지 않게.
+   * 상속되는 속성이라 canvas·그림에만 건다(안내 글·단추는 고대비 설정을 따른다) */
+  .ggc-signature-pad canvas, .ggc-viewer-page > img, .ggc-viewer-page > svg, .ggc-viewer-page > canvas {
+    forced-color-adjust: none;
+    background: var(--ggc-surface);   /* 잉크만 원래 색이고 바탕이 검게 바뀌면 안 보인다 — 종이를 같이 지킨다 */
+  }
+}
+@media (prefers-contrast: more) {
+  .ggc-signature-pad { border-color: var(--ggc-text-muted); }
+  .ggc-split-handle::before { width: 2px; background: var(--ggc-border-strong); }
 }

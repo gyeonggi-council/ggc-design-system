@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>두 칸 작업대 · Workbench · 경기도의회 공통 디자인 시스템</title>
+<link rel="icon" href="../brand/dist/favicon-32.png">
+<link rel="apple-touch-icon" href="../brand/dist/apple-touch-icon-180.png">
+<link rel="stylesheet" href="../ggc-tokens.css">
+<link rel="stylesheet" href="../ggc-components.css">
+<link rel="stylesheet" href="examples.css">
+<style>
+/* workbench.html 전용 — 예시 화면 틀(값은 전부 정본 토큰 var()). 접두어 wb- (합본에서 다른 쪽과 부딪히지 않게) */
+.wb-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ggc-space-2); margin: var(--ggc-space-3) 0; }
+.wb-controls .lbl { font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); margin-right: var(--ggc-space-1); }
+.wb-controls [aria-pressed="true"] { background: var(--ggc-primary-light); border-color: var(--ggc-primary); color: var(--ggc-primary-deep); }
+.wb-screen { height: 640px; border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg); overflow: hidden; background: var(--ggc-surface); }
+.wb-screen > .ggc-split { height: 100%; }
+.wb-screen .ggc-split-list { border-right: 0; }
+.wb-list-head, .wb-view-head { display: flex; align-items: center; gap: var(--ggc-space-2); padding: var(--ggc-space-3) var(--ggc-space-4); border-bottom: 1px solid var(--ggc-border); }
+.wb-list-head h3, .wb-view-head h3 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0; font-size: var(--ggc-text-md); font-weight: 600; color: var(--ggc-text-strong); }
+.wb-job { margin: 0 var(--ggc-space-4); border-bottom: 1px solid var(--ggc-border); }
+.wb-gap { flex: 1; }
+.wb-rows { list-style: none; margin: 0; padding: 0; }
+.wb-rows button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--ggc-space-2); align-items: center; width: 100%; padding: var(--ggc-space-3) var(--ggc-space-4); border: 0; border-bottom: 1px solid var(--ggc-hairline); background: none; text-align: left; font: inherit; font-size: var(--ggc-text-base); color: var(--ggc-text); cursor: pointer; }
+.wb-rows button:hover { background: var(--ggc-row-hover); }
+.wb-rows button[aria-current="true"] { background: var(--ggc-primary-light); box-shadow: inset 3px 0 0 var(--ggc-primary); }
+.wb-rows small { display: block; font-size: var(--ggc-text-sm); color: var(--ggc-text-subtle); }
+.wb-view { display: flex; flex-direction: column; gap: var(--ggc-space-3); padding-bottom: var(--ggc-space-3); }
+.wb-view > .ggc-viewer { margin: 0 var(--ggc-space-4); }
+.wb-view > .ggc-viewer { flex: 1; min-height: 360px; }
+.wb-page { padding: 8% 9%; font-size: var(--ggc-text-sm); }
+.wb-page h4 { margin: 0 0 var(--ggc-space-3); font-size: var(--ggc-text-md); font-weight: 600; text-align: center; }
+.wb-page p { margin: 0 0 var(--ggc-space-2); line-height: 1.7; color: var(--ggc-text-body); }
+.wb-jobs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: var(--ggc-space-3); }
+</style>
+</head>
+<body class="ex-body">
+<!-- ggc-icons:begin — 생성물. design/build-icons.py 가 갈아 끼운다. 손으로 고치지 말 것 -->
+<svg xmlns="http://www.w3.org/2000/svg" class="ggc-icon-sprite" aria-hidden="true" focusable="false"><symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol><symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol><symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol><symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol><symbol id="i-badge-check" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol><symbol id="i-building-2" viewBox="0 0 24 24"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></symbol><symbol id="i-calendar-check" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="m9 15 2 2 4-4"/></symbol><symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></symbol><symbol id="i-chart-column" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol><symbol id="i-chevrons-left" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></symbol><symbol id="i-chevrons-right" viewBox="0 0 24 24"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></symbol><symbol id="i-chevrons-up-down" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol><symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-circle-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></symbol><symbol id="i-circle-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol><symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></symbol><symbol id="i-clipboard-list" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol><symbol id="i-columns-3" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol><symbol id="i-ellipsis-vertical" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></symbol><symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol><symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol><symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol><symbol id="i-funnel" viewBox="0 0 24 24"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></symbol><symbol id="i-gavel" viewBox="0 0 24 24"><path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381"/><path d="m16 16 6-6"/><path d="m21.5 10.5-8-8"/><path d="m8 8 6-6"/><path d="m8.5 7.5 8 8"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol><symbol id="i-grip-vertical" viewBox="0 0 24 24"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol><symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol><symbol id="i-landmark" viewBox="0 0 24 24"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></symbol><symbol id="i-layout-dashboard" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></symbol><symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></symbol><symbol id="i-loader-circle" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-log-in" viewBox="0 0 24 24"><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/></symbol><symbol id="i-log-out" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></symbol><symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol><symbol id="i-message-square" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol><symbol id="i-panel-left" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></symbol><symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></symbol><symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></symbol><symbol id="i-qr-code" viewBox="0 0 24 24"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></symbol><symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol><symbol id="i-save" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></symbol><symbol id="i-scroll-text" viewBox="0 0 24 24"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></symbol><symbol id="i-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol><symbol id="i-square-check" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-table-2" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></symbol><symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol><symbol id="i-trending-down" viewBox="0 0 24 24"><path d="M16 17h6v-6"/><path d="m22 17-8.5-8.5-5 5L2 7"/></symbol><symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol><symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol></svg>
+<!-- ggc-icons:end -->
+<a class="ggc-skip-link" href="#main">본문 바로가기</a>
+
+<div class="ggc-shell">
+
+  <div class="ggc-utility-bar">
+    <div class="inner">
+      <a class="brand" href="index.html">경기도의회 업무플랫폼</a>
+      <nav>
+        <span class="label">통합서비스</span>
+        <a class="active" href="index.html">디자인 시스템</a>
+        <span class="disabled">의정지원</span>
+        <span class="disabled">표창관리</span>
+        <span class="disabled">실시간 자막</span>
+      </nav>
+    </div>
+  </div>
+
+  <header class="ggc-gnb">
+    <a class="ggc-gnb-brand" href="index.html">
+      <img src="../brand/dist/assembly-mark.png" alt="">
+      <span class="ggc-gnb-title">
+        <span class="org">경기도의회</span>
+        <span class="svc">주간 업무 보고(예시)</span>
+      </span>
+    </a>
+    <div class="ggc-gnb-page">
+      <nav class="ggc-breadcrumb" aria-label="현재 경로">
+        <ol><li><a href="index.html">갤러리</a></li><li aria-current="page">두 칸 작업대 · Workbench</li></ol>
+      </nav>
+    </div>
+    <div class="ggc-search">
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-search"/></svg>
+      <label for="q" class="ggc-sr">의안 · 조례 검색</label>
+      <input id="q" type="search" placeholder="의안 · 조례 검색">
+    </div>
+    <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-bell"/></svg>
+    </button>
+  </header>
+
+  <div class="ggc-shell-body">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+      <div class="ggc-lnb-group">갤러리</div>
+      <a class="ggc-lnb-item" href="index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-house"/></svg><span class="label">개요</span></a>
+      <a class="ggc-lnb-item" href="tokens.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg><span class="label">토큰 · 팔레트</span></a>
+      <a class="ggc-lnb-item" href="components.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-columns-3"/></svg><span class="label">컴포넌트 카탈로그</span></a>
+      <a class="ggc-lnb-item" href="components-forms.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-square-check"/></svg><span class="label">폼 컨트롤</span></a>
+      <a class="ggc-lnb-item" href="components-nav.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-list"/></svg><span class="label">내비게이션 · 탭</span></a>
+      <a class="ggc-lnb-item" href="components-overlay.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-message-square"/></svg><span class="label">오버레이 · 상태 · 본문</span></a>
+      <div class="ggc-lnb-divider"></div>
+      <div class="ggc-lnb-group">실물 화면</div>
+      <a class="ggc-lnb-item" href="dashboard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg><span class="label">대시보드 · Monitor</span></a>
+      <a class="ggc-lnb-item" href="explore.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록 · Explore</span></a>
+      <a class="ggc-lnb-item" href="wizard.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">위저드 · Configure</span></a>
+      <a class="ggc-lnb-item" href="login.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-qr-code"/></svg><span class="label">QR 로그인 · Entry</span></a>
+      <a class="ggc-lnb-item" href="less.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-eye-off"/></svg><span class="label">덜어내기 전/후 · Less</span></a>
+      <a class="ggc-lnb-item" href="operate.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg><span class="label">실시간 회의 · Operate</span></a>
+      <a class="ggc-lnb-item" href="workbench.html" aria-current="page"><svg class="ggc-icon" aria-hidden="true"><use href="#i-panel-left"/></svg><span class="label">두 칸 작업대 · Workbench</span></a>
+      <a class="ggc-lnb-item" href="public/solo.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-smartphone"/></svg><span class="label">휴대폰 링크 · Solo</span></a>
+      <a class="ggc-lnb-item" href="public/index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">대민 셸 · Public</span></a>
+    </nav>
+    <main class="ggc-shell-main ggc-shell-main--wide" id="main" aria-labelledby="page-title">
+
+      <div class="ggc-page-head">
+        <div class="row">
+          <div>
+            <h1 class="ggc-page-title" id="page-title">두 칸 작업대 · Workbench</h1>
+            <p class="desc">v3.2 정본 · ADR 0013 · <code class="ex-inline">.ggc-split</code> · <code class="ex-inline">.ggc-viewer</code> · <code class="ex-inline">.ggc-job</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-note" style="margin-top:0">
+        <p><b>서비스들이 각자 만들던 부품 셋을 한 화면에 모았다.</b> 왼쪽 목록에서 고르고 오른쪽에서 문서를 보는 두 칸(주간 보고 취합 · 한글 보기 —
+        사용자가 승인한 배치), 한글·PDF 를 원본 모양으로 보여 주는 틀, 몇 분 걸리는 작업의 진행. 보고·숫자는 전부 가상이다.
+        아래 단추로 작업과 문서의 상태를 바꿔 볼 수 있다. 경계는 끌거나, 초점을 둔 뒤 ←/→ 로, 또는 「목록 좁게·넓게」로 폭을 바꾼다(폭은 기억된다).</p>
+      </div>
+
+      <section class="ex-section">
+        <h2>실물 — 주간 보고 취합(예시)</h2>
+        <div class="wb-controls" role="group" aria-label="작업 상태 바꾸기">
+          <span class="lbl">작업</span>
+          <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-wb-job="running" aria-pressed="true">진행 중</button>
+          <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-wb-job="slow" aria-pressed="false">오래 걸림</button>
+          <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-wb-job="done" aria-pressed="false">완료</button>
+          <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-wb-job="failed" aria-pressed="false">실패</button>
+        </div>
+        <div class="wb-controls" role="group" aria-label="문서 상태 바꾸기">
+          <span class="lbl">문서</span>
+          <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-wb-doc="loading" aria-pressed="false">불러오는 중</button>
+          <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-wb-doc="ready" aria-pressed="true">보임</button>
+          <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-wb-doc="partial" aria-pressed="false">일부만</button>
+          <button class="ggc-btn ggc-btn--secondary ggc-btn--sm" type="button" data-wb-doc="failed" aria-pressed="false">실패</button>
+        </div>
+
+        <div class="wb-screen" id="wb-screen" aria-label="예시 두 칸 작업대 화면">
+          <div class="ggc-split" data-ggc-split="gallery-workbench" id="d-split">
+            <section class="ggc-split-list" id="wb-list" aria-labelledby="wb-list-h">
+              <div class="wb-list-head"><h3 id="wb-list-h">정보화담당관 · 3주차 보고 6건</h3></div>
+              <div class="ggc-job ggc-job--compact wb-job" data-ggc-job data-state="running" data-ggc-job-slow="20" id="wb-job">
+                <div class="head">
+                  <span class="ggc-spinner ggc-spinner--sm when-busy" aria-hidden="true"></span>
+                  <strong class="now" role="status">합본 한글 파일을 만드는 중</strong>
+                  <span class="step">6건 중 4건</span>
+                  <span class="elapsed">경과 <time>0초</time></span>
+                  <span class="actions when-running"><button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button">중지</button></span>
+                  <span class="ggc-badge ggc-badge--approved when-ended" id="wb-job-badge"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-check"/></svg>완료</span>
+                </div>
+                <progress class="ggc-progress" max="6" value="4" aria-label="합본에 넣은 보고"></progress>
+                <p class="slow">평소보다 오래 걸리고 있습니다. 창을 닫아도 작업은 계속됩니다.</p>
+                <p class="msg" id="wb-job-msg"></p>
+                <details class="steps"><summary>과정 보기</summary>
+                  <ol>
+                    <li data-state="done"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-check"/></svg>보고 6건 모으기<time>4초</time></li>
+                    <li data-state="running" aria-current="step"><svg class="ggc-icon" aria-hidden="true"><use href="#i-loader-circle"/></svg>한글 서식에 채우기</li>
+                    <li data-state="pending"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle"/></svg>합본 미리보기 만들기</li>
+                  </ol>
+                </details>
+              </div>
+              <ul class="wb-rows">
+                <li><button type="button" aria-current="true" data-ggc-split-show="view">2025년 하반기 업무 정보시스템 만족도 조사 결과<small>이○○ · 10-22 16:40 제출</small></button></li>
+                <li><button type="button" data-ggc-split-show="view">디지털 업무 시행계획 수립(계속)<small>박○○ · 10-22 11:02 제출</small></button></li>
+                <li><button type="button" data-ggc-split-show="view">업무 정보시스템 운영 계획 수립(계속)<small>최○○ · 10-21 17:25 제출</small></button></li>
+                <li><button type="button" data-ggc-split-show="view">의정포털 접속 장애 대응 결과<small>정○○ · 10-21 09:14 제출</small></button></li>
+                <li><button type="button" data-ggc-split-show="view">정보보안 점검 일정 안내<small>한○○ · 10-20 15:30 제출</small></button></li>
+                <li><button type="button" data-ggc-split-show="view">회의록 시스템 개선 착수 보고<small>윤○○ · 10-20 10:05 제출</small></button></li>
+              </ul>
+            </section>
+            <div class="ggc-split-handle" role="separator" aria-orientation="vertical" aria-controls="wb-list" aria-label="목록 폭"></div>
+            <section class="ggc-split-view wb-view" aria-labelledby="wb-view-h">
+              <div class="wb-view-head">
+                <button class="ggc-btn ggc-btn--ghost ggc-btn--sm ggc-split-back" type="button" data-ggc-split-show="list"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>목록으로</button>
+                <h3 id="wb-view-h">2025년 하반기 업무 정보시스템 만족도 조사 결과</h3>
+                <span class="wb-gap"></span>
+                <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-split-step="-80">목록 좁게</button>
+                <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-split-step="80">목록 넓게</button>
+                <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-split-toggle aria-controls="wb-list" aria-expanded="true"><svg class="ggc-icon" aria-hidden="true"><use href="#i-panel-left"/></svg><span class="label">목록 접기</span></button>
+              </div>
+              <figure class="ggc-viewer" data-ggc-viewer data-state="ready" id="d-viewer">
+                <div class="ggc-viewer-tools" role="group" aria-label="문서 도구">
+                  <span class="group">
+                    <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-viewer-page="prev"><svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>이전 쪽</button>
+                    <span class="page"><output>1</output> / 2쪽</span>
+                    <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-viewer-page="next">다음 쪽<svg class="ggc-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+                  </span>
+                  <span class="group">
+                    <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-viewer-zoom="out" aria-label="작게"><svg class="ggc-icon" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                    <output class="zoom" aria-live="polite">100%</output>
+                    <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-viewer-zoom="in" aria-label="크게"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                  </span>
+                  <button class="ggc-btn ggc-btn--ghost ggc-btn--sm" type="button" data-ggc-viewer-zoom="fit" aria-pressed="true">폭 맞춤</button>
+                  <a class="ggc-btn ggc-btn--secondary ggc-btn--sm download" href="#d-viewer"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>내려받기</a>
+                </div>
+                <div class="ggc-viewer-body" tabindex="0" role="region" aria-label="문서 쪽">
+                  <div class="ggc-viewer-pages">
+                <div class="ggc-viewer-page"><div class="wb-page"><h4 id="wb-doc-t">2025년 하반기 업무 정보시스템 만족도 조사 결과</h4><p>□ 조사 개요</p><p>○ 조사기간 : 2025. 12. 1.(월) ~ 12. 12.(금) &lt;12일간&gt;</p><p>○ 조사방법 : 온라인 설문조사</p><p>□ 조사 결과</p><p>○ 전반적 만족도 상승, 사용자 편의성 개선 요구 지속 제기</p></div></div>
+                <div class="ggc-viewer-page"><div class="wb-page"><p>□ 향후 계획</p><p>○ 개선 요구 반영 과제 선정 : 다음 주 과별 의견 반영 후 확정</p><p>○ 결과 공유 : 사무처 게시판 게시</p></div></div>
+                  </div>
+                  <div class="ggc-viewer-state" id="wb-doc-state"></div>
+                </div>
+                <figcaption class="ggc-viewer-note">글꼴이 달라 줄바꿈이 원본과 조금 다를 수 있습니다 · 정확한 모양은 내려받아 한글에서 확인하십시오.</figcaption>
+              </figure>
+            </section>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#wb-screen"><summary>마크업</summary><pre class="ex-code"></pre></details>
+        <div class="ex-note">
+          <p><b>두 칸 규칙.</b> 기본 목록 폭 400 · 최소 240 · 최대 560(그리고 화면의 45%). 큰 모니터에서 남는 폭은 오른쪽 보기 칸이 가진다.
+          폭은 기억하지만 <b>접힘은 기억하지 않는다</b> — 다음에 열었을 때 목록이 사라져 있지 않게. 1100px 이하에서는 한 칸씩 보이고 「목록으로」가 나온다.
+          오른쪽 제목은 언제나 왼쪽에서 고른 것이다 — 고른 것과 보이는 것이 어긋나면 사용자는 무엇을 보고 있는지 모른다.</p>
+        </div>
+      </section>
+
+      <section class="ex-section">
+        <h2>긴 작업 진행 <span class="cls">.ggc-job</span></h2>
+        <p>시스템이 이 화면에서 3초 넘게 돌리는 일 하나에만 쓴다. <b>의안·보고의 처리 단계(접수 → 심사)는 배지 하나</b>다 — 단계 막대로 그리지 않는다(덜어내기 R4).
+        1초 안에 끝나는 일은 아무것도 그리지 않고(누른 것은 바로 받는다 — 단추를 잠가 두 번 실행을 막는다), 1~3초는 스피너, 그보다 길면 이 부품.
+        막대는 센 값(6건 중 4건)이 있을 때만 — 단계 수(2/3단계)를 %로 바꾸지 않는다. 연결이 끊기면 <b>실패가 아니라 「확인할 수 없음」</b>이다.</p>
+        <div class="wb-jobs" id="d-job">
+          <div class="ggc-job" data-state="queued">
+            <div class="head"><span class="ggc-spinner ggc-spinner--sm when-busy" aria-hidden="true"></span><strong class="now">차례를 기다리는 중</strong><span class="step">앞에 2건</span></div>
+          </div>
+          <div class="ggc-job" data-state="running">
+            <div class="head"><span class="ggc-spinner ggc-spinner--sm when-busy" aria-hidden="true"></span><strong class="now">마무리하는 중</strong><span class="elapsed">경과 <time>3분 12초</time></span></div>
+            <p class="msg">마지막 단계는 진행률을 알 수 없어 막대를 거뒀다.</p>
+          </div>
+          <div class="ggc-job" data-state="done">
+            <div class="head"><strong class="now">합본을 만들었습니다</strong><span class="step">6건</span><span class="ggc-badge ggc-badge--approved when-ended"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-check"/></svg>완료</span></div>
+          </div>
+          <div class="ggc-job" data-state="partial">
+            <div class="head"><strong class="now">12건 중 10건 완료</strong><span class="ggc-badge ggc-badge--pending when-ended"><svg class="ggc-icon" aria-hidden="true"><use href="#i-triangle-alert"/></svg>일부 실패</span></div>
+            <p class="msg">2건은 한글 파일이 손상돼 건너뛰었습니다 — 그 2건만 다시 올리면 됩니다.</p>
+          </div>
+          <div class="ggc-job" data-state="failed">
+            <div class="head"><strong class="now">합본을 만들지 못했습니다</strong><span class="ggc-badge ggc-badge--rejected when-ended"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-x"/></svg>실패</span></div>
+            <p class="msg">문서 변환 서버가 응답하지 않았습니다. 입력한 내용은 그대로 있습니다 — 잠시 뒤 다시 시도하십시오.</p>
+          </div>
+          <div class="ggc-job" data-state="unknown">
+            <div class="head"><strong class="now">진행 상태를 확인할 수 없습니다</strong></div>
+            <p class="msg">연결이 끊겼습니다. 작업은 서버에서 계속되고 있을 수 있습니다 — 다시 연결되면 상태를 다시 불러옵니다.</p>
+          </div>
+          <div class="ggc-job" data-state="stopping">
+            <div class="head"><span class="ggc-spinner ggc-spinner--sm when-busy" aria-hidden="true"></span><strong class="now">중지를 요청했습니다</strong><span class="step">지금 단계를 마치면 멈춥니다</span></div>
+          </div>
+          <div class="ggc-job" data-state="stopped">
+            <div class="head"><strong class="now">중지했습니다</strong><span class="ggc-badge ggc-badge--recess when-ended"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-minus"/></svg>중지됨</span></div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-job"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="ggc-footer">
+    <div class="inner">
+      예시 데이터다 · 보고 제목 · 이름은 전부 가상 ·
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.2
+    </div>
+  </footer>
+</div>
+
+<script src="../ggc-behaviors.js"></script>
+<script src="examples.js"></script>
+<script>
+/* workbench.html — 작업·문서 상태 바꾸기. 상태는 data-state 하나씩이다 */
+(function () {
+  var job = document.getElementById('wb-job'), badge = document.getElementById('wb-job-badge'), msg = document.getElementById('wb-job-msg'), now = job.querySelector('.now');
+  var viewer = document.getElementById('d-viewer'), docState = document.getElementById('wb-doc-state');
+  function press(sel, b) { document.querySelectorAll(sel).forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); }); }
+  document.querySelectorAll('[data-wb-job]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-wb-job');
+      /* 새 작업을 시작하면 시작 시각을 바꾼다 — '오래 걸림' 예시는 시작 시각을 30초 전으로 둔다 */
+      if (k === 'running' || k === 'slow') {
+        job.setAttribute('data-ggc-job-start', new Date(Date.now() - (k === 'slow' ? 30000 : 0)).toISOString());
+        job.setAttribute('data-state', 'running'); now.textContent = '합본 한글 파일을 만드는 중'; msg.textContent = '';
+      } else if (k === 'done') { job.setAttribute('data-state', 'done'); now.textContent = '합본을 만들었습니다'; badge.className = 'ggc-badge ggc-badge--approved when-ended'; badge.lastChild.textContent = '완료'; msg.textContent = ''; }
+      else { job.setAttribute('data-state', 'failed'); now.textContent = '합본을 만들지 못했습니다'; badge.className = 'ggc-badge ggc-badge--rejected when-ended'; badge.lastChild.textContent = '실패'; msg.textContent = '문서 변환 서버가 응답하지 않았습니다. 보고는 그대로 있습니다 — 잠시 뒤 다시 시도하십시오.'; }
+      press('[data-wb-job]', b);
+    });
+  });
+  var states = {
+    loading: '<div class="ggc-spinner-block"><span class="ggc-spinner" aria-hidden="true"></span><span>쪽을 그리는 중 · 1 / 3</span></div>',
+    partial: '<div class="ggc-alert ggc-alert--info"><span class="title">앞 2쪽만 보입니다</span>나머지는 내려받아 확인하십시오.</div>',
+    failed: '<div class="ggc-empty ggc-empty--error" role="alert"><span class="icon"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-circle-alert"/></svg></span><p class="title">문서를 그리지 못했습니다</p><p class="desc">내려받아 한글에서 열 수 있습니다.</p><div class="actions"><button class="ggc-btn ggc-btn--secondary" type="button">다시 시도</button><a class="ggc-btn ggc-btn--primary" href="#d-viewer">내려받기</a></div></div>',
+    ready: ''
+  };
+  document.querySelectorAll('[data-wb-doc]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-wb-doc');
+      viewer.setAttribute('data-state', k); docState.innerHTML = states[k];
+      press('[data-wb-doc]', b);
+    });
+  });
+  document.querySelectorAll('.wb-rows button').forEach(function (r) {
+    r.addEventListener('click', function () {
+      document.querySelectorAll('.wb-rows button').forEach(function (o) { if (o === r) o.setAttribute('aria-current', 'true'); else o.removeAttribute('aria-current'); });
+      var t = r.firstChild.textContent.trim();   /* 오른쪽 제목 = 고른 보고 — 선택과 보이는 문서가 어긋나지 않게 */
+      document.getElementById('wb-view-h').textContent = t; document.getElementById('wb-doc-t').textContent = t;
+    });
+  });
+})();
+</script>
+</body>
+</html>

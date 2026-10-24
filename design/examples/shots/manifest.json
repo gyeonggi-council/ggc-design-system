@@ -1,6 +1,6 @@
 {
   "_": "생성물이다. design/examples/build-shots.py 가 만든다 — 직접 고치지 말 것.",
-  "sha256": "ad5aec90bba18be628ac86f9a3befeda2c5b428784461e25b3976c791cb2474d",
+  "sha256": "9a48a9b1f99fd91426d60aa16fd572496ce02f695fd701a3036d84cc1648cd8a",
   "sources": [
     "design/ggc-tokens.css",
     "design/ggc-components.css",
@@ -21,7 +21,9 @@
     "design/examples/less.html",
     "design/examples/operate.html",
     "design/examples/public/index.html",
-    "design/examples/wizard.html"
+    "design/examples/public/solo.html",
+    "design/examples/wizard.html",
+    "design/examples/workbench.html"
   ],
   "dpr": 2,
   "shots": [
@@ -35,6 +37,8 @@
     "screen-less-before",
     "screen-less-after",
     "screen-operate",
+    "screen-workbench",
+    "mobile-solo",
     "gnb-page",
     "page-head",
     "buttons",
@@ -61,6 +65,8 @@
     "screen-less-before": "덜어내기 전 — 사용자가 빼라고 한 군더더기(번호는 표와 짝)",
     "screen-less-after": "덜어내기 후 — 같은 자료 · 같은 일 · 기능은 그대로",
     "screen-operate": "Operate 실시간 시청 — 영상 아래 자막 · 탭으로 나눠 쓰기 · 지금 발언",
+    "screen-workbench": "두 칸 작업대(v3.2) — 왼쪽 목록 + 긴 작업 진행 · 오른쪽 한글 보기 틀",
+    "mobile-solo": "휴대폰 1인 링크 화면(v3.2) — 한 화면 작성 · 바닥 띠(진행 · 다음 칸)",
     "gnb-page": "GNB 경로부 `.ggc-gnb-page` (브레드크럼 — 제목은 본문)",
     "page-head": "페이지 헤더 `.ggc-page-head` — 기본형(제목 보임) · 설명과 주 단추는 필요할 때만",
     "buttons": "버튼 `.ggc-btn`",

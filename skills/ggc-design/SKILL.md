@@ -178,10 +178,11 @@ python "$ROOT/design/check_design.py" --gate <서비스경로> --aa=observe     
 | `references/components.md` | Phase 4 — 컴포넌트 색인(과업 → 클래스 → 문서) |
 | `references/domain-language.md` | Phase 1·4 — 어휘·밀도 판정 목록 (업무 · 대민) |
 | `$ROOT/docs/guides/less.md` | Phase 4 — **덜어내기**(v3.1): 규칙 10개 · 군더더기 열 가지 · 제목 기본형/간결형 · 판정 목록 |
+| `$ROOT/docs/guides/states.md` | Phase 4 — **상태 보이기**(v3.2): 기다림 · 저장과 제출 · 폼 오류 · 못 쓰는 이유 · 빈 화면 · 알림 위치(토스트는 예외) · 상태 사전 |
 | `references/porting.md` | Phase 2·3 — Tier 1 스택별 착지점 · .dc.html 역변환 |
 | `references/registry.md` | Phase 2 — Tier 2 레지스트리 |
 | `references/brand-assets.md` | Phase 2 — 파비콘·마크 |
 | `references/reskin.md` | ❹ 독자형 — 가동 중 서비스 수렴 절차 |
 | `references/verify.md` | Phase 5 — 검사 7종 · 증거 · 오버플로 스크립트 · 복귀 지점 |
 | `$ROOT/docs/contract.md` | **AUTHORITATIVE** 계약 — 셸 치수 · archetype · 프로필 · 완료 정의 |
-| `$ROOT/design/examples/` | 실물 갤러리 (업무 12쪽 · 대민 4쪽) — v3.1 `less.html`(덜어내기 전/후) · `operate.html`(Operate) |
+| `$ROOT/design/examples/` | 실물 갤러리 (업무 13쪽 · 대민 5쪽) — v3.1 `less.html`(덜어내기 전/후) · `operate.html`(Operate) · v3.2 `workbench.html`(두 칸 · 문서 보기 · 긴 작업) · `public/solo.html`(휴대폰 1인 링크 · 서명) |

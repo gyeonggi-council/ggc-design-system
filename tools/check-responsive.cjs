@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '..');
 const baseline = process.argv.includes('--baseline');
 const out = path.join(root, 'docs/design-evidence', baseline ? 'before' : 'after');
-const pages = ['index', 'tokens', 'components', 'components-forms', 'components-nav', 'components-overlay', 'dashboard', 'explore', 'wizard', 'login', 'public/index', 'public/list', 'public/detail', 'public/form', ...(!baseline ? ['examples-standalone'] : [])];
+const pages = ['index', 'tokens', 'components', 'components-forms', 'components-nav', 'components-overlay', 'dashboard', 'explore', 'wizard', 'login', 'workbench', 'public/index', 'public/list', 'public/detail', 'public/form', 'public/solo', ...(!baseline ? ['examples-standalone'] : [])];
 const sizes = [320, 390, 768, 1024, 1440, 1920];
 const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.html')).href;
 (async () => {

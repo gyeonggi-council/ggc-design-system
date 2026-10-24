@@ -43,6 +43,7 @@ PAGES = [
     ("login",      "login.html",      "QR 로그인 · Entry",   "공통 디자인 시스템"),
     ("less",       "less.html",       "덜어내기 전/후 · Less", "주간 보고(예시)"),
     ("operate",    "operate.html",    "실시간 회의 · Operate", "회의 실시간 자막(예시)"),
+    ("workbench",  "workbench.html",  "두 칸 작업대 · Workbench", "주간 업무 보고(예시)"),
 ]
 
 MAIN_RE = re.compile(r"<main\b([^>]*)>(.*)</main>", re.S)
@@ -134,7 +135,8 @@ def build():
     # LNB 항목 아이콘 — 낱장 갤러리와 같은 lucide 심볼(v3.0). 스프라이트는 @@ICONS@@ 로 인라인된다
     ICONS = {"index": "house", "tokens": "sliders-horizontal", "components": "columns-3", "forms": "square-check",
              "nav": "list", "overlay": "message-square", "dashboard": "layout-dashboard", "explore": "table-2",
-             "wizard": "file-text", "login": "qr-code", "less": "eye-off", "operate": "circle-dot"}
+             "wizard": "file-text", "login": "qr-code", "less": "eye-off", "operate": "circle-dot",
+             "workbench": "panel-left"}
     lnb_rows = []
     for key, _fn, label, _svc in PAGES:
         if key == "dashboard":

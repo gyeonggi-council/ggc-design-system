@@ -1,6 +1,6 @@
 /* =============================================================================
- * ggc-behaviors.js — 경기도의회 공통 컴포넌트 동작 v2.0 (2026-08-29)
- * 전제: design/ggc-components.css v2.0 (마크업 계약은 그 파일의 §14·§19·§9 주석)
+ * ggc-behaviors.js — 경기도의회 공통 컴포넌트 동작 v3.2 (2026-10-24)
+ * 전제: design/ggc-components.css v3.2 (마크업 계약은 그 파일의 §14·§19·§9 주석)
  *
  * 하는 일은 전부 **마크업의 ARIA 상태를 옮기는 것**이고, 스타일은 CSS 가 그 상태를
  * 보고 그린다. 그래서 이 파일이 없어도 화면은 깨지지 않는다 — 동작만 없다.
@@ -15,6 +15,11 @@
  *   ⑧ 툴팁     ESC 로 hover/focus 중인 .ggc-tooltip 닫기(WCAG 1.4.13), 떠나면 복구
  *   ⑨ 리스트박스 [data-ggc-listbox] — aria-activedescendant · ↑↓ Home End · Enter/Space · 앞글자 · .filter
  *   ⑩ 페이지 내 내비 [data-ggc-in-page-nav] — 기준선(25%)을 지난 마지막 제목에 aria-current="location"
+ *   ⑪ 긴 작업  [data-ggc-job] — 경과 시간 글자 · 오래 걸리면 data-slow (v3.2)
+ *   ⑫ 링크 화면 .ggc-solo — 글자 크게(aria-pressed · 기억) · iOS 키보드가 덮으면 html[data-ggc-typing] · .ggc-modal--full 뒤 문서 고정 (v3.2)
+ *   ⑬ 서명    [data-ggc-signature] — 그리기 · 다시 쓰기 · 폭이 바뀔 때만 새로 · ggc:signature 이벤트 (v3.2)
+ *   ⑭ 문서 보기 [data-ggc-viewer] — 배율 · 폭 맞춤 · 쪽 이동 · 지금 쪽 · 상태에 따라 단추 끄기 (v3.2)
+ *   ⑮ 두 칸   [data-ggc-split] — 경계 끌기·키보드 · 폭 기억 · 접기(세션) · ≤1100px 한 칸씩 (v3.2)
  *
  * 외부 파일 하나, 인라인 0 — eGovFrame CSP(unsafe-inline 금지)에서도 그대로 붙는다.
  * 의존성 0. React 서비스는 이 파일 대신 Tier 2 레지스트리 컴포넌트를 쓴다.
@@ -70,6 +75,7 @@
 
   /* ---------------------------------------------------------------- ② 모달 */
   var openerOf = typeof WeakMap === "function" ? new WeakMap() : null;
+  var lockY = 0;
 
   function resolve(target) {
     return typeof target === "string" ? document.querySelector(target) : target;
@@ -85,6 +91,12 @@
     if (openerOf) openerOf.set(dialog, opener || document.activeElement);
     dialog.showModal();
     document.documentElement.setAttribute("data-ggc-modal-active", "");
+    if (dialog.classList.contains("ggc-modal--full") && !document.documentElement.hasAttribute("data-ggc-modal-lock")) {
+      /* 전체 화면 창(v3.2) — 뒤 문서를 제자리에 고정한다. overflow:hidden 만으로는 iOS·카톡이 뒤를 끌어 올린다 */
+      lockY = window.pageYOffset || 0;
+      document.body.style.top = -lockY + "px";
+      document.documentElement.setAttribute("data-ggc-modal-lock", "");
+    }
     /* 첫 포커스: autofocus > 본문의 첫 입력 > 주 버튼 > 닫기 */
     var first = dialog.querySelector("[autofocus]") ||
       dialog.querySelector(".body input:not([type=hidden]), .body select, .body textarea") ||
@@ -105,9 +117,16 @@
       if (dialog.__ggcModal) return;
       dialog.__ggcModal = true;
       function released() {
-        if (!anyOpen()) document.documentElement.removeAttribute("data-ggc-modal-active");
+        if (!anyOpen()) {
+          document.documentElement.removeAttribute("data-ggc-modal-active");
+          if (document.documentElement.hasAttribute("data-ggc-modal-lock")) {
+            document.documentElement.removeAttribute("data-ggc-modal-lock");
+            document.body.style.top = "";
+            window.scrollTo(0, lockY);
+          }
+        }
         var back = openerOf && openerOf.get(dialog);
-        if (back && typeof back.focus === "function" && document.contains(back)) back.focus();
+        if (back && typeof back.focus === "function" && document.contains(back)) back.focus({ preventScroll: true });   /* 되살린 스크롤을 다시 움직이지 않게 */
       }
       /* 'close' 이벤트는 브라우저가 한 박자 늦게 보낸다(ESC 경로에서 실측 수백 ms).
          open 속성이 사라지는 순간을 직접 보고 잠금을 푼다 — 누가 닫았든 같다. */
@@ -681,6 +700,371 @@
     });
   }
 
+  /* ------------------------------------------------------- ⑪ 긴 작업 진행 */
+  /* 하는 일은 둘뿐이다 — 경과 시간 글자 갱신, 오래 걸리면 data-slow. 상태(data-state)는 서비스가 바꾼다.
+     경과 시간은 live 영역 밖이라 화면 낭독기가 매초 읽지 않는다(단계 이름 .now 만 role=status). */
+  var jobStart = typeof WeakMap === "function" ? new WeakMap() : null, jobTimer = null;
+  function fmtElapsed(sec) {
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return m ? m + "분 " + s + "초" : s + "초";
+  }
+  function isActive(job) { return /^(queued|running|stopping)$/.test(job.getAttribute("data-state") || ""); }
+  function tickJobs() {
+    if (!document.querySelector("[data-ggc-job]")) { clearInterval(jobTimer); jobTimer = null; return; }   /* 작업 부품이 사라지면 멈춘다 — 다시 생기면 GGC.initJobs() */
+    /* 끝난 작업은 처음 본 시각을 잊는다 — 같은 요소로 다시 시작하면 경과를 0 부터 잰다 */
+    document.querySelectorAll("[data-ggc-job]").forEach(function (j) {
+      if (isActive(j)) return;
+      if (jobStart) jobStart.delete(j);
+      j.removeAttribute("data-slow");
+    });
+    var jobs = document.querySelectorAll('[data-ggc-job][data-state="running"], [data-ggc-job][data-state="queued"], [data-ggc-job][data-state="stopping"]');
+    if (!jobs.length) return;
+    var now = Date.now();
+    jobs.forEach(function (job) {
+      var start = Date.parse(job.getAttribute("data-ggc-job-start") || "");
+      if (isNaN(start)) {
+        if (jobStart && !jobStart.has(job)) jobStart.set(job, now);
+        start = jobStart ? jobStart.get(job) : now;
+      }
+      var sec = Math.max(0, Math.floor((now - start) / 1000));
+      var t = job.querySelector(".elapsed time");
+      if (t) t.textContent = fmtElapsed(sec);
+      var slow = parseInt(job.getAttribute("data-ggc-job-slow") || "", 10);
+      if (slow && sec >= slow) job.setAttribute("data-slow", ""); else job.removeAttribute("data-slow");
+      /* 같은 요소로 새 작업을 시작하면 서비스가 data-ggc-job-start 를 새 시각으로 바꾼다 — 경과와 '오래 걸림'이 처음부터 다시 잰다 */
+    });
+  }
+  function initJobs(root) {
+    if (!(root || document).querySelector("[data-ggc-job]")) return;
+    tickJobs();
+    if (!jobTimer) jobTimer = setInterval(tickJobs, 1000);
+  }
+
+  /* ------------------------------------------------- ⑫ 휴대폰 1인 링크 화면 */
+  /* 글자 크게 — 단추는 마크업에서 hidden 으로 시작한다(스크립트가 없으면 누를 수 없는 단추가 남지 않게).
+     같은 오리진의 다른 링크 화면에서도 크게 보이도록 localStorage 에 기억한다. */
+  function initSolo(root) {
+    (root || document).querySelectorAll(".ggc-solo").forEach(function (solo) {
+      if (solo.__ggcSolo) return;
+      solo.__ggcSolo = true;
+      var btn = solo.querySelector("[data-ggc-text-toggle]");
+      if (!btn) return;
+      function apply(lg) {
+        if (lg) solo.setAttribute("data-ggc-text", "lg"); else solo.removeAttribute("data-ggc-text");
+        btn.setAttribute("aria-pressed", lg ? "true" : "false");
+      }
+      var saved = null;
+      try { saved = localStorage.getItem("ggc-text"); } catch (e) { /* 저장소가 막힌 브라우저 — 기억만 못 한다 */ }
+      apply(saved === "lg");
+      btn.hidden = false;
+      btn.addEventListener("click", function () {
+        var lg = solo.getAttribute("data-ggc-text") !== "lg";
+        apply(lg);
+        try { localStorage.setItem("ggc-text", lg ? "lg" : ""); } catch (e) { /* 위와 같다 */ }
+      });
+    });
+    initTyping();
+  }
+  /* 키보드가 화면을 덮는 브라우저(iOS)는 레이아웃 높이(innerHeight)를 그대로 두고 보이는 높이만 줄인다.
+     interactive-widget=resizes-content 를 따르는 브라우저(안드로이드)는 둘이 같이 줄어 여기 걸리지 않는다. */
+  var typingBound = false;
+  function initTyping() {
+    if (typingBound || !window.visualViewport || !document.querySelector(".ggc-solo")) return;
+    typingBound = true;
+    var vv = window.visualViewport;
+    function check() {
+      var a = document.activeElement;
+      var field = a && (a.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName));
+      var covered = window.innerHeight - vv.height * vv.scale > 120;
+      if (field && covered) document.documentElement.setAttribute("data-ggc-typing", "");
+      else document.documentElement.removeAttribute("data-ggc-typing");
+    }
+    vv.addEventListener("resize", check);
+    document.addEventListener("focusin", check);
+    document.addEventListener("focusout", function () { setTimeout(check, 0); });
+  }
+
+  /* -------------------------------------------------------------- ⑬ 서명 패드 */
+  /* 손가락 하나 · pointer capture · 패드 안 터치는 스크롤로 넘기지 않는다(카톡이 위아래 끌기를 가져가지 않게).
+     획을 점 목록으로 들고 있다가 패드 크기가 바뀌면(주소창 · 키보드 · 회전) 같은 비율로 다시 그린다 — 지우지 않는다.
+     잉크 색은 CSS(canvas { color }) 의 계산값 — 여기에 색 리터럴을 두지 않는다. 내보내기(PNG)는 서비스 몫이다. */
+  function initSignatures(root) {
+    (root || document).querySelectorAll("[data-ggc-signature]").forEach(function (wrap) {
+      if (wrap.__ggcSignature) return;
+      var canvas = wrap.querySelector("canvas");
+      if (!canvas || !canvas.getContext) return;
+      wrap.__ggcSignature = true;
+      var ctx = canvas.getContext("2d"), status = wrap.querySelector(".status");
+      var strokes = [], cur = null, pid = null, scale = 1, last = null, pending = false;
+      function say(text) { if (status) status.textContent = text; }
+      function setInked(on) { wrap.setAttribute("data-state", on ? "inked" : "empty"); }
+      function dot(p) { ctx.beginPath(); ctx.arc(p.x * scale, p.y * scale, ctx.lineWidth / 2, 0, Math.PI * 2); ctx.fill(); }
+      function seg(a, b) { ctx.beginPath(); ctx.moveTo(a.x * scale, a.y * scale); ctx.lineTo(b.x * scale, b.y * scale); ctx.stroke(); }
+      function redraw() {
+        ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.restore();
+        strokes.forEach(function (st) { dot(st[0]); for (var i = 1; i < st.length; i++) seg(st[i - 1], st[i]); });
+      }
+      /* 점은 처음 패드 크기 기준 좌표로 저장한다. 크기가 바뀌면 처음 크기와 모든 점이 들어가는 범위를
+         가로·세로 중 작은 배율로 똑같이 줄이거나 늘린다 — 찌그러뜨리지 않고, 회전 뒤 넓은 자리에 그린 획도 잘리지 않는다 */
+      var origin = null;
+      function bounds() {
+        var w = origin.w, h = origin.h;
+        strokes.forEach(function (st) { st.forEach(function (p) { if (p.x > w) w = p.x; if (p.y > h) h = p.y; }); });
+        return { w: w, h: h };
+      }
+      function size() {
+        /* 레이아웃 크기(clientWidth)로 잰다 — 창 열기 애니메이션의 transform 크기로 비트맵을 만들면 흐려지고 잉크가 비켜 찍힌다 */
+        var r = { width: canvas.clientWidth, height: canvas.clientHeight };
+        if (!r.width || !r.height) return;              /* 숨겨진 창 안 — 열릴 때 다시 온다 */
+        if (pid !== null) { pending = true; return; }   /* 긋는 중에는 다시 맞추지 않는다 — 손을 뗀 뒤에 */
+        var dpr = Math.min(window.devicePixelRatio || 1, 3);
+        var w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+        if (last && w === last.w && h === last.h) return;   /* 같은 값을 넣어도 캔버스가 지워진다 — 바뀔 때만 */
+        last = { w: w, h: h };
+        canvas.width = w; canvas.height = h;
+        if (!origin) origin = { w: r.width, h: r.height };
+        var b = bounds();
+        scale = Math.min(r.width / b.w, r.height / b.h);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.lineWidth = 2.5;
+        ctx.strokeStyle = ctx.fillStyle = getComputedStyle(canvas).color;
+        redraw();
+      }
+      function at(e) {   /* 포인터 캡처 중 패드 밖으로 나간 점은 가장자리로 자른다 · 화면 좌표(transform 포함)를 레이아웃 좌표로 */
+        var r = canvas.getBoundingClientRect(), fx = canvas.clientWidth / (r.width || 1), fy = canvas.clientHeight / (r.height || 1);
+        return { x: Math.min(canvas.clientWidth, Math.max(0, (e.clientX - r.left) * fx)) / scale,
+                 y: Math.min(canvas.clientHeight, Math.max(0, (e.clientY - r.top) * fy)) / scale };
+      }
+      canvas.addEventListener("pointerdown", function (e) {
+        if (pid !== null || (e.pointerType === "mouse" && e.button !== 0)) return;   /* 두 번째 손가락은 받지 않는다 */
+        if (!origin) size();
+        pid = e.pointerId;
+        if (canvas.setPointerCapture) canvas.setPointerCapture(pid);
+        cur = [at(e)];
+        strokes.push(cur);
+        dot(cur[0]);
+        e.preventDefault();
+      });
+      canvas.addEventListener("pointermove", function (e) {
+        if (e.pointerId !== pid || !cur) return;
+        var p = at(e);
+        seg(cur[cur.length - 1], p);
+        cur.push(p);
+        if (wrap.getAttribute("data-state") !== "inked" && cur.length > 2) setInked(true);
+        e.preventDefault();
+      });
+      function end(e) {
+        if (e.pointerId !== pid) return;
+        pid = null; cur = null;
+        if (pending) { pending = false; size(); }
+        /* 안내 글은 손을 뗀 뒤에 — 긋는 중에 글이 생겨 패드 높이가 바뀌면 잉크가 손가락에서 비켜 찍힌다 */
+        if (wrap.getAttribute("data-state") === "inked") say("서명을 입력했습니다 — 아직 제출되지 않았습니다");
+        if (wrap.getAttribute("data-state") === "inked") wrap.dispatchEvent(new CustomEvent("ggc:signature", { bubbles: true, detail: { canvas: canvas, empty: false } }));
+      }
+      ["pointerup", "pointercancel", "lostpointercapture"].forEach(function (t) { canvas.addEventListener(t, end); });
+      ["touchstart", "touchmove"].forEach(function (t) {
+        canvas.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false });
+      });
+      function clear() {
+        strokes = []; cur = null; redraw();
+        setInked(false); say("");
+        wrap.dispatchEvent(new CustomEvent("ggc:signature", { bubbles: true, detail: { canvas: canvas, empty: true } }));
+      }
+      wrap.__ggcSignatureClear = clear;
+      var btn = wrap.querySelector("[data-ggc-signature-clear]");
+      if (btn) btn.addEventListener("click", clear);
+      if (typeof ResizeObserver === "function") new ResizeObserver(size).observe(canvas);
+      else window.addEventListener("resize", size);
+      setInked(false);
+      size();
+    });
+  }
+
+  /* ------------------------------------------------------ ⑭ 문서 미리보기 틀 */
+  /* 배율(50~300%) · 폭 맞춤 · 쪽 이동 · 지금 쪽 표시. 배율은 CSS 변수(--ggc-viewer-zoom)로 넘긴다 — CSSOM 이라 CSP 에 걸리지 않는다.
+     캔버스로 그리는 렌더러는 ggc:viewer-zoom 을 받아 다시 그린다. 상태가 ready·partial 이 아니면 쪽·배율 단추를 끈다(내려받기는 남는다). */
+  function initViewers(root) {
+    (root || document).querySelectorAll("[data-ggc-viewer]").forEach(function (v) {
+      if (v.__ggcViewer) return;
+      var body = v.querySelector(".ggc-viewer-body");
+      if (!body) return;
+      v.__ggcViewer = true;
+      var zoom = 1, zoomOut = v.querySelector(".ggc-viewer-tools .zoom"), pageOut = v.querySelector(".ggc-viewer-tools .page output");
+      function pages() { return [].slice.call(v.querySelectorAll(".ggc-viewer-page")); }
+      function current() {
+        var list = pages(), line = body.getBoundingClientRect().top + body.clientHeight * 0.25, idx = 0;
+        /* 끝까지 내려왔으면 마지막 쪽 — 짧은 마지막 쪽은 기준선을 영영 못 지난다 */
+        if (list.length && body.scrollTop + body.clientHeight >= body.scrollHeight - 2 && body.scrollTop > 0) return list.length - 1;
+        list.forEach(function (p, i) { if (p.getBoundingClientRect().top <= line) idx = i; });
+        return idx;
+      }
+      function showPage() { var t = String(current() + 1); if (pageOut && pageOut.textContent !== t) pageOut.textContent = t; }
+      function setZoom(z) {
+        var ratio = body.scrollHeight ? body.scrollTop / body.scrollHeight : 0;
+        zoom = Math.min(3, Math.max(0.5, Math.round(z * 100) / 100));
+        v.querySelectorAll('[data-ggc-viewer-zoom="in"], [data-ggc-viewer-zoom="out"]').forEach(function (btn) { btn.disabled = false; });
+        v.style.setProperty("--ggc-viewer-zoom", String(zoom));
+        body.scrollTop = ratio * body.scrollHeight;
+        if (zoomOut) zoomOut.textContent = Math.round(zoom * 100) + "%";
+        v.querySelectorAll('[data-ggc-viewer-zoom="fit"]').forEach(function (b) { b.setAttribute("aria-pressed", zoom === 1 ? "true" : "false"); });
+        limits();
+        v.dispatchEvent(new CustomEvent("ggc:viewer-zoom", { bubbles: true, detail: { zoom: zoom } }));
+      }
+      v.addEventListener("click", function (e) {
+        var z = e.target.closest && e.target.closest("[data-ggc-viewer-zoom]");
+        if (z && v.contains(z)) {
+          var k = z.getAttribute("data-ggc-viewer-zoom");
+          setZoom(k === "in" ? zoom + 0.25 : k === "out" ? zoom - 0.25 : 1);
+          return;
+        }
+        var b = e.target.closest && e.target.closest("[data-ggc-viewer-page]");
+        if (b && v.contains(b)) {
+          var list = pages(), i = current();
+          var j = b.getAttribute("data-ggc-viewer-page") === "next" ? Math.min(list.length - 1, i + 1) : Math.max(0, i - 1);
+          if (list[j]) body.scrollTop += list[j].getBoundingClientRect().top - body.getBoundingClientRect().top;
+          showPage();
+        }
+      });
+      var ticking = false;
+      body.addEventListener("scroll", function () {
+        if (ticking) return;
+        ticking = true;
+        (window.requestAnimationFrame || setTimeout)(function () { ticking = false; showPage(); });
+      }, { passive: true });
+      function limits() {   /* 배율 끝에서는 그쪽 단추를 끈다 — 눌러도 아무 일 없는 단추가 남지 않게 */
+        v.querySelectorAll('[data-ggc-viewer-zoom="out"]').forEach(function (b) { if (zoom <= 0.5) b.disabled = true; });
+        v.querySelectorAll('[data-ggc-viewer-zoom="in"]').forEach(function (b) { if (zoom >= 3) b.disabled = true; });
+      }
+      function syncState() {
+        var s = v.getAttribute("data-state") || "ready", on = s === "ready" || s === "partial";
+        v.querySelectorAll("[data-ggc-viewer-zoom], [data-ggc-viewer-page]").forEach(function (btn) { btn.disabled = !on; });
+        if (on) { limits(); showPage(); }
+      }
+      if (typeof MutationObserver === "function") {
+        new MutationObserver(syncState).observe(v, { attributes: true, attributeFilter: ["data-state"] });
+      }
+      syncState();
+    });
+  }
+
+  /* -------------------------------------------------------- ⑮ 좌우 두 칸 작업대 */
+  /* 경계 끌기 · 키보드(←/→ 10px, Shift 50px, Home/End, Enter = 접기/펼치기 — APG window splitter) · 더블클릭 = 기본 폭.
+     폭만 localStorage 에 기억한다. 접힘은 기억하지 않는다 — 다음에 열었을 때 목록이 사라져 있지 않게(less.md R9).
+     [data-ggc-split-step] 단추는 끌기의 한 번 누르기 대안(WCAG 2.5.7).
+     ≤1100px 에서는 data-pane 으로 한 칸씩 — 전환하면 그 칸으로 초점을 옮기고, 목록의 스크롤 위치를 되살린다. */
+  var narrowMq = window.matchMedia ? window.matchMedia("(max-width: 1100px)") : null;
+  function store(kind, key, val) {
+    try {
+      var s = window[kind];
+      if (val === undefined) return s.getItem(key);
+      if (val === null) s.removeItem(key); else s.setItem(key, String(val));
+    } catch (e) { /* 저장소가 막힌 브라우저 — 기억만 못 한다 */ }
+    return null;
+  }
+  function splitShow(sp, pane) {
+    sp = resolve(sp);
+    if (!sp) return;
+    var list = sp.querySelector(".ggc-split-list");
+    if (list && pane === "view" && sp.getAttribute("data-pane") !== "view") sp.__ggcListTop = list.scrollTop;
+    sp.setAttribute("data-pane", pane);
+    var box = sp.querySelector(pane === "view" ? ".ggc-split-view" : ".ggc-split-list");
+    if (!box || !(narrowMq && narrowMq.matches)) return;
+    /* 목록으로 돌아오면 고른 행으로, 보기로 가면 그 칸 제목으로 — 초점이 스크롤을 움직이지 않게 한 뒤 스크롤을 되살린다 */
+    var target = (pane === "list" && box.querySelector('[aria-current="true"], [aria-selected="true"]')) || box.querySelector("h1, h2, h3") || box;
+    if (!target.matches("a[href], button, input, select, textarea, [tabindex]")) target.setAttribute("tabindex", "-1");
+    target.focus({ preventScroll: true });
+    if (list && pane === "list" && typeof sp.__ggcListTop === "number") list.scrollTop = sp.__ggcListTop;   /* display:none 이 지운 스크롤 */
+  }
+  function initSplits(root) {
+    (root || document).querySelectorAll("[data-ggc-split]").forEach(function (sp) {
+      if (sp.__ggcSplit) return;
+      sp.__ggcSplit = true;
+      var key = "ggc-split:" + (sp.getAttribute("data-ggc-split") || "default");
+      var list = sp.querySelector(".ggc-split-list"), handle = sp.querySelector(".ggc-split-handle");
+      var unit = parseFloat(getComputedStyle(sp).getPropertyValue("--ggc-space-11")) || 80;
+      function bounds() { return { min: unit * 3, max: Math.max(unit * 3, Math.min(unit * 7, sp.clientWidth * 0.45)) }; }
+      function report() {
+        if (!handle || !list) return;
+        var b = bounds();
+        handle.setAttribute("aria-valuemin", String(Math.round(b.min)));
+        handle.setAttribute("aria-valuemax", String(Math.round(b.max)));
+        handle.setAttribute("aria-valuenow", String(Math.round(list.getBoundingClientRect().width)));
+      }
+      function setW(px, save) {
+        var b = bounds();
+        px = Math.round(Math.min(b.max, Math.max(b.min, px)));
+        sp.style.setProperty("--ggc-split-w", px + "px");
+        report();
+        if (save) store("localStorage", key, px);
+      }
+      function reset() { sp.style.removeProperty("--ggc-split-w"); store("localStorage", key, null); report(); }
+      function setCollapsed(on) {
+        if (on) sp.setAttribute("data-collapsed", ""); else sp.removeAttribute("data-collapsed");
+        sp.querySelectorAll("[data-ggc-split-toggle]").forEach(function (t) {
+          t.setAttribute("aria-expanded", on ? "false" : "true");
+          var lb = t.querySelector(".label");   /* 글이 상태를 따라가게(선택) — 접은 뒤에도 「목록 접기」로 남지 않게 */
+          if (lb) lb.textContent = on ? (t.getAttribute("data-label-closed") || "목록 펼치기") : (t.getAttribute("data-label-open") || "목록 접기");
+        });
+      }
+      var saved = parseInt(store("localStorage", key) || "", 10);
+      if (saved) sp.style.setProperty("--ggc-split-w", saved + "px");   /* 경계는 CSS clamp 가 지킨다 */
+      if (handle && list) {
+        var startX = 0, startW = 0, drag = null;
+        handle.addEventListener("pointerdown", function (e) {
+          if (e.pointerType === "mouse" && e.button !== 0) return;
+          drag = e.pointerId; startX = e.clientX; startW = list.getBoundingClientRect().width;
+          if (handle.setPointerCapture) handle.setPointerCapture(drag);
+          sp.setAttribute("data-dragging", "");
+          e.preventDefault();
+        });
+        handle.addEventListener("pointermove", function (e) { if (e.pointerId === drag) setW(startW + e.clientX - startX, false); });
+        function stop(e) {
+          if (e.pointerId !== drag) return;
+          drag = null; sp.removeAttribute("data-dragging");
+          setW(list.getBoundingClientRect().width, true);
+        }
+        ["pointerup", "pointercancel", "lostpointercapture"].forEach(function (t) { handle.addEventListener(t, stop); });   /* 덮개가 남지 않게 */
+        handle.addEventListener("dblclick", reset);
+        handle.addEventListener("keydown", function (e) {
+          var w = list.getBoundingClientRect().width, b = bounds(), step = e.shiftKey ? 50 : 10;
+          if (e.key === "ArrowLeft") setW(w - step, true);
+          else if (e.key === "ArrowRight") setW(w + step, true);
+          else if (e.key === "Home") setW(b.min, true);
+          else if (e.key === "End") setW(b.max, true);
+          else if (e.key === "Enter") {
+            /* 접으면 경계가 사라진다 — 다시 펼 단추가 있을 때만 접고, 초점을 그 단추로 옮긴다 */
+            var tg = sp.querySelector("[data-ggc-split-toggle]");
+            if (!tg) return;
+            setCollapsed(true); tg.focus();
+          }
+          else return;
+          e.preventDefault();
+        });
+        if (typeof ResizeObserver === "function") new ResizeObserver(report).observe(sp);
+        handle.tabIndex = 0;   /* 초점은 동작이 있을 때만 — 스크립트가 없으면 빈 탭 정지가 남지 않게 */
+        report();
+      }
+      sp.addEventListener("click", function (e) {
+        var s = e.target.closest && e.target.closest("[data-ggc-split-show]");
+        if (s && sp.contains(s)) splitShow(sp, s.getAttribute("data-ggc-split-show"));
+        var t = e.target.closest && e.target.closest("[data-ggc-split-toggle]");
+        if (t && sp.contains(t)) setCollapsed(!sp.hasAttribute("data-collapsed"));
+        var st = e.target.closest && e.target.closest("[data-ggc-split-step]");
+        /* 좁은 화면·접힌 상태에서는 목록 폭이 0 으로 재진다 — 그 값으로 PC 에서 기억한 폭을 덮지 않는다 */
+        if (st && sp.contains(st) && list && !(narrowMq && narrowMq.matches) && !sp.hasAttribute("data-collapsed")) {
+          setW(list.getBoundingClientRect().width + (parseFloat(st.getAttribute("data-ggc-split-step")) || 0), true);
+        }
+      });
+      if (!sp.hasAttribute("data-pane")) sp.setAttribute("data-pane", "list");
+      /* 넓은 화면에서 보기 칸에 초점이 있는 채로 좁아지면 그 칸을 보인다 — 초점이 숨은 칸에 갇히지 않게 */
+      if (narrowMq && narrowMq.addEventListener) narrowMq.addEventListener("change", function (e) {
+        if (!e.matches) return;
+        var view = sp.querySelector(".ggc-split-view"), a = document.activeElement;
+        if (view && a && view.contains(a)) sp.setAttribute("data-pane", "view");
+      });
+    });
+  }
+
   /* ------------------------------------------------------------------ 공개 */
   GGC.toggleMenu = function () { var nav = mainMenu(); setMenu(!(nav && nav.getAttribute("data-open") === "true")); };
   GGC.initTabs = initTabs;
@@ -694,6 +1078,13 @@
   GGC.initFiles = initFiles;
   GGC.initListboxes = initListboxes;
   GGC.initInPageNav = initInPageNav;
+  GGC.initJobs = initJobs;
+  GGC.initSolo = initSolo;
+  GGC.initSignatures = initSignatures;
+  GGC.signatureClear = function (el) { el = resolve(el); if (el && el.__ggcSignatureClear) el.__ggcSignatureClear(); };
+  GGC.initViewers = initViewers;
+  GGC.initSplits = initSplits;
+  GGC.splitShow = splitShow;
   GGC.init = function (root) {
     initDrawer();
     (root || document).querySelectorAll('.ggc-tooltip-wrap').forEach(function (wrap) {
@@ -708,6 +1099,7 @@
       wrap.addEventListener('mouseenter', position); wrap.addEventListener('focusin', position);
     });
     initTabs(root); initModals(root); initMenus(root); initFiles(root); initListboxes(root); initInPageNav(root);
+    initJobs(root); initSolo(root); initSignatures(root); initViewers(root); initSplits(root);
   };
 
   if (document.readyState === "loading") {

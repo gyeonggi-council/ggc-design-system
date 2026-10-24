@@ -50,9 +50,10 @@ bash tools/check-all.sh     # 정본 D6(strict) · 갤러리 업무/대민 D1~D5
 
 ## 지도
 
-- `design/` — 정본 6파일(tokens·components·public·behaviors·fonts·**icons**) + 검사기 `check_design.py` + 갤러리 16쪽(업무 12 + 대민 4) + `ppt/`(발표 템플릿 생성기)
+- `design/` — 정본 6파일(tokens·components·public·behaviors·fonts·**icons**) + 검사기 `check_design.py` + 갤러리 18쪽(업무 13 + 대민 5) + `ppt/`(발표 템플릿 생성기)
 - `registry/ggc/` + `public/r/` — Tier 2 shadcn 레지스트리 74항목: UI 45(shadcn 공식 + 토큰) · 블록 27 · 훅 1 · 토큰/테마/스타일 (생성 `tools/build-registry-json.py` · 검사 `tools/check-registry.py`)
-- `docs/` — contract(AUTHORITATIVE) · quickstart 7종 · guides · components 40종 · decisions(ADR) · migration
+- `docs/` — contract(AUTHORITATIVE) · quickstart 7종 · guides(v3.2 `states.md` — 상태 보이기) · components 46종 · decisions(ADR) · migration
+- `tools/sync-canon.py` — 서비스 안 정본 사본을 최신 / 공식 옛 판 / 현지 수정본으로 가르고 공식 옛 판만 다시 맞춘다(기본 미리보기, v3.2)
 - `skills/ggc-design/` — Claude Code 스킬 + references 11종
 - 브랜드 아이덴티티 원본(CI 색 · 로고 원본)은 **별도 저장소 `ggc-design-guide`** — 색 결정은 그쪽에서 나고 여기로 내려온다. 발표용 PPT 템플릿은 토큰의 생성물이라 여기(`design/ppt/`)
-- 결정 기록 `docs/decisions/` — v3 는 0009(밀도·타이포·아이콘·KRDS 범위) · 0010(제목 위치) · 0011(Tier 2 = 공식 소스)
+- 결정 기록 `docs/decisions/` — v3 는 0009(밀도·타이포·아이콘·KRDS 범위) · 0010(제목 위치) · 0011(Tier 2 = 공식 소스) · 0012(덜어내기) · 0013(흰 바탕+테두리 · 부품 5종 · 판 갈라짐)

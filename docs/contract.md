@@ -17,13 +17,13 @@
 
 ## 2. 공통 셸
 
-- 상단 GNB(헤더): 64px, 흰색, 하단 `#E2E7EE` 1px — 화면마다 자리가 같은 것만: 브레드크럼(경로부) · 검색 · 알림. **제목은 헤더에 두지 않는다**
-- 페이지 제목(2026-09-05, ADR 0010 — 0008 대체): 본문 첫 줄 `.ggc-page-head` 의 `<h1 class="ggc-page-title">`, 크기 `--ggc-h1-size`(24) · 700. 화면의 h1 은 이것 하나이고 `<main aria-labelledby="page-title">`. ~~설명 한 줄(`.desc`) + 주 액션 하나~~ → **v3.1(ADR 0012): 설명 줄은 기본 없음, 주 액션은 핵심 행동이 있을 때만. 제목 표시는 화면군마다 기본형(보임) 또는 간결형(h1 을 `.ggc-sr` 로 남김) — §11.** 900px 이하 브레드크럼 숨김(경로는 LNB drawer 의 현재 항목)
+- 상단 GNB(헤더): 64px, 흰색, 하단 `--ggc-shell-border` 1px(v3.2: `#D5DCE5`) — 화면마다 자리가 같은 것만: 브레드크럼(경로부) · 검색 · 알림. **제목은 헤더에 두지 않는다**
+- 페이지 제목(2026-09-05, ADR 0010 — 0008 대체): 본문 첫 줄 `.ggc-page-head` 의 `<h1 class="ggc-page-title">`, 크기 `--ggc-h1-size`(24) · 600(v3.2 — 위계는 위치·간격·크기·굵기를 함께 쓴다). 화면의 h1 은 이것 하나이고 `<main aria-labelledby="page-title">`. ~~설명 한 줄(`.desc`) + 주 액션 하나~~ → **v3.1(ADR 0012): 설명 줄은 기본 없음, 주 액션은 핵심 행동이 있을 때만. 제목 표시는 화면군마다 기본형(보임) 또는 간결형(h1 을 `.ggc-sr` 로 남김) — §11.** 900px 이하 브레드크럼 숨김(경로는 LNB drawer 의 현재 항목)
 - 로고 슬롯/LNB(사이드바): 256px · 접힘 48px(`--ggc-lnb-w-icon`, Tier 2 sidebar collapsible=icon). 항목은 lucide 아이콘 + 라벨, 높이 32
-- 페이지 배경: `#EEF1F5`
+- 페이지 배경: `#FFFFFF`(v3.2, ADR 0013 — 바탕과 카드의 색 차이 대신 테두리로 면을 가른다. v3.1 까지 `#EEF1F5`)
 - 본문: 대시보드 최대 1320px, 기타 업무 화면 최대 1360px
-- 카드: 흰색, 1px `#E6EBF1`, radius 14~16px, 카드 그림자 없음
-- 검색: 300×`--ggc-search-h`(업무 36 · 대민 48), `#F3F5F9`, radius 10px
+- 카드: 흰색, 1px `#D5DCE5`, radius 12px(`--ggc-radius-lg`), 카드 그림자 없음 · 주 버튼 색 그림자도 없음 — 그림자는 모달·메뉴처럼 뜨는 층만(v3.2)
+- 검색: 300×`--ggc-search-h`(업무 36 · 대민 48), `#F3F5F9`, radius `--ggc-radius`(v3.2: 10 → 6px)
 - 사용자: 실명·역할·부서, UUID 금지
 - 모바일: 900px 이하 GNB 압축 + LNB drawer, 390px 가로 스크롤 0, 주요 업무 동선 도달 가능
 - 글꼴: 자체 호스팅 `Pretendard GOV`; 외부 CDN 금지
@@ -55,9 +55,9 @@
 - text-body `#3A4150` — 카드 안 긴 본문 단락(흰 위 10.23:1). v2.0 에서 컴포넌트 레이어로부터 승격
 - 타이포 스케일(v3.0, 값은 토큰 파일): `--ggc-text-xs` ~ `-3xl`(12/13/14/16/18/20/24/30) · `--ggc-h1-size` = 2xl · `--ggc-h2-size` = lg · `--ggc-h3-size` = md · `--ggc-kpi-size` = 3xl · `--ggc-leading-tight/normal`. 대민 프로필은 KRDS 스텝(17 · 20/24/32)으로 덮어쓴다
 - 아이콘 치수(v3.0): `--ggc-icon` 16 · `--ggc-icon-lg` 20 (대민 20/24) · `--ggc-icon-stroke` 2
-- border `#E6EBF1` · border-strong `#D5DCE5`
-- shell-border `#E2E7EE`
-- bg `#EEF1F5`
+- border `#D5DCE5` · border-strong `#D5DCE5` (v3.2: border 가 #E6EBF1 에서 올라와 둘이 같아졌다 — 이름은 쓰임을 가른다)
+- shell-border `#D5DCE5` (v3.2: #E2E7EE)
+- bg `#FFFFFF` (v3.2: #EEF1F5)
 - surface `#FFFFFF`
 - success `#0A7B4E` · warning `#9D5E00` · danger `#CD2D2D` · info `#1F6A97`
 
@@ -180,6 +180,9 @@ KRDS 의 `mode-high-contrast` 는 밝은 글자(`text.bolder #E6E8EA` 등)를 �
   구조를 따르고 `design/ggc-public.css` 가 담당한다. 업무 셸(§2 GNB/LNB)은 대민에 쓰지 않는다.
 - 두 프로필을 **한 화면에 섞지 않는다.** 예외는 업무 화면 안의 도민 안내 구역처럼 명확히
   경계 지어진 서브트리뿐이다.
+- **휴대폰 1인 링크 화면**(`.ggc-solo`, v3.2)은 대민 프로필이되 대민 셸(masthead · identifier · 공개 푸터)을 생략한다 —
+  로그인 없는 개인 링크로 한 가지 일(서명 · 설문 · 신청 확인)을 하러 오는 화면이라 셸이 그 일을 밀어낸다
+  (근거: 의원 설문 의원 화면 2026-10-06 사용자 결정 · 서명 받는 분 화면). 기관명은 `.ggc-solo-head` 에 남긴다.
 
 ## 10. 업무 프로필 v3 — shadcn 기본 밀도 · 제목은 본문 · 아이콘은 lucide (2026-09-05)
 
@@ -214,3 +217,17 @@ KRDS 의 `mode-high-contrast` 는 밝은 글자(`text.bolder #E6E8EA` 등)를 �
   화면을 통과시키려고 검사 항목·임계치를 낮추지 않는다.
 
 완료 정의 §8 에 추가: ⑫ 화면마다 "누가 · 무엇을 하러 오나" 한 줄과 덜어내기 판정(적용 · 미적용 · 해당 없음)이 `design-decisions.md` 에 있다.
+
+## 12. GitHub 식 정돈 · 서비스 부품 승격 (v3.2, 2026-10-24)
+
+사용자 지시("GitHub UI 가 괜찮은 듯 · GitHub UI/UX 와 claude.ai 디자인도 고려 · 모든 서비스를 참고해서")와 18개 서비스 실측을 근거로 한 결정이다
+([ADR 0013](decisions/0013-github-tidy-and-shared-parts.md)). **토큰 값이 바뀐다 — ⚠ D1**(서비스는 그 화면을 다음에 고칠 때 재복사, §11 의 일괄 변경 금지는 그대로).
+
+- **면은 흰 바탕 + 테두리**(§2·§3) — 바탕 `#FFFFFF` · 테두리 `#D5DCE5` · 모서리 6/4/12 · 주 버튼 그림자 없음 · 제목 굵기 600. 새 색은 없다(전부 이미 있던 값).
+- **상태를 보이는 법**은 [guides/states.md](guides/states.md) 하나 — 로딩 시간 기준 · 저장과 제출 · 폼 오류 · 못 쓰는 이유 · 빈 화면 · 기능 저하 · 알림 위치(토스트는 예외).
+- **서비스가 각자 만들던 부품 다섯을 정본으로**: 긴 작업 진행 `.ggc-job`(+ 진행 막대 `.ggc-progress`) · 휴대폰 1인 링크 화면 `.ggc-solo`(+ `.ggc-modal--full`) ·
+  서명 패드 `.ggc-signature` · 문서 미리보기 틀 `.ggc-viewer` · 좌우 두 칸 작업대 `.ggc-split`. 흐름·렌더러·내보내기는 서비스 몫이고, 이미 승인된 서비스 흐름을 바꾸지 않는다.
+- **레코드 처리 상태는 여전히 배지 하나다** — `.ggc-job` 은 시스템이 지금 돌리는 작업에만(§11 단계 막대 규칙 그대로).
+- **판이 갈라지지 않게** — 검사기 D1 이 사본의 판을 밝히고, `tools/sync-canon.py` 가 공식 옛 판만 다시 맞춘다(현지 수정본은 건드리지 않는다).
+
+완료 정의 §8 에 추가: ⑬ 정본에 있는 부품(진행 · 1인 링크 · 서명 · 문서 보기 · 두 칸 · 파일 · 빈 화면 · 토스트)을 서비스가 다시 만들지 않는다 — 모자라면 정본에 먼저 올린다.

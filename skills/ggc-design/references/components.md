@@ -16,6 +16,8 @@
 | 제목 스케일 · 아이콘 | `.ggc-h1/.ggc-h2/.ggc-h3` · `.ggc-icon(--lg)` + 스프라이트 | `SectionTitle` · `lucide-react` | guides/typography.md · icons.md |
 | 사이드 내비 (대민) | `.ggc-side-nav` | `ggc-side-nav` | components/side-nav.md |
 | 로그인 | `.ggc-qr` `.ggc-login` | `ggc-qr-login` | login.html |
+| 목록 + 문서 두 칸 작업대 (경계 끌기 · 폭 기억 · ≤1100px 한 칸씩, v3.2) | `.ggc-split` + `data-ggc-split` (`.ggc-split-list` `.ggc-split-handle` `.ggc-split-view` `.ggc-split-back`) | — | components/split.md · workbench.html |
+| 휴대폰 1인 링크 화면 (로그인 없는 개인 링크 · 대민 셸 생략, v3.2) | `.ggc-solo` (`.ggc-solo-head` `.ggc-solo-main` `.ggc-solo-bar`) + `.ggc-modal--full` | — | components/solo.md · public/solo.html |
 
 ## 보여 주기
 
@@ -39,6 +41,9 @@
 | 안내 · 유의사항 · 제출 서류 목록 | `.ggc-text-list(--check/--dash)` | — | components/text-list.md |
 | 긴 문서의 절 목차 | `.ggc-in-page-nav` + `data-ggc-in-page-nav` | — | components/in-page-nav.md |
 | 아이콘 · 약어 보조 설명 | `.ggc-tooltip-wrap` + `.ggc-tooltip` | `tooltip` | components/tooltip.md |
+| 한글 · PDF 미리보기 (렌더러는 서비스, v3.2) | `.ggc-viewer` + `data-ggc-viewer` (`--frame` = iframe) | — | components/viewer.md · workbench.html |
+| 3초 넘는 시스템 작업의 진행 (레코드 처리 단계는 배지 하나, v3.2) | `.ggc-job` + `data-ggc-job` (`--compact`) | — | components/job.md · workbench.html |
+| 센 값의 진행 (6건 중 4건 — 모르면 스피너, v3.2) | `.ggc-progress` (`<progress>`) | `progress` | components/progress.md |
 
 ## 입력받기
 
@@ -55,6 +60,7 @@
 | 켬/끔 (즉시 반영) | `.ggc-switch` (`role="switch"`) | `switch` | components/switch.md |
 | 택일 | `.ggc-radio` · `.ggc-check-group` | `radio-group` | components/check-radio.md |
 | 파일 첨부 | `.ggc-file` + `data-ggc-file` · `.ggc-file-list` | `ggc-file-upload` | components/file-upload.md |
+| 서명 (대안 안내는 패드 앞, v3.2) | `.ggc-signature` + `data-ggc-signature` (`.ggc-signature-pad`) | — | components/signature.md · public/solo.html |
 | 필터 스트립 | `.ggc-chip` + `.ggc-search` + `.ggc-select--sm` | `ggc-filter-bar` + `toggle-group` | explore.html · components/filter-bar.md |
 | 단계형 작성 | `.ggc-wizard` + `.ggc-actionbar` | `ggc-wizard-layout` + `ggc-stepper` + `ggc-actionbar` | wizard.html · components/wizard-layout.md |
 | 상세 + 결재 레일 | `.ggc-card` 2열(flex) | `ggc-detail-layout` (`MetaList`) | components/detail-layout.md |

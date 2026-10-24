@@ -44,6 +44,24 @@ KRDS `modal` 구조(제목 · 본문 · 버튼 행 · 닫기 · 배경)를 따�
 
 스크립트 없이 쓰려면 `dialog.showModal()` / `dialog.close()` 를 직접 부른다. 마크업은 같다.
 
+## 전체 화면 `--full` (v3.2)
+
+휴대폰에서 한 가지 일에 화면 전체가 필요할 때 쓴다 — **서명 · 제출 전 확인 · 문서 크게 보기.**
+
+```html
+<dialog class="ggc-modal ggc-modal--full" id="sign-m" aria-labelledby="sign-t">
+  <div class="head"><h2 class="title" id="sign-t">서명</h2>
+    <button class="close" type="button" data-ggc-modal-close aria-label="닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <div class="body"> …서명 패드 · 문서 보기… </div>
+  <div class="foot"><button class="ggc-btn ggc-btn--primary ggc-btn--lg ggc-btn--block" type="button">서명 넣기</button></div>
+</dialog>
+```
+
+- 높이는 `100svh`(주소창이 보일 때의 높이)다. `100dvh` 는 주소창이 오르내릴 때마다 바뀌어 카톡 인앱에서 흔들린다. 머리 · 바닥은 안전 영역(`env(safe-area-inset-*)`)만큼 비킨다.
+- `.body` 가 남는 높이를 채운다. 안의 서명 패드([signature.md](signature.md)) · 문서 보기([viewer.md](viewer.md))가 그 높이를 쓴다.
+- **뒤 문서를 고정한다.** `overflow:hidden` 만으로는 iOS · 카톡이 뒤 문서를 끌어 올린다. 그래서 behaviors 가 열 때 `<html data-ggc-modal-lock>` 을 붙이고 스크롤 위치를 `body` 의 `top` 으로 옮겨(CSSOM) 고정하고, 닫으면 풀고 그 위치로 되돌린다.
+- 크게 보기는 창 안에 **두 번째 viewer** 를 둔다. 모달 안에 모달을 열지 않는 규칙은 같다.
+
 ## 규칙
 
 - 제목은 `<h2>` + `aria-labelledby`. 제목 없는 모달을 만들지 않는다.

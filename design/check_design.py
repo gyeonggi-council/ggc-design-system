@@ -60,6 +60,7 @@ SKIP_DIRS = {"node_modules", ".next", ".nuxt", "dist", "build", "out", ".venv",
              "venv", "__pycache__", "target", ".git", ".turbo", ".cache",
              "coverage", ".pytest_cache", "site-packages", ".svelte-kit",
              "_retired", ".orca",
+             ".claude",       # v3.2: Claude Code worktree 사본(.claude/worktrees) — 배포 입력이 아니다(의안관리 사본 17벌이 D1 FAIL 36 을 냈다)
              # 우리 코드가 아닌 것 — 빼지 않으면 남의 사이트 캡처를 결함으로 보고한다
              "tmp",            # bill-system/tmp/ 는 ggc.go.kr·교육청 외부 사이트 캡처
              "rhwp",           # bill-system 안의 벤더 번들(rhwp-studio). 손대지 않는다
@@ -82,7 +83,7 @@ RGBA_RE = re.compile(r"rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)", re.I)
 ICON_DECL_RE = re.compile(r'rel=["\'](?:shortcut )?icon')
 ALLOW_RE = re.compile(r"ggc-design-allow:\s*(#?[0-9a-zA-Z]+)\s*[-—]+\s*([^*\n]+)")
 
-PAGE_BG = "#eef1f5"
+PAGE_BG = "#eef1f5"   # v3.2 정본 바탕은 흰색이지만, v3.1 이하 사본(회색 바탕)을 쓰는 서비스가 남아 있어 두 바탕 모두에서 잰다(보수적)
 WHITE = "#ffffff"
 
 
@@ -398,6 +399,17 @@ def find_token_copies(root, name="ggc-tokens.css"):
     return hits
 
 
+def file_version(path):
+    """정본 파일 머리말의 판 표기(예: 'v3.2'). 첫 400바이트에서 찾는다 — 없으면 '판 표기 없음'."""
+    try:
+        with open(path, "rb") as f:
+            head = f.read(400).decode("utf-8", "replace")
+    except OSError:
+        return "읽기 실패"
+    m = re.search(r"\bv(\d+\.\d+)\b", head)
+    return f"v{m.group(1)}" if m else "판 표기 없음"
+
+
 def md5_lf(path):
     """줄끝을 LF 로 정규화한 md5 — Windows 사본(CRLF)이 정본(LF)과 내용이 같으면 같다고 본다.
     .gitattributes 가 LF 를 고정하지만, 수동 복사·편집기 저장이 CRLF 를 만들 수 있다."""
@@ -486,11 +498,16 @@ def check_service(root, aa_mode="observe", verbose=True, profile=None):
             any_copy = True
             rel = os.path.relpath(c, root)
             if md5_lf(c) == canon_md5:
-                rep.add("D1", "INFO", "copy", rel, "정본과 동일")
+                rep.add("D1", "INFO", "copy", rel, f"정본과 동일 ({file_version(canon_path)})")
             else:
+                # v3.2: 머리말 판을 같이 적는다 — "재검증 필요"만으로는 무엇을 할지 모른다.
+                # 머리말이 같은데 바이트가 다르면 현지에서 고친 사본이거나 머리말을 올리지 않은 옛 판이다.
+                mine, canon_v = file_version(c), file_version(canon_path)
+                why = (f"사본 {mine} · 정본 {canon_v} — 판 표기가 다르다" if mine != canon_v
+                       else f"사본·정본 모두 머리말 {canon_v} 인데 바이트가 다르다 — 현지 수정본이거나 옛 판")
                 rep.add("D1", "FAIL", "copy", rel,
-                        "정본과 다르다 — 정본에서 다시 복사할 것 "
-                        "(값을 바꿔야 한다면 정본을 먼저 고친다)")
+                        f"{why}. 정본에서 다시 복사할 것(미리보기: python tools/sync-canon.py <서비스>) "
+                        "· 값을 바꿔야 한다면 정본을 먼저 고친다")
     if not any_copy:
         rep.add("D1", "INFO", "copy", "-", "정본 사본 없음 (인라인형/독자형)")
 
@@ -568,10 +585,17 @@ def check_service(root, aa_mode="observe", verbose=True, profile=None):
 
     # Next App Router 는 app/icon.png 파일 관례를 쓴다 — 마크업 선언이 없다.
     # basePath 가 빌드마다 다르고 href 에 내용 해시까지 자동으로 붙어 그쪽이 옳다.
-    next_convention = any(
-        os.path.basename(x) in ("icon.png", "apple-icon.png")
-        for x in _all_files(root))
-    has_favicon = bool(re.search(ICON_DECL_RE, blob)) or next_convention
+    # v3.2: app/favicon.ico(Next 관례) · docusaurus.config 의 favicon: 키도 선언으로 본다(오탐 — 운영 포털)
+    next_convention = False
+    docusaurus = False
+    for x in _all_files(root):
+        bn = os.path.basename(x)
+        if bn in ("icon.png", "apple-icon.png") or (
+                bn == "favicon.ico" and os.path.basename(os.path.dirname(x)) == "app"):
+            next_convention = True
+        elif bn.startswith("docusaurus.config.") and re.search(r"\bfavicon\s*:", read(x)):
+            docusaurus = True
+    has_favicon = bool(re.search(ICON_DECL_RE, blob)) or next_convention or docusaurus
     if has_favicon:
         rep.add("D3", "INFO", "favicon", "-", "파비콘 선언 있음")
     else:
