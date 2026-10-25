@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (464c1798) · design/components.tsv (102adf3b) -->
+<!-- 원천: design/ggc-tokens.css (27de2b5d) · design/components.tsv (102adf3b) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 

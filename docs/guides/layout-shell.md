@@ -7,7 +7,7 @@
 ```
 <a class="ggc-skip-link" href="#main">본문 바로가기</a>
 <div class="ggc-shell">
-  <div class="ggc-utility-bar">     기관명 + 통합서비스 스위처 (모든 시스템 최상단 동일)
+  <div class="ggc-utility-bar">     기관명 + 통합서비스 스위처 — 기본 숨김(v3.2.1). 마크업은 둔다
   <header class="ggc-gnb">          64px 흰 띠 — [PC 접기 단추] · 브랜드 슬롯(256px, LNB 와 세로선이 이어진다) · 경로부(.ggc-gnb-page: 브레드크럼만) · 검색 300×36 · 아이콘 버튼 · [≤900 「전체메뉴」]
   <div class="ggc-shell-body">
     <nav class="ggc-lnb">           256px, sticky · 접힘 .ggc-lnb--icon 48px. .ggc-lnb-group(캡션) · .ggc-lnb-item(svg 아이콘 + .label + .count · aria-current)
@@ -37,7 +37,7 @@ GNB/LNB 는 `ggc-components.css` §9.
 
 | | 언제 |
 |---|---|
-| ⓐ 유틸리티 바만 | 단폭 PoC · 화면 5개 이하. GNB 가 없으므로 브레드크럼도 `.ggc-page-head` 위에 둔다(h1 은 어느 셸이든 본문) |
+| ⓐ 유틸리티 바만 | 단폭 PoC · 화면 5개 이하. 띠가 기본 숨김이라 본문 `.ggc-page-head` 가 맨 위다. GNB 가 없으므로 브레드크럼도 `.ggc-page-head` 위에 둔다(h1 은 어느 셸이든 본문) |
 | ⓑ 풀셸 (GNB + LNB) | **화면이 5개를 넘으면.** LNB 없이 넘기면 자체 내비를 발명하게 되고 그게 다음 드리프트다 |
 | ⓒ 이관 셸 유지 + 유틸리티 바 | 리스킨 1단계 — 기존 셸을 당장 못 바꿀 때 |
 

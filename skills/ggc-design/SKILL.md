@@ -39,7 +39,7 @@ description: 경기도의회 공통 디자인 시스템을 화면에 적용·검
 ├─ ① 착지    — React/Next/Vite + Tailwind v4 인가?
 │               예 → Tier 2 레지스트리 (references/registry.md)
 │               아니오 (JSP · Jinja2 · FastAPI · 정적 HTML · Tailwind 없는 React) → Tier 1 CSS 복사 (references/porting.md)
-├─ ② 셸      — work: 유틸리티 바 + GNB/LNB   public: 마스트헤드 + 헤더/주 메뉴 + 공개 푸터 (docs/guides/public-shell.md)
+├─ ② 셸      — work: 유틸리티 바(기본 숨김) + GNB/LNB   public: 마스트헤드 + 헤더/주 메뉴 + 공개 푸터 (docs/guides/public-shell.md)
 ├─ ③ 화면    — 먼저 "누가 · 무엇을 하러 오나" 한 줄 → work: archetypes.md 6종   public: public-patterns.md 6종
 ├─ ③' 덜어내기 — 각 정보가 언제 필요한가 (docs/guides/less.md R1~R10 · 군더더기 10가지)   ← v3.1
 ├─ ④ 컴포넌트 — references/components.md 색인 → docs/components/<name>.md → 마크업은 갤러리 DOM 에서 복사
@@ -114,7 +114,7 @@ Tailwind 서비스는 `@theme { --color-brand: var(--ggc-primary); }` 처럼 **�
 
 ## 6. Phase 3 — 공통 셸
 
-- **work**: `.ggc-utility-bar` · `.ggc-badge` · `.ggc-footer` 는 토큰 파일에 들어 있어 복사하면 따라온다. GNB/LNB 풀셸은
+- **work**: `.ggc-utility-bar` · `.ggc-badge` · `.ggc-footer` 는 토큰 파일에 들어 있어 복사하면 따라온다. 유틸리티 바는 기본 숨김이다(v3.2.1) — 마크업은 둔다. GNB/LNB 풀셸은
   `ggc-components.css` §9. 마크업은 `$ROOT/design/examples/dashboard.html` 에서 복사한다.
   휴대폰 메뉴는 **GNB 맨 끝 「전체메뉴」 → 오른쪽 서랍**이다(v3.2, ADR 0014 — 대민 셸과 같은 자리). `ggc-behaviors.js` 가 단추를 만들고, 옛 마크업이 맨 앞에 둔 단추는 맨 끝으로 옮긴다.
   **하단 탭 바를 만들지 않는다** — 바닥은 스티키 액션바 자리다.
