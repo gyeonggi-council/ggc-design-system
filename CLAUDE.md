@@ -50,7 +50,7 @@ bash tools/check-all.sh     # 정본 D6(strict) · 갤러리 업무/대민 D1~D5
 
 ## 지도
 
-- `design/` — 정본 6파일(tokens·components·public·behaviors·fonts·**icons**) + 검사기 `check_design.py` + 갤러리 18쪽(업무 13 + 대민 5) + `ppt/`(발표 템플릿 생성기)
+- `design/` — 정본 6파일(tokens·components·public·behaviors·fonts·**icons**) + 검사기 `check_design.py` + 갤러리 18쪽(업무 13 + 대민 5) · 서비스 목업 `examples/mockups/`(정본 아님 — 회의 일정 · 전자명함) + `ppt/`(발표 템플릿 생성기)
 - `registry/ggc/` + `public/r/` — Tier 2 shadcn 레지스트리 74항목: UI 45(shadcn 공식 + 토큰) · 블록 27 · 훅 1 · 토큰/테마/스타일 (생성 `tools/build-registry-json.py` · 검사 `tools/check-registry.py`)
 - `docs/` — contract(AUTHORITATIVE) · quickstart 7종 · guides(v3.2 `states.md` — 상태 보이기) · components 46종 · decisions(ADR) · migration
 - `tools/sync-canon.py` — 서비스 안 정본 사본을 최신 / 공식 옛 판 / 현지 수정본으로 가르고 공식 옛 판만 다시 맞춘다(기본 미리보기, v3.2)
