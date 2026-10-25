@@ -18,7 +18,7 @@
 <style>
 /* ---- design/ggc-tokens.css (정본) ---------------------------------------- */
 /* =============================================================================
- * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.2 (2026-10-24)
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.2.1 (2026-10-25)
  * 근거: docs/contract.md (AUTHORITATIVE) · 구판 가이드는 archive/03-공통디자인가이드.md
  * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
  *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
@@ -312,8 +312,14 @@
   :root { --ggc-text-faint: #6b7585; }
 }
 
-/* --- 공통 유틸리티 바 (모든 시스템 최상단 동일 노출) --- */
+/* --- 공통 유틸리티 바 (통합서비스 띠) ---
+ * v3.2.1(2026-10-25 사용자 결정): **기본 숨김** — v1.2 플랫폼 판의 2026-08-25 결정을 정본에도 둔다.
+ *   서비스마다 GNB 위에 이 띠가 한 겹 더 붙어 상단이 두꺼워지고, 서비스 간 이동은 각 서비스의
+ *   GNB 와 SSO 가 이미 맡는다. 띠가 필요한 곳(문서 허브)만 서비스 CSS 에서 display 를 되돌린다.
+ *   **마크업은 지우지 않는다** — 검사기 D3 가 `ggc-utility-bar` 의 존재를 보고, 다시 켤 때 CSS 한 줄이면 된다.
+ * --- */
 .ggc-utility-bar {
+  display: none;
   background: var(--ggc-primary-deep);
   color: #c9d6ea;
   font-family: var(--ggc-font);
@@ -4628,7 +4634,7 @@ body {
 
       <div class="ex-note">
         <p><b>지금 보고 있는 이 페이지가 예제다.</b> 이 화면은
-        <code>ggc-tokens.css</code> 와 <code>ggc-components.css</code> 로만 그려진다. 상단 유틸리티 바 · GNB 64px · LNB 256px ·
+        <code>ggc-tokens.css</code> 와 <code>ggc-components.css</code> 로만 그려진다. GNB 64px · LNB 256px ·
         본문 1320px 은 전부 계약 §2 의 공통 셸이고, 여기서 손으로 그린 것이 없다.</p>
         <p>정본이 바뀌면 이 페이지가 같이 바뀐다. 갤러리가 정본을 배신할 수 없다는 뜻이고,
         반대로 <b>정본이 깨지면 여기가 눈에 띄게 망가진다.</b></p>
