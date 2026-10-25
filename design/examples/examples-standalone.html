@@ -18,7 +18,7 @@
 <style>
 /* ---- design/ggc-tokens.css (정본) ---------------------------------------- */
 /* =============================================================================
- * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.2 (2026-10-24)
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.2.1 (2026-10-25)
  * 근거: docs/contract.md (AUTHORITATIVE) · 구판 가이드는 archive/03-공통디자인가이드.md
  * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
  *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
@@ -312,8 +312,14 @@
   :root { --ggc-text-faint: #6b7585; }
 }
 
-/* --- 공통 유틸리티 바 (모든 시스템 최상단 동일 노출) --- */
+/* --- 공통 유틸리티 바 (통합서비스 띠) ---
+ * v3.2.1(2026-10-25 사용자 결정): **기본 숨김** — v1.2 플랫폼 판의 2026-08-25 결정을 정본에도 둔다.
+ *   서비스마다 GNB 위에 이 띠가 한 겹 더 붙어 상단이 두꺼워지고, 서비스 간 이동은 각 서비스의
+ *   GNB 와 SSO 가 이미 맡는다. 띠가 필요한 곳(문서 허브)만 서비스 CSS 에서 display 를 되돌린다.
+ *   **마크업은 지우지 않는다** — 검사기 D3 가 `ggc-utility-bar` 의 존재를 보고, 다시 켤 때 CSS 한 줄이면 된다.
+ * --- */
 .ggc-utility-bar {
+  display: none;
   background: var(--ggc-primary-deep);
   color: #c9d6ea;
   font-family: var(--ggc-font);
@@ -366,7 +372,7 @@
 
 /* ---- design/ggc-components.css (정본) ------------------------------------ */
 /* =============================================================================
- * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.2 (2026-10-24)
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.2.2 (2026-10-25)
  * 전제: design/ggc-tokens.css v3.2 를 먼저 로드할 것 (--ggc-* 변수 의존)
  * 출처: Claude Design 산출물(.dc.html) 실측 추출
  *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
@@ -393,6 +399,10 @@
  *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
  *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
  *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ *
+ * -- v3.2.2 에서 바뀐 것 (2026-10-25) ----------------------------------------
+ *   §41       서명 패드가 400px 보다 좁은 화면에서 본문 밖으로 나가던 것 — 열 minmax(0, 1fr) · 패드 width 100%.
+ *             「다시 쓰기」 단추가 긴 상태 문구에 눌려 두 줄이 되지 않게(flex-shrink: 0). 새 값은 없다.
  *
  * -- v3.2 에서 바뀐 것 (ADR 0013) ---------------------------------------------
  *   GitHub 식 정돈 — 제목 굵기 700/800 → 600(카드 머리 · 행 제목 · 페이지 제목 · 알림 · 모달 · 토스트 · 빈 상태 · .ggc-h1~3).
@@ -3832,9 +3842,10 @@ html[data-ggc-modal-lock] body { position: fixed; inset-inline: 0; overflow: hid
  *   </div>
  * 내보내기(PNG 자르기 · 크기 상한 · 저장)는 서비스 몫 — behaviors 는 ggc:signature 이벤트로 <canvas> 를 넘긴다.
  * ============================================================================= */
-.ggc-signature { display: grid; gap: var(--ggc-space-2); font-family: var(--ggc-font); }
+.ggc-signature { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--ggc-space-2); font-family: var(--ggc-font); }   /* v3.2.2: 열은 칸 폭을 넘지 않는다 */
 .ggc-signature-pad {
   position: relative;
+  width: 100%;   /* v3.2.2: 비율을 가진 격자 칸은 늘어나지 않고 최소 높이 × 5/2 = 400px 폭이 되어 400 미만 화면에서 밖으로 나갔다 — 폭은 칸을 따르고, 좁으면 최소 높이가 이겨 비율이 조금 낮아진다 */
   aspect-ratio: 5 / 2;
   min-height: calc(var(--ggc-space-11) * 2);
   border: 2px dashed var(--ggc-text-faint);   /* 그리는 자리의 경계 — 비텍스트 3:1 */
@@ -3851,6 +3862,7 @@ html[data-ggc-modal-lock] body { position: fixed; inset-inline: 0; overflow: hid
 .ggc-signature[data-state="inked"] .ph { display: none; }
 .ggc-signature[data-state="inked"] .ggc-signature-pad { border-style: solid; }
 .ggc-signature .tools { display: flex; align-items: center; justify-content: space-between; gap: var(--ggc-space-2); min-height: var(--ggc-control-h-sm); }
+.ggc-signature .tools > .ggc-btn { flex-shrink: 0; }   /* v3.2.2: 상태 문구가 길어도 「다시 쓰기」가 두 줄로 눌리지 않게 */
 .ggc-signature .status { font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
 .ggc-signature .alt { margin: 0; font-size: var(--ggc-text-sm); line-height: var(--ggc-leading-normal); color: var(--ggc-text-muted); }
 .ggc-modal--full .ggc-signature { flex: 1; min-height: 0; grid-template-rows: auto minmax(0, 1fr) auto; }
@@ -4628,7 +4640,7 @@ body {
 
       <div class="ex-note">
         <p><b>지금 보고 있는 이 페이지가 예제다.</b> 이 화면은
-        <code>ggc-tokens.css</code> 와 <code>ggc-components.css</code> 로만 그려진다. 상단 유틸리티 바 · GNB 64px · LNB 256px ·
+        <code>ggc-tokens.css</code> 와 <code>ggc-components.css</code> 로만 그려진다. GNB 64px · LNB 256px ·
         본문 1320px 은 전부 계약 §2 의 공통 셸이고, 여기서 손으로 그린 것이 없다.</p>
         <p>정본이 바뀌면 이 페이지가 같이 바뀐다. 갤러리가 정본을 배신할 수 없다는 뜻이고,
         반대로 <b>정본이 깨지면 여기가 눈에 띄게 망가진다.</b></p>

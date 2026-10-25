@@ -2,6 +2,7 @@
 
 구조와 치수는 [guides/layout-shell.md](../guides/layout-shell.md). 여기는 마크업이다 — `design/examples/dashboard.html` · `explore.html` 과 같다.
 v3.0(ADR 0010): **브레드크럼은 GNB 경로부에, `<h1>` 은 본문 첫 줄 `.ggc-page-head` 에.** LNB 항목은 lucide 아이콘 + 라벨, 접힘 변형 `.ggc-lnb--icon`.
+v3.2.1(2026-10-25): **유틸리티 바(통합서비스 띠)는 기본 숨김**이다 — 마크업은 그대로 둔다(계약 §2).
 v3.2([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)): **메뉴 단추가 둘로 나뉜다.** PC(>900)는 GNB 맨 앞 접기 단추, 900 이하는 GNB 맨 끝 「전체메뉴」 → 오른쪽 서랍(대민 셸과 같은 자리 · 같은 말).
 
 ## 마크업
@@ -10,7 +11,7 @@ v3.2([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)): **메
 <a class="ggc-skip-link" href="#main">본문 바로가기</a>
 <!-- 정적 HTML · file:// 이면 <body> 첫 줄에 아이콘 스프라이트 인라인(guides/icons.md) -->
 <div class="ggc-shell">
-  <div class="ggc-utility-bar">
+  <div class="ggc-utility-bar">                               <!-- 기본 숨김(v3.2.1) — 마크업은 둔다 -->
     <div class="inner">
       <a class="brand" href="/">경기도의회 업무플랫폼</a>
       <nav>
@@ -70,7 +71,7 @@ v3.2([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)): **메
 
 | 클래스 | 무엇 |
 |---|---|
-| `.ggc-utility-bar` `.brand` `nav a.active` `.disabled` | 최상단 띠(토큰 파일 정의). 내부망 전용 시스템은 외부 배포본에서 `span.disabled` + "(내부망)" |
+| `.ggc-utility-bar` `.brand` `nav a.active` `.disabled` | 최상단 띠(토큰 파일 정의) — **기본 숨김**(v3.2.1). 다시 보일 곳만 서비스 CSS 에서 `display` 를 되돌린다. 내부망 전용 시스템은 외부 배포본에서 `span.disabled` + "(내부망)" |
 | `.ggc-gnb-brand` `.org` `.svc` | 마크 40px + 기관 + 서비스명. 폭이 LNB 와 같아 세로선이 이어진다. 앞에 접기 단추가 있으면(>900) 폭을 내용에 맞춘다 · 900 이하에서는 왼쪽에 붙고 나머지를 오른쪽으로 민다 |
 | `.ggc-gnb-page` | **경로부** — 브레드크럼만. 브랜드 슬롯과 검색 사이(`flex:1 · min-width:0`), 검색은 밀리지 않는다. 마지막 항목만 말줄임. 홈은 비운다. `.ggc-gnb-page-title` 은 폐기 예정(v3.1 삭제) |
 | `.ggc-search` | 300×`--ggc-search-h`(36). 아이콘은 스프라이트. ≤600 에서는 알림 단추와 같은 정사각 아이콘으로 접히고, 누르면(`:focus-within`) GNB 폭으로 펼쳐진다 — 스크립트 없음 |
@@ -100,7 +101,7 @@ v3.2([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)): **메
 - **하단 탭 바를 두지 않는다**(ADR 0014). 서비스 메뉴가 4~12개 · 2단이라 탭 몇 칸에 담기지 않는다. 바닥은 이미 `.ggc-actionbar` · `.ggc-solo-bar` · `.ggc-work-actions` 자리이고, 카톡 인앱 도구 막대 · iOS 홈 막대와 부딪힌다.
 - 휴대폰(≤600)에서 셸 안 단추 · 쪽 번호는 최소 높이 `--ggc-space-8`(40) — 손가락 목표다.
 - LNB 항목에는 아이콘을 둔다 — 접었을 때 아이콘만 남는다. 이모지 금지(guides/icons.md).
-- 로그인 화면(`login.html`)은 GNB/LNB 없이 유틸리티 바 + `.ggc-login` 컨테이너만.
+- 로그인 화면(`login.html`)은 GNB/LNB 없이 유틸리티 바(기본 숨김) + `.ggc-login` 컨테이너만.
 - 대민 화면에는 이 셸을 쓰지 않는다 — 검사기 D3 가 FAIL 로 잡는다.
 
 ## Tier 2
