@@ -116,6 +116,8 @@ Tailwind 서비스는 `@theme { --color-brand: var(--ggc-primary); }` 처럼 **�
 
 - **work**: `.ggc-utility-bar` · `.ggc-badge` · `.ggc-footer` 는 토큰 파일에 들어 있어 복사하면 따라온다. GNB/LNB 풀셸은
   `ggc-components.css` §9. 마크업은 `$ROOT/design/examples/dashboard.html` 에서 복사한다.
+  휴대폰 메뉴는 **GNB 맨 끝 「전체메뉴」 → 오른쪽 서랍**이다(v3.2, ADR 0014 — 대민 셸과 같은 자리). `ggc-behaviors.js` 가 단추를 만들고, 옛 마크업이 맨 앞에 둔 단추는 맨 끝으로 옮긴다.
+  **하단 탭 바를 만들지 않는다** — 바닥은 스티키 액션바 자리다.
 - **public**: `docs/guides/public-shell.md` 순서대로 — 마크업은 `$ROOT/design/examples/public/index.html` 에서 복사.
   마스트헤드 문구는 바꾸지 않고, 국가 상징 이미지는 서비스가 정부 자산으로 채운다.
 - **로그인 화면을 새로 그리지 않는다** — `.ggc-qr`(§11) 그대로. 절차는 `docs/components/README.md` 의 QR 로그인.

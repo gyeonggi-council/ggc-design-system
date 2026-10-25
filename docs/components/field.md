@@ -33,7 +33,9 @@
 | 힌트 | `.hint` 11.5px subtle — 형식·예시·근거 |
 | 오류 | `.is-error` + `.error` 문구 + `aria-invalid` + `aria-describedby`. 문구는 **사유 + 형식**("날짜 형식이 아니다 — YYYY-MM-DD") |
 | 비활성 | `disabled` — 회색 배경. **이유를 힌트에** |
-| 높이 · 글자 | `--ggc-input-h`(44 / 48) · `--ggc-control-font`(13.5 / 17) |
+| 높이 · 글자 | `--ggc-input-h` · `--ggc-control-font` — 값은 프로필(업무 · 대민)이 정한다 |
+| 모서리 | 입력 · 셀렉트 · 글상자 모두 `--ggc-radius`(v3.2 — 리터럴을 토큰으로) |
+| 휴대폰(≤600) | 입력 글자 `max(--ggc-control-font, --ggc-text-md)` — 16 미만이면 iOS 가 초점을 줄 때 화면을 확대한다. v3.2(ADR 0014)부터 `.ggc-work` 밖에도 걸린다 |
 
 ## 규칙
 

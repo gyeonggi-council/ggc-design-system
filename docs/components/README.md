@@ -44,7 +44,7 @@
 | 표 `.ggc-table` | [table.md](table.md) | components | 있음 |
 | 폼 필드 `.ggc-field` | [field.md](field.md) | components · components-forms | 있음 |
 | 스텝퍼 · 위저드 `.ggc-wizard` | [stepper.md](stepper.md) | components · wizard | 있음 |
-| 업무 셸 (유틸리티 바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · 검색 · 푸터) | [shell.md](shell.md) | dashboard · explore | 있음 (v3) |
+| 업무 셸 (유틸리티 바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · 휴대폰 「전체메뉴」 오른쪽 서랍 · 검색 · 푸터) | [shell.md](shell.md) | dashboard · explore | 있음 (v3 · 메뉴 v3.2) |
 | 타이포 스케일 · 아이콘 `.ggc-h1/h2/h3` `.ggc-icon` | [../guides/typography.md](../guides/typography.md) · [../guides/icons.md](../guides/icons.md) | tokens · 전 쪽 | 있음 (v3) |
 | QR 로그인 `.ggc-qr` | [qr-login.md](qr-login.md) | login | 있음 |
 | 진행 막대 (센 값이 있을 때만) `.ggc-progress` | [progress.md](progress.md) | [workbench](../../design/examples/workbench.html) · public/solo | 있음 (v3.2) |
@@ -71,7 +71,7 @@
 
 ## 동작 — `design/ggc-behaviors.js`
 
-탭 키보드 · 모달 여닫기 · LNB drawer · 토스트 · 드롭다운 메뉴 · 파일 목록 · 툴팁 Esc · 리스트박스 ·
+탭 키보드 · 모달 여닫기 · 사이드바 접기 · 「전체메뉴」 서랍(v3.2) · 토스트 · 드롭다운 메뉴 · 파일 목록 · 툴팁 Esc · 리스트박스 ·
 페이지 내 내비 · (v3.2) 긴 작업 경과 시간 · 1인 링크 화면 글자 크게 · 서명 패드 · 문서 보기 배율·쪽 · 두 칸 경계는 이 파일 하나가 준다([guides/behaviors-js.md](../guides/behaviors-js.md)). 없어도 화면은 깨지지 않고
 동작만 없다. `<script src="ggc-behaviors.js" defer>` 로 넣고, 동적으로 삽입한 마크업은
 `GGC.init(루트요소)` 로 다시 묶는다. 자세한 것은 각 컴포넌트 문서의 "키보드 · ARIA".

@@ -7,8 +7,8 @@
 
 | 과업 | Tier 1 | Tier 2 | 문서 · 갤러리 |
 |---|---|---|---|
-| 업무 화면 밀도 · 모바일 기능 유지 | `.ggc-work` `.ggc-work-grid` `.ggc-work-switch` `.ggc-work-actions` | 기존 shell·data-table 사용 | components/work-layout.md · explore.html · wizard.html |
-| 업무 셸 (유틸리티바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · 본문) | `.ggc-utility-bar` `.ggc-gnb` `.ggc-gnb-page` `.ggc-lnb(--icon)` `.ggc-shell-main(--wide)` | `ggc-shell` (`AppSidebar` `ShellHeader` `ShellMain`) + `sidebar` | components/shell.md · sidebar.md · dashboard.html · explore.html |
+| 업무 화면 배치 · 모바일 기능 유지 (v3.2: 배치만 — 카드 · KPI · 행 · 휴대폰 보정은 기본 부품) | `.ggc-work` `.ggc-work-grid` `.ggc-work-switch` `.ggc-work-actions` | 기존 shell·data-table 사용 | components/work-layout.md · explore.html · wizard.html |
+| 업무 셸 (유틸리티바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · ≤900 「전체메뉴」 오른쪽 서랍(v3.2) · 본문) | `.ggc-utility-bar` `.ggc-gnb` `.ggc-gnb-page` `.ggc-lnb(--icon)` `[data-ggc-lnb-toggle]` `.ggc-gnb-menu[data-ggc-drawer-toggle]` `.ggc-shell-main(--wide)` | `ggc-shell` (`AppSidebar` `ShellHeader` `ShellMain`) + `sidebar` | components/shell.md · sidebar.md · dashboard.html · explore.html |
 | 대민 셸 (마스트헤드 · 헤더 · 주 메뉴 · 공개 푸터 · 아이덴티파이어) | `.ggc-masthead` `.ggc-header` `.ggc-main-menu` `.ggc-footer--public` `.ggc-identifier` | `ggc-masthead` `ggc-public-header` `ggc-public-footer` `ggc-identifier` | guides/public-shell.md · public/index.html |
 | 페이지 헤더 (**h1 24** · 설명 · 주 액션 — 브레드크럼은 헤더) | `.ggc-page-head` `.ggc-page-title` | `ggc-page-head` (`PageHead` `SectionTitle`) | components/page-head.md |
 | 대민 페이지 타이틀 · 히어로 | `.ggc-page-title` `.ggc-hero` | `ggc-public-layout` `ggc-hero` | guides/public-shell.md |
@@ -25,7 +25,7 @@
 |---|---|---|---|
 | 건수 · KPI | `.ggc-stat-grid` `.ggc-stat` (정확히 4) | `ggc-stat` | components.html |
 | 목록 (표) | `.ggc-table-wrap` `.ggc-table` (`--kv` `--flat` `.num` `tr.total`) | `table` · **`ggc-data-table`**(정렬 · 검색 · 열 · 쪽) | components.html · explore.html · components/data-table.md |
-| 목록 (행) | `.ggc-card` + `.ggc-list-row` | `ggc-list-row` | components.html |
+| 목록 (행 — 제목은 줄바꿈 · 단추가 있으면 상태 위 · 단추 아래, v3.2) | `.ggc-card` + `.ggc-list-row` | `ggc-list-row` | components.html · components/list-row.md |
 | 목록 (대민 카드 격자) | `.ggc-structured-list` | `ggc-structured-list` | components/structured-list.md |
 | 상태 표시 | `.ggc-badge--approved/pending/rejected/session/meeting/recess/paid` · `--role-*` | `badge` | components.html |
 | 분류 · 출처 | `.ggc-tag` | `badge` 의 `Tag` | components.html |
@@ -67,7 +67,7 @@
 | 수치 시각화 | — | `chart` (Recharts, chart-1..5) | shadcn chart 문서 |
 | 확인 · 대화 | `.ggc-modal` (`--alert` = 파괴적) | `dialog` | components/modal.md |
 | 동작 묶음 ("더보기") | `.ggc-menu` (`<details>` + `role="menu"`) | `dropdown-menu` | components/menu.md |
-| 검색창 (GNB) | `.ggc-search` | `ggc-search` | dashboard.html |
+| 검색창 (GNB — ≤600 아이콘으로 접힘, v3.2) | `.ggc-search` | `ggc-search` | dashboard.html |
 
 ## 상태 3종
 

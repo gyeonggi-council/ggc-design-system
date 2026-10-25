@@ -164,15 +164,15 @@ npx shadcn add @ggc/ggc-shell @ggc/ggc-page-head @ggc/ggc-data-table   # 사이�
 
 | 경로 | 무엇 |
 |---|---|
-| `design/ggc-tokens.css` | **토큰 정본 v3.0** — 색·서체·간격·형태·포커스·셸·컨트롤 치수(shadcn 기본 밀도)·**타이포 스케일·아이콘 치수** + 대민 프로필 블록(KRDS) |
-| `design/ggc-components.css` | 컴포넌트 v3.0 — 셸(경로부 · 아이콘 사이드바 · 접힘)·페이지 헤더(h1 본문)·카드·버튼·표·폼·위저드 … §37(제목 유틸 · 아이콘) |
+| `design/ggc-tokens.css` | **토큰 정본 v3.2** — 색·서체·간격·형태·포커스·셸·컨트롤 치수(shadcn 기본 밀도)·**타이포 스케일·아이콘 치수** + 대민 프로필 블록(KRDS) |
+| `design/ggc-components.css` | 컴포넌트 v3.2 — 셸(경로부 · 아이콘 사이드바 · 접힘)·페이지 헤더(h1 본문)·카드·버튼·표·폼·위저드 … §37(제목 유틸 · 아이콘) |
 | `design/ggc-icons.svg` + `design/icons/lucide/` | **아이콘 정본 v3.0** — lucide 부분집합 90종 스프라이트(생성물, `build-icons.py`). 이모지 금지 |
 | `design/ppt/` | **대외 발표용 PPT 템플릿**(생성물 — 토큰에서 `build-ppt.py`) · 레이아웃 10종 · 샘플 12장 · [docs/guides/ppt.md](docs/guides/ppt.md) |
 | `design/ggc-fonts.css` + `design/fonts/` | **폰트 정본 v1.0** — @font-face 하나와 가변 woff2 하나. 두 파일을 같은 폴더에 나란히 두고 토큰보다 먼저 링크한다 |
 | `design/check_design.py` | **검사기** — `diff -q` 를 대체하는 6종 검사 |
 | `design/brand/` | 파비콘 세트 · 의회 마크 · stdlib 전용 생성기 · 배포 매핑표 |
 | **`design/examples/`** | **예제 갤러리 18쪽**(업무 13 + 대민 5) — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
-| `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v2.0**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·대민 메뉴·토스트·드롭다운·파일·툴팁·리스트박스·목차) |
+| `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v3.2**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·대민 메뉴·토스트·드롭다운·파일·툴팁·리스트박스·목차) |
 | `design/components.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 |
 | `registry.json` · `registry/ggc/` · `public/r/` | **Tier 2 shadcn 레지스트리 74항목** — shadcn 공식 소스 + 토큰(UI 45 · 블록 27 · 훅). `registry.json` 은 생성물(`tools/build-registry-json.py`). 검사는 `tools/check-registry.py` |
 | `DESIGN.md` | **생성물** — Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (`tools/build-design-md.py`) |

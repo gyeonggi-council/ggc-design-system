@@ -13,10 +13,10 @@
 | 무엇 | 어디 |
 |---|---|
 | **토큰 정본** | `design\ggc-tokens.css` (v3.0 — 업무 기본값(shadcn 밀도) + 타이포 스케일 + `[data-ggc-profile="public"]` 대민 블록) |
-| **컴포넌트 정본** | `design\ggc-components.css` (v3.0, §1~§37) · `design\ggc-behaviors.js` (탭·모달·drawer·대민 메뉴) |
+| **컴포넌트 정본** | `design\ggc-components.css` (v3.2, §1~§44) · `design\ggc-behaviors.js` (탭·모달·사이드바 접기·「전체메뉴」 서랍·대민 메뉴 …) |
 | **아이콘 정본** | `design\ggc-icons.svg` (생성물 — `design\build-icons.py`, 원천 `design\icons\lucide\`). 이모지·유니코드 기호 아이콘 금지 |
 | **PPT 템플릿** | `design\ppt\dist\` (생성물 — `design\ppt\build-ppt.py`). 규칙은 `docs\guides\ppt.md` |
-| **대민 셸 정본** | `design\ggc-public.css` (v2.0 — 마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어·사이드 내비·구조화 목록) |
+| **대민 셸 정본** | `design\ggc-public.css` (v3.2 — 마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어·사이드 내비·구조화 목록. ≤900 사이드 내비 숨김) |
 | **폰트 정본** | `design\ggc-fonts.css` (v1.0) + `design\fonts\` — @font-face 하나와 woff2 하나. **두 파일을 같은 폴더에 나란히** 복사하고 토큰보다 먼저 링크한다. 재생성은 `fonts\build-font.py` |
 | **브랜드 자산 정본** | `design\brand\dist\` + `design\brand\ASSET-MAP.tsv` |
 | **컴포넌트 인벤토리** | `design\components.tsv` — 문서·DESIGN.md·레지스트리가 읽는 단일 원천 |
@@ -154,6 +154,8 @@ JSP/Tiles · Jinja2 · FastAPI+StaticFiles(마운트 2형) · 정적 HTML.
   축소를 막아, 넘칠 때 줄어드는 대신 부모를 밀어낸다.
 - 넓은 표·코드는 **자기 컨테이너 안에서** 스크롤시킨다(`.ggc-table-wrap`).
   본문이 스크롤되게 두지 않는다.
+- **한글은 낱말 단위로 줄을 바꾼다**(v3.2, ADR 0014) — 셸 · 본문 루트에 `word-break: keep-all` 이 걸려 있다.
+  칸의 최소 폭이 낱말 폭이 되므로 표는 래퍼 없이 두면 넘친다. 서비스 CSS 에서 `break-all` 로 되돌리지 않는다.
 - 검증은 **390 / 768 / 1024 / 1440 / 1920** 다섯 폭에서
   `document.documentElement.scrollWidth - clientWidth === 0` 으로 확인한다.
   갤러리는 5쪽 × 5폭 = 25조합을 이 방식으로 통과한다.

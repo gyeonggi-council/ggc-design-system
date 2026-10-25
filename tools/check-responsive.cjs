@@ -52,8 +52,11 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
         await page.goto(url(name));
         const toggle = page.locator('.ggc-shell > .ggc-gnb [data-ggc-drawer-toggle]');
         assert.equal(await page.locator('.ggc-lnb').evaluate(e => e.inert), true, name + ' closed menu is inert');
+        // v3.2(ADR 0014): 「전체메뉴」는 GNB 맨 끝 · 서랍은 오른쪽에서
+        assert.equal(await toggle.evaluate(e => e === e.parentElement.lastElementChild), true, name + ' menu button is last in GNB');
         await toggle.click();
         assert.equal(await page.locator('.ggc-lnb').getAttribute('aria-modal'), 'true');
+        await page.waitForFunction(() => Math.abs(document.querySelector('.ggc-lnb').getBoundingClientRect().right - document.documentElement.clientWidth) < 1);
         await page.keyboard.press('Shift+Tab');
         assert.equal(await page.evaluate(() => document.activeElement.closest('.ggc-lnb') !== null), true);
         await page.keyboard.press('Tab');
@@ -65,11 +68,14 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
         // The matchMedia change handler can run after viewport sizing resolves.
         await page.waitForFunction(() => !document.documentElement.hasAttribute('data-ggc-drawer-active'));
         assert.equal(await page.evaluate(() => document.documentElement.hasAttribute('data-ggc-drawer-active')), false);
-        await toggle.click(); assert.equal(await page.locator('.ggc-lnb').evaluate(e => e.classList.contains('ggc-lnb--icon')), true);
-        await toggle.click();
+        // PC 접기는 따로 나눈 단추(GNB 맨 앞) — 서랍 단추는 PC 에서 숨는다
+        const collapse = page.locator('.ggc-shell > .ggc-gnb [data-ggc-lnb-toggle]');
+        assert.equal(await toggle.isVisible(), false, name + ' menu button hidden on desktop');
+        await collapse.click(); assert.equal(await page.locator('.ggc-lnb').evaluate(e => e.classList.contains('ggc-lnb--icon')), true);
+        await collapse.click();
         await page.setViewportSize({ width: 390, height: 844 });
       }
-      interactions.push('10 shell pages: menu open/close, focus trap/restore, resize unlock, desktop collapse');
+      interactions.push('10 shell pages: menu at GNB end, drawer from right, open/close, focus trap/restore, resize unlock, desktop collapse button');
       for (const width of [390, 1440]) {
         await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
         await page.goto(url('explore'));
@@ -143,9 +149,9 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
       await page.locator('main.ggc-work-wizard').waitFor({ state: 'visible' });
       assert.equal(await page.locator('main.ggc-work-wizard').isVisible(), true); await noOverflow();
       await page.setViewportSize({ width: 1440, height: 900 });
-      await page.locator('.ggc-shell > .ggc-gnb [data-ggc-drawer-toggle]').click();
+      await page.locator('.ggc-shell > .ggc-gnb [data-ggc-lnb-toggle]').click();
       await page.locator('.ggc-lnb-item[data-page=explore]').click();
-      assert.equal(await page.locator('.ggc-shell > .ggc-gnb [data-ggc-drawer-toggle]').getAttribute('aria-expanded'), 'false');
+      assert.equal(await page.locator('.ggc-shell > .ggc-gnb [data-ggc-lnb-toggle]').getAttribute('aria-expanded'), 'false');
       interactions.push('Dashboard secondary content and standalone cross-page navigation');
       const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 });
       const phonePage = await phone.newPage();

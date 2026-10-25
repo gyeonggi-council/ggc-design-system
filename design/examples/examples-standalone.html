@@ -400,6 +400,13 @@
  *   §20       ≤900px 액션바가 저장 상태(.status)를 숨기지 않는다 — 한 줄 위로 접는다(less.md R10 과 맞춤).
  *   §38~§44  파일 끝에 덧붙임 — .ggc-progress · .ggc-job(긴 작업 진행) · .ggc-solo(휴대폰 1인 링크 화면) + .ggc-modal--full ·
  *             .ggc-signature(서명 패드) · .ggc-viewer(문서 미리보기 틀) · .ggc-split(좌우 두 칸 작업대) · 고대비 보강.
+ *   (10-25 추가, ADR 0014 — 모든 쪽이 같은 부품 규칙을 갖게)
+ *   §2·§3·§4·§5·§6·§7  모서리 리터럴 → 토큰: 카드 · KPI · 위저드 = --ggc-radius-lg · 입력 · 작은 단추 · 아이콘 상자 = --ggc-radius · 태그 = --ggc-radius-sm.
+ *             카드 머리·바닥 여백 = 행 여백(--ggc-row-pad, 제목과 행의 왼쪽 끝이 맞는다).
+ *             .ggc-work 에만 있던 카드·KPI·행·페이지 머리·휴대폰 보정(입력 16px · 단추 40)을 기본 부품으로 올렸다 — .ggc-work 는 배치만 남는다.
+ *   §5        목록 행 — 제목 16(--ggc-text-md) · 말줄임 대신 줄바꿈 · 오른쪽 칸에 단추가 있으면 세로(상태 위 · 단추 아래 · 오른쪽 끝) · 휴대폰은 늘 세로.
+ *   §9·§10    ≤900 GNB — CI 왼쪽 · 「전체메뉴」 오른쪽 · 메뉴는 오른쪽 서랍(대민 셸과 같다) · PC 메뉴 접기는 [data-ggc-lnb-toggle] 로 나눔 · ≤600 검색은 아이콘으로 접힌다.
+ *   §0        한글은 낱말 단위로 줄을 바꾼다(word-break: keep-all) — 「기획재 / 정위원회」처럼 낱말 가운데서 끊지 않는다. 넓은 표는 표 안에서 가로로 민다.
  *
  * -- v3.0 에서 바뀐 것 (ADR 0009 · 0010) -------------------------------------
  *   업무 프로필이 shadcn 기본 밀도로 갔다 — 치수는 전부 토큰이라 이 파일의 컨트롤·표·행·카드는
@@ -454,6 +461,10 @@
 .ggc-date input, .ggc-listbox *, .ggc-file *, .ggc-file-list *, .ggc-menu *, .ggc-toast *,
 .ggc-accordion *, .ggc-accordion-group *, .ggc-in-page-nav *, .ggc-empty * { box-sizing: border-box; }
 
+/* 한글은 낱말 단위로 줄을 바꾼다(v3.2, ADR 0014) — 기본값은 음절마다 끊어 「기획재 / 정위원회」가 된다.
+ * break-word 는 칸보다 긴 낱말(주소·번호)만 자른다. 표 칸의 최소 폭은 낱말 폭이 되어 표가 넓어지면 .ggc-table-wrap 안에서 가로로 민다. */
+.ggc-shell, .ggc-page, .ggc-public, .ggc-solo, .ggc-modal { word-break: keep-all; overflow-wrap: break-word; }
+
 :root {
   /* --ggc-text-body 는 v2.0 에서 토큰 파일로 승격됐다 — 여기서 정의하지 않는다 */
   --ggc-btn-shadow: var(--ggc-shadow-primary);   /* 토큰 승격분 별칭 */
@@ -498,7 +509,7 @@
   min-width: 0;
   background: var(--ggc-surface);
   border: 1px solid var(--ggc-border);
-  border-radius: 16px;
+  border-radius: var(--ggc-radius-lg);
   overflow: hidden;
 }
 .ggc-card--pad { padding: var(--ggc-card-pad); overflow: visible; }  /* 리스트가 아닌 자유 본문 카드 */
@@ -510,8 +521,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
-  padding: 18px 22px 14px;
+  padding: var(--ggc-row-pad);   /* v3.2: 행과 같은 여백 — 카드 제목과 행 제목의 왼쪽 끝이 맞는다 */
 }
 .ggc-card-head .title {
   margin: 0;
@@ -539,7 +551,7 @@
 .ggc-card-head--band {
   background: var(--ggc-surface-hover);
   border-bottom: 1px solid var(--ggc-hairline);
-  padding: 16px 22px;
+  padding: var(--ggc-row-pad);
 }
 
 /* .ggc-card-foot — 카드 하단 슬롯
@@ -549,8 +561,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
-  padding: 13px 22px;
+  padding: var(--ggc-row-pad);
   border-top: 1px solid var(--ggc-hairline);
   font-size: 13px;
   color: var(--ggc-text-muted);
@@ -572,25 +585,26 @@
   gap: 16px;
 }
 .ggc-stat-grid--3 { grid-template-columns: repeat(3, 1fr); }   /* 타일이 셋일 때 (v2.0) — 인라인 style 을 쓰지 않는다 */
-@media (max-width: 1024px) { .ggc-stat-grid, .ggc-stat-grid--3 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px)  { .ggc-stat-grid, .ggc-stat-grid--3 { grid-template-columns: 1fr; } }
+@media (max-width: 1024px) { .ggc-stat-grid, .ggc-stat-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px)  { .ggc-stat-grid, .ggc-stat-grid--3 { gap: var(--ggc-space-2); } }
+@media (max-width: 380px)  { .ggc-stat-grid, .ggc-stat-grid--3 { grid-template-columns: minmax(0, 1fr); } }   /* v3.2: 휴대폰도 두 칸 — 320 대만 한 칸 */
 
 .ggc-stat {
   background: var(--ggc-surface);
   border: 1px solid var(--ggc-border);
-  border-radius: 14px;
-  padding: 18px 20px;
+  border-radius: var(--ggc-radius-lg);
+  padding: var(--ggc-space-3) var(--ggc-space-4);
 }
 .ggc-stat .label-row {           /* 라벨 + 아이콘 박스 한 줄 */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: var(--ggc-space-2);
 }
 .ggc-stat .label { font-size: var(--ggc-text-sm); font-weight: 600; color: var(--ggc-text-muted); }
 .ggc-stat .icon {
-  width: 34px; height: 34px;
-  border-radius: 9px;
+  width: var(--ggc-space-7); height: var(--ggc-space-7);
+  border-radius: var(--ggc-radius);
   background: var(--ggc-primary-light);   /* 틴트 변형: 인라인으로 tint 토큰 교체 */
   color: var(--ggc-primary);
   display: flex; align-items: center; justify-content: center;
@@ -607,6 +621,7 @@
   letter-spacing: -0.03em;
   color: var(--ggc-text-strong);
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 .ggc-stat .value .unit {
   font-size: 14px;
@@ -650,8 +665,8 @@
   align-items: flex-start;
   background: var(--ggc-surface);
   border: 1px solid var(--ggc-border);
-  border-radius: 16px;
-  padding: 22px 26px;
+  border-radius: var(--ggc-radius-lg);
+  padding: var(--ggc-space-4) var(--ggc-space-5);
   font-family: var(--ggc-font);
 }
 .ggc-wizard-step {
@@ -784,7 +799,7 @@
 .ggc-list-row:hover { background: var(--ggc-surface-hover); }
 .ggc-list-row .icon {
   width: 40px; height: 40px;
-  border-radius: 10px;
+  border-radius: var(--ggc-radius);
   background: var(--ggc-control-bg);
   color: var(--ggc-text-muted);
   display: flex; align-items: center; justify-content: center;
@@ -792,12 +807,13 @@
 }
 .ggc-list-row .icon svg { width: var(--ggc-icon-lg); height: var(--ggc-icon-lg); }   /* lucide (v3.0) */
 .ggc-list-row .body { flex: 1; min-width: 0; }
-.ggc-list-row .title {
-  font-size: var(--ggc-text-base);
+.ggc-list-row .title {          /* v3.2: 16 · 말줄임 없이 줄바꿈(긴 의안명·회의명을 자르지 않는다) */
+  font-size: var(--ggc-text-md);
   font-weight: 600;
+  line-height: var(--ggc-leading-tight);
   color: var(--ggc-text);
   margin-bottom: 3px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 .ggc-list-row .meta { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
 .ggc-list-row .end {           /* 우측 상태·시각·버튼 슬롯 */
@@ -809,6 +825,9 @@
   font-size: var(--ggc-text-xs);
   color: var(--ggc-text-subtle);
 }
+/* 오른쪽 칸에 단추가 있으면 세로로 쌓는다 — 상태 배지 위 · 단추 아래 · 둘 다 오른쪽 끝(v3.2, 사용자 확정 10-25).
+ * 휴대폰(≤600)에서는 단추가 없어도 세로다(§10) — 제목 칸을 넓게 남긴다 */
+.ggc-list-row .end:has(> .ggc-btn) { flex-direction: column; align-items: flex-end; gap: var(--ggc-space-2); }
 /* 심각도 좌측 바 — 출처: 필수조례정비 지원.dc.html (width 5px radius 3px, 행 높이만큼) */
 .ggc-list-row .sev-bar {
   width: 5px;
@@ -826,11 +845,11 @@
 .ggc-tag {
   display: inline-flex; align-items: center; gap: 4px;
   font-family: var(--ggc-font);
-  font-size: 10.5px;
+  font-size: var(--ggc-text-xs);
   font-weight: 700;
   line-height: 1.4;
   padding: 2px 8px;
-  border-radius: 6px;
+  border-radius: var(--ggc-radius-sm);
   white-space: nowrap;
   background: var(--ggc-control-bg);
   color: var(--ggc-text-muted);
@@ -913,7 +932,7 @@
   background: #f6f9fd;
 }
 
-.ggc-btn--sm { height: var(--ggc-control-h-sm); padding: 0 var(--ggc-space-3); border-radius: 8px; font-size: var(--ggc-control-font-sm); }
+.ggc-btn--sm { height: var(--ggc-control-h-sm); padding: 0 var(--ggc-space-3); border-radius: var(--ggc-radius); font-size: var(--ggc-control-font-sm); }
 .ggc-btn--lg { height: var(--ggc-control-h-lg); padding: 0 var(--ggc-space-5); border-radius: var(--ggc-radius); font-size: var(--ggc-control-font-lg); }
 .ggc-btn--block { width: 100%; }
 
@@ -924,7 +943,7 @@
  *       (padding 10px 12px · 13px · resize none). 포커스 링은 위저드 현재단계 링 값 재사용.
  *       라벨은 카드 인셋 라벨(12px/700 #6b7585 계열) 실측에서 파생.
  * ============================================================================= */
-.ggc-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--ggc-font); }
+.ggc-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; font-family: var(--ggc-font); }
 .ggc-field > label {
   font-size: var(--ggc-label-font);
   font-weight: 700;
@@ -935,7 +954,7 @@
 .ggc-field select {
   height: var(--ggc-input-h);
   border: 1px solid var(--ggc-border-strong);
-  border-radius: 10px;
+  border-radius: var(--ggc-radius);
   padding: 0 14px;
   font-family: inherit;
   font-size: var(--ggc-control-font);
@@ -944,9 +963,9 @@
   outline: none;
 }
 .ggc-field textarea {
-  min-height: 72px;
+  min-height: var(--ggc-space-11);
   border: 1px solid var(--ggc-border-strong);
-  border-radius: 10px;
+  border-radius: var(--ggc-radius);
   padding: 10px 14px;
   font-family: inherit;
   font-size: var(--ggc-control-font);
@@ -1294,27 +1313,27 @@
   .ggc-gnb-page { padding-left: 0; }
   .ggc-gnb-page .ggc-breadcrumb { display: none; }
 
+  /* 전체메뉴 서랍 — 오른쪽에서 나온다(v3.2, ADR 0014). 대민 셸 .ggc-main-menu 와 폭·그림자·머리가 같다 */
   .ggc-lnb {
-    position: fixed; top: var(--ggc-gnb-h); left: 0; z-index: 45;
+    position: fixed; top: var(--ggc-gnb-h); right: 0; left: auto; z-index: 45;
+    width: min(360px, 88vw);
     height: calc(100vh - var(--ggc-gnb-h));
-    transform: translateX(-100%);
+    border-right: 0; border-left: 1px solid var(--ggc-border);
+    transform: translateX(100%);
     transition: transform 0.18s ease;
-    box-shadow: 0 8px 24px rgba(20, 30, 50, 0.12);
+    box-shadow: -8px 0 24px rgba(20, 30, 50, 0.12);
   }
   .ggc-lnb[data-open="true"] { transform: translateX(0); }
 
   .ggc-shell-main,
   .ggc-shell-main--wide { max-width: 100%; padding: 18px var(--ggc-space-4) 40px; }
   .ggc-shell-main--split { grid-template-columns: 1fr; height: auto; }
-  .ggc-stat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 480px) {
-  .ggc-stat-grid { grid-template-columns: 1fr; }
   /* v3.0: 제목은 본문(§12)에 있으므로 GNB 에서 숨길 것이 없다. 경로부는 ≤900 에서 이미 접혔다 — 검색이 폭을 다 쓴다 */
   .ggc-gnb-page { flex: 0 0 0; padding: 0; }
   .ggc-shell-main, .ggc-shell-main--wide { padding: 14px var(--ggc-space-3) 32px; }
-  .ggc-page-head .ggc-page-title, .ggc-page-head .title { font-size: var(--ggc-text-xl); }
 }
 
 /* --- Windows 고대비 (forced-colors) — 깨지지 않게 하는 것이 전부다 ---
@@ -1990,11 +2009,12 @@
 }
 .ggc-page-head .row {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--ggc-space-4);
   flex-wrap: wrap;
 }
+.ggc-page-head .row > :first-child { flex: 1; min-width: 0; }
 .ggc-page-head .ggc-page-title,
 .ggc-page-head .title {
   margin: 0;
@@ -2526,7 +2546,7 @@ html[data-ggc-modal-active] { overflow: hidden; }
   justify-content: space-between;
   gap: var(--ggc-space-4);
   margin: var(--ggc-space-6) calc(-1 * var(--ggc-space-7)) calc(-1 * 48px);
-  padding: 14px var(--ggc-space-7);
+  padding: 14px var(--ggc-space-7) calc(14px + env(safe-area-inset-bottom, 0px));
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -2542,7 +2562,7 @@ html[data-ggc-modal-active] { overflow: hidden; }
   margin: 0;
 }
 @media (max-width: 900px) {
-  .ggc-actionbar { margin-left: calc(-1 * var(--ggc-space-4)); margin-right: calc(-1 * var(--ggc-space-4)); margin-bottom: -40px; padding: 12px var(--ggc-space-4); flex-wrap: wrap; row-gap: var(--ggc-space-2); }
+  .ggc-actionbar { margin-left: calc(-1 * var(--ggc-space-4)); margin-right: calc(-1 * var(--ggc-space-4)); margin-bottom: -40px; padding: 12px var(--ggc-space-4) calc(12px + env(safe-area-inset-bottom, 0px)); flex-wrap: wrap; row-gap: var(--ggc-space-2); }
   .ggc-actionbar--fixed { left: 0; }
   .ggc-actionbar .status { flex-basis: 100%; }   /* v3.2: 숨기지 않는다 — 저장 상태는 덜어내지 않는다(less.md R10) */
   .ggc-actionbar .status:empty { display: none; }   /* 비었으면 줄을 차지하지 않는다 */
@@ -2551,7 +2571,7 @@ html[data-ggc-modal-active] { overflow: hidden; }
 }
 @media (max-width: 480px) {
   /* §10 이 이 폭에서 본문 패딩을 14px / space-3 / 32px 로 줄인다 — 음수 마진도 그만큼만 */
-  .ggc-actionbar { margin-left: calc(-1 * var(--ggc-space-3)); margin-right: calc(-1 * var(--ggc-space-3)); margin-bottom: -32px; padding: 12px var(--ggc-space-3); }
+  .ggc-actionbar { margin-left: calc(-1 * var(--ggc-space-3)); margin-right: calc(-1 * var(--ggc-space-3)); margin-bottom: -32px; padding: 12px var(--ggc-space-3) calc(12px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* =============================================================================
@@ -3460,22 +3480,9 @@ html[data-ggc-modal-active] { overflow: hidden; }
   .ggc-icon { stroke: currentColor; }
 }
 
-/* Responsive work layouts. Opt in on main; no fixed page height or clipped data. */
-.ggc-work { padding: var(--ggc-space-5) var(--ggc-space-6); }
+/* Responsive work layouts. Opt in on main; no fixed page height or clipped data.
+ * v3.2(ADR 0014): 카드·KPI·행·페이지 머리·휴대폰 보정은 기본 부품으로 올렸다 — 여기는 격자·영역 전환·필터·결과 배치만 둔다 */
 .ggc-work [hidden], .ggc-shell [hidden] { display: none !important; }
-.ggc-work .ggc-page-head { margin-bottom: var(--ggc-space-4); }
-.ggc-work .ggc-page-head .row { align-items: center; }
-.ggc-work .ggc-page-head .row > :first-child { flex: 1; min-width: 0; }
-.ggc-work .ggc-card, .ggc-work .ggc-stat { border-radius: var(--ggc-radius); }
-.ggc-work .ggc-card-head { padding: var(--ggc-space-3) var(--ggc-space-4); flex-wrap: wrap; }
-.ggc-work .ggc-card-foot { padding: var(--ggc-space-2) var(--ggc-space-4); flex-wrap: wrap; }
-.ggc-work .ggc-btn--primary { box-shadow: none; }
-.ggc-work .ggc-stat { padding: var(--ggc-space-3) var(--ggc-space-4); }
-.ggc-work .ggc-stat .label-row { margin-bottom: var(--ggc-space-2); }
-.ggc-work .ggc-stat .icon { width: var(--ggc-space-7); height: var(--ggc-space-7); }
-.ggc-work .ggc-stat .value { font-variant-numeric: tabular-nums; }
-.ggc-work .ggc-list-row .title { white-space: normal; overflow-wrap: anywhere; }
-.ggc-work .ggc-list-row .end { flex-wrap: wrap; justify-content: flex-end; }
 .ggc-work-grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: var(--ggc-space-4); margin-top: var(--ggc-space-4); align-items: start; }
 .ggc-work-stack { display: flex; flex-direction: column; gap: var(--ggc-space-4); min-width: 0; }
 .ggc-work-switch { display: none; }
@@ -3518,9 +3525,12 @@ html[data-ggc-modal-active] { overflow: hidden; }
 }
 .ggc-work-results .ggc-pagination { flex-wrap: wrap; gap: var(--ggc-space-2); }
 .ggc-work-records { display: grid; gap: var(--ggc-space-2); padding: var(--ggc-space-3); }
-.ggc-work-record { padding: var(--ggc-space-3); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-sm); }
-.ggc-work-record .ggc-work-tools { justify-content: space-between; }
-.ggc-work-record h2 { font-size: var(--ggc-text-md); margin: var(--ggc-space-2) 0; line-height: var(--ggc-leading-normal); }
+/* 결과 카드 = 목록 행(.ggc-list-row) 구조 + 테두리(v3.2) — 오른쪽 칸은 §5 규칙(상태 위 · 단추 아래) */
+.ggc-work-record { align-items: flex-start; padding: var(--ggc-space-3); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius); }
+.ggc-work-record h2 { margin: var(--ggc-space-1) 0; }
+/* 옛 구조(번호·상태 한 줄 + h2 + 단추 줄) — 서비스가 옮길 때까지 그대로 그린다 */
+.ggc-work-record:not(.ggc-list-row) .ggc-work-tools { justify-content: space-between; }
+.ggc-work-record:not(.ggc-list-row) h2 { font-size: var(--ggc-text-md); margin: var(--ggc-space-2) 0; line-height: var(--ggc-leading-normal); }
 .ggc-work-record p { color: var(--ggc-text-muted); font-size: var(--ggc-text-sm); margin: var(--ggc-space-1) 0; }
 .ggc-work-record summary { cursor: pointer; padding: var(--ggc-space-2) 0; font-size: var(--ggc-text-sm); }
 .ggc-work-record dl, .ggc-work-detail { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--ggc-space-2) var(--ggc-space-4); font-size: var(--ggc-text-base); }
@@ -3528,18 +3538,38 @@ html[data-ggc-modal-active] { overflow: hidden; }
 .ggc-work-detail dt, .ggc-work-record dt { color: var(--ggc-text-muted); }
 .ggc-work-editor { padding: var(--ggc-space-4); }
 .ggc-work-editor-head { display: flex; justify-content: space-between; gap: var(--ggc-space-2); margin-bottom: var(--ggc-space-4); font-weight: 700; }
-.ggc-work .ggc-wizard { padding: var(--ggc-space-3); border-radius: var(--ggc-radius); }
+.ggc-work .ggc-wizard { padding: var(--ggc-space-3); }
 .ggc-work .ggc-wizard-step .dot { width: var(--ggc-control-h-sm); height: var(--ggc-control-h-sm); }
 .ggc-work .ggc-wizard-step .sub { display: none; }
 .ggc-work-actions { position: sticky; bottom: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--ggc-space-2); padding: var(--ggc-space-3) 0 calc(var(--ggc-space-3) + env(safe-area-inset-bottom)); background: var(--ggc-bg); border-top: 1px solid var(--ggc-border); margin-top: var(--ggc-space-4); }
 .ggc-work-actions .stage { font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
-.ggc-drawer-close { display: none; }
+/* 셸 메뉴 단추 둘(v3.2, ADR 0014) — behaviors ③ 이 없으면 만든다.
+ *   [data-ggc-lnb-toggle]    PC(>900) · GNB 맨 앞 · LNB 를 아이콘 줄로 접고 편다
+ *   [data-ggc-drawer-toggle] 휴대폰(≤900) · GNB 맨 끝 · 「전체메뉴」 서랍을 연다(대민 셸 .action.menu 와 같은 자리·같은 말) */
+.ggc-drawer-head { display: none; }
 .ggc-drawer-backdrop { position: fixed; inset: 0; z-index: 55; background: var(--ggc-text-strong); opacity: .35; }
 html[data-ggc-drawer-active] { overflow: hidden; }
-.ggc-shell > .ggc-gnb > [data-ggc-drawer-toggle] { margin-left: var(--ggc-space-3); }
-.ggc-shell > .ggc-gnb:has(> [data-ggc-drawer-toggle]) .ggc-gnb-brand { width: auto; padding-left: 0; border: 0; }
-.ggc-work .ggc-field { min-width: 0; }
-.ggc-work .ggc-field textarea { min-height: var(--ggc-space-11); }
+.ggc-gnb-menu {
+  display: inline-flex; align-items: center; gap: var(--ggc-space-1); flex-shrink: 0;
+  height: var(--ggc-control-h); padding: 0 var(--ggc-space-3);
+  border: 1px solid var(--ggc-shell-border); border-radius: var(--ggc-radius);
+  background: var(--ggc-surface); color: var(--ggc-text);
+  font-family: inherit; font-size: var(--ggc-control-font-sm); font-weight: 600; white-space: nowrap; cursor: pointer;
+}
+.ggc-gnb-menu:hover { background: var(--ggc-surface-hover); }
+.ggc-gnb-menu svg { width: var(--ggc-icon); height: var(--ggc-icon); }
+/* PC — `not all and (max-width: 900px)` 는 ≤900 의 정확한 여집합이다(배율 때문에 900.5 같은 폭이 나와도 빈틈이 없다) */
+@media not all and (max-width: 900px) {
+  /* 서랍 단추는 PC 접기 단추가 있을 때만 숨긴다 — 옛 behaviors(단추 하나)와 섞여도 접기 진입점이 사라지지 않게 */
+  .ggc-shell > .ggc-gnb:has(> [data-ggc-lnb-toggle]) > [data-ggc-drawer-toggle] { display: none; }
+  .ggc-shell > .ggc-gnb > :is([data-ggc-lnb-toggle], [data-ggc-drawer-toggle]):first-child { margin-left: var(--ggc-space-3); }
+  .ggc-shell > .ggc-gnb:has(> :is([data-ggc-lnb-toggle], [data-ggc-drawer-toggle]):first-child) .ggc-gnb-brand { width: auto; padding-left: 0; border: 0; }
+}
+/* 옛 behaviors 가 LNB 맨 앞에 넣던 「메뉴 닫기」 글 단추 — 새 판은 .ggc-drawer-head 안에 둔다 */
+.ggc-lnb > .ggc-drawer-close { display: none; }
+/* 끈적한 GNB · 바닥 띠가 키보드 초점을 가리지 않게(WCAG 2.4.11) — 띠 높이에 넉넉한 값 */
+html:has(.ggc-shell > .ggc-gnb) { scroll-padding-top: calc(var(--ggc-gnb-h) + var(--ggc-space-2)); }
+html:has(:is(.ggc-actionbar, .ggc-work-actions)) { scroll-padding-bottom: calc(var(--ggc-space-11) + var(--ggc-space-6) + env(safe-area-inset-bottom, 0px)); }
 @media (max-width: 1100px) {
   .ggc-work-grid { grid-template-columns: minmax(0, 1fr); }
   .ggc-work-switch { display: flex; flex-wrap: wrap; gap: var(--ggc-space-2); margin-top: var(--ggc-space-3); }
@@ -3550,31 +3580,45 @@ html[data-ggc-drawer-active] { overflow: hidden; }
   .ggc-work-results .ggc-table { min-width: 1100px; }
 }
 @media (max-width: 900px) {
+  .ggc-shell > .ggc-gnb > [data-ggc-lnb-toggle] { display: none; }
+  .ggc-shell > .ggc-gnb .ggc-gnb-brand { margin-right: auto; }   /* CI 왼쪽 · 나머지(검색 · 알림 · 전체메뉴)는 오른쪽으로 */
   .ggc-shell > .ggc-utility-bar .inner { padding: var(--ggc-space-2) var(--ggc-space-3); }
   .ggc-shell > .ggc-utility-bar nav { display: none; }
   .ggc-shell > .ggc-gnb { gap: var(--ggc-space-2); padding-right: var(--ggc-space-3); }
   .ggc-shell > .ggc-gnb .ggc-gnb-brand img { width: var(--ggc-space-7); height: var(--ggc-space-7); }
   .ggc-shell > .ggc-gnb .ggc-gnb-page { display: none; }
   .ggc-shell > .ggc-gnb .ggc-search { min-width: 0; padding: 0 var(--ggc-space-2); }
-  .ggc-lnb { top: 0; z-index: 60; height: 100dvh; max-width: calc(100% - var(--ggc-space-9)); visibility: hidden; }
+  .ggc-lnb { top: 0; z-index: 60; height: 100dvh; max-width: calc(100% - var(--ggc-space-9)); visibility: hidden; padding-top: 0; }
   .ggc-lnb[data-open="true"] { visibility: visible; }
-  .ggc-drawer-close { display: flex; margin: 0 0 var(--ggc-space-3) auto; }
+  /* 서랍 머리 — 「전체메뉴」 + 닫기(대민 .ggc-main-menu .head 와 같다). LNB 안쪽 여백을 넘어 가장자리까지 */
+  .ggc-drawer-head {
+    position: sticky; top: 0; z-index: 1;
+    display: flex; align-items: center; justify-content: space-between; gap: var(--ggc-space-2);
+    margin: 0 calc(-1 * var(--ggc-space-2)) var(--ggc-space-3);
+    padding: var(--ggc-space-2) var(--ggc-space-2) var(--ggc-space-2) var(--ggc-space-4);
+    background: var(--ggc-surface); border-bottom: 1px solid var(--ggc-border);
+  }
+  .ggc-drawer-head .title { margin: 0; font-size: var(--ggc-text-md); font-weight: 600; color: var(--ggc-text-strong); }
+  .ggc-lnb > .ggc-drawer-close { display: flex; margin: var(--ggc-space-3) 0 var(--ggc-space-3) auto; }
   .ggc-lnb .ggc-lnb-item { height: var(--ggc-space-9); }
 }
 @media (max-width: 600px) {
-  .ggc-work { padding: var(--ggc-space-4) var(--ggc-space-3); }
-  .ggc-work .ggc-stat-grid, .ggc-work .ggc-stat-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ggc-space-2); }
-  .ggc-work .ggc-stat { padding: var(--ggc-space-3); }
-  .ggc-work .ggc-stat .trend { flex-wrap: wrap; }
-  .ggc-work .ggc-page-head .row { display: block; }
-  .ggc-work .ggc-page-head .actions { margin-top: var(--ggc-space-3); }
+  /* 휴대폰 공통(v3.2 — 예전엔 .ggc-work 에만 있었다) */
+  .ggc-stat { padding: var(--ggc-space-3); }
+  .ggc-stat .trend { flex-wrap: wrap; }
+  .ggc-page-head .row { flex-direction: column; align-items: stretch; gap: var(--ggc-space-3); }
+  .ggc-page-head .row > :first-child { flex: none; }
+  .ggc-shell .ggc-btn, .ggc-shell .ggc-pagination a, .ggc-shell .ggc-pagination button { min-height: var(--ggc-space-8); }   /* 손가락 목표 40 */
+  .ggc-field input, .ggc-field select, .ggc-field textarea, .ggc-select select, .ggc-shell > .ggc-gnb .ggc-search input { font-size: max(var(--ggc-control-font), var(--ggc-text-md)); }   /* 16 미만이면 iOS 가 확대한다 */
+  .ggc-list-row .end { flex-direction: column; align-items: flex-end; gap: var(--ggc-space-1); }
+  .ggc-list-row .end:has(> .ggc-btn) { gap: var(--ggc-space-2); }
+  /* 검색은 아이콘으로 접혔다가 누르면 GNB 폭으로 펼쳐진다(대민 셸의 통합검색 단추와 같은 자리) — 스크립트 없이 :focus-within */
+  .ggc-shell > .ggc-gnb .ggc-search { flex: 0 0 auto; position: relative; width: var(--ggc-control-h); height: var(--ggc-control-h); padding: 0; justify-content: center; background: var(--ggc-surface); }   /* 접힌 모양은 옆 알림 단추와 같다 */
+  .ggc-shell > .ggc-gnb .ggc-search input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .ggc-shell > .ggc-gnb .ggc-search:focus-within { position: absolute; z-index: 2; left: var(--ggc-space-3); right: var(--ggc-space-3); top: 50%; transform: translateY(-50%); width: auto; height: var(--ggc-search-h); margin: 0; padding: 0 var(--ggc-space-3); justify-content: flex-start; background: var(--ggc-surface); }
+  .ggc-shell > .ggc-gnb .ggc-search:focus-within input { position: static; opacity: 1; cursor: text; }
+  .ggc-shell > .ggc-gnb .ggc-search kbd { display: none; }
   .ggc-work-filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ggc-work .ggc-btn, .ggc-work .ggc-pagination a, .ggc-work .ggc-pagination button { min-height: var(--ggc-space-8); }
-  .ggc-work .ggc-field input, .ggc-work .ggc-field select, .ggc-work .ggc-field textarea { font-size: var(--ggc-text-md); }
-  .ggc-work .ggc-page-title { font-size: var(--ggc-h1-size); }
-  .ggc-work .ggc-list-row { flex-wrap: wrap; gap: var(--ggc-space-2); }
-  .ggc-work .ggc-list-row .body { flex-basis: 60%; }
-  .ggc-work .ggc-list-row .end { margin-left: auto; }
   .ggc-work .ggc-wizard-step .label { font-size: var(--ggc-text-xs); }
   .ggc-work .ggc-wizard-step .meta { text-align: center; }
 }
@@ -4738,7 +4782,7 @@ body {
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title-tokens">토큰 · 팔레트</h1>
-            <p class="desc">ggc-tokens.css v3.0</p>
+            <p class="desc">ggc-tokens.css v3.2</p>
           </div>
         </div>
       </div>
@@ -5082,7 +5126,7 @@ body {
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title-components">컴포넌트 카탈로그</h1>
-            <p class="desc">ggc-components.css v3.0</p>
+            <p class="desc">ggc-components.css v3.2</p>
           </div>
         </div>
       </div>
@@ -5102,8 +5146,9 @@ body {
       <!-- ============================================================ 버튼 -->
       <section class="ex-section">
         <h2>버튼 <span class="cls">.ggc-btn</span></h2>
-        <p>기본 높이 42px · radius 10px. <code class="ex-inline">--sm</code> 34px,
-          <code class="ex-inline">--lg</code> 46px. primary 만 그림자를 갖는다.</p>
+        <p>높이 <code class="ex-inline">--ggc-control-h</code> · 모서리 <code class="ex-inline">--ggc-radius</code>.
+          <code class="ex-inline">--sm</code> 은 <code class="ex-inline">--ggc-control-h-sm</code>, <code class="ex-inline">--lg</code> 는 <code class="ex-inline">--ggc-control-h-lg</code>.
+          그림자는 없다(v3.2 — 그림자는 모달·메뉴처럼 떠 있는 층만). 휴대폰(≤600)에서는 손가락 목표 40 으로 커진다.</p>
         <div class="ex-demo" id="d-btn">
           <div class="ex-row">
             <button class="ggc-btn ggc-btn--primary" type="button">의안 상정</button>
@@ -5162,7 +5207,8 @@ body {
       <!-- ============================================================ 카드 -->
       <section class="ex-section">
         <h2>카드 <span class="cls">.ggc-card</span></h2>
-        <p>radius 14px, <b>그림자 없음</b>(계약 §2). 목록을 담는 기본형과, 자유 본문을 담는
+        <p>모서리 <code class="ex-inline">--ggc-radius-lg</code>, <b>그림자 없음</b>(계약 §2). 머리·바닥 여백은 행과 같은 <code class="ex-inline">--ggc-row-pad</code> 라
+          카드 제목과 행 제목의 왼쪽 끝이 맞는다. 목록을 담는 기본형과, 자유 본문을 담는
           <code class="ex-inline">--pad</code> 두 가지다.</p>
         <div class="ex-demo ex-demo--bg" id="d-card">
           <div class="ggc-card">
@@ -5211,8 +5257,8 @@ body {
       <!-- ============================================================ 통계 -->
       <section class="ex-section">
         <h2>통계 <span class="cls">.ggc-stat-grid · .ggc-stat</span></h2>
-        <p>Monitor archetype 의 최상단 고정 요소다. 4개가 기본이고 900px 이하에서 2열,
-          480px 이하에서 1열로 접힌다.</p>
+        <p>Monitor archetype 의 최상단 고정 요소다. 4개가 기본이고 1024px 이하에서 2열,
+          380px 이하에서 1열로 접힌다(휴대폰도 두 칸 — v3.2).</p>
         <div class="ex-demo ex-demo--bg" id="d-stat">
           <div class="ggc-stat-grid">
             <div class="ggc-stat">
@@ -5256,7 +5302,9 @@ body {
       <section class="ex-section">
         <h2>행 리스트 <span class="cls">.ggc-list-row</span></h2>
         <p>카드 <b>안</b>에 쓰는 행이다. 좌측 <code class="ex-inline">.sev-bar</code> 로 심각도를 세로 막대로
-          표시할 수 있고, 우측 <code class="ex-inline">.end</code> 는 상태·시각·버튼 슬롯이다.</p>
+          표시할 수 있고, 우측 <code class="ex-inline">.end</code> 는 상태·시각·버튼 슬롯이다.
+          제목은 <code class="ex-inline">--ggc-text-md</code> 이고 자르지 않고 줄을 바꾼다. <code class="ex-inline">.end</code> 에 단추가 있으면
+          <b>상태 배지 위 · 단추 아래 · 둘 다 오른쪽 끝</b>으로 쌓이고, 휴대폰(≤600)에서는 단추가 없어도 세로로 쌓인다(v3.2).</p>
         <div class="ex-demo ex-demo--bg" id="d-row">
           <div class="ggc-card">
             <div class="ggc-card-head">
@@ -5491,7 +5539,7 @@ body {
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title-forms">폼 컨트롤</h1>
-            <p class="desc">ggc-components.css v3.0 · §16~17 · §24 · §27~28 · §32</p>
+            <p class="desc">ggc-components.css v3.2 · §16~17 · §24 · §27~28 · §32</p>
           </div>
         </div>
       </div>
@@ -5714,8 +5762,8 @@ body {
                   <span class="rule" id="fu2-h">PDF 1개</span>
                 </div>
                 <ul class="ggc-file-list" aria-label="올린 파일">
-                  <li><span class="name">검토보고서_청년기본조례_v2.hwpx</span><span class="size">184KB</span><button class="remove" type="button" aria-label="검토보고서_청년기본조례_v2.hwpx 삭제">✕</button></li>
-                  <li class="is-error"><span class="name">비용추계서.xlsx</span><span class="size">2.1MB</span><button class="remove" type="button" aria-label="비용추계서.xlsx 삭제">✕</button><span class="error">허용되지 않는 형식이다 — HWP · PDF 만 올릴 수 있다</span></li>
+                  <li><span class="name">검토보고서_청년기본조례_v2.hwpx</span><span class="size">184KB</span><button class="remove" type="button" aria-label="검토보고서_청년기본조례_v2.hwpx 삭제"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button></li>
+                  <li class="is-error"><span class="name">비용추계서.xlsx</span><span class="size">2.1MB</span><button class="remove" type="button" aria-label="비용추계서.xlsx 삭제"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button><span class="error">허용되지 않는 형식이다 — HWP · PDF 만 올릴 수 있다</span></li>
                 </ul>
               </div>
             </div>
@@ -5817,7 +5865,7 @@ body {
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title-nav">내비게이션 · 탭</h1>
-            <p class="desc">ggc-components.css v3.0 · §12~15 · §26 · §29~30 · §34~35</p>
+            <p class="desc">ggc-components.css v3.2 · §12~15 · §26 · §29~30 · §34~35</p>
           </div>
         </div>
       </div>
@@ -6208,7 +6256,7 @@ body {
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title-overlay">오버레이 · 상태 · 본문</h1>
-            <p class="desc">ggc-components.css v3.0 · §18~23 · §25 · §31 · §33</p>
+            <p class="desc">ggc-components.css v3.2 · §18~23 · §25 · §31 · §33</p>
           </div>
         </div>
       </div>
@@ -6239,7 +6287,7 @@ body {
           <div class="ggc-alert ggc-alert--warning" role="status">
             <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-triangle-alert"/></svg></span>
             <div class="body"><strong class="title">기한 임박</strong><p>회부 후 30일이 2026-09-02 에 지난다. 「경기도의회 회의규칙」 제42조에 따라 계속심사 여부를 결정해야 한다.</p></div>
-            <button class="close" type="button" aria-label="닫기">✕</button>
+            <button class="close" type="button" aria-label="닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button>
           </div>
           <div class="ggc-alert ggc-alert--danger" role="alert">
             <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-x"/></svg></span>
@@ -6283,13 +6331,13 @@ body {
             <div class="ggc-toast ggc-toast--success" style="animation:none">
               <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-check"/></svg></span>
               <div class="body"><b class="title">임시저장됨</b><span class="desc">14:32 · 자동 저장</span></div>
-              <button class="close" type="button" aria-label="닫기">✕</button>
+              <button class="close" type="button" aria-label="닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button>
             </div>
             <div class="ggc-toast" style="animation:none">
               <span class="icon" aria-hidden="true"><svg class="ggc-icon ggc-icon--lg" aria-hidden="true"><use href="#i-circle-check"/></svg></span>
               <div class="body"><b class="title">의안 3건을 보관함으로 옮겼다</b></div>
               <button class="action" type="button">실행 취소</button>
-              <button class="close" type="button" aria-label="닫기">✕</button>
+              <button class="close" type="button" aria-label="닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button>
             </div>
           </div>
         </div>
@@ -6311,7 +6359,7 @@ body {
           <dialog class="ggc-modal" id="m-refer" aria-labelledby="m-refer-t">
             <div class="head">
               <h2 class="title" id="m-refer-t">위원회 회부</h2>
-              <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button>
+              <button class="close" type="button" data-ggc-modal-close aria-label="닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button>
             </div>
             <div class="body">
               <p>BILL-2026-0417 「경기도 청년 기본 조례 일부개정조례안」을 소관위원회에 회부한다.</p>
@@ -6351,7 +6399,7 @@ body {
           <dialog class="ggc-modal ggc-modal--lg" id="m-doc" aria-labelledby="m-doc-t">
             <div class="head">
               <h2 class="title" id="m-doc-t">비용추계서 · BILL-2026-0417</h2>
-              <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button>
+              <button class="close" type="button" data-ggc-modal-close aria-label="닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button>
             </div>
             <div class="body">
               <div class="ggc-table-wrap">
@@ -7605,7 +7653,7 @@ body {
 
       <dialog class="ggc-modal" id="lx-upload" aria-labelledby="lx-upload-t">
         <div class="head"><h2 class="title" id="lx-upload-t">한글 파일 올리기</h2>
-          <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button></div>
+          <button class="close" type="button" data-ggc-modal-close aria-label="닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
         <div class="body">
           <div class="ggc-file" data-ggc-file data-ggc-file-max="1">
             <div class="drop">
@@ -7738,7 +7786,7 @@ body {
 
         <dialog class="ggc-modal" id="op-agenda-m" aria-labelledby="op-agenda-mt">
           <div class="head"><h2 class="title" id="op-agenda-mt">의사일정</h2>
-            <button class="close" type="button" data-ggc-modal-close aria-label="닫기">✕</button></div>
+            <button class="close" type="button" data-ggc-modal-close aria-label="닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
           <div class="body">
             <ol class="op-agenda-list">
               <li>회의록 서명 의원 선출</li>
@@ -8021,7 +8069,7 @@ body {
  * 보고 그린다. 그래서 이 파일이 없어도 화면은 깨지지 않는다 — 동작만 없다.
  *   ① 탭      role="tab" 의 aria-selected · tabindex(roving) · 패널 hidden · 화살표/Home/End
  *   ② 모달    <dialog>.showModal() · data-ggc-modal-open / -close · 배경 클릭 · 포커스 복귀
- *   ③ drawer  ≤900px 에서 .ggc-lnb[data-open] · ESC · 바깥 클릭
+ *   ③ drawer  PC 접기 [data-ggc-lnb-toggle] · ≤900px 「전체메뉴」 오른쪽 서랍 .ggc-lnb[data-open] · ESC · 바깥 클릭 (v3.2 — 단추 둘로 나눔)
  *   ④ 대민 메뉴 .ggc-main-menu[data-open](모바일 패널) · [data-ggc-submenu] aria-expanded ·
  *             [data-ggc-search-toggle] 통합검색 패널  (ggc-public.css, v2.0)
  *   ⑤ 토스트   GGC.toast({title, desc, variant, duration, action}) · [data-ggc-toast] 선언형 · 3개 상한 · hover/focus 에 정지
@@ -8177,46 +8225,98 @@ body {
     }
   });
 
-  /* --------------------------------------------------------------- ③ drawer */
+  /* --------------------------------------------------------------- ③ drawer
+   * v3.2(ADR 0014) — 단추 둘. 마크업에 없으면 만든다.
+   *   [data-ggc-lnb-toggle]    PC(>900) · GNB 맨 앞 · LNB 를 아이콘 줄로 접고 편다(접힘은 이 화면에서 기억)
+   *   [data-ggc-drawer-toggle] ≤900 · GNB 맨 끝 「전체메뉴」 · 오른쪽 서랍을 연다 — 대민 셸 .action.menu 와 같은 자리·같은 말.
+   *                            옛 마크업이 GNB 맨 앞에 두었어도 맨 끝으로 옮긴다(보이는 순서 = 읽는 순서) */
   function lnb() { return document.querySelector(".ggc-lnb"); }
   var drawerMedia = window.matchMedia('(max-width: 900px)');
-  var drawerOpener, drawerBackdrop;
+  var drawerOpener, drawerBackdrop, lnbCollapsed = false;
+  var MENU_SVG = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';   // lucide menu
+  var CLOSE_SVG = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>';   // lucide x
 
   function initDrawer() {
     var nav = lnb(), header = document.querySelector('.ggc-shell > .ggc-gnb');
     if (!nav || !header || nav.__ggcDrawer) return;
     nav.__ggcDrawer = true;
     if (!nav.id) nav.id = 'ggc-navigation';
+    lnbCollapsed = nav.classList.contains('ggc-lnb--icon');
+    var collapse = header.querySelector('[data-ggc-lnb-toggle]');
+    if (!collapse) {
+      collapse = document.createElement('button');
+      collapse.type = 'button';
+      collapse.className = 'ggc-icon-btn';
+      collapse.setAttribute('data-ggc-lnb-toggle', '');
+      collapse.innerHTML = MENU_SVG;
+      header.prepend(collapse);
+    }
+    collapse.setAttribute('aria-controls', nav.id);
     var toggle = header.querySelector('[data-ggc-drawer-toggle]');
     if (!toggle) {
       toggle = document.createElement('button');
       toggle.type = 'button';
-      toggle.className = 'ggc-icon-btn';
       toggle.setAttribute('data-ggc-drawer-toggle', '');
-      toggle.innerHTML = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
-      header.prepend(toggle);
+    }
+    if (!toggle.textContent.trim()) {   // 아이콘만 있던 옛 단추 — 대민 셸처럼 「전체메뉴」 글자를 붙이고, 글자와 다른 aria-label 은 지운다(WCAG 2.5.3)
+      toggle.classList.remove('ggc-icon-btn');
+      toggle.classList.add('ggc-gnb-menu');
+      toggle.removeAttribute('aria-label');
+      if (!toggle.querySelector('svg')) toggle.insertAdjacentHTML('afterbegin', MENU_SVG);
+      toggle.insertAdjacentHTML('beforeend', '<span>전체메뉴</span>');
     }
     toggle.classList.remove('ex-only-narrow');
     toggle.setAttribute('aria-controls', nav.id);
+    header.append(toggle);
+    var head = document.createElement('div');
+    head.className = 'ggc-drawer-head';
+    var title = document.createElement('p');
+    title.className = 'title';
+    title.textContent = '전체메뉴';
+    if (!nav.hasAttribute('aria-label') && !nav.hasAttribute('aria-labelledby')) {   // 서랍(대화상자)의 이름
+      title.id = nav.id + '-title';
+      nav.setAttribute('aria-labelledby', title.id);
+    }
     var close = document.createElement('button');
     close.type = 'button';
-    close.className = 'ggc-btn ggc-btn--secondary ggc-drawer-close';
-    close.textContent = '메뉴 닫기';
+    close.className = 'ggc-icon-btn ggc-drawer-close';
+    close.setAttribute('aria-label', '메뉴 닫기');
+    close.innerHTML = CLOSE_SVG;
     close.addEventListener('click', function () { setDrawer(false); });
-    nav.prepend(close);
+    head.append(title, close);
+    nav.prepend(head);
     drawerBackdrop = document.createElement('div');
     drawerBackdrop.className = 'ggc-drawer-backdrop';
     drawerBackdrop.hidden = true;
     drawerBackdrop.setAttribute('aria-hidden', 'true');
     document.body.appendChild(drawerBackdrop);
     function sync() {
+      var had = document.activeElement, menuFocus = had && had !== document.body && (nav.contains(had) || had === toggle || had === collapse);
       setDrawer(false);
-      nav.classList.remove('ggc-lnb--icon');
-      toggle.setAttribute('aria-expanded', drawerMedia.matches ? 'false' : 'true');
-      toggle.setAttribute('aria-label', drawerMedia.matches ? '메뉴 열기' : '메뉴 접기');
+      nav.classList.toggle('ggc-lnb--icon', !drawerMedia.matches && lnbCollapsed);   // 서랍은 늘 펼친 모양 · PC 로 돌아오면 접힘을 되살린다
+      navLabels();
+      // 900 경계를 넘으면 초점이 숨은 단추·닫힌 서랍에 남는다 — 그때만 이 폭에서 보이는 메뉴 단추로 넘긴다(본문의 초점은 그대로)
+      var now = document.activeElement;
+      if (menuFocus && (!now || now === document.body || !now.getClientRects().length || (nav.inert && nav.contains(now)))) {
+        (drawerMedia.matches ? toggle : collapse).focus({ preventScroll: true });
+      }
     }
     drawerMedia.addEventListener('change', sync);
     sync();
+  }
+
+  function navLabels() {
+    var nav = lnb();
+    if (!nav) return;
+    var open = nav.getAttribute('data-open') === 'true', collapsed = nav.classList.contains('ggc-lnb--icon');
+    document.querySelectorAll('[data-ggc-lnb-toggle]').forEach(function (b) {
+      b.setAttribute('aria-expanded', String(!collapsed));
+      b.setAttribute('aria-label', collapsed ? '메뉴 펼치기' : '메뉴 접기');
+    });
+    document.querySelectorAll('[data-ggc-drawer-toggle]').forEach(function (b) {
+      b.setAttribute('aria-expanded', String(open));
+      if (!b.textContent.trim()) b.setAttribute('aria-label', open ? '메뉴 닫기' : '전체메뉴 열기');   // 글자 없는 옛 단추만 — 「전체메뉴」 글자가 있으면 그 글자가 이름이다
+    });
   }
 
   function setDrawer(open) {
@@ -8231,32 +8331,32 @@ body {
     nav.inert = drawerMedia.matches && !open;
     if (open) { nav.setAttribute('role', 'dialog'); nav.setAttribute('aria-modal', 'true'); }
     else { nav.removeAttribute('role'); nav.removeAttribute('aria-modal'); }
-    document.querySelectorAll("[data-ggc-drawer-toggle]").forEach(function (b) {
-      var collapsed = nav.classList.contains('ggc-lnb--icon');
-      b.setAttribute("aria-expanded", (drawerMedia.matches ? open : !collapsed) ? "true" : "false");
-      b.setAttribute('aria-label', open ? '메뉴 닫기' : (drawerMedia.matches ? '메뉴 열기' : (collapsed ? '메뉴 펼치기' : '메뉴 접기')));
-    });
+    navLabels();
     if (open) { var first = nav.querySelector('button, a'); if (first) first.focus(); }
     else if (wasOpen && drawerOpener && drawerOpener.isConnected) drawerOpener.focus();
   }
 
+  function toggleCollapse() {
+    var nav = lnb();
+    if (!nav || drawerMedia.matches) return;
+    lnbCollapsed = nav.classList.toggle('ggc-lnb--icon');
+    nav.querySelectorAll('a').forEach(function (a) { a.title = a.textContent.trim(); });
+    navLabels();
+  }
+
+  /* GGC.toggleDrawer — PC 는 접기, ≤900 은 서랍(예전 한 단추 시절과 같은 뜻) */
   function toggleDrawer() {
     var nav = lnb();
-    if (nav && !drawerMedia.matches) {
-      var collapsed = nav.classList.toggle('ggc-lnb--icon');
-      document.querySelectorAll('[data-ggc-drawer-toggle]').forEach(function (b) {
-        b.setAttribute('aria-expanded', String(!collapsed));
-        b.setAttribute('aria-label', collapsed ? '메뉴 펼치기' : '메뉴 접기');
-      });
-      nav.querySelectorAll('a').forEach(function (a) { a.title = a.textContent.trim(); });
-      return;
-    }
-    if (nav) setDrawer(nav.getAttribute("data-open") !== "true");
+    if (!nav) return;
+    if (!drawerMedia.matches) toggleCollapse();
+    else setDrawer(nav.getAttribute("data-open") !== "true");
   }
 
   document.addEventListener("click", function (e) {
+    var c = e.target.closest ? e.target.closest("[data-ggc-lnb-toggle]") : null;
+    if (c) { e.preventDefault(); toggleCollapse(); return; }
     var t = e.target.closest ? e.target.closest("[data-ggc-drawer-toggle]") : null;
-    if (t) { e.preventDefault(); toggleDrawer(); return; }
+    if (t) { e.preventDefault(); var n = lnb(); if (n) setDrawer(n.getAttribute("data-open") !== "true"); return; }
     var nav = lnb();
     if (nav && nav.getAttribute("data-open") === "true" && !nav.contains(e.target)) setDrawer(false);
     if (nav && e.target.closest && e.target.closest('.ggc-lnb a')) setDrawer(false);
@@ -9480,14 +9580,14 @@ body {
       tbody.replaceChildren(); cards.replaceChildren();
       visible.forEach(function (r) {
         tbody.appendChild(r.row);
-        var card = el('article', 'ggc-work-record');
-        var line = el('div', 'ggc-work-tools'); line.appendChild(el('code', '', r.values[0])); line.appendChild(r.row.cells[7].firstElementChild.cloneNode(true)); card.appendChild(line);
-        var title = el('h2'); var link = el('a', '', r.values[1]); link.href = '#'; link.addEventListener('click', function (e) { e.preventDefault(); openRecord(r); }); title.appendChild(link); card.appendChild(title);
-        card.appendChild(el('p', '', r.values[3] + ' · ' + r.values[5]));
-        var controls = el('div', 'ggc-work-tools');
-        var details = el('details'); details.appendChild(el('summary', '', '모든 정보')); details.appendChild(recordDetails(r));
+        // 카드도 목록 행과 같은 구조(v3.2) — 왼쪽 본문 · 오른쪽 칸(상태 배지 위 · 동작 단추 아래 · 오른쪽 끝)
+        var card = el('article', 'ggc-work-record ggc-list-row'), body = el('div', 'body'), end = el('div', 'end');
+        body.appendChild(el('code', '', r.values[0]));
+        var title = el('h2', 'title'); var link = el('a', '', r.values[1]); link.href = '#'; link.addEventListener('click', function (e) { e.preventDefault(); openRecord(r); }); title.appendChild(link); body.appendChild(title);
+        body.appendChild(el('p', 'meta', r.values[3] + ' · ' + r.values[5]));
+        var details = el('details'); details.appendChild(el('summary', '', '모든 정보')); details.appendChild(recordDetails(r)); body.appendChild(details);
         var action = el('button', 'ggc-btn ggc-btn--secondary ggc-btn--sm', r.values[8]); action.type = 'button'; action.addEventListener('click', function () { openRecord(r); });
-        controls.appendChild(action); card.append(details, controls); cards.appendChild(card);
+        end.append(r.row.cells[7].firstElementChild.cloneNode(true), action); card.append(body, end); cards.appendChild(card);
       });
       table.parentElement.hidden = cardMode || !filtered.length; cards.hidden = !cardMode || !filtered.length; empty.hidden = !!filtered.length;
       main.querySelector('[data-work-count]').textContent = '총 ' + filtered.length + '건 · ' + sort.selectedOptions[0].text;

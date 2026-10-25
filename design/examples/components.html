@@ -82,7 +82,7 @@
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title">컴포넌트 카탈로그</h1>
-            <p class="desc">ggc-components.css v3.0</p>
+            <p class="desc">ggc-components.css v3.2</p>
           </div>
         </div>
       </div>
@@ -102,8 +102,9 @@
       <!-- ============================================================ 버튼 -->
       <section class="ex-section">
         <h2>버튼 <span class="cls">.ggc-btn</span></h2>
-        <p>기본 높이 42px · radius 10px. <code class="ex-inline">--sm</code> 34px,
-          <code class="ex-inline">--lg</code> 46px. primary 만 그림자를 갖는다.</p>
+        <p>높이 <code class="ex-inline">--ggc-control-h</code> · 모서리 <code class="ex-inline">--ggc-radius</code>.
+          <code class="ex-inline">--sm</code> 은 <code class="ex-inline">--ggc-control-h-sm</code>, <code class="ex-inline">--lg</code> 는 <code class="ex-inline">--ggc-control-h-lg</code>.
+          그림자는 없다(v3.2 — 그림자는 모달·메뉴처럼 떠 있는 층만). 휴대폰(≤600)에서는 손가락 목표 40 으로 커진다.</p>
         <div class="ex-demo" id="d-btn">
           <div class="ex-row">
             <button class="ggc-btn ggc-btn--primary" type="button">의안 상정</button>
@@ -162,7 +163,8 @@
       <!-- ============================================================ 카드 -->
       <section class="ex-section">
         <h2>카드 <span class="cls">.ggc-card</span></h2>
-        <p>radius 14px, <b>그림자 없음</b>(계약 §2). 목록을 담는 기본형과, 자유 본문을 담는
+        <p>모서리 <code class="ex-inline">--ggc-radius-lg</code>, <b>그림자 없음</b>(계약 §2). 머리·바닥 여백은 행과 같은 <code class="ex-inline">--ggc-row-pad</code> 라
+          카드 제목과 행 제목의 왼쪽 끝이 맞는다. 목록을 담는 기본형과, 자유 본문을 담는
           <code class="ex-inline">--pad</code> 두 가지다.</p>
         <div class="ex-demo ex-demo--bg" id="d-card">
           <div class="ggc-card">
@@ -211,8 +213,8 @@
       <!-- ============================================================ 통계 -->
       <section class="ex-section">
         <h2>통계 <span class="cls">.ggc-stat-grid · .ggc-stat</span></h2>
-        <p>Monitor archetype 의 최상단 고정 요소다. 4개가 기본이고 900px 이하에서 2열,
-          480px 이하에서 1열로 접힌다.</p>
+        <p>Monitor archetype 의 최상단 고정 요소다. 4개가 기본이고 1024px 이하에서 2열,
+          380px 이하에서 1열로 접힌다(휴대폰도 두 칸 — v3.2).</p>
         <div class="ex-demo ex-demo--bg" id="d-stat">
           <div class="ggc-stat-grid">
             <div class="ggc-stat">
@@ -256,7 +258,9 @@
       <section class="ex-section">
         <h2>행 리스트 <span class="cls">.ggc-list-row</span></h2>
         <p>카드 <b>안</b>에 쓰는 행이다. 좌측 <code class="ex-inline">.sev-bar</code> 로 심각도를 세로 막대로
-          표시할 수 있고, 우측 <code class="ex-inline">.end</code> 는 상태·시각·버튼 슬롯이다.</p>
+          표시할 수 있고, 우측 <code class="ex-inline">.end</code> 는 상태·시각·버튼 슬롯이다.
+          제목은 <code class="ex-inline">--ggc-text-md</code> 이고 자르지 않고 줄을 바꾼다. <code class="ex-inline">.end</code> 에 단추가 있으면
+          <b>상태 배지 위 · 단추 아래 · 둘 다 오른쪽 끝</b>으로 쌓이고, 휴대폰(≤600)에서는 단추가 없어도 세로로 쌓인다(v3.2).</p>
         <div class="ex-demo ex-demo--bg" id="d-row">
           <div class="ggc-card">
             <div class="ggc-card-head">
@@ -490,7 +494,7 @@
   <footer class="ggc-footer">
     <div class="inner">
       각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v2.0
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.2
     </div>
   </footer>
 </div>

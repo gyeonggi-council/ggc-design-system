@@ -352,14 +352,14 @@
       tbody.replaceChildren(); cards.replaceChildren();
       visible.forEach(function (r) {
         tbody.appendChild(r.row);
-        var card = el('article', 'ggc-work-record');
-        var line = el('div', 'ggc-work-tools'); line.appendChild(el('code', '', r.values[0])); line.appendChild(r.row.cells[7].firstElementChild.cloneNode(true)); card.appendChild(line);
-        var title = el('h2'); var link = el('a', '', r.values[1]); link.href = '#'; link.addEventListener('click', function (e) { e.preventDefault(); openRecord(r); }); title.appendChild(link); card.appendChild(title);
-        card.appendChild(el('p', '', r.values[3] + ' · ' + r.values[5]));
-        var controls = el('div', 'ggc-work-tools');
-        var details = el('details'); details.appendChild(el('summary', '', '모든 정보')); details.appendChild(recordDetails(r));
+        // 카드도 목록 행과 같은 구조(v3.2) — 왼쪽 본문 · 오른쪽 칸(상태 배지 위 · 동작 단추 아래 · 오른쪽 끝)
+        var card = el('article', 'ggc-work-record ggc-list-row'), body = el('div', 'body'), end = el('div', 'end');
+        body.appendChild(el('code', '', r.values[0]));
+        var title = el('h2', 'title'); var link = el('a', '', r.values[1]); link.href = '#'; link.addEventListener('click', function (e) { e.preventDefault(); openRecord(r); }); title.appendChild(link); body.appendChild(title);
+        body.appendChild(el('p', 'meta', r.values[3] + ' · ' + r.values[5]));
+        var details = el('details'); details.appendChild(el('summary', '', '모든 정보')); details.appendChild(recordDetails(r)); body.appendChild(details);
         var action = el('button', 'ggc-btn ggc-btn--secondary ggc-btn--sm', r.values[8]); action.type = 'button'; action.addEventListener('click', function () { openRecord(r); });
-        controls.appendChild(action); card.append(details, controls); cards.appendChild(card);
+        end.append(r.row.cells[7].firstElementChild.cloneNode(true), action); card.append(body, end); cards.appendChild(card);
       });
       table.parentElement.hidden = cardMode || !filtered.length; cards.hidden = !cardMode || !filtered.length; empty.hidden = !!filtered.length;
       main.querySelector('[data-work-count]').textContent = '총 ' + filtered.length + '건 · ' + sort.selectedOptions[0].text;

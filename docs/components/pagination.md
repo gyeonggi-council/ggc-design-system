@@ -40,7 +40,8 @@ SPA 면 `<a>` 대신 `<button>` 을 써도 같은 클래스가 먹는다.
 
 ## 프로필
 
-버튼 높이 `--ggc-control-h-sm`(업무 34 / 대민 40), 글자 `--ggc-control-font-sm`.
+버튼 높이 `--ggc-control-h-sm`, 글자 `--ggc-control-font-sm`(값은 프로필이 정한다).
+휴대폰(≤600)에서 업무 셸 안 쪽 번호는 최소 높이 `--ggc-space-8`(40) — 손가락 목표다(v3.2, ADR 0014).
 
 ## Tier 2
 

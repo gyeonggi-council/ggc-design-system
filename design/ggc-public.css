@@ -1,5 +1,6 @@
 /* =============================================================================
- * ggc-public.css — 경기도의회 대민(공개) 셸 v2.0 (2026-08-29)
+ * ggc-public.css — 경기도의회 대민(공개) 셸 v3.2 (2026-10-25)
+ *   v3.2(ADR 0014): ≤900 사이드 메뉴 숨김(전체메뉴로) · 전체메뉴 머리 굵기 600 · 메인 검색칸 높이 56 유지. 그 밖은 v2.0 그대로.
  * 전제: ggc-tokens.css v2.0 → ggc-components.css v2.0 → 이 파일 순으로 로드.
  *       문서 루트에 <html data-ggc-profile="public"> — 컨트롤·글자·밀도가 KRDS 치수가 된다.
  * 근거: KRDS masthead · identifier · header · main_menu_pc/mobile · footer · side_navigation ·
@@ -152,7 +153,7 @@
 }
 .ggc-header .action:hover { background: var(--ggc-surface-inset); }
 .ggc-header .action.menu { display: none; }        /* 모바일에서만 */
-.ggc-header .action .bars {                          /* 햄버거 — CSS 로 그린다 */
+.ggc-header .action .bars {                          /* 옛 햄버거(CSS 로 그림) — v3.2 부터 lucide menu 아이콘을 쓴다. 옮기지 않은 서비스를 위해 남긴다 */
   display: inline-block; width: 16px; height: 2px; background: currentColor; position: relative;
 }
 .ggc-header .action .bars::before,
@@ -465,9 +466,10 @@
   .ggc-main-menu .head {
     display: flex; align-items: center; justify-content: space-between;
     padding: 14px 16px; border-bottom: 1px solid var(--ggc-border);
-    font-weight: 800; font-size: 17px; color: var(--ggc-text-strong);
+    font-weight: 600; font-size: 17px; color: var(--ggc-text-strong);   /* v3.2: 업무 서랍 머리와 같은 굵기 */
   }
   .ggc-main-menu .head .close {
+    display: inline-flex; align-items: center; justify-content: center;   /* lucide x 를 가운데에(v3.2) */
     width: 40px; height: 40px; border: none; background: none;
     font-size: 20px; color: var(--ggc-text-muted); cursor: pointer; border-radius: var(--ggc-radius-sm);
   }
@@ -498,10 +500,14 @@
   .ggc-public-main { padding: var(--ggc-space-6) 0 var(--ggc-space-8); }
   .ggc-public-main--side { grid-template-columns: minmax(0, 1fr); gap: var(--ggc-space-5); }
   .ggc-side-nav { position: static; }
+  /* v3.2(ADR 0014): 휴대폰에서는 사이드 메뉴를 숨기고 「전체메뉴」로 찾는다(KRDS side_navigation) — 첫 화면이 본문이다.
+   * 그래서 사이드 메뉴의 **모든 목적지**가 전체메뉴(.ggc-main-menu)에도 있어야 한다 — 3단계는 2단계 자리에 펼쳐 넣는다(묶음 이름은 빼도 된다) */
+  .ggc-public-main--side > .ggc-side-nav { display: none; }
   .ggc-page-title h1 { font-size: 24px; }
   .ggc-hero { padding: var(--ggc-space-7) 0; }
   .ggc-hero .title { font-size: 22px; }
   .ggc-hero form { flex-direction: column; }
+  .ggc-hero form input { flex: none; }   /* 세로 배치에서 flex:1 이 높이를 0 으로 줄였다 — 56 을 지킨다 */
   .ggc-hero form .ggc-btn { width: 100%; }
   .ggc-footer--public .inner.main { flex-direction: column; }
   .ggc-footer--public .quick .inner { gap: 0 var(--ggc-space-4); }

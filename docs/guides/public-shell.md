@@ -14,7 +14,7 @@ identifier 구조를 그대로 따르고, 색만 기관 CI(`--ggc-*`)로 썼다.
   .site-search                      통합검색 패널 (data-ggc-search-toggle 이 연다)
   <nav class="ggc-main-menu">       1단 6개 이하 · 2단 드롭다운 · ≤900 오른쪽 패널
 <main id="main" class="ggc-public-main">
-  .inner  또는  .inner.ggc-public-main--side (사이드 내비 240 + 본문)
+  .inner  또는  .inner.ggc-public-main--side (사이드 내비 240 + 본문 · ≤900 사이드 내비 숨김)
 <footer class="ggc-footer ggc-footer--public">
   .quick                            관련 누리집
   .inner.main                       기관명 · 주소 · 대표전화 · 링크
@@ -47,6 +47,7 @@ identifier 구조를 그대로 따르고, 색만 기관 CI(`--ggc-*`)로 썼다.
 ```
 
 메인 첫 화면만 `.ggc-hero`(안내 문구 + 통합검색 + 바로가기 칩)를 쓴다. 하위 페이지는 페이지 타이틀부터 시작한다.
+히어로 검색칸은 휴대폰에서 세로로 쌓여도 높이가 줄지 않는다(v3.2).
 
 ## 동작 (`ggc-behaviors.js`)
 
@@ -62,7 +63,8 @@ identifier 구조를 그대로 따르고, 색만 기관 CI(`--ggc-*`)로 썼다.
 - 마스트헤드 문구 "이 누리집은 대한민국 공식 전자정부 누리집입니다." 는 바꾸지 않는다.
 - 푸터의 **기관명 · 주소 · 대표전화 · 개인정보처리방침** 은 필수다.
 - 본문은 `.ggc-public-main` 안 `.inner`(최대 1248px). 사이드 내비는 하위 메뉴가 3개 이상일 때만.
-- ≤900 에서 유틸리티가 숨고 주 메뉴가 패널이 된다. 390 에서 가로 스크롤 0 이어야 한다.
+- ≤900 에서 유틸리티와 사이드 내비가 숨고, 주 메뉴가 오른쪽 패널(「전체메뉴」)이 된다. 390 에서 가로 스크롤 0 이어야 한다.
+  사이드 내비의 모든 목적지가 전체메뉴에도 있어야 한다 — 3단은 2단 자리에 펼쳐 넣는다(v3.2, [ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md) · KRDS `side_navigation`).
 - 인쇄(`@media print`)에서 셸은 사라지고 본문만 남는다 — 안내문·신청서는 출력된다.
 
 ## 검사

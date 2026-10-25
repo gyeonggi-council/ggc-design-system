@@ -107,11 +107,11 @@ KRDS 가 같은 값 대역을 `disabled` 로 쓰는 것과 독립적으로 수�
 
 | | KRDS | 우리 | 근거 |
 |---|---|---|---|
-| radius 스텝 | 4 · 6 · 8 · 10 · 12 px | 6 · 10 · **14** px | 계약 §2 가 카드 radius 를 **14~16px, 그림자 없음**으로 못박는다 |
-| 컨트롤 높이 | 32 · 40 · 48 px | 34 · 36 · **40** · 44 · 46 px | 디자인 원본 실측. 40 만 일치 |
+| radius 스텝 | 4 · 6 · 8 · 10 · 12 px | 4 · 6 · 12 px (v3.2) | 토큰 v3.2 — 카드·KPI·위저드도 `--ggc-radius-lg` 하나, 그림자 없음([ADR 0013](decisions/0013-github-tidy-and-shared-parts.md) · [0014](decisions/0014-mobile-menu-right-and-shared-rules.md)) |
+| 컨트롤 높이 | 32 · 40 · 48 px | 업무 32 · 36 · 40 px · 대민 40 · 48 · 56 px | 업무는 shadcn 밀도([ADR 0009](decisions/0009-work-profile-shadcn-density.md)) — 36 만 KRDS 스텝 밖 |
 
-radius 6·10 은 KRDS 스텝과 같고, 카드 14 만 계약이 오버라이드한다.
-높이는 디자인 원본이 KRDS 스텝을 따르지 않아 갈렸다 — **정렬 여지가 있는 지점**이다.
+radius 4·6·12 는 모두 KRDS 스텝 안에 있다(v3.2).
+높이는 업무 기본 36 하나가 KRDS 스텝 밖이다 — 밀도 결정(ADR 0009)이라 그대로 둔다.
 
 ## 7. 고대비 — KRDS 를 따르지 않고 다르게 푼다 (2026-08-22 결정)
 
@@ -172,8 +172,8 @@ critical_alerts · badge · structured_list_table 등)
 | 비텍스트 중립 | ✅ 사실상 일치 |
 | 상태색 | **의도적 유지** — 원본 충실도 우선 (ΔE 5.7~10.1, 색상각 Δ0~2°) |
 | 중립 텍스트 | ⚠ KRDS 가 더 진함 |
-| radius | 부분 일치 (카드만 계약이 오버라이드) |
-| 컨트롤 높이 | ⚠ 원본 실측값이라 갈림 |
+| radius | 일치 (v3.2 — 4 · 6 · 12) |
+| 컨트롤 높이 | 업무 36 만 스텝 밖 (ADR 0009) · 대민은 일치 |
 | **고대비 모드** | ✅ **다르게 해결** — forced-colors + prefers-contrast (다크 팔레트 없이) |
 | KRDS 컴포넌트 22종 | 미활용 |
 

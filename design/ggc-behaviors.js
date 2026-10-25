@@ -6,7 +6,7 @@
  * 보고 그린다. 그래서 이 파일이 없어도 화면은 깨지지 않는다 — 동작만 없다.
  *   ① 탭      role="tab" 의 aria-selected · tabindex(roving) · 패널 hidden · 화살표/Home/End
  *   ② 모달    <dialog>.showModal() · data-ggc-modal-open / -close · 배경 클릭 · 포커스 복귀
- *   ③ drawer  ≤900px 에서 .ggc-lnb[data-open] · ESC · 바깥 클릭
+ *   ③ drawer  PC 접기 [data-ggc-lnb-toggle] · ≤900px 「전체메뉴」 오른쪽 서랍 .ggc-lnb[data-open] · ESC · 바깥 클릭 (v3.2 — 단추 둘로 나눔)
  *   ④ 대민 메뉴 .ggc-main-menu[data-open](모바일 패널) · [data-ggc-submenu] aria-expanded ·
  *             [data-ggc-search-toggle] 통합검색 패널  (ggc-public.css, v2.0)
  *   ⑤ 토스트   GGC.toast({title, desc, variant, duration, action}) · [data-ggc-toast] 선언형 · 3개 상한 · hover/focus 에 정지
@@ -162,46 +162,98 @@
     }
   });
 
-  /* --------------------------------------------------------------- ③ drawer */
+  /* --------------------------------------------------------------- ③ drawer
+   * v3.2(ADR 0014) — 단추 둘. 마크업에 없으면 만든다.
+   *   [data-ggc-lnb-toggle]    PC(>900) · GNB 맨 앞 · LNB 를 아이콘 줄로 접고 편다(접힘은 이 화면에서 기억)
+   *   [data-ggc-drawer-toggle] ≤900 · GNB 맨 끝 「전체메뉴」 · 오른쪽 서랍을 연다 — 대민 셸 .action.menu 와 같은 자리·같은 말.
+   *                            옛 마크업이 GNB 맨 앞에 두었어도 맨 끝으로 옮긴다(보이는 순서 = 읽는 순서) */
   function lnb() { return document.querySelector(".ggc-lnb"); }
   var drawerMedia = window.matchMedia('(max-width: 900px)');
-  var drawerOpener, drawerBackdrop;
+  var drawerOpener, drawerBackdrop, lnbCollapsed = false;
+  var MENU_SVG = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';   // lucide menu
+  var CLOSE_SVG = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>';   // lucide x
 
   function initDrawer() {
     var nav = lnb(), header = document.querySelector('.ggc-shell > .ggc-gnb');
     if (!nav || !header || nav.__ggcDrawer) return;
     nav.__ggcDrawer = true;
     if (!nav.id) nav.id = 'ggc-navigation';
+    lnbCollapsed = nav.classList.contains('ggc-lnb--icon');
+    var collapse = header.querySelector('[data-ggc-lnb-toggle]');
+    if (!collapse) {
+      collapse = document.createElement('button');
+      collapse.type = 'button';
+      collapse.className = 'ggc-icon-btn';
+      collapse.setAttribute('data-ggc-lnb-toggle', '');
+      collapse.innerHTML = MENU_SVG;
+      header.prepend(collapse);
+    }
+    collapse.setAttribute('aria-controls', nav.id);
     var toggle = header.querySelector('[data-ggc-drawer-toggle]');
     if (!toggle) {
       toggle = document.createElement('button');
       toggle.type = 'button';
-      toggle.className = 'ggc-icon-btn';
       toggle.setAttribute('data-ggc-drawer-toggle', '');
-      toggle.innerHTML = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
-      header.prepend(toggle);
+    }
+    if (!toggle.textContent.trim()) {   // 아이콘만 있던 옛 단추 — 대민 셸처럼 「전체메뉴」 글자를 붙이고, 글자와 다른 aria-label 은 지운다(WCAG 2.5.3)
+      toggle.classList.remove('ggc-icon-btn');
+      toggle.classList.add('ggc-gnb-menu');
+      toggle.removeAttribute('aria-label');
+      if (!toggle.querySelector('svg')) toggle.insertAdjacentHTML('afterbegin', MENU_SVG);
+      toggle.insertAdjacentHTML('beforeend', '<span>전체메뉴</span>');
     }
     toggle.classList.remove('ex-only-narrow');
     toggle.setAttribute('aria-controls', nav.id);
+    header.append(toggle);
+    var head = document.createElement('div');
+    head.className = 'ggc-drawer-head';
+    var title = document.createElement('p');
+    title.className = 'title';
+    title.textContent = '전체메뉴';
+    if (!nav.hasAttribute('aria-label') && !nav.hasAttribute('aria-labelledby')) {   // 서랍(대화상자)의 이름
+      title.id = nav.id + '-title';
+      nav.setAttribute('aria-labelledby', title.id);
+    }
     var close = document.createElement('button');
     close.type = 'button';
-    close.className = 'ggc-btn ggc-btn--secondary ggc-drawer-close';
-    close.textContent = '메뉴 닫기';
+    close.className = 'ggc-icon-btn ggc-drawer-close';
+    close.setAttribute('aria-label', '메뉴 닫기');
+    close.innerHTML = CLOSE_SVG;
     close.addEventListener('click', function () { setDrawer(false); });
-    nav.prepend(close);
+    head.append(title, close);
+    nav.prepend(head);
     drawerBackdrop = document.createElement('div');
     drawerBackdrop.className = 'ggc-drawer-backdrop';
     drawerBackdrop.hidden = true;
     drawerBackdrop.setAttribute('aria-hidden', 'true');
     document.body.appendChild(drawerBackdrop);
     function sync() {
+      var had = document.activeElement, menuFocus = had && had !== document.body && (nav.contains(had) || had === toggle || had === collapse);
       setDrawer(false);
-      nav.classList.remove('ggc-lnb--icon');
-      toggle.setAttribute('aria-expanded', drawerMedia.matches ? 'false' : 'true');
-      toggle.setAttribute('aria-label', drawerMedia.matches ? '메뉴 열기' : '메뉴 접기');
+      nav.classList.toggle('ggc-lnb--icon', !drawerMedia.matches && lnbCollapsed);   // 서랍은 늘 펼친 모양 · PC 로 돌아오면 접힘을 되살린다
+      navLabels();
+      // 900 경계를 넘으면 초점이 숨은 단추·닫힌 서랍에 남는다 — 그때만 이 폭에서 보이는 메뉴 단추로 넘긴다(본문의 초점은 그대로)
+      var now = document.activeElement;
+      if (menuFocus && (!now || now === document.body || !now.getClientRects().length || (nav.inert && nav.contains(now)))) {
+        (drawerMedia.matches ? toggle : collapse).focus({ preventScroll: true });
+      }
     }
     drawerMedia.addEventListener('change', sync);
     sync();
+  }
+
+  function navLabels() {
+    var nav = lnb();
+    if (!nav) return;
+    var open = nav.getAttribute('data-open') === 'true', collapsed = nav.classList.contains('ggc-lnb--icon');
+    document.querySelectorAll('[data-ggc-lnb-toggle]').forEach(function (b) {
+      b.setAttribute('aria-expanded', String(!collapsed));
+      b.setAttribute('aria-label', collapsed ? '메뉴 펼치기' : '메뉴 접기');
+    });
+    document.querySelectorAll('[data-ggc-drawer-toggle]').forEach(function (b) {
+      b.setAttribute('aria-expanded', String(open));
+      if (!b.textContent.trim()) b.setAttribute('aria-label', open ? '메뉴 닫기' : '전체메뉴 열기');   // 글자 없는 옛 단추만 — 「전체메뉴」 글자가 있으면 그 글자가 이름이다
+    });
   }
 
   function setDrawer(open) {
@@ -216,32 +268,32 @@
     nav.inert = drawerMedia.matches && !open;
     if (open) { nav.setAttribute('role', 'dialog'); nav.setAttribute('aria-modal', 'true'); }
     else { nav.removeAttribute('role'); nav.removeAttribute('aria-modal'); }
-    document.querySelectorAll("[data-ggc-drawer-toggle]").forEach(function (b) {
-      var collapsed = nav.classList.contains('ggc-lnb--icon');
-      b.setAttribute("aria-expanded", (drawerMedia.matches ? open : !collapsed) ? "true" : "false");
-      b.setAttribute('aria-label', open ? '메뉴 닫기' : (drawerMedia.matches ? '메뉴 열기' : (collapsed ? '메뉴 펼치기' : '메뉴 접기')));
-    });
+    navLabels();
     if (open) { var first = nav.querySelector('button, a'); if (first) first.focus(); }
     else if (wasOpen && drawerOpener && drawerOpener.isConnected) drawerOpener.focus();
   }
 
+  function toggleCollapse() {
+    var nav = lnb();
+    if (!nav || drawerMedia.matches) return;
+    lnbCollapsed = nav.classList.toggle('ggc-lnb--icon');
+    nav.querySelectorAll('a').forEach(function (a) { a.title = a.textContent.trim(); });
+    navLabels();
+  }
+
+  /* GGC.toggleDrawer — PC 는 접기, ≤900 은 서랍(예전 한 단추 시절과 같은 뜻) */
   function toggleDrawer() {
     var nav = lnb();
-    if (nav && !drawerMedia.matches) {
-      var collapsed = nav.classList.toggle('ggc-lnb--icon');
-      document.querySelectorAll('[data-ggc-drawer-toggle]').forEach(function (b) {
-        b.setAttribute('aria-expanded', String(!collapsed));
-        b.setAttribute('aria-label', collapsed ? '메뉴 펼치기' : '메뉴 접기');
-      });
-      nav.querySelectorAll('a').forEach(function (a) { a.title = a.textContent.trim(); });
-      return;
-    }
-    if (nav) setDrawer(nav.getAttribute("data-open") !== "true");
+    if (!nav) return;
+    if (!drawerMedia.matches) toggleCollapse();
+    else setDrawer(nav.getAttribute("data-open") !== "true");
   }
 
   document.addEventListener("click", function (e) {
+    var c = e.target.closest ? e.target.closest("[data-ggc-lnb-toggle]") : null;
+    if (c) { e.preventDefault(); toggleCollapse(); return; }
     var t = e.target.closest ? e.target.closest("[data-ggc-drawer-toggle]") : null;
-    if (t) { e.preventDefault(); toggleDrawer(); return; }
+    if (t) { e.preventDefault(); var n = lnb(); if (n) setDrawer(n.getAttribute("data-open") !== "true"); return; }
     var nav = lnb();
     if (nav && nav.getAttribute("data-open") === "true" && !nav.contains(e.target)) setDrawer(false);
     if (nav && e.target.closest && e.target.closest('.ggc-lnb a')) setDrawer(false);

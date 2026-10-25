@@ -123,7 +123,7 @@ API 는 shadcn 문서 그대로다(`Button` · `Dialog` · `Tabs` · `Sidebar` �
 | 모달 | `<DialogContent alert>` — 파괴적 동작 확인(배경 클릭 무시 · alertdialog). `<DialogBody>` 스크롤 본문 |
 | 알림 | `<Alert variant="info|success|warning|danger">` 틴트 + 좌측 띠 |
 | 토스트 | `sonner` — `<Toaster />` 한 번, `toast.success("저장됨")`. 3개 상한 · 5초 |
-| 테마 radius | `rounded-lg` = 컨트롤 10 · `rounded-xl` = 카드 14 · `rounded-md` = 6 — 테마가 토큰을 댄다 |
+| 테마 radius | `rounded-lg` = 컨트롤(`--ggc-radius`) · `rounded-xl` = 카드(`--ggc-radius-lg`) · `rounded-md` = 메뉴 항목(`--ggc-radius-sm`) — 테마가 토큰을 댄다 |
 
 Tailwind 유틸에서 토큰을 직접 쓸 때: `h-(--ggc-control-h)` · `text-(length:--ggc-text-sm)` · `bg-(--ggc-success-tint)` · `text-(--ggc-text-muted)`.
 **hex 를 적지 않는다** — D2 가 잡는다. 아이콘은 `lucide-react` 만.

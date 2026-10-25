@@ -8,7 +8,7 @@
 <a class="ggc-skip-link" href="#main">본문 바로가기</a>
 <div class="ggc-shell">
   <div class="ggc-utility-bar">     기관명 + 통합서비스 스위처 (모든 시스템 최상단 동일)
-  <header class="ggc-gnb">          64px 흰 띠 — 브랜드 슬롯(256px, LNB 와 세로선이 이어진다) · 경로부(.ggc-gnb-page: 브레드크럼만) · 검색 300×36 · 아이콘 버튼
+  <header class="ggc-gnb">          64px 흰 띠 — [PC 접기 단추] · 브랜드 슬롯(256px, LNB 와 세로선이 이어진다) · 경로부(.ggc-gnb-page: 브레드크럼만) · 검색 300×36 · 아이콘 버튼 · [≤900 「전체메뉴」]
   <div class="ggc-shell-body">
     <nav class="ggc-lnb">           256px, sticky · 접힘 .ggc-lnb--icon 48px. .ggc-lnb-group(캡션) · .ggc-lnb-item(svg 아이콘 + .label + .count · aria-current)
     <main class="ggc-shell-main">   1320px (대시보드) / --wide 1360px (그 외) / --split (Converse 만) · aria-labelledby="page-title"
@@ -31,7 +31,7 @@ GNB/LNB 는 `ggc-components.css` §9.
 | 본문 최대폭 | `--ggc-main-max` (대시보드) · `--ggc-main-max-wide` (기타) |
 | 유틸리티 바 · 푸터 inner | `--ggc-container-max` |
 
-카드는 흰 면 · 1px `--ggc-border` · radius 14~16 · **그림자 없음**. 페이지 배경 `--ggc-bg`. 사용자 표기는 실명 · 역할 · 부서 — UUID 금지.
+카드는 흰 면 · 1px `--ggc-border` · 모서리 `--ggc-radius-lg` · **그림자 없음**. 카드 머리 · 바닥 여백은 목록 행과 같은 `--ggc-row-pad` 라 카드 제목과 행 제목의 왼쪽 끝이 맞는다(v3.2). 페이지 배경 `--ggc-bg`. 사용자 표기는 실명 · 역할 · 부서 — UUID 금지.
 
 ## 셸 형태 세 가지 (Phase 1 문항 2)
 
@@ -43,8 +43,15 @@ GNB/LNB 는 `ggc-components.css` §9.
 
 ## 반응형
 
-- **≤900px**: GNB 압축(브랜드 슬롯 폭 auto · 서비스명 숨김), LNB 는 `data-open` drawer(`data-ggc-drawer-toggle` 버튼, `ggc-behaviors.js`).
-  본문 패딩 18/16/40. **390px 에서 가로 스크롤 0.** GNB 경로부는 브레드크럼을 접고(경로는 LNB drawer 의 `aria-current`), 검색이 남은 폭을 쓴다. h1 은 본문이라 ≤480 에서 20px 로 줄어들 뿐 숨지 않는다.
+- **>900px (PC)**: GNB 맨 앞 접기 단추 `[data-ggc-lnb-toggle]`(아이콘만, `aria-label` 「메뉴 접기」/「메뉴 펼치기」)가 LNB 를 아이콘 줄(`.ggc-lnb--icon`)로 접고 편다. 접힘은 그 화면이 열려 있는 동안 기억하고, 휴대폰 폭에서 돌아오면 되살린다.
+- **≤900px**: GNB 압축(브랜드 슬롯 폭 auto · 서비스명 숨김). 순서는 **CI 왼쪽 → 검색 → 알림 → 「전체메뉴」 맨 오른쪽**이다 — 대민 셸과 같은 자리 · 같은 말([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)).
+  LNB 는 **오른쪽에서 나오는 서랍**(`data-open`)이 된다. 폭 · 그림자는 대민 `.ggc-main-menu` 패널과 같고, 머리는 「전체메뉴」 + 닫기 아이콘 단추다. 단추는 `.ggc-gnb-menu` `[data-ggc-drawer-toggle]`, 동작은 `ggc-behaviors.js` ③([behaviors-js.md](behaviors-js.md)). PC 접기 단추는 이 폭에서 숨는다.
+  본문 패딩 18/16/40. **390px 에서 가로 스크롤 0.** GNB 경로부는 브레드크럼을 접고(경로는 서랍의 `aria-current`), 검색이 남은 폭을 쓴다. h1 은 본문이라 숨지 않고 크기(`--ggc-h1-size`)도 그대로다(v3.2 — ≤480 에서 줄이던 규칙은 지웠다).
+- **≤600px (휴대폰)**: GNB 검색은 알림 단추와 같은 정사각 아이콘으로 접혔다가, 누르면 GNB 폭으로 펼쳐진다(`:focus-within`, 스크립트 없음).
+  페이지 머리 줄은 제목 → 액션 순으로 세로로 쌓는다. 셸 안 단추 · 쪽 번호는 최소 높이 `--ggc-space-8`(40) — 손가락 목표다.
+  `.ggc-field` 입력 글자는 `max(--ggc-control-font, --ggc-text-md)` — 16 미만이면 iOS 가 확대한다. 이 보정은 v3.2 부터 `.ggc-work` 밖에도 걸린다.
+- **하단 탭 바는 두지 않는다**(ADR 0014). 서비스 메뉴가 4~12개 · 2단이라 탭 몇 칸에 담기지 않는다. 바닥은 이미 스티키 액션바(`.ggc-actionbar` · `.ggc-solo-bar` · `.ggc-work-actions`) 자리이고, 카톡 인앱 도구 막대 · iOS 홈 막대와 부딪힌다.
+- **한글 줄바꿈**: `.ggc-shell` · `.ggc-page` · `.ggc-public` · `.ggc-solo` · `.ggc-modal` 은 `word-break: keep-all` — 「기획재 / 정위원회」처럼 낱말 가운데서 끊지 않는다(v3.2). 넓어진 표는 `.ggc-table-wrap` 안에서 가로로 민다.
 - **≥1680px** (계약 §2-1, 옵션): 본문 1560/1600 으로 확폭, 긴 문서 측정 폭은 920px 캡. 1679px 이하는 수치 보존.
 - 2단 배치는 `grid-template-columns: A B` 대신 **`flex-wrap` + `flex-basis`** — 미디어 쿼리 없이 접힌다. `nowrap` 텍스트에는 `min-width: 0`.
 
