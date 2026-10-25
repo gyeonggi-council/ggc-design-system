@@ -32,9 +32,6 @@
   </div>
 
   <header class="ggc-gnb">
-    <button class="ggc-icon-btn ex-only-narrow" type="button" data-ggc-drawer-toggle aria-expanded="false" aria-controls="lnb" aria-label="메뉴 열기">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ggc-text-muted)"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    </button>
     <a class="ggc-gnb-brand" href="index.html">
       <img src="../brand/dist/assembly-mark.png" alt="">
       <span class="ggc-gnb-title">
@@ -55,6 +52,9 @@
     <button class="ggc-icon-btn" type="button" aria-label="알림 3건">
       <svg class="ggc-icon" aria-hidden="true"><use href="#i-bell"/></svg>
     </button>
+    <button class="ggc-gnb-menu" type="button" data-ggc-drawer-toggle aria-expanded="false" aria-controls="lnb">
+      <svg class="ggc-icon" aria-hidden="true"><use href="#i-menu"/></svg><span>전체메뉴</span>
+    </button>
   </header>
 
   <div class="ggc-shell-body">
@@ -74,6 +74,8 @@
       <a class="ggc-lnb-item" href="login.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-qr-code"/></svg><span class="label">QR 로그인 · Entry</span></a>
       <a class="ggc-lnb-item" href="less.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-eye-off"/></svg><span class="label">덜어내기 전/후 · Less</span></a>
       <a class="ggc-lnb-item" href="operate.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg><span class="label">실시간 회의 · Operate</span></a>
+      <a class="ggc-lnb-item" href="workbench.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-panel-left"/></svg><span class="label">두 칸 작업대 · Workbench</span></a>
+      <a class="ggc-lnb-item" href="public/solo.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-smartphone"/></svg><span class="label">휴대폰 링크 · Solo</span></a>
       <a class="ggc-lnb-item" href="public/index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="label">대민 셸 · Public</span></a>
     </nav>
 
@@ -83,7 +85,7 @@
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title">내비게이션 · 탭</h1>
-            <p class="desc">ggc-components.css v3.0 · §12~15 · §26 · §29~30 · §34~35</p>
+            <p class="desc">ggc-components.css v3.2 · §12~15 · §26 · §29~30 · §34~35</p>
           </div>
         </div>
       </div>
@@ -473,7 +475,7 @@
   <footer class="ggc-footer">
     <div class="inner">
       각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v2.0
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.2
     </div>
   </footer>
 </div>

@@ -116,6 +116,8 @@ Tailwind 서비스는 `@theme { --color-brand: var(--ggc-primary); }` 처럼 **�
 
 - **work**: `.ggc-utility-bar` · `.ggc-badge` · `.ggc-footer` 는 토큰 파일에 들어 있어 복사하면 따라온다. GNB/LNB 풀셸은
   `ggc-components.css` §9. 마크업은 `$ROOT/design/examples/dashboard.html` 에서 복사한다.
+  휴대폰 메뉴는 **GNB 맨 끝 「전체메뉴」 → 오른쪽 서랍**이다(v3.2, ADR 0014 — 대민 셸과 같은 자리). `ggc-behaviors.js` 가 단추를 만들고, 옛 마크업이 맨 앞에 둔 단추는 맨 끝으로 옮긴다.
+  **하단 탭 바를 만들지 않는다** — 바닥은 스티키 액션바 자리다.
 - **public**: `docs/guides/public-shell.md` 순서대로 — 마크업은 `$ROOT/design/examples/public/index.html` 에서 복사.
   마스트헤드 문구는 바꾸지 않고, 국가 상징 이미지는 서비스가 정부 자산으로 채운다.
 - **로그인 화면을 새로 그리지 않는다** — `.ggc-qr`(§11) 그대로. 절차는 `docs/components/README.md` 의 QR 로그인.
@@ -178,10 +180,11 @@ python "$ROOT/design/check_design.py" --gate <서비스경로> --aa=observe     
 | `references/components.md` | Phase 4 — 컴포넌트 색인(과업 → 클래스 → 문서) |
 | `references/domain-language.md` | Phase 1·4 — 어휘·밀도 판정 목록 (업무 · 대민) |
 | `$ROOT/docs/guides/less.md` | Phase 4 — **덜어내기**(v3.1): 규칙 10개 · 군더더기 열 가지 · 제목 기본형/간결형 · 판정 목록 |
+| `$ROOT/docs/guides/states.md` | Phase 4 — **상태 보이기**(v3.2): 기다림 · 저장과 제출 · 폼 오류 · 못 쓰는 이유 · 빈 화면 · 알림 위치(토스트는 예외) · 상태 사전 |
 | `references/porting.md` | Phase 2·3 — Tier 1 스택별 착지점 · .dc.html 역변환 |
 | `references/registry.md` | Phase 2 — Tier 2 레지스트리 |
 | `references/brand-assets.md` | Phase 2 — 파비콘·마크 |
 | `references/reskin.md` | ❹ 독자형 — 가동 중 서비스 수렴 절차 |
 | `references/verify.md` | Phase 5 — 검사 7종 · 증거 · 오버플로 스크립트 · 복귀 지점 |
 | `$ROOT/docs/contract.md` | **AUTHORITATIVE** 계약 — 셸 치수 · archetype · 프로필 · 완료 정의 |
-| `$ROOT/design/examples/` | 실물 갤러리 (업무 12쪽 · 대민 4쪽) — v3.1 `less.html`(덜어내기 전/후) · `operate.html`(Operate) |
+| `$ROOT/design/examples/` | 실물 갤러리 (업무 13쪽 · 대민 5쪽) — v3.1 `less.html`(덜어내기 전/후) · `operate.html`(Operate) · v3.2 `workbench.html`(두 칸 · 문서 보기 · 긴 작업) · `public/solo.html`(휴대폰 1인 링크 · 서명) |

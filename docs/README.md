@@ -41,6 +41,7 @@
 | [guides/fonts.md](guides/fonts.md) | Pretendard GOV 자체 호스팅 |
 | [guides/brand-assets.md](guides/brand-assets.md) | 파비콘 · 마크 |
 | [guides/less.md](guides/less.md) | **덜어내기** — 필요한 정보부터, 언제 보여 주나 (v3.1) |
+| [guides/states.md](guides/states.md) | **상태 보이기** — 기다림 · 저장과 제출 · 폼 오류 · 빈 화면 · 기능 저하 · 알림 위치 · 상태 사전 (v3.2) |
 | [guides/layout-shell.md](guides/layout-shell.md) | 업무 셸 (헤더 · 사이드바 · 본문 · 아키타입) |
 | [guides/typography.md](guides/typography.md) | 타이포 스케일 — 위계는 크기·굵기로 (v3.0) |
 | [guides/icons.md](guides/icons.md) | 아이콘 — lucide 스프라이트, 이모지 금지 (v3.0) |

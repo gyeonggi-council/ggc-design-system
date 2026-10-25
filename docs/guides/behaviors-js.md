@@ -19,7 +19,8 @@ Tier 2(React)는 이 파일 대신 Radix 가 같은 동작을 준다.
 |---|---|---|
 | 탭 `.ggc-tabs` | `role="tablist"` / `role="tab"` `aria-controls` | 클릭·`←` `→` `Home` `End` 로 선택, `aria-selected` · `tabindex`(roving) · 패널 `hidden` 갱신, `ggc:tabchange` 이벤트 |
 | 모달 `dialog.ggc-modal` | `data-ggc-modal-open="#id"` · `data-ggc-modal-close[="값"]` | `showModal()` · 첫 포커스(autofocus → 첫 입력 → 주 버튼 → 닫기) · 배경 클릭(확인형 제외) · 닫히면 오프너로 포커스 복귀 · `<html data-ggc-modal-active>` 스크롤 잠금 |
-| LNB drawer (≤900) | `data-ggc-drawer-toggle` | `.ggc-lnb[data-open]` · `aria-expanded` · `Esc` · 바깥 클릭 |
+| 업무 셸 메뉴 접기 (>900, v3.2) | `data-ggc-lnb-toggle` — 없으면 GNB 맨 앞에 만든다 | `.ggc-lnb--icon` 켜고 끄기 · `aria-expanded` · `aria-label` 「메뉴 접기」/「메뉴 펼치기」 · 접힘은 화면이 열린 동안 기억(휴대폰 폭에서 돌아오면 되살림) |
+| 업무 셸 「전체메뉴」 서랍 (≤900, v3.2) | `data-ggc-drawer-toggle` — 없으면 GNB 맨 끝에 「전체메뉴」 단추(`.ggc-gnb-menu`)를 만든다. 옛 마크업이 맨 앞에 두었으면 맨 끝으로 옮긴다 | 오른쪽 서랍 `.ggc-lnb[data-open]` · 서랍 머리 `.ggc-drawer-head`(「전체메뉴」 + 닫기) 생성 · `aria-expanded` · 열면 닫기 단추로 포커스 · Tab 서랍 안 순환 · `Esc`/바깥 클릭/메뉴 링크 → 닫고 여는 단추로 복귀 · 닫힌 서랍 `inert` · `<html data-ggc-drawer-active>` 스크롤 잠금. 글자 없는 옛 단추에만 `aria-label`(「전체메뉴 열기」/「메뉴 닫기」)을 단다 |
 | 대민 주 메뉴 (≤900) | `data-ggc-menu-toggle` · `data-ggc-submenu` | `.ggc-main-menu[data-open]` 패널 · 첫 요소 포커스 · `Esc`/닫기 → 토글로 복귀 · 2단 `aria-expanded`(한 번에 하나) |
 | 대민 통합검색 | `data-ggc-search-toggle` | `.site-search[data-open]` + 입력 포커스 |
 | 토스트 `.ggc-toast` | `GGC.toast({…})` · `data-ggc-toast="제목"`(+ `-desc` `-variant`) | `.ggc-toast-region`(없으면 만든다)에 추가 · 기본 5초 / action 8초 / `duration:0` 수동 · hover·focus 중 정지 · 3개 상한 · `ggc:toast` |
@@ -34,7 +35,7 @@ Tier 2(React)는 이 파일 대신 Radix 가 같은 동작을 준다.
 ```js
 GGC.init(root?)            // 탭·모달·메뉴·파일·리스트박스·페이지 내 내비 다시 묶기
 GGC.openModal("#id", opener?)  GGC.closeModal("#id", value?)
-GGC.toggleDrawer()         GGC.toggleMenu()
+GGC.toggleDrawer()         GGC.toggleMenu()      // toggleDrawer: PC 는 사이드바 접기, ≤900 은 「전체메뉴」 서랍
 GGC.toast({ title, desc?, variant?: "success"|"warning"|"danger"|"info", icon?, duration?, action?: { label, onClick } })
 GGC.dismissToast(el)
 GGC.initMenus(root?)  GGC.initFiles(root?)  GGC.initListboxes(root?)  GGC.initInPageNav(root?)

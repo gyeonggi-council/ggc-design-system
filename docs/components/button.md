@@ -18,13 +18,15 @@
 
 | 클래스 | 언제 |
 |---|---|
-| `--primary` | 화면의 **주 액션 하나** (상신 · 등록 · 검색). 유일하게 그림자 |
+| `--primary` | 화면의 **주 액션 하나** (상신 · 등록 · 검색). 그림자는 없다(v3.2 — `--ggc-shadow-primary: none`) |
 | `--secondary` | 보조 (임시저장 · 취소 · 내려받기) |
 | `--ghost` | 셋째 이하 · 카드 안 링크성 동작 |
 | `--dashed` | "＋ 추가" 자리 표시 (가로 가득) |
 | `--sm` / `--lg` / `--block` | 행 안 액션 / 서식 제출 · 위저드 하단 / 가로 가득 |
 
-높이는 `--ggc-control-h-sm` / `--ggc-control-h` / `--ggc-control-h-lg` — 업무 34/42/46, 대민 40/48/56.
+높이는 `--ggc-control-h-sm` / `--ggc-control-h` / `--ggc-control-h-lg` — 값은 프로필(업무 · 대민)이 정한다(`design/ggc-tokens.css`).
+모서리는 크기와 관계없이 `--ggc-radius` 다(v3.2 — `--sm` 의 리터럴을 토큰으로).
+휴대폰(≤600)에서 업무 셸(`.ggc-shell`) 안 단추는 최소 높이 `--ggc-space-8`(40) — 손가락 목표다. v3.2(ADR 0014)부터 `.ggc-work` 밖에도 걸린다.
 
 ## 규칙
 

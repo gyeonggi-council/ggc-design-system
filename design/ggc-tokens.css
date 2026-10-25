@@ -1,5 +1,5 @@
 /* =============================================================================
- * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.0 (2026-09-05)
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.2 (2026-10-24)
  * 근거: docs/contract.md (AUTHORITATIVE) · 구판 가이드는 archive/03-공통디자인가이드.md
  * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
  *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
@@ -7,6 +7,18 @@
  * 사용: 각 앱이 이 파일을 복사(또는 값 이식)해 자체 스타일의 최상단에 둔다.
  *       대민(공개) 화면은 <html data-ggc-profile="public"> 을 붙인다 — 그 외에는 같다.
  * 검사: python design/check_design.py --canon   /   --gate <서비스>
+ *
+ * ── v3.2 에서 바뀐 것 (GitHub 식 정돈 — 면은 흰 바탕 + 테두리, 그림자는 뜨는 층만) ────────
+ * 사용자 결정(2026-10-24, ADR 0013): "GitHub UI 가 괜찮다" → 바로 정본에 반영. 새 색은 없다 —
+ * 바뀐 값은 전부 이미 이 파일에 있던 값이다(새 값을 발명하지 않는다).
+ *
+ *   변경  --ggc-bg            #eef1f5 → #ffffff   회색 바탕 위 흰 카드(1.13:1)의 이중 구조를 없앤다
+ *   변경  --ggc-border        #e6ebf1 → #d5dce5   흰 바탕에서 면을 가르는 것은 테두리다 (= border-strong 값)
+ *   변경  --ggc-shell-border  #e2e7ee → #d5dce5   GNB 아래 · LNB 오른쪽 경계도 같은 선
+ *   변경  --ggc-radius / -sm / -lg   10 / 6 / 14 → 6 / 4 / 12   (Tailwind rounded-md / rounded / rounded-xl)
+ *   변경  --ggc-shadow-primary  색 그림자 → none   주 버튼은 색만으로 충분하다(흰 위 6.61:1)
+ *   고대비(prefers-contrast: more) 의 테두리는 한 단계 위 기존 값 #b9c6da 로.
+ *   ⚠ D1 — 바이트가 바뀌었다. 서비스는 그 화면을 다음에 고칠 때 사본을 재복사한다.
  *
  * ── v3.0 에서 바뀐 것 (업무 프로필을 shadcn 기본 밀도로 — 색은 하나도 바뀌지 않았다) ───
  * v2.0 의 업무 치수는 Claude Design 목업의 실측값(버튼 42 · 입력 44 · 13.5px)이었다.
@@ -69,8 +81,9 @@
   --ggc-danger:  #cd2d2d;  --ggc-danger-tint:  #fdeaea;  /* 틴트 4.52 · 흰 5.24 */
   --ggc-info:    #1f6a97;  --ggc-info-tint:    #e2f0f8;  /* 틴트 5.06 · 흰 5.89 */
 
-  /* --- 중립 텍스트 램프 (4단, 전부 흰·페이지배경 양쪽에서 AA) ---
-   * 단조성 유지: 15.80 > 14.57 > 6.66 > 5.20 (페이지 배경 #EEF1F5 기준) */
+  /* --- 중립 텍스트 램프 (4단, 전부 흰·인셋 면 양쪽에서 AA) ---
+   * 단조성 유지: 17.90 > 16.51 > 7.55 > 5.89 (흰 기준 — v3.2 부터 페이지 바탕도 흰색).
+   * v3.1 까지의 페이지 배경 #EEF1F5 위에서도 15.80 > 14.57 > 6.66 > 5.20 으로 AA 였다. */
   --ggc-text-strong: #131722;  /* 흰 17.90 · bg 15.80 */
   --ggc-text:        #1a1f29;  /* 흰 16.51 · bg 14.57 */
   --ggc-text-muted:  #4a5566;  /* 흰  7.55 · bg  6.66 */
@@ -85,11 +98,11 @@
   --ggc-text-body: #3a4150;
 
   /* --- 중립 면·선 --- */
-  --ggc-border:        #e6ebf1;  /* 카드 테두리 */
+  --ggc-border:        #d5dce5;  /* 카드·상자 테두리 (v3.2: #e6ebf1 → 흰 바탕에서 면을 가르는 선) */
   --ggc-border-strong: #d5dce5;  /* 버튼 테두리, 강조 구분 */
-  --ggc-shell-border:  #e2e7ee;  /* GNB 하단선 · LNB 우측선 (계약 §2) */
+  --ggc-shell-border:  #d5dce5;  /* GNB 하단선 · LNB 우측선 (계약 §2 · v3.2: #e2e7ee → border 와 같은 선) */
   --ggc-hairline:      #f0f3f7;  /* 표 행 구분, 옅은 구분선 */
-  --ggc-bg:            #eef1f5;  /* 페이지 배경 */
+  --ggc-bg:            #ffffff;  /* 페이지 배경 (v3.2: #eef1f5 → 흰색. 면 구분은 테두리로) */
   --ggc-surface:       #ffffff;  /* 카드·패널 */
   --ggc-surface-inset: #f6f8fb;  /* 인셋 영역, 표 합계행 */
   --ggc-control-bg:    #f3f5f9;  /* 검색창·입력 컨트롤 */
@@ -128,11 +141,11 @@
   --ggc-space-11: 80px;
 
   /* --- 형태 --- */
-  --ggc-radius:    10px;   /* 버튼·입력 */
-  --ggc-radius-sm:  6px;   /* 배지·칩 */
-  --ggc-radius-lg: 14px;   /* 카드 (계약 §2: 14~16px, 그림자 없음) */
+  --ggc-radius:     6px;   /* 버튼·입력 (v3.2: 10 → 6) */
+  --ggc-radius-sm:  4px;   /* 배지·칩 (v3.2: 6 → 4) */
+  --ggc-radius-lg: 12px;   /* 카드 (계약 §2: 12px, 그림자 없음 · v3.2: 14 → 12) */
   --ggc-shadow: 0 1px 2px rgba(20, 30, 50, 0.04);
-  --ggc-shadow-primary: 0 4px 12px rgba(60, 93, 147, 0.3);  /* primary 버튼 전용 */
+  --ggc-shadow-primary: none;  /* primary 버튼 전용 (v3.2: 색 그림자 제거 — 그림자는 모달·메뉴처럼 뜨는 층만) */
 
   /* --- 포커스 (계약 §3 — 알파 .20) --- */
   --ggc-focus-ring: 0 0 0 3px rgba(60, 93, 147, 0.20);
@@ -271,7 +284,8 @@
   :root {
     --ggc-text-muted: #3a4150;   /* 7.55 → 10.23:1 (원본 ×27) */
     --ggc-text-subtle: #4a5566;  /* 5.89 →  7.55:1 (원본 ×53) */
-    --ggc-border: #d5dce5;
+    --ggc-border: #b9c6da;         /* v3.2: 기본 테두리가 #d5dce5 가 되어 한 단계 위로 */
+    --ggc-shell-border: #b9c6da;
     --ggc-border-strong: #b9c6da;
     --ggc-focus-ring: 0 0 0 4px rgba(60, 93, 147, 0.45);
   }
@@ -293,7 +307,7 @@
 }
 .ggc-utility-bar .brand { color: #fff; font-weight: 700; text-decoration: none; letter-spacing: -0.2px; }
 .ggc-utility-bar nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-.ggc-utility-bar nav .label { color: #9cb0cd; margin-right: 4px; }
+.ggc-utility-bar nav .label { color: #c9d6ea; margin-right: 4px; }   /* v3.2: #9cb0cd 는 띠 위 4.02:1(13px, AA 미달) → 링크와 같은 6.04:1 */
 .ggc-utility-bar nav a {
   color: #c9d6ea; text-decoration: none; padding: 3px 8px; border-radius: var(--ggc-radius-sm);
 }

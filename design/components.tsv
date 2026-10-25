@@ -24,7 +24,7 @@ stepper	스텝퍼 / 위저드	.ggc-wizard (--vertical) .ggc-wizard-mini	ggc-step
 qr-login	QR 로그인 블록	.ggc-qr .ggc-qr-install .ggc-login .ggc-login-credentials	ggc-qr-login	기존 §11	work	P1	있음	1
 prose	본문 조판	.ggc-prose	ggc-prose	기존 §10 (확폭 캡만)	both	P1	있음	3
 actionbar	하단 스티키 액션바	.ggc-actionbar	ggc-actionbar	archetypes Configure 슬롯 5	work	P0	있음	3
-modal	모달 / 다이얼로그	.ggc-modal (<dialog>)	dialog alert-dialog	KRDS modal	both	P0	있음	3
+modal	모달 / 다이얼로그	.ggc-modal (<dialog>, --sm --lg --alert --full)	dialog alert-dialog	KRDS modal · --full 은 v3.2(서명 · 문서 크게 보기)	both	P0	있음	3
 tabs	탭	.ggc-tabs .ggc-tablist .ggc-tab .ggc-tabpanel	tabs	KRDS tab	both	P0	있음	3
 select	셀렉트 (네이티브)	.ggc-select	select	KRDS select	both	P0	있음	3
 check-radio	체크박스 · 라디오 · 칩	.ggc-check .ggc-radio .ggc-check-group(--column) .ggc-chip	checkbox radio-group	KRDS checkbox/radio/chip	both	P0	있음	3
@@ -65,4 +65,11 @@ filter-bar	필터 스트립	—	ggc-filter-bar	archetypes Explore 슬롯 2 · Ti
 detail-layout	상세 배치 (본문 + 결재 레일)	—	ggc-detail-layout	archetypes Learn/Decide · Tier 2 전용	work	P1	있음	11
 wizard-layout	위저드 배치	—	ggc-wizard-layout	archetypes Configure · Tier 2 전용	work	P1	있음	11
 work	반응형 업무 배치	.ggc-work .ggc-work-grid .ggc-work-switch .ggc-work-filter .ggc-work-results .ggc-work-actions	—	docs/components/work-layout.md	work	P0	있음	12
-drawer	업무 메뉴 오버레이	.ggc-drawer-backdrop .ggc-drawer-close	—	docs/components/shell.md	work	P0	있음	12
+drawer	업무 전체메뉴 서랍(오른쪽)	.ggc-drawer-backdrop .ggc-drawer-head .ggc-gnb-menu	—	docs/components/shell.md	work	P0	있음	12
+# --- v3.2 (2026-10-24, ADR 0013 — 서비스들이 각자 만들던 부품) ---
+progress	진행 막대	.ggc-progress (네이티브 <progress>)	progress	sign · survey · lira · 자막 추출 — 센 값이 있을 때만	both	P1	있음	13
+job	긴 작업 진행	.ggc-job (--compact · data-state queued/running/stopping/unknown/done/failed/partial/stopped)	—	lira ProgressCard · 자막 ClipJobsPanel · elis · sign 완성본 · Primer loading	both	P1	있음	13
+solo	휴대폰 1인 링크 화면	.ggc-solo .ggc-solo-head .ggc-solo-main .ggc-solo-bar	—	sign s.html · survey r.html · bookRoom /m · award manage	public	P1	있음	13
+signature	서명 패드	.ggc-signature .ggc-signature-pad	—	award SignaturePad · attendance signature-pad · sign s.js	both	P1	있음	13
+viewer	문서 미리보기 틀 (렌더러는 서비스)	.ggc-viewer .ggc-viewer-tools .ggc-viewer-body .ggc-viewer-pages .ggc-viewer-page .ggc-viewer-state .ggc-viewer-note (--frame)	—	lira · ttime · award · sign · attendance · bims2 미리보기	both	P1	있음	13
+split	좌우 두 칸 작업대	.ggc-split .ggc-split-list .ggc-split-handle .ggc-split-view .ggc-split-back	—	ttime split-pane · compile-split · less.md R9	work	P1	있음	13

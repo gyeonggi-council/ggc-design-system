@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (b7b89677) · design/components.tsv (4e7f7a04) -->
+<!-- 원천: design/ggc-tokens.css (464c1798) · design/components.tsv (102adf3b) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -64,14 +64,14 @@
 
 | 토큰 | Hex | 역할 |
 |---|---|---|
-| `--ggc-bg` | #EEF1F5 | 페이지 배경 |
+| `--ggc-bg` | #FFFFFF | 페이지 배경 |
 | `--ggc-surface` | #FFFFFF | 카드 · 패널 · GNB · LNB |
 | `--ggc-surface-inset` | #F6F8FB | 인셋 영역 · 표 합계행 |
 | `--ggc-control-bg` | #F3F5F9 | 검색창 · 입력 컨트롤 · 아이콘 박스 |
 | `--ggc-row-hover` | #FAFBFD | 목록 행 hover |
-| `--ggc-border` | #E6EBF1 | 카드 테두리 |
+| `--ggc-border` | #D5DCE5 | 카드 테두리 |
 | `--ggc-border-strong` | #D5DCE5 | 버튼 · 입력 테두리 |
-| `--ggc-shell-border` | #E2E7EE | GNB 하단선 · LNB 우측선 |
+| `--ggc-shell-border` | #D5DCE5 | GNB 하단선 · LNB 우측선 |
 | `--ggc-hairline` | #F0F3F7 | 표 행 구분선 |
 
 ### 역할 색쌍 (신원 — 상태와 다른 축)
@@ -128,7 +128,7 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | QR 로그인 블록 | `.ggc-qr .ggc-qr-install .ggc-login .ggc-login-credentials` | `ggc-qr-login` | work | P1 | 있음 |
 | 본문 조판 | `.ggc-prose` | `ggc-prose` | both | P1 | 있음 |
 | 하단 스티키 액션바 | `.ggc-actionbar` | `ggc-actionbar` | work | P0 | 있음 |
-| 모달 / 다이얼로그 | `.ggc-modal (<dialog>)` | `dialog alert-dialog` | both | P0 | 있음 |
+| 모달 / 다이얼로그 | `.ggc-modal (<dialog>, --sm --lg --alert --full)` | `dialog alert-dialog` | both | P0 | 있음 |
 | 탭 | `.ggc-tabs .ggc-tablist .ggc-tab .ggc-tabpanel` | `tabs` | both | P0 | 있음 |
 | 셀렉트 (네이티브) | `.ggc-select` | `select` | both | P0 | 있음 |
 | 체크박스 · 라디오 · 칩 | `.ggc-check .ggc-radio .ggc-check-group(--column) .ggc-chip` | `checkbox radio-group` | both | P0 | 있음 |
@@ -168,7 +168,13 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 상세 배치 (본문 + 결재 레일) | `—` | `ggc-detail-layout` | work | P1 | 있음 |
 | 위저드 배치 | `—` | `ggc-wizard-layout` | work | P1 | 있음 |
 | 반응형 업무 배치 | `.ggc-work .ggc-work-grid .ggc-work-switch .ggc-work-filter .ggc-work-results .ggc-work-actions` | `—` | work | P0 | 있음 |
-| 업무 메뉴 오버레이 | `.ggc-drawer-backdrop .ggc-drawer-close` | `—` | work | P0 | 있음 |
+| 업무 전체메뉴 서랍(오른쪽) | `.ggc-drawer-backdrop .ggc-drawer-head .ggc-gnb-menu` | `—` | work | P0 | 있음 |
+| 진행 막대 | `.ggc-progress (네이티브 <progress>)` | `progress` | both | P1 | 있음 |
+| 긴 작업 진행 | `.ggc-job (--compact · data-state queued/running/stopping/unknown/done/failed/partial/stopped)` | `—` | both | P1 | 있음 |
+| 휴대폰 1인 링크 화면 | `.ggc-solo .ggc-solo-head .ggc-solo-main .ggc-solo-bar` | `—` | public | P1 | 있음 |
+| 서명 패드 | `.ggc-signature .ggc-signature-pad` | `—` | both | P1 | 있음 |
+| 문서 미리보기 틀 (렌더러는 서비스) | `.ggc-viewer .ggc-viewer-tools .ggc-viewer-body .ggc-viewer-pages .ggc-viewer-page .ggc-viewer-state .ggc-viewer-note (--frame)` | `—` | both | P1 | 있음 |
+| 좌우 두 칸 작업대 | `.ggc-split .ggc-split-list .ggc-split-handle .ggc-split-view .ggc-split-back` | `—` | work | P1 | 있음 |
 
 핵심 규칙:
 
@@ -213,9 +219,9 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 ## 6. Depth & Elevation (깊이)
 
 - `--ggc-shadow` = `0 1px 2px rgba(20, 30, 50, 0.04)` — 기본, 거의 보이지 않는다.
-- `--ggc-shadow-primary` = `0 4px 12px rgba(60, 93, 147, 0.3)` — primary 버튼 전용.
+- `--ggc-shadow-primary` = `none` — primary 버튼 전용.
 - 카드·패널은 그림자 없이 1px 테두리로 면을 가른다. 겹침은 색 면(인셋 배경)과 테두리로 표현한다.
-- radius: `--ggc-radius-sm` 6px (배지·칩) · `--ggc-radius` 10px (버튼·입력) · `--ggc-radius-lg` 14px (카드 14~16).
+- radius: `--ggc-radius-sm` 4px (배지·칩) · `--ggc-radius` 6px (버튼·입력) · `--ggc-radius-lg` 12px (카드 14~16).
 - 포커스 링: `--ggc-focus-ring` = `0 0 0 3px rgba(60, 93, 147, 0.20)`. `forced-colors` 에서는 `outline: 3px solid Highlight` 로 복원된다.
 
 ## 7. Do's and Don'ts (규칙)

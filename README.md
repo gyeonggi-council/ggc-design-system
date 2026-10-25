@@ -3,7 +3,8 @@
 경기도의회 사무처의 업무 웹 서비스(의안·자막·주간보고·지식창고 등)가 **같은 모양, 같은 규칙**으로 화면을 만들도록 돕는 안내서다.
 색과 글꼴을 맞추는 것뿐 아니라, **지금 필요 없는 정보를 덜어내** 담당자가 할 일을 바로 찾게 하는 것이 목표다.
 
-- 현재 판: **v3.1** (2026-10-18) — 「덜어내기」 규칙을 더했다. 색·글자 크기는 v3.0 그대로다.
+- 현재 판: **v3.2** (2026-10-24) — 화면 바탕을 흰색으로 바꾸고 칸은 선으로 나눴다(GitHub 처럼). 여러 서비스가 따로 만들던 부품 다섯(오래 걸리는 작업의 진행 표시 · 휴대폰 서명 화면 · 한글 문서 보기 · 왼쪽 목록+오른쪽 보기)을 공통으로 만들었다. 글자 크기·간격은 그대로다.
+- 직전 판 v3.1 (2026-10-18) — 「덜어내기」 규칙을 더했다.
 - 이 문서의 앞부분은 디자인을 몰라도 읽을 수 있게 썼다. 개발자용 내용은 [아래](#여기부터-개발자용)에 있다.
 
 ## 한눈에 보기 — 같은 화면, 덜어내기 전과 후
@@ -78,6 +79,7 @@
 
 화면을 직접 만드는 사람을 위한 내용이다. 용어는 위 「말 풀이」를 본다.
 
+**v3.2 (2026-10-24)** ⚠ D1 — 면은 흰 바탕 + 테두리(GitHub 식) · 제목 굵기 600 · 상태 보이기 가이드([docs/guides/states.md](docs/guides/states.md)) · 서비스 부품 다섯(`.ggc-job` · `.ggc-solo` · `.ggc-signature` · `.ggc-viewer` · `.ggc-split`) · 검사기 판 표시 · 재복사 도구 `tools/sync-canon.py`. 이전 안내 [v3.1→v3.2](docs/migration/v3.1-to-v3.2.md) · ADR 0013.
 **v3.1 (2026-10-18)** — 덜어내기 규칙([docs/guides/less.md](docs/guides/less.md))과 Operate(실시간 화면) 정본을 더했다. **CSS·토큰 파일은 바뀌지 않았다** — 서비스는 다시 복사할 필요가 없고, 그 화면을 다음에 고칠 때 규칙을 적용한다.
 **v3.0.0 (2026-09-05)** — 업무 프로필이 **shadcn 기본 밀도**로, 제목은 본문으로, 아이콘은 lucide 로(ADR 0009 · 0010 · 0011).
 타이포 스케일 토큰 신설, Tier 2 는 **shadcn 공식 소스 + 토큰** 74항목(sidebar · data-table · command · calendar · chart · sonner · form …),
@@ -100,6 +102,7 @@ v2 소비자는 [docs/migration/v2-to-v3.md](docs/migration/v2-to-v3.md) 대로 
 | [`components-overlay.html`](design/examples/components-overlay.html) | 알림 · 토스트 · 모달 · 툴팁 · 스피너 · 스켈레톤 · 빈 상태 · 액션바 |
 | [`dashboard.html`](design/examples/dashboard.html) · [`explore.html`](design/examples/explore.html) · [`wizard.html`](design/examples/wizard.html) · [`login.html`](design/examples/login.html) | 실물 업무 화면 — Monitor · Explore(v3 신설) · Configure · QR 로그인 |
 | [`less.html`](design/examples/less.html) · [`operate.html`](design/examples/operate.html) | **v3.1** — 같은 화면의 덜어내기 전/후 · Operate(실시간 시청 · 반복 처리 작업대) |
+| [`workbench.html`](design/examples/workbench.html) · [`public/solo.html`](design/examples/public/solo.html) | **v3.2** — 두 칸 작업대(목록 + 한글 보기 + 긴 작업 진행) · 휴대폰 1인 링크 화면(서명 전체 화면 창) |
 | [`public/index.html`](design/examples/public/index.html) 외 4쪽 | **대민 셸** — 마스트헤드 · 헤더 · 주 메뉴 · 공개 푸터 · 아이덴티파이어 (KRDS 패턴 + 기관 CI) |
 
 **파일 하나로 열고 싶으면** `design/examples/examples-standalone.html` 을 쓴다 —
@@ -161,15 +164,15 @@ npx shadcn add @ggc/ggc-shell @ggc/ggc-page-head @ggc/ggc-data-table   # 사이�
 
 | 경로 | 무엇 |
 |---|---|
-| `design/ggc-tokens.css` | **토큰 정본 v3.0** — 색·서체·간격·형태·포커스·셸·컨트롤 치수(shadcn 기본 밀도)·**타이포 스케일·아이콘 치수** + 대민 프로필 블록(KRDS) |
-| `design/ggc-components.css` | 컴포넌트 v3.0 — 셸(경로부 · 아이콘 사이드바 · 접힘)·페이지 헤더(h1 본문)·카드·버튼·표·폼·위저드 … §37(제목 유틸 · 아이콘) |
+| `design/ggc-tokens.css` | **토큰 정본 v3.2** — 색·서체·간격·형태·포커스·셸·컨트롤 치수(shadcn 기본 밀도)·**타이포 스케일·아이콘 치수** + 대민 프로필 블록(KRDS) |
+| `design/ggc-components.css` | 컴포넌트 v3.2 — 셸(경로부 · 아이콘 사이드바 · 접힘)·페이지 헤더(h1 본문)·카드·버튼·표·폼·위저드 … §37(제목 유틸 · 아이콘) |
 | `design/ggc-icons.svg` + `design/icons/lucide/` | **아이콘 정본 v3.0** — lucide 부분집합 90종 스프라이트(생성물, `build-icons.py`). 이모지 금지 |
 | `design/ppt/` | **대외 발표용 PPT 템플릿**(생성물 — 토큰에서 `build-ppt.py`) · 레이아웃 10종 · 샘플 12장 · [docs/guides/ppt.md](docs/guides/ppt.md) |
 | `design/ggc-fonts.css` + `design/fonts/` | **폰트 정본 v1.0** — @font-face 하나와 가변 woff2 하나. 두 파일을 같은 폴더에 나란히 두고 토큰보다 먼저 링크한다 |
 | `design/check_design.py` | **검사기** — `diff -q` 를 대체하는 6종 검사 |
 | `design/brand/` | 파비콘 세트 · 의회 마크 · stdlib 전용 생성기 · 배포 매핑표 |
-| **`design/examples/`** | **예제 갤러리 16쪽**(업무 12 + 대민 4) — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
-| `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v2.0**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·대민 메뉴·토스트·드롭다운·파일·툴팁·리스트박스·목차) |
+| **`design/examples/`** | **예제 갤러리 18쪽**(업무 13 + 대민 5) — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
+| `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v3.2**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·대민 메뉴·토스트·드롭다운·파일·툴팁·리스트박스·목차) |
 | `design/components.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 |
 | `registry.json` · `registry/ggc/` · `public/r/` | **Tier 2 shadcn 레지스트리 74항목** — shadcn 공식 소스 + 토큰(UI 45 · 블록 27 · 훅). `registry.json` 은 생성물(`tools/build-registry-json.py`). 검사는 `tools/check-registry.py` |
 | `DESIGN.md` | **생성물** — Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (`tools/build-design-md.py`) |

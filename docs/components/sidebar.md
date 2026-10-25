@@ -3,6 +3,8 @@
 shadcn 공식 `sidebar` 를 그대로 쓴다. 폭 `--ggc-lnb-w`(256) · 접힘 `--ggc-lnb-w-icon`(48) · ≤768 은 Sheet(drawer) · 단축키 ⌘/Ctrl+B.
 색은 테마가 `--sidebar-*` 를 토큰으로 매핑한다(흰 면 · 활성 `--ggc-primary-light` · 경계 `--ggc-shell-border`).
 Tier 1 의 대응은 `.ggc-lnb` + `.ggc-lnb--icon`([shell.md](shell.md)).
+Tier 1 은 v3.2([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md))부터 ≤900 에서 GNB 맨 끝 「전체메뉴」 → 오른쪽 서랍이다.
+이 블록은 아직 shadcn 기본 배치(헤더 맨 앞 `SidebarTrigger` · ≤768 왼쪽 Sheet)라 둘이 다르다 — Tier 2 를 맞추는 일은 다음 PR 로 미뤘다(ADR 0014 「가져오지 않은 것」).
 
 ## 쓰기 — 셸 블록으로
 

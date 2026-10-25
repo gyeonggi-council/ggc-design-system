@@ -29,9 +29,9 @@ v2.0 까지 제목 토큰이 없었다. h1 은 GNB 안 18px, 카드 제목 16px,
 
 | 자리 | 크기 | 굵기 | 클래스 (Tier 1) | 컴포넌트 (Tier 2) |
 |---|---|---|---|---|
-| 페이지 제목 `<h1>` — 화면당 하나, 본문 첫 줄 | h1 (24) | 700 · -0.02em | `.ggc-page-head .ggc-page-title` · `.ggc-h1` | `@ggc/ggc-page-head` |
-| 섹션 제목 — 카드 밖 구획 | h2 (18) | 700 | `.ggc-h2` | `SectionTitle` |
-| 카드 제목 | h3 (16) | 700 | `.ggc-card-head .title` · `.ggc-h3` | `CardTitle` |
+| 페이지 제목 `<h1>` — 화면당 하나, 본문 첫 줄 | h1 (24) | 600 · -0.02em | `.ggc-page-head .ggc-page-title` · `.ggc-h1` | `@ggc/ggc-page-head` |
+| 섹션 제목 — 카드 밖 구획 | h2 (18) | 600 | `.ggc-h2` | `SectionTitle` |
+| 카드 제목 | h3 (16) | 600 | `.ggc-card-head .title` · `.ggc-h3` | `CardTitle` |
 | 본문 · 표 셀 · 버튼 · 입력 | base (14) | 400~600 | 기본 | 기본 |
 | 메타 · 설명 · 부제 | sm (13) | 400 | `.ggc-text-sm` · `.desc` · `.sub` | `CardDescription` · `desc` |
 | 캡션 · 표 보조 · 배지 | xs (12) | 400~600 | `.ggc-text-xs` | `Badge` |

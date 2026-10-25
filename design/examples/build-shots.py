@@ -52,6 +52,8 @@ SHOTS = [
     ("screen-less-before", "less.html?state=before&annot=on", "#lx-screen", (1440, 900), "덜어내기 전 — 사용자가 빼라고 한 군더더기(번호는 표와 짝)"),
     ("screen-less-after",  "less.html?state=after",           "#lx-screen", (1440, 900), "덜어내기 후 — 같은 자료 · 같은 일 · 기능은 그대로"),
     ("screen-operate",     "operate.html",                    "#op-screen", (1440, 900), "Operate 실시간 시청 — 영상 아래 자막 · 탭으로 나눠 쓰기 · 지금 발언"),
+    ("screen-workbench",   "workbench.html",                  "#wb-screen", (1440, 900), "두 칸 작업대(v3.2) — 왼쪽 목록 + 긴 작업 진행 · 오른쪽 한글 보기 틀"),
+    ("mobile-solo",        "public/solo.html",                None,         (390, 844),  "휴대폰 1인 링크 화면(v3.2) — 한 화면 작성 · 바닥 띠(진행 · 다음 칸)"),
     # 컴포넌트 — 갤러리 데모 상자를 그대로 잘라낸다
     ("gnb-page",   "components-nav.html",     "#d-gnbpage",   (1440, 900), "GNB 경로부 `.ggc-gnb-page` (브레드크럼 — 제목은 본문)"),
     ("page-head",  "components-nav.html",     "#d-head",      (1440, 900), "페이지 헤더 `.ggc-page-head` — 기본형(제목 보임) · 설명과 주 단추는 필요할 때만"),

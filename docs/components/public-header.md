@@ -16,7 +16,7 @@ KRDS `header` + `main_menu_pc` / `main_menu_mobile` 을 하나로 묶었다. 유
       <button class="action search" type="button" data-ggc-search-toggle aria-expanded="false" aria-controls="site-search">
         <svg …></svg><span class="label">통합검색</span></button>
       <button class="action menu" type="button" data-ggc-menu-toggle aria-expanded="false" aria-controls="main-menu">
-        <span class="bars" aria-hidden="true"></span> 전체메뉴</button>
+        <svg class="ggc-icon" aria-hidden="true"><use href="#i-menu"/></svg>전체메뉴</button>
     </div>
   </div></div>
   <div class="site-search" id="site-search">
@@ -28,7 +28,7 @@ KRDS `header` + `main_menu_pc` / `main_menu_mobile` 을 하나로 묶었다. 유
   </div>
   <nav class="ggc-main-menu" id="main-menu" aria-label="주 메뉴">
     <div class="inner">
-      <div class="head">전체메뉴 <button class="close" type="button" data-ggc-menu-toggle aria-label="메뉴 닫기">✕</button></div>
+      <div class="head">전체메뉴 <button class="close" type="button" data-ggc-menu-toggle aria-label="메뉴 닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
       <ul class="depth1">
         <li><button type="button" aria-expanded="false" aria-controls="mm-1" data-ggc-submenu>의회소개</button>
           <ul class="depth2" id="mm-1"><li><a href="…">의장 인사말</a></li>…</ul></li>
@@ -55,6 +55,8 @@ KRDS `header` + `main_menu_pc` / `main_menu_mobile` 을 하나로 묶었다. 유
 - 하위가 없는 1단은 `<a>`, 있으면 `<button aria-expanded aria-controls data-ggc-submenu>` + `<ul class="depth2" id>`.
 - 로고의 `<img alt="">` — 기관명이 텍스트로 있으므로 이미지는 장식이다.
 - ≤900 에서 `.utility` 는 숨는다 — 로그인은 메뉴 패널 안에 다시 둔다(서비스가 `.head` 아래에 추가).
+- ≤900 에서는 사이드 내비도 숨는다(v3.2, [ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)). 그래서 **사이드 내비가 있는 섹션은 그 2단 항목을 `.depth2` 에도 모두 둔다**([side-nav.md](side-nav.md)).
+- 휴대폰 패널 머리(「전체메뉴」)의 굵기는 600 — 업무 셸 서랍 머리와 같다(v3.2). 업무 셸도 ≤900 에서 헤더 맨 오른쪽 「전체메뉴」 → 오른쪽 서랍이다([shell.md](shell.md)).
 - 헤더는 sticky 가 아니다(KRDS 기본). 긴 페이지에서 상단 이동은 페이지 내 내비(P2)로.
 
 ## Tier 2

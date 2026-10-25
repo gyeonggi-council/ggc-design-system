@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="../../ggc-tokens.css">
 <link rel="stylesheet" href="../../ggc-components.css">
 <link rel="stylesheet" href="../../ggc-public.css">
+<link rel="stylesheet" href="../gallery-fonts.css">
 </head>
 <body class="ggc-public">
 <!-- ggc-icons:begin — 생성물. design/build-icons.py 가 갈아 끼운다. 손으로 고치지 말 것 -->
@@ -32,7 +33,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <span class="label">통합검색</span>
         </button>
-        <button class="action menu" type="button" data-ggc-menu-toggle aria-expanded="false" aria-controls="main-menu"><span class="bars" aria-hidden="true"></span> 전체메뉴</button>
+        <button class="action menu" type="button" data-ggc-menu-toggle aria-expanded="false" aria-controls="main-menu"><svg class="ggc-icon" aria-hidden="true"><use href="#i-menu"/></svg> 전체메뉴</button>
       </div>
     </div>
   </div>
@@ -45,13 +46,13 @@
   </div>
   <nav class="ggc-main-menu" id="main-menu" aria-label="주 메뉴">
     <div class="inner">
-      <div class="head">전체메뉴 <button class="close" type="button" data-ggc-menu-toggle aria-label="메뉴 닫기">✕</button></div>
+      <div class="head">전체메뉴 <button class="close" type="button" data-ggc-menu-toggle aria-label="메뉴 닫기"><svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
       <ul class="depth1">
         <li><button type="button" aria-expanded="false" aria-controls="mm-1" data-ggc-submenu>의회소개</button>
           <ul class="depth2" id="mm-1"><li><a href="#main">의장 인사말</a></li><li><a href="#main">의회 연혁</a></li><li><a href="#main">조직과 기능</a></li><li><a href="#main">찾아오시는 길</a></li></ul></li>
         <li><a href="#main">의원소개</a></li>
         <li><button type="button" aria-expanded="false" aria-controls="mm-3" data-ggc-submenu aria-current="page">의안정보</button>
-          <ul class="depth2" id="mm-3"><li><a href="list.html" aria-current="page">의안 검색</a></li><li><a href="#main">조례 현황</a></li><li><a href="#main">의안 통계</a></li></ul></li>
+          <ul class="depth2" id="mm-3"><li><a href="list.html" aria-current="page">의안 검색</a></li><li><a href="#main">조례 현황</a></li><li><a href="#main">회기별 처리 현황</a></li><li><a href="#main">위원회별 현황</a></li><li><a href="#main">의원별 발의 현황</a></li><li><a href="#main">의안 처리 절차 안내</a></li></ul></li>
         <li><button type="button" aria-expanded="false" aria-controls="mm-4" data-ggc-submenu>회의정보</button>
           <ul class="depth2" id="mm-4"><li><a href="#main">회의 일정</a></li><li><a href="#main">회의록</a></li><li><a href="#main">인터넷 방송</a></li></ul></li>
         <li><button type="button" aria-expanded="false" aria-controls="mm-5" data-ggc-submenu>도민참여</button>

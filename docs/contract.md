@@ -17,15 +17,25 @@
 
 ## 2. 공통 셸
 
-- 상단 GNB(헤더): 64px, 흰색, 하단 `#E2E7EE` 1px — 화면마다 자리가 같은 것만: 브레드크럼(경로부) · 검색 · 알림. **제목은 헤더에 두지 않는다**
-- 페이지 제목(2026-09-05, ADR 0010 — 0008 대체): 본문 첫 줄 `.ggc-page-head` 의 `<h1 class="ggc-page-title">`, 크기 `--ggc-h1-size`(24) · 700. 화면의 h1 은 이것 하나이고 `<main aria-labelledby="page-title">`. ~~설명 한 줄(`.desc`) + 주 액션 하나~~ → **v3.1(ADR 0012): 설명 줄은 기본 없음, 주 액션은 핵심 행동이 있을 때만. 제목 표시는 화면군마다 기본형(보임) 또는 간결형(h1 을 `.ggc-sr` 로 남김) — §11.** 900px 이하 브레드크럼 숨김(경로는 LNB drawer 의 현재 항목)
-- 로고 슬롯/LNB(사이드바): 256px · 접힘 48px(`--ggc-lnb-w-icon`, Tier 2 sidebar collapsible=icon). 항목은 lucide 아이콘 + 라벨, 높이 32
-- 페이지 배경: `#EEF1F5`
+- 상단 GNB(헤더): 64px, 흰색, 하단 `--ggc-shell-border` 1px(v3.2: `#D5DCE5`) — 화면마다 자리가 같은 것만: 브레드크럼(경로부) · 검색 · 알림. **제목은 헤더에 두지 않는다**
+- 페이지 제목(2026-09-05, ADR 0010 — 0008 대체): 본문 첫 줄 `.ggc-page-head` 의 `<h1 class="ggc-page-title">`, 크기 `--ggc-h1-size`(24) · 600(v3.2 — 위계는 위치·간격·크기·굵기를 함께 쓴다). 화면의 h1 은 이것 하나이고 `<main aria-labelledby="page-title">`. ~~설명 한 줄(`.desc`) + 주 액션 하나~~ → **v3.1(ADR 0012): 설명 줄은 기본 없음, 주 액션은 핵심 행동이 있을 때만. 제목 표시는 화면군마다 기본형(보임) 또는 간결형(h1 을 `.ggc-sr` 로 남김) — §11.** 900px 이하 브레드크럼 숨김(경로는 「전체메뉴」 서랍의 현재 항목)
+- 로고 슬롯/LNB(사이드바): 256px · 접힘 48px(`--ggc-lnb-w-icon`, Tier 2 sidebar collapsible=icon). 항목은 lucide 아이콘 + 라벨, 높이 32.
+  PC(>900) 접기 단추 `[data-ggc-lnb-toggle]` 는 **GNB 맨 앞**의 아이콘 단추다(`aria-label` 「메뉴 접기」/「메뉴 펼치기」 · `aria-expanded`). 접힘은 그 화면이 열려 있는 동안 기억한다(v3.2, ADR 0014)
+- 페이지 배경: `#FFFFFF`(v3.2, ADR 0013 — 바탕과 카드의 색 차이 대신 테두리로 면을 가른다. v3.1 까지 `#EEF1F5`)
 - 본문: 대시보드 최대 1320px, 기타 업무 화면 최대 1360px
-- 카드: 흰색, 1px `#E6EBF1`, radius 14~16px, 카드 그림자 없음
-- 검색: 300×`--ggc-search-h`(업무 36 · 대민 48), `#F3F5F9`, radius 10px
+- 카드: 흰색, 1px `#D5DCE5`, radius 12px(`--ggc-radius-lg`), 카드 그림자 없음 · 주 버튼 색 그림자도 없음 — 그림자는 모달·메뉴처럼 뜨는 층만(v3.2).
+  KPI 타일 · 위저드도 같은 `--ggc-radius-lg` 다. 카드 머리 · 바닥 여백은 목록 행과 같은 `--ggc-row-pad` — 카드 제목과 행 제목의 왼쪽 끝이 맞는다(v3.2, ADR 0014)
+- 검색: 300×`--ggc-search-h`(업무 36 · 대민 48), `#F3F5F9`, radius `--ggc-radius`(v3.2: 10 → 6px)
 - 사용자: 실명·역할·부서, UUID 금지
-- 모바일: 900px 이하 GNB 압축 + LNB drawer, 390px 가로 스크롤 0, 주요 업무 동선 도달 가능
+- 모바일: 900px 이하 GNB 압축 + 「전체메뉴」 서랍, 390px 가로 스크롤 0, 주요 업무 동선 도달 가능.
+  v3.2([ADR 0014](decisions/0014-mobile-menu-right-and-shared-rules.md)) — 대민 셸과 같은 자리 · 같은 말로 맞춘다.
+  - 900px 이하 GNB 순서는 **CI(브랜드) 왼쪽 → 검색 → 알림 → 「전체메뉴」 맨 오른쪽**이다. 「전체메뉴」 단추는 `.ggc-gnb-menu` `[data-ggc-drawer-toggle]`(lucide `menu` + 글자 「전체메뉴」)이고, 900px 초과에서는 숨는다.
+  - LNB 는 **오른쪽에서 나오는 서랍**이 된다. 폭 · 그림자는 대민 `.ggc-main-menu` 패널과 같고, 머리 `.ggc-drawer-head` 는 「전체메뉴」 + 닫기 아이콘 단추(`aria-label` 「메뉴 닫기」)다.
+    열면 닫기 단추로 포커스가 가고, `Esc` · 바깥 클릭 · 메뉴 링크 클릭으로 닫히며 포커스는 여는 단추로 돌아온다.
+  - 600px 이하에서 GNB 검색은 알림 단추와 같은 정사각 아이콘으로 접히고, 누르면 GNB 폭으로 펼쳐진다(`:focus-within`, 스크립트 없음).
+  - 600px 이하 공통 — 페이지 머리 줄은 제목 → 액션 순으로 세로로 쌓는다. 업무 셸 안 단추 · 쪽 번호는 최소 높이 `--ggc-space-8`(40). 입력 글자는 `max(--ggc-control-font, --ggc-text-md)` — 16 미만이면 iOS 가 확대한다.
+  - **하단 탭 바는 두지 않는다.** 서비스 메뉴가 4~12개 · 2단이라 탭 몇 칸에 담기지 않는다. 바닥은 이미 스티키 액션바(`.ggc-actionbar` · `.ggc-solo-bar` · `.ggc-work-actions`) 자리이고, 카톡 인앱 도구 막대 · iOS 홈 막대와 부딪힌다. `.ggc-actionbar` 바닥 여백은 `env(safe-area-inset-bottom)` 만큼 더한다.
+- 한글 줄바꿈(v3.2, ADR 0014): `.ggc-shell` · `.ggc-page` · `.ggc-public` · `.ggc-solo` · `.ggc-modal` 은 `word-break: keep-all` + `overflow-wrap: break-word` — 「기획재 / 정위원회」처럼 낱말 가운데서 끊지 않는다. 칸보다 긴 낱말(주소 · 번호)만 자른다. 넓어진 표는 열을 짓누르지 않고 `.ggc-table-wrap` 안에서 가로로 민다
 - 글꼴: 자체 호스팅 `Pretendard GOV`; 외부 CDN 금지
 - 아이콘: lucide 전용 — Tier 1 은 `design/ggc-icons.svg` 스프라이트, Tier 2 는 `lucide-react`. 이모지 · 유니코드 기호 아이콘 금지(ADR 0009)
 - 밀도(업무, v3.0): 버튼 32/36/40 · 입력 36 · 글자 14 · 표 셀 8×12 — shadcn 기본과 같다(ADR 0009). 값은 토큰
@@ -55,9 +65,9 @@
 - text-body `#3A4150` — 카드 안 긴 본문 단락(흰 위 10.23:1). v2.0 에서 컴포넌트 레이어로부터 승격
 - 타이포 스케일(v3.0, 값은 토큰 파일): `--ggc-text-xs` ~ `-3xl`(12/13/14/16/18/20/24/30) · `--ggc-h1-size` = 2xl · `--ggc-h2-size` = lg · `--ggc-h3-size` = md · `--ggc-kpi-size` = 3xl · `--ggc-leading-tight/normal`. 대민 프로필은 KRDS 스텝(17 · 20/24/32)으로 덮어쓴다
 - 아이콘 치수(v3.0): `--ggc-icon` 16 · `--ggc-icon-lg` 20 (대민 20/24) · `--ggc-icon-stroke` 2
-- border `#E6EBF1` · border-strong `#D5DCE5`
-- shell-border `#E2E7EE`
-- bg `#EEF1F5`
+- border `#D5DCE5` · border-strong `#D5DCE5` (v3.2: border 가 #E6EBF1 에서 올라와 둘이 같아졌다 — 이름은 쓰임을 가른다)
+- shell-border `#D5DCE5` (v3.2: #E2E7EE)
+- bg `#FFFFFF` (v3.2: #EEF1F5)
 - surface `#FFFFFF`
 - success `#0A7B4E` · warning `#9D5E00` · danger `#CD2D2D` · info `#1F6A97`
 
@@ -180,6 +190,9 @@ KRDS 의 `mode-high-contrast` 는 밝은 글자(`text.bolder #E6E8EA` 등)를 �
   구조를 따르고 `design/ggc-public.css` 가 담당한다. 업무 셸(§2 GNB/LNB)은 대민에 쓰지 않는다.
 - 두 프로필을 **한 화면에 섞지 않는다.** 예외는 업무 화면 안의 도민 안내 구역처럼 명확히
   경계 지어진 서브트리뿐이다.
+- **휴대폰 1인 링크 화면**(`.ggc-solo`, v3.2)은 대민 프로필이되 대민 셸(masthead · identifier · 공개 푸터)을 생략한다 —
+  로그인 없는 개인 링크로 한 가지 일(서명 · 설문 · 신청 확인)을 하러 오는 화면이라 셸이 그 일을 밀어낸다
+  (근거: 의원 설문 의원 화면 2026-10-06 사용자 결정 · 서명 받는 분 화면). 기관명은 `.ggc-solo-head` 에 남긴다.
 
 ## 10. 업무 프로필 v3 — shadcn 기본 밀도 · 제목은 본문 · 아이콘은 lucide (2026-09-05)
 
@@ -214,3 +227,23 @@ KRDS 의 `mode-high-contrast` 는 밝은 글자(`text.bolder #E6E8EA` 등)를 �
   화면을 통과시키려고 검사 항목·임계치를 낮추지 않는다.
 
 완료 정의 §8 에 추가: ⑫ 화면마다 "누가 · 무엇을 하러 오나" 한 줄과 덜어내기 판정(적용 · 미적용 · 해당 없음)이 `design-decisions.md` 에 있다.
+
+## 12. GitHub 식 정돈 · 서비스 부품 승격 (v3.2, 2026-10-24)
+
+사용자 지시("GitHub UI 가 괜찮은 듯 · GitHub UI/UX 와 claude.ai 디자인도 고려 · 모든 서비스를 참고해서")와 18개 서비스 실측을 근거로 한 결정이다
+([ADR 0013](decisions/0013-github-tidy-and-shared-parts.md)). **토큰 값이 바뀐다 — ⚠ D1**(서비스는 그 화면을 다음에 고칠 때 재복사, §11 의 일괄 변경 금지는 그대로).
+
+- **면은 흰 바탕 + 테두리**(§2·§3) — 바탕 `#FFFFFF` · 테두리 `#D5DCE5` · 모서리 6/4/12 · 주 버튼 그림자 없음 · 제목 굵기 600. 새 색은 없다(전부 이미 있던 값).
+- **상태를 보이는 법**은 [guides/states.md](guides/states.md) 하나 — 로딩 시간 기준 · 저장과 제출 · 폼 오류 · 못 쓰는 이유 · 빈 화면 · 기능 저하 · 알림 위치(토스트는 예외).
+- **서비스가 각자 만들던 부품 다섯을 정본으로**: 긴 작업 진행 `.ggc-job`(+ 진행 막대 `.ggc-progress`) · 휴대폰 1인 링크 화면 `.ggc-solo`(+ `.ggc-modal--full`) ·
+  서명 패드 `.ggc-signature` · 문서 미리보기 틀 `.ggc-viewer` · 좌우 두 칸 작업대 `.ggc-split`. 흐름·렌더러·내보내기는 서비스 몫이고, 이미 승인된 서비스 흐름을 바꾸지 않는다.
+- **레코드 처리 상태는 여전히 배지 하나다** — `.ggc-job` 은 시스템이 지금 돌리는 작업에만(§11 단계 막대 규칙 그대로).
+- **판이 갈라지지 않게** — 검사기 D1 이 사본의 판을 밝히고, `tools/sync-canon.py` 가 공식 옛 판만 다시 맞춘다(현지 수정본은 건드리지 않는다).
+- **모든 쪽이 같은 부품 규칙**(10-25 추가, [ADR 0014](decisions/0014-mobile-menu-right-and-shared-rules.md)) — `.ggc-work` 에만 있던 카드 · KPI · 목록 행 · 페이지 머리 · 휴대폰 보정을 기본 부품으로 올렸다.
+  `.ggc-work` 에는 배치(격자 · 영역 전환 · 필터 · 결과 표 · 결과 카드 · 편집 · 하단 동작)만 남는다.
+  - 모서리 리터럴을 토큰으로 바꿨다 — 카드 · KPI · 위저드 `--ggc-radius-lg` · 입력 · 작은 단추 · 아이콘 상자 `--ggc-radius` · 태그 `--ggc-radius-sm`(태그 글자 `--ggc-text-xs`).
+  - 목록 행 제목은 `--ggc-text-md` · 600 이고 **자르지 않고 줄을 바꾼다.** 오른쪽 칸에 단추가 있으면 **상태 배지 위 · 단추 아래 · 둘 다 오른쪽 끝**으로 쌓는다(2026-10-25 사용자 확정). 휴대폰(≤600)에서는 단추가 없어도 세로다.
+  - KPI 격자는 4칸 → 1024px 이하 2칸 → 380px 이하 1칸. 휴대폰도 두 칸이다.
+  - 업무 셸의 휴대폰 메뉴 · 한글 줄바꿈은 §2. 대민 셸은 900px 이하에서 사이드 메뉴를 숨기고 「전체메뉴」로 찾는다 — 사이드 메뉴의 2단 항목은 전체메뉴(`.ggc-main-menu`)에도 있어야 한다.
+
+완료 정의 §8 에 추가: ⑬ 정본에 있는 부품(진행 · 1인 링크 · 서명 · 문서 보기 · 두 칸 · 파일 · 빈 화면 · 토스트)을 서비스가 다시 만들지 않는다 — 모자라면 정본에 먼저 올린다.

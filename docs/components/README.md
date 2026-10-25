@@ -19,7 +19,7 @@
 | 셀렉트 `.ggc-select` | [select.md](select.md) | [components-forms](../../design/examples/components-forms.html) | 있음 |
 | 체크박스 · 라디오 · 칩 `.ggc-check` `.ggc-radio` `.ggc-chip` | [check-radio.md](check-radio.md) | components-forms | 있음 |
 | 알림 `.ggc-alert` | [alert.md](alert.md) | [components-overlay](../../design/examples/components-overlay.html) | 있음 |
-| 모달 `.ggc-modal` | [modal.md](modal.md) | components-overlay | 있음 |
+| 모달 `.ggc-modal` (전체 화면 `--full` — 서명 · 제출 전 확인 · 문서 크게 보기) | [modal.md](modal.md) | components-overlay · [public/solo](../../design/examples/public/solo.html) | 있음 (`--full` v3.2) |
 | 하단 액션바 `.ggc-actionbar` | [actionbar.md](actionbar.md) | components-overlay | 있음 |
 | 스피너 `.ggc-spinner` | [spinner.md](spinner.md) | components-overlay | 있음 |
 | 스켈레톤 `.ggc-skeleton` | [skeleton.md](skeleton.md) | components-overlay | 있음 |
@@ -44,9 +44,15 @@
 | 표 `.ggc-table` | [table.md](table.md) | components | 있음 |
 | 폼 필드 `.ggc-field` | [field.md](field.md) | components · components-forms | 있음 |
 | 스텝퍼 · 위저드 `.ggc-wizard` | [stepper.md](stepper.md) | components · wizard | 있음 |
-| 업무 셸 (유틸리티 바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · 검색 · 푸터) | [shell.md](shell.md) | dashboard · explore | 있음 (v3) |
+| 업무 셸 (유틸리티 바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · 휴대폰 「전체메뉴」 오른쪽 서랍 · 검색 · 푸터) | [shell.md](shell.md) | dashboard · explore | 있음 (v3 · 메뉴 v3.2) |
 | 타이포 스케일 · 아이콘 `.ggc-h1/h2/h3` `.ggc-icon` | [../guides/typography.md](../guides/typography.md) · [../guides/icons.md](../guides/icons.md) | tokens · 전 쪽 | 있음 (v3) |
 | QR 로그인 `.ggc-qr` | [qr-login.md](qr-login.md) | login | 있음 |
+| 진행 막대 (센 값이 있을 때만) `.ggc-progress` | [progress.md](progress.md) | [workbench](../../design/examples/workbench.html) · public/solo | 있음 (v3.2) |
+| 긴 작업 진행 (3초 넘는 시스템 작업) `.ggc-job` | [job.md](job.md) | workbench | 있음 (v3.2) |
+| 휴대폰 1인 링크 화면 (대민 셸 생략) `.ggc-solo` | [solo.md](solo.md) | public/solo | 있음 (v3.2) |
+| 서명 패드 `.ggc-signature` | [signature.md](signature.md) | public/solo | 있음 (v3.2) |
+| 문서 미리보기 틀 (렌더러는 서비스) `.ggc-viewer` | [viewer.md](viewer.md) | workbench | 있음 (v3.2) |
+| 좌우 두 칸 작업대 `.ggc-split` | [split.md](split.md) | workbench | 있음 (v3.2) |
 
 ## 대민 셸 — `design/ggc-public.css` (대민 전용)
 
@@ -65,8 +71,8 @@
 
 ## 동작 — `design/ggc-behaviors.js`
 
-탭 키보드 · 모달 여닫기 · LNB drawer · 토스트 · 드롭다운 메뉴 · 파일 목록 · 툴팁 Esc · 리스트박스 ·
-페이지 내 내비는 이 파일 하나가 준다([guides/behaviors-js.md](../guides/behaviors-js.md)). 없어도 화면은 깨지지 않고
+탭 키보드 · 모달 여닫기 · 사이드바 접기 · 「전체메뉴」 서랍(v3.2) · 토스트 · 드롭다운 메뉴 · 파일 목록 · 툴팁 Esc · 리스트박스 ·
+페이지 내 내비 · (v3.2) 긴 작업 경과 시간 · 1인 링크 화면 글자 크게 · 서명 패드 · 문서 보기 배율·쪽 · 두 칸 경계는 이 파일 하나가 준다([guides/behaviors-js.md](../guides/behaviors-js.md)). 없어도 화면은 깨지지 않고
 동작만 없다. `<script src="ggc-behaviors.js" defer>` 로 넣고, 동적으로 삽입한 마크업은
 `GGC.init(루트요소)` 로 다시 묶는다. 자세한 것은 각 컴포넌트 문서의 "키보드 · ARIA".
 
