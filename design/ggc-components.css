@@ -1,5 +1,5 @@
 /* =============================================================================
- * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.2 (2026-10-24)
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.2.2 (2026-10-25)
  * 전제: design/ggc-tokens.css v3.2 를 먼저 로드할 것 (--ggc-* 변수 의존)
  * 출처: Claude Design 산출물(.dc.html) 실측 추출
  *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
@@ -26,6 +26,10 @@
  *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
  *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
  *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ *
+ * -- v3.2.2 에서 바뀐 것 (2026-10-25) ----------------------------------------
+ *   §41       서명 패드가 400px 보다 좁은 화면에서 본문 밖으로 나가던 것 — 열 minmax(0, 1fr) · 패드 width 100%.
+ *             「다시 쓰기」 단추가 긴 상태 문구에 눌려 두 줄이 되지 않게(flex-shrink: 0). 새 값은 없다.
  *
  * -- v3.2 에서 바뀐 것 (ADR 0013) ---------------------------------------------
  *   GitHub 식 정돈 — 제목 굵기 700/800 → 600(카드 머리 · 행 제목 · 페이지 제목 · 알림 · 모달 · 토스트 · 빈 상태 · .ggc-h1~3).
@@ -3465,9 +3469,10 @@ html[data-ggc-modal-lock] body { position: fixed; inset-inline: 0; overflow: hid
  *   </div>
  * 내보내기(PNG 자르기 · 크기 상한 · 저장)는 서비스 몫 — behaviors 는 ggc:signature 이벤트로 <canvas> 를 넘긴다.
  * ============================================================================= */
-.ggc-signature { display: grid; gap: var(--ggc-space-2); font-family: var(--ggc-font); }
+.ggc-signature { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--ggc-space-2); font-family: var(--ggc-font); }   /* v3.2.2: 열은 칸 폭을 넘지 않는다 */
 .ggc-signature-pad {
   position: relative;
+  width: 100%;   /* v3.2.2: 비율을 가진 격자 칸은 늘어나지 않고 최소 높이 × 5/2 = 400px 폭이 되어 400 미만 화면에서 밖으로 나갔다 — 폭은 칸을 따르고, 좁으면 최소 높이가 이겨 비율이 조금 낮아진다 */
   aspect-ratio: 5 / 2;
   min-height: calc(var(--ggc-space-11) * 2);
   border: 2px dashed var(--ggc-text-faint);   /* 그리는 자리의 경계 — 비텍스트 3:1 */
@@ -3484,6 +3489,7 @@ html[data-ggc-modal-lock] body { position: fixed; inset-inline: 0; overflow: hid
 .ggc-signature[data-state="inked"] .ph { display: none; }
 .ggc-signature[data-state="inked"] .ggc-signature-pad { border-style: solid; }
 .ggc-signature .tools { display: flex; align-items: center; justify-content: space-between; gap: var(--ggc-space-2); min-height: var(--ggc-control-h-sm); }
+.ggc-signature .tools > .ggc-btn { flex-shrink: 0; }   /* v3.2.2: 상태 문구가 길어도 「다시 쓰기」가 두 줄로 눌리지 않게 */
 .ggc-signature .status { font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
 .ggc-signature .alt { margin: 0; font-size: var(--ggc-text-sm); line-height: var(--ggc-leading-normal); color: var(--ggc-text-muted); }
 .ggc-modal--full .ggc-signature { flex: 1; min-height: 0; grid-template-rows: auto minmax(0, 1fr) auto; }
