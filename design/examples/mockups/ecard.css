@@ -1,0 +1,73 @@
+/* ecard.css — 전자명함(받는 사람 화면) 목업 전용 배치
+ * 틀은 정본 .ggc-solo(§40, 휴대폰 1인 링크 화면)이고, 여기는 명함 한 장의 배치만 둔다.
+ * 색 · 치수 리터럴 없이 정본 토큰(--ggc-*)만 참조한다. 서비스에 복사하지 않는다 — 목업 설명용이다. */
+
+/* ── 명함 ─────────────────────────────────────────── */
+.ec-card {
+  position: relative; overflow: hidden;
+  padding: var(--ggc-space-6) var(--ggc-space-5) var(--ggc-space-4);
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg);
+}
+.ec-card::before {                       /* 윗변 기관색 띠 — 장식. 뜻은 글자가 전한다 */
+  content: ""; position: absolute; inset: 0 0 auto; height: var(--ggc-space-1);
+  background: var(--ggc-primary);
+}
+.ec-top { display: flex; align-items: center; gap: var(--ggc-space-2); }
+.ec-top img { width: var(--ggc-control-h-sm); height: var(--ggc-control-h-sm); object-fit: contain; }
+.ec-org { font-size: var(--ggc-text-md); font-weight: 700; color: var(--ggc-text-strong); letter-spacing: -0.02em; }
+.ec-dept { margin: var(--ggc-space-6) 0 0; font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.ggc-solo-main .ec-card h1 {
+  margin: var(--ggc-space-1) 0 0;
+  font-size: var(--ggc-text-2xl); font-weight: 700; letter-spacing: -0.02em; color: var(--ggc-text-strong);
+}
+.ec-role { margin: var(--ggc-space-1) 0 0; font-size: var(--ggc-text-md); color: var(--ggc-text); }
+.ec-verify {
+  display: flex; align-items: center; gap: var(--ggc-space-1);
+  margin: var(--ggc-space-5) 0 0; padding-top: var(--ggc-space-3);
+  border-top: 1px solid var(--ggc-hairline);
+  font-size: var(--ggc-text-xs); color: var(--ggc-success); font-weight: 600;
+}
+
+/* ── 연락처 — 줄 하나가 곧 단추(전화 걸기 · 메일 쓰기 · 지도 열기) ─────── */
+.ec-contacts {
+  list-style: none; margin: var(--ggc-space-4) 0 0; padding: 0;
+  background: var(--ggc-surface);
+  border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-lg);
+}
+.ec-contacts li + li { border-top: 1px solid var(--ggc-hairline); }
+.ec-contact {
+  display: flex; align-items: center; gap: var(--ggc-space-3);
+  min-height: var(--ggc-control-h-lg); padding: var(--ggc-space-3) var(--ggc-space-4);
+  color: inherit; text-decoration: none;
+}
+a.ec-contact:hover { background: var(--ggc-row-hover); }
+.ec-contact .ic {
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: var(--ggc-control-h); height: var(--ggc-control-h);
+  border-radius: var(--ggc-radius); background: var(--ggc-primary-light); color: var(--ggc-primary);
+}
+.ec-contact .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ec-contact .lb { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.ec-contact .val { font-size: var(--ggc-text-md); font-weight: 600; color: var(--ggc-text-strong); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.ec-contact .go { flex-shrink: 0; font-size: var(--ggc-text-sm); font-weight: 600; color: var(--ggc-primary); }
+
+/* ── 맡은 일 · 보내기 ───────────────────────────────── */
+.ec-h2 { margin: var(--ggc-space-6) 0 var(--ggc-space-2); font-size: var(--ggc-text-md); font-weight: 600; color: var(--ggc-text-strong); }
+.ec-share { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ggc-space-2); margin-top: var(--ggc-space-6); }
+.ec-note { margin: var(--ggc-space-3) 0 0; font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+
+/* 예제 상태 바꾸기 — 목업에만 있다 */
+.ec-demo {
+  display: flex; flex-wrap: wrap; gap: var(--ggc-space-2) var(--ggc-space-3);
+  margin-top: var(--ggc-space-6); padding-top: var(--ggc-space-4); border-top: 1px solid var(--ggc-border);
+  font-size: var(--ggc-text-sm); color: var(--ggc-text-muted);
+}
+.ec-demo a { color: var(--ggc-primary); }
+
+/* 고대비 — 배경으로만 그린 띠 · 아이콘 상자를 테두리로 남긴다 */
+@media (forced-colors: active) {
+  .ec-card::before { background: CanvasText; }
+  .ec-contact .ic { border: 1px solid; }
+  .ec-contacts, .ec-card { border: 1px solid; }
+}

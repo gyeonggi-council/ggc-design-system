@@ -17,6 +17,7 @@
 | `login.html` | **QR 로그인 화면** — 전 시스템 공통 입구. 상태 6종 · 화면 안 3단계 안내 |
 | `less.html` | **덜어내기 전/후**(v3.1) — 같은 업무 화면을 두 번 그렸다. 「뺀 자리 번호」를 켜면 무엇을 왜 옮겼는지 표와 짝. `?state=after` · `?annot=on` 으로 시작 상태를 고른다 |
 | `operate.html` | **Operate**(v3.1 정본) — 실시간 시청(연결 끊김 상태 전환) · 반복 처리 작업대(자막 입히기 미리보기) |
+| `mockups/` | **서비스 목업**(정본 아님) — 회의 일정 관리 4쪽(주간 · 상세 · 등록 · 의원용 휴대폰) · 전자명함(QR 을 찍은 상대방 화면, `.ggc-solo`). 설명은 [`mockups/README.md`](mockups/README.md). 합본에는 들어가지 않는다 |
 | `public/index.html` · `list.html` · `detail.html` · `form.html` | **대민(공개) 실물 화면 4쪽** (v2.0) — `<html data-ggc-profile="public">` + `ggc-public.css`. 메인 · 의안 검색 · 의안 상세 · 의견 제출. 업무 셸과 다르므로 합본에는 들어가지 않는다 |
 
 ## 이 갤러리의 규칙 — 값을 옮겨 적지 않는다
