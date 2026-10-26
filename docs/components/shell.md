@@ -44,18 +44,18 @@ v3.2([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)): **메
   </header>
 
   <div class="ggc-shell-body">
-    <nav class="ggc-lnb ggc-scroll" id="lnb" aria-label="주 메뉴">
+    <nav class="ggc-lnb ggc-scroll" id="lnb" aria-label="주 메뉴" data-ggc-lnb-collapse="hide">   <!-- v3.3: PC 단추가 메뉴를 숨긴다(없으면 아이콘 줄) -->
       <div class="ggc-lnb-group">의안</div>
       <a class="ggc-lnb-item" href="…" aria-current="page"><svg class="ggc-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg><span class="label">대시보드</span></a>
-      <a class="ggc-lnb-item" href="…"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록</span><span class="count">21</span></a>
+      <a class="ggc-lnb-item" href="…"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록</span></a>
       <div class="ggc-lnb-divider"></div>
       <div class="ggc-lnb-group">관리</div>
       <a class="ggc-lnb-item" href="…"><svg class="ggc-icon" aria-hidden="true"><use href="#i-settings"/></svg><span class="label">설정</span></a>
     </nav>
     <main class="ggc-shell-main ggc-shell-main--wide" id="main" aria-labelledby="page-title">
-      <div class="ggc-page-head">                                <!-- 본문 첫 줄: h1 24 + 설명 + 주 액션 (page-head.md) -->
+      <div class="ggc-page-head">                                <!-- 본문 첫 줄: h1 24 + 주 액션 (page-head.md · 설명 줄은 쓰임이 있을 때만, ADR 0012) -->
         <div class="row">
-          <div><h1 class="ggc-page-title" id="page-title">의안 목록</h1><p class="desc">제12대 · 제380회 정례회 · 접수 147건</p></div>
+          <div><h1 class="ggc-page-title" id="page-title">의안 목록</h1></div>
           <div class="actions"><button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>의안 등록</button></div>
         </div>
       </div>
@@ -76,11 +76,13 @@ v3.2([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)): **메
 | `.ggc-gnb-page` | **경로부** — 브레드크럼만. 브랜드 슬롯과 검색 사이(`flex:1 · min-width:0`), 검색은 밀리지 않는다. 마지막 항목만 말줄임. 홈은 비운다. `.ggc-gnb-page-title` 은 폐기 예정(v3.1 삭제) |
 | `.ggc-search` | 300×`--ggc-search-h`(36). 아이콘은 스프라이트. ≤600 에서는 알림 단추와 같은 정사각 아이콘으로 접히고, 누르면(`:focus-within`) GNB 폭으로 펼쳐진다 — 스크립트 없음 |
 | `.ggc-icon-btn` | `--ggc-control-h`(36) 정사각 아이콘 버튼 — `aria-label` 필수 |
-| `[data-ggc-lnb-toggle]` | **PC(>900) 접기 단추** — `.ggc-icon-btn` + lucide `menu`. **GNB 맨 앞.** `aria-label` 「메뉴 접기」/「메뉴 펼치기」 · `aria-expanded`. 900 이하에서 숨는다. 없으면 behaviors ③ 이 만든다 |
+| `[data-ggc-lnb-toggle]` | **PC(>900) 접기 단추** — `.ggc-icon-btn` + lucide `menu`. **GNB 맨 앞.** `aria-label` 「메뉴 접기」/「메뉴 펼치기」(숨김 방식이면 「메뉴 숨기기」/「메뉴 표시」) · `aria-expanded`. 900 이하에서 숨는다. 없으면 behaviors ③ 이 만든다 |
 | `.ggc-gnb-menu` `[data-ggc-drawer-toggle]` | **「전체메뉴」 단추**(≤900) — lucide `menu` + 글자 「전체메뉴」. **GNB 맨 끝**(대민 `.action.menu` 와 같은 자리). 글자가 이름이라 `aria-label` 을 따로 두지 않는다. 900 초과에서 숨는다 |
 | `.ggc-drawer-head` (`.title` · `.ggc-drawer-close`) | 서랍 머리 — 「전체메뉴」 + 닫기 아이콘 단추(`aria-label` 「메뉴 닫기」). behaviors ③ 이 LNB 맨 앞에 만든다. ≤900 에서만 보인다 |
 | `.ggc-lnb-group` · `.ggc-lnb-item` (`svg` · `.label` · `.count`) · `.ggc-lnb-divider` | 캡션 · 항목(높이 32 · 14px · 아이콘 16 · 우측 건수) · 구분선. 현재 항목은 `aria-current="page"` |
-| `.ggc-lnb--icon` | 접힌 사이드바 — 라벨·캡션·건수는 시각만 숨김. PC 접기 단추가 켜고 끈다. 서랍(≤900)은 늘 펼친 모양이고, PC 폭으로 돌아오면 접힘을 되살린다 |
+| `.ggc-lnb--icon` | 접힌 사이드바 — 라벨·캡션·건수는 시각만 숨김. PC 접기 단추가 켜고 끈다. 서랍(≤900)은 늘 펼친 모양이고, PC 폭으로 돌아오면 접힘을 되살린다. 항목 이름은 디자인 툴팁(`.ggc-tooltip--float`)으로 보인다(v3.3) |
+| `[data-ggc-lnb-collapse="hide"]` · `.ggc-lnb--hidden` | **완전 숨김**(v3.3, ADR 0015) — LNB 에 이 속성을 두면 PC 접기 단추가 아이콘 줄 대신 메뉴를 숨기고 본문이 그 폭을 갖는다. 숨은 링크에는 Tab 이 들어가지 않는다. 새 화면은 이 방식을 쓴다 |
+| `[data-ggc-lnb-key]` | 접힘 · 숨김을 기억하는 열쇠(선택). 없으면 주소의 첫 경로 조각 — 같은 주소 아래 서비스가 둘이면 서로 다른 값을 준다 |
 | `.ggc-shell-main` (`--wide` `--split`) | 본문 1320 / 1360. Converse 화면만 `--split` |
 | `.ggc-scroll` | 커스텀 스크롤바 (LNB · 대화 스트림) |
 
@@ -92,10 +94,14 @@ v3.2([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)): **메
 닫힌 서랍은 `inert` 로 포커스 진입을 막는다. 열면 닫기 단추로 포커스를 옮기고 Tab 을 서랍 안에서 돌린다.
 `Esc` · 배경 클릭 · 메뉴 링크 클릭으로 닫히고, 포커스는 여는 단추로 돌아온다.
 화면을 PC 폭으로 바꾸면 서랍을 닫고 잠금을 푼다.
+PC 의 접힘 · 숨김은 **처음엔 펼침**이고, 사용자가 바꾸면 `localStorage` 에 서비스마다 기억한다(v3.3 — 전에는 그 화면에서만).
+저장이 막히면 펼친 채 동작한다. ≤900 은 늘 닫힌 「전체메뉴」로 시작한다. [정보 서랍](sheet.md)을 열면 열린 「전체메뉴」 서랍은 닫힌다.
 
 - 유틸리티 바의 스위처 항목 이름은 통합서비스 목록과 같아야 한다. 현재 시스템은 `.active`.
 - 사용자 표기(GNB 우측)는 **실명 · 역할 · 부서** — UUID 금지.
 - **화면의 `<h1>` 은 본문 첫 줄 `.ggc-page-head` 에 하나다**(24px). GNB 에 두지 않는다 — 크롬처럼 읽힌다(ADR 0010). `<main aria-labelledby="page-title">`.
+- **메뉴를 숨길 수 있는 셸은 h1 을 보인다**(기본형). 간결형 제목(h1 시각 숨김)은 펼친 메뉴의 현재 항목이 조건이라, 메뉴를 숨기면 현재 위치가 사라진다(ADR 0012 · 0015).
+- **LNB 를 쓰는 기준** — 목적지(화면) 5개 이하면 ⓐ 유틸리티 바만, 넘으면 ⓑ 풀셸(이 셸)([layout-shell.md](../guides/layout-shell.md)). 2단까지, 3단은 만들지 않는다. 메뉴 옆 건수(`.count`)는 처리할 건이 있을 때만([less.md](../guides/less.md) 군더더기 9).
 - 헤더에는 **화면마다 자리가 같은 정보**만: 경로 · 검색 · 알림. ≤900px 브레드크럼 숨김(경로는 「전체메뉴」 서랍의 현재 항목).
 - ≤900 GNB 순서는 **CI 왼쪽 → 검색 → 알림 → 「전체메뉴」 맨 오른쪽**이고, 서랍도 오른쪽에서 나온다(폭 · 그림자 · 머리는 대민 `.ggc-main-menu` 패널과 같다). 대민 셸과 같은 자리라, 두 셸을 오가도 손이 같은 곳으로 간다.
 - **하단 탭 바를 두지 않는다**(ADR 0014). 서비스 메뉴가 4~12개 · 2단이라 탭 몇 칸에 담기지 않는다. 바닥은 이미 `.ggc-actionbar` · `.ggc-solo-bar` · `.ggc-work-actions` 자리이고, 카톡 인앱 도구 막대 · iOS 홈 막대와 부딪힌다.

@@ -38,7 +38,7 @@ import { PageHead } from "@/components/ggc-page-head"
         notifications={3}
       />
       <ShellMain wide>
-        <PageHead title="의안 목록" desc="제12대 · 제380회 정례회 · 접수 147건" actions={…} />
+        <PageHead title="의안 목록" actions={…} />
         …
       </ShellMain>
     </ShellInset>
@@ -59,7 +59,8 @@ import { PageHead } from "@/components/ggc-page-head"
 ## 규칙
 
 - 메뉴 항목에는 **반드시 아이콘**. 접었을 때 아이콘만 남는다. 이모지 금지.
-- 1단 메뉴 6개 · 그룹 3개 이내. 넘으면 그룹을 나누지 말고 화면을 줄인다.
+- 1단 메뉴 6개 · 그룹 3개 이내가 목표다. 넘으면 **구조를 검토한다**(v3.3, ADR 0015) — 기능을 지우거나 「더보기」에 숨기라는 뜻이 아니다. 목적지가 5개 이하면 사이드바 없이 유틸리티 바만(layout-shell.md ⓐ).
+- Tier 1 은 v3.3 부터 PC 에서 메뉴를 완전히 숨길 수 있다(`data-ggc-lnb-collapse="hide"`). 이 블록은 아직 `collapsible="icon"` 이다 — 맞추는 일은 다음 PR.
 - 현재 항목은 `active` 하나. 경로가 깊으면 `SidebarMenuSub`(공식) 로 2단 — 3단은 만들지 않는다.
 - 대민 화면에는 쓰지 않는다 — `@ggc/ggc-public-header` · `ggc-side-nav`.
 

@@ -51,11 +51,11 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
       for (const name of pages.filter(n => !n.startsWith('public/') && n !== 'login')) {
         await page.goto(url(name));
         const toggle = page.locator('.ggc-shell > .ggc-gnb [data-ggc-drawer-toggle]');
-        assert.equal(await page.locator('.ggc-lnb').evaluate(e => e.inert), true, name + ' closed menu is inert');
+        assert.equal(await page.locator('.ggc-shell-body > .ggc-lnb').evaluate(e => e.inert), true, name + ' closed menu is inert');
         // v3.2(ADR 0014): 「전체메뉴」는 GNB 맨 끝 · 서랍은 오른쪽에서
         assert.equal(await toggle.evaluate(e => e === e.parentElement.lastElementChild), true, name + ' menu button is last in GNB');
         await toggle.click();
-        assert.equal(await page.locator('.ggc-lnb').getAttribute('aria-modal'), 'true');
+        assert.equal(await page.locator('.ggc-shell-body > .ggc-lnb').getAttribute('aria-modal'), 'true');
         await page.waitForFunction(() => Math.abs(document.querySelector('.ggc-lnb').getBoundingClientRect().right - document.documentElement.clientWidth) < 1);
         await page.keyboard.press('Shift+Tab');
         assert.equal(await page.evaluate(() => document.activeElement.closest('.ggc-lnb') !== null), true);
@@ -71,11 +71,13 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
         // PC 접기는 따로 나눈 단추(GNB 맨 앞) — 서랍 단추는 PC 에서 숨는다
         const collapse = page.locator('.ggc-shell > .ggc-gnb [data-ggc-lnb-toggle]');
         assert.equal(await toggle.isVisible(), false, name + ' menu button hidden on desktop');
-        await collapse.click(); assert.equal(await page.locator('.ggc-lnb').evaluate(e => e.classList.contains('ggc-lnb--icon')), true);
-        await collapse.click();
+        // v3.3(ADR 0015): 갤러리 LNB 는 data-ggc-lnb-collapse="hide" — 누르면 완전히 숨고, 다시 누르면 보인다(상태는 localStorage)
+        await collapse.click(); assert.equal(await page.locator('.ggc-shell-body > .ggc-lnb').evaluate(e => e.classList.contains('ggc-lnb--hidden') && getComputedStyle(e).display === 'none'), true, name + ' desktop hide');
+        assert.equal(await collapse.getAttribute('aria-label'), '메뉴 표시');
+        await collapse.click(); assert.equal(await page.locator('.ggc-shell-body > .ggc-lnb').evaluate(e => !e.classList.contains('ggc-lnb--hidden')), true, name + ' desktop show');
         await page.setViewportSize({ width: 390, height: 844 });
       }
-      interactions.push('10 shell pages: menu at GNB end, drawer from right, open/close, focus trap/restore, resize unlock, desktop collapse button');
+      interactions.push('10 shell pages: menu at GNB end, drawer from right, open/close, focus trap/restore, resize unlock, desktop hide/show button');
       for (const width of [390, 1440]) {
         await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
         await page.goto(url('explore'));
@@ -99,11 +101,12 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
         await page.locator('button[type=reset]').click(); await page.locator('.ggc-work-filter > details > summary').click();
         await page.locator('#work-sort').selectOption('oldest');
         const first = width === 390 ? page.locator('.ggc-work-record h2 a').first() : page.locator('.ggc-work-results tbody a').first();
-        await first.click(); assert.match(await page.locator('#work-dialog').innerText(), /2026-0127/);
-        assert.equal(await page.locator('#work-dialog dt').count(), 8); await page.getByRole('button', { name: '닫기', exact: true }).click();
+        // v3.3: 한 건의 정보는 오른쪽 정보 서랍(#bill-sheet) — 의안명은 머리, 나머지 7항목은 dl
+        await first.click(); assert.match(await page.locator('#bill-sheet').innerText(), /2026-0127/);
+        assert.equal(await page.locator('#bill-sheet dt').count(), 7); await page.locator('#bill-sheet').getByRole('button', { name: '닫기', exact: true }).click();
         if (width === 1440) await page.locator('[data-work-view]').click();
-        await page.locator('.ggc-work-record details summary').first().click();
-        assert.equal(await page.locator('.ggc-work-record').first().locator('dt').count(), 8); await noOverflow();
+        await page.locator('.ggc-work-record h2 a').first().click();
+        assert.equal(await page.locator('#bill-sheet dt').count(), 7); await page.locator('#bill-sheet').getByRole('button', { name: '닫기', exact: true }).click(); await noOverflow();
         const seen = [];
         do {
           seen.push(...await page.locator('.ggc-work-record code').allTextContents());
@@ -136,7 +139,7 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
         const draft = fs.readFileSync(await (await draftEvent).path(), 'utf8'); assert.match(draft, /반응형 검증 예시 조례/); assert.equal(draft.split('추가 조문 예시').length, 2);
         await noOverflow();
         await page.evaluate(() => localStorage.clear());
-        interactions.push(width + ': search, filters, reset, empty, sort, 21 records, 8 fields, detail, CSV, view switch, wizard steps, reference, persistence, additional clauses, validation, export');
+        interactions.push(width + ': search, filters, reset, empty, sort, 21 records, info sheet 7 fields, CSV, view switch, wizard steps, reference, persistence, additional clauses, validation, export');
       }
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(url('dashboard')); await page.locator('[data-work-pane=secondary]').click(); await noOverflow();
@@ -150,7 +153,8 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
       assert.equal(await page.locator('main.ggc-work-wizard').isVisible(), true); await noOverflow();
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.locator('.ggc-shell > .ggc-gnb [data-ggc-lnb-toggle]').click();
-      await page.locator('.ggc-lnb-item[data-page=explore]').click();
+      await page.evaluate(() => { location.hash = 'explore'; });   // 숨은 메뉴 항목은 누를 수 없다(v3.3) — 주소로 옮겨 숨김이 유지되는지 본다
+      await page.locator('main.ggc-work-explore').waitFor({ state: 'visible' });
       assert.equal(await page.locator('.ggc-shell > .ggc-gnb [data-ggc-lnb-toggle]').getAttribute('aria-expanded'), 'false');
       interactions.push('Dashboard secondary content and standalone cross-page navigation');
       const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 });
@@ -163,7 +167,7 @@ const url = name => pathToFileURL(path.join(root, 'design/examples', name + '.ht
       }
       await phonePage.locator('#work-q').fill('청년');
       await phonePage.locator('.ggc-work-record h2 a').first().tap();
-      assert.equal(await phonePage.locator('#work-dialog').isVisible(), true);
+      assert.equal(await phonePage.locator('#bill-sheet').isVisible(), true);
       await phone.close();
       interactions.push('Touch device emulation: device viewport, standards mode, no overflow, standalone detail tap');
       assert.equal(errors.length, 0);

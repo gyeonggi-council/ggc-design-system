@@ -9,7 +9,7 @@ import { DetailLayout, MetaList, MetaItem } from "@/components/ggc-detail-layout
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PageHead } from "@/components/ggc-page-head"
 
-<PageHead title="경기도 청년 기본조례 일부개정조례안" desc="2026-0147 · 기획재정위원회 · 김○○ 의원 외 12인" actions={<Button>상신</Button>} />
+<PageHead title="경기도 청년 기본조례 일부개정조례안" actions={<Button>상신</Button>} />   {/* 의안번호 · 소관은 아래 MetaList 한 곳(덜어내기 R3) */}
 <DetailLayout rail={<Card><CardHeader><CardTitle>결재선</CardTitle></CardHeader><CardContent>…</CardContent></Card>}>
   <Card><CardContent>
     <MetaList>

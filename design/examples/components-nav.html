@@ -58,7 +58,7 @@
   </header>
 
   <div class="ggc-shell-body">
-    <nav class="ggc-lnb ggc-scroll" id="lnb" aria-label="예제 목록">
+    <nav class="ggc-lnb ggc-scroll" id="lnb" aria-label="예제 목록" data-ggc-lnb-collapse="hide">
       <div class="ggc-lnb-group">갤러리</div>
       <a class="ggc-lnb-item" href="index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-house"/></svg><span class="label">개요</span></a>
       <a class="ggc-lnb-item" href="tokens.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg><span class="label">토큰 · 팔레트</span></a>
@@ -85,7 +85,7 @@
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title">내비게이션 · 탭</h1>
-            <p class="desc">ggc-components.css v3.2 · §12~15 · §26 · §29~30 · §34~35</p>
+            <p class="desc">ggc-components.css v3.3 · §9 · §12~15 · §26 · §29~30 · §34~35</p>
           </div>
         </div>
       </div>
@@ -131,12 +131,40 @@
         <details class="ex-reveal" data-src="#d-gnbpage"><summary>마크업</summary><pre class="ex-code"></pre></details>
       </section>
 
+      <!-- ============================================================ 왼쪽 메뉴 (v3.3) -->
+      <section class="ex-section">
+        <h2>왼쪽 메뉴 — 숨김 · 아이콘 줄 <span class="cls">.ggc-lnb[data-ggc-lnb-collapse]</span></h2>
+        <p><b>언제 두나</b> — 목적지(화면)가 5개 이하면 왼쪽 메뉴 없이 유틸리티 바만, 넘으면 왼쪽 메뉴(풀셸)다. 2단까지, 3단은 만들지 않는다.
+          <b>PC 에서 숨기기</b> — LNB 에 <code class="ex-inline">data-ggc-lnb-collapse="hide"</code> 를 두면 GNB 맨 앞 단추(「메뉴 숨기기」/「메뉴 표시」)가 메뉴를 완전히 숨기고 본문이 넓어진다.
+          속성이 없으면 지금처럼 48px 아이콘 줄로 접는다(아래 오른쪽 표본 — 아이콘에 마우스나 초점을 두면 이름이 툴팁으로 보인다).
+          처음엔 펼치고, 바꾼 상태는 서비스마다 기억한다. 900px 이하는 늘 「전체메뉴」 오른쪽 서랍이다.
+          <b>이 갤러리의 메뉴가 숨김 방식이다</b> — 맨 위 GNB 의 첫 단추를 눌러 본다.</p>
+        <div class="ex-demo ex-demo--bg ex-row" id="d-lnb" style="align-items:flex-start">
+          <nav class="ggc-lnb ex-lnb-sample" aria-label="표본 메뉴 — 펼침">
+              <a class="ggc-lnb-item is-active" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg><span class="label">대시보드</span></a>
+              <a class="ggc-lnb-item" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록</span></a>
+              <a class="ggc-lnb-item" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">검토보고서</span></a>
+              <a class="ggc-lnb-item" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar"/></svg><span class="label">의사일정</span></a>
+              <a class="ggc-lnb-item" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-settings"/></svg><span class="label">설정</span></a>
+          </nav>
+          <nav class="ggc-lnb ggc-lnb--icon ex-lnb-sample" aria-label="표본 메뉴 — 아이콘 줄">
+              <a class="ggc-lnb-item is-active" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg><span class="label">대시보드</span></a>
+              <a class="ggc-lnb-item" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-table-2"/></svg><span class="label">의안 목록</span></a>
+              <a class="ggc-lnb-item" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-file-text"/></svg><span class="label">검토보고서</span></a>
+              <a class="ggc-lnb-item" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar"/></svg><span class="label">의사일정</span></a>
+              <a class="ggc-lnb-item" href="#main"><svg class="ggc-icon" aria-hidden="true"><use href="#i-settings"/></svg><span class="label">설정</span></a>
+          </nav>
+        </div>
+        <details class="ex-reveal" data-src="#d-lnb"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
       <section class="ex-section">
         <h2>페이지 헤더 <span class="cls">.ggc-page-head</span></h2>
         <p>본문 첫 줄 — <b><code class="ex-inline">&lt;h1 class="ggc-page-title"&gt;</code>(24px) + 주 액션 하나</b>(핵심 행동이 있을 때).
           화면의 h1 은 여기 하나이고 <code class="ex-inline">&lt;main aria-labelledby="page-title"&gt;</code> 로 본문 랜드마크에 잇는다.
           제목은 그 화면에서 가장 큰 글자다 — 위계는 색이 아니라 크기·굵기로 만든다(ADR 0009).
           설명(<code class="ex-inline">.desc</code>)은 <b>기본 없음</b>(v3.1) — 쓴다면 판단에 쓰이는 기관 맥락(제N대 · 제NNN회 · 소관) 한 줄이고, 화면에 이미 있는 건수·인사말은 넣지 않는다.
+          기간 · 일차 같은 보충 정보는 ⓘ 토글팁으로 옮긴다(v3.3). 토글팁을 넣으면 <code class="ex-inline">.desc</code> 는 <code class="ex-inline">&lt;p&gt;</code> 가 아니라 <code class="ex-inline">&lt;div&gt;</code> 다(<code class="ex-inline">&lt;details&gt;</code> 는 문단 안에 못 들어간다).
           반복 작업 화면은 제목을 <code class="ex-inline">.ggc-sr</code> 로 남기는 간결형도 고를 수 있다(<a href="less.html">덜어내기 전/후</a>).
           레코드 화면(의안 상세)은 의안명이 h1 이며 두 줄까지 허용한다 — 잘리면 다른 의안이 된다.</p>
         <div class="ex-demo ex-demo--bg" id="d-head">
@@ -157,7 +185,13 @@
             <div class="row">
               <div>
                 <h1 class="ggc-page-title">대시보드</h1>
-                <p class="desc">이○○님, 오늘 처리할 검토보고서 3건이 있습니다 · 정책지원관 · 기획재정위원회 · 2026-08-29 (금)</p>
+                <div class="desc">제12대 제3차 정례회
+                  <span class="ggc-badge ggc-badge--session"><svg class="ggc-icon" aria-hidden="true"><use href="#i-circle-dot"/></svg>회기 중</span>
+                  <details class="ggc-toggletip">
+                    <summary aria-label="회기 기간"><svg class="ggc-icon" aria-hidden="true"><use href="#i-info"/></svg></summary>
+                    <div class="ggc-toggletip-body">2026-08-18 ~ 2026-09-05 · 오늘 18일차</div>
+                  </details>
+                </div>
               </div>
               <div class="actions">
                 <button class="ggc-btn ggc-btn--primary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-plus"/></svg>검토보고서 작성</button>
@@ -475,7 +509,7 @@
   <footer class="ggc-footer">
     <div class="inner">
       각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.2
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.3
     </div>
   </footer>
 </div>

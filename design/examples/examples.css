@@ -49,6 +49,12 @@ body { margin: 0; }
 }
 /* 데모 상자 안에 GNB 를 표본으로 놓을 때 — sticky 를 풀고 폭을 상자에 맞춘다 */
 .ex-demo-gnb { position: static; z-index: auto; }
+/* 왼쪽 메뉴 표본(components-nav, v3.3) — 실물 셸 밖이라 sticky · 높이 · ≤900 서랍 규칙을 떼고 제자리에 그린다 */
+.ex-lnb-sample { position: static; height: auto; flex: 0 0 auto; }
+@media (max-width: 900px) {
+  .ex-lnb-sample { position: static; width: var(--ggc-lnb-w); max-width: 100%; height: auto; transform: none; visibility: visible; box-shadow: none; border-left: 0; border-right: 1px solid var(--ggc-shell-border); }
+  .ex-lnb-sample.ggc-lnb--icon { width: var(--ggc-lnb-w-icon); }
+}
 
 /* 섹션 — 위 여백이 곧 구획이다. 구분선을 긋지 않는다 */
 .ex-section { margin: var(--ggc-space-7) 0 0; }

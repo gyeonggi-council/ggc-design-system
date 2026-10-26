@@ -1,6 +1,6 @@
 # 페이지 헤더 — `.ggc-page-head` (v3.0)
 
-본문 첫 줄 — **`<h1 class="ggc-page-title">`(24px) + 설명 한 줄 + 주 액션 하나**. 화면의 h1 은 여기 하나다(ADR 0010).
+본문 첫 줄 — **`<h1 class="ggc-page-title">`(24px) + 주 액션(핵심 행동이 있을 때 하나)**. 설명 줄은 기본 없음(ADR 0012). 화면의 h1 은 여기 하나다(ADR 0010).
 브레드크럼은 GNB 경로부([shell.md](shell.md))에 있다. 제목은 그 화면에서 가장 큰 글자여야 시선의 닻이 된다 — 위계는 색이 아니라 크기·굵기로(ADR 0009).
 
 ## 마크업
@@ -10,7 +10,6 @@
   <div class="row">
     <div>
       <h1 class="ggc-page-title" id="page-title">의안 목록</h1>
-      <p class="desc">제12대 · 제380회 정례회 · 접수 147건 · 처리 대기 21건</p>
     </div>
     <div class="actions">
       <button class="ggc-btn ggc-btn--secondary" type="button"><svg class="ggc-icon" aria-hidden="true"><use href="#i-download"/></svg>엑셀 내려받기</button>
@@ -25,9 +24,9 @@
 
 | 화면 | h1 | `.desc` (v3.1: 기본 없음 — 판단에 쓰이는 맥락만) |
 |---|---|---|
-| Monitor(대시보드) | 화면 이름 — "대시보드" | 회기 맥락 — `제12대 제3차 정례회 · 18일차`. 인사말은 두지 않는다(처리할 건은 큐·KPI 가 말한다) |
+| Monitor(대시보드) | 화면 이름 — "대시보드" | 회기 이름 하나 — `제380회 정례회` + 상태 배지. 기간 · 일차는 [토글팁](toggletip.md)(v3.3). 인사말은 두지 않는다(처리할 건은 큐·KPI 가 말한다) |
 | Explore(목록) | "의안 목록" | 제N대 · 회기. **건수는 쓰지 않는다** — 결과 요약 「총 N건」 한 곳(덜어내기 R3) |
-| Learn/Decide(상세) | **레코드명**(의안명) — 두 줄까지 허용 | 의안번호 · 소관 · 제안자 · 접수일 |
+| Learn/Decide(상세) | **레코드명**(의안명) — 두 줄까지 허용 | 없음 — 의안번호 · 소관 · 제안자 · 접수일은 본문 메타 목록 한 곳(덜어내기 R3) |
 | Configure(위저드) | 작업 이름 — "조례 초안 작성" | 레코드명 · 초안 번호(mono) |
 
 `.title` · `.meta` · `--greeting` 은 v2 호환 별칭이다 — 렌더는 같고, 다음 판(⚠ D1)에서 지운다. 새 마크업에 쓰지 않는다.

@@ -1,5 +1,5 @@
 /* =============================================================================
- * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.2.2 (2026-10-25)
+ * ggc-components.css — 경기도의회 공통 컴포넌트 레이어 v3.3.0 (2026-10-26)
  * 전제: design/ggc-tokens.css v3.2 를 먼저 로드할 것 (--ggc-* 변수 의존)
  * 출처: Claude Design 산출물(.dc.html) 실측 추출
  *   정본 1  design_경기도의회_의정지원_플랫폼/대시보드.dc.html
@@ -26,6 +26,15 @@
  *       갈렸다(Tailwind 유틸리티 / 서비스 자체 클래스 / 인라인). 색만 맞추는
  *       수렴으로는 다음에 또 갈라지므로 컴포넌트 자체를 고정한다.
  *       새 색·새 값은 없다 — 기존 토큰 조합이다.
+ *
+ * -- v3.3.0 에서 바뀐 것 (2026-10-26, ADR 0015 — 핵심만 화면에, 보조 정보는 한 번 눌러서) ----
+ *   §45       .ggc-modal--sheet — 오른쪽 정보 서랍. 한 건의 담당 · 소관 · 시각 · 이력 요약을 덮어서 보인다(모달과 같은 동작).
+ *   §46       .ggc-toggletip — ⓘ 를 누르면 열리는 짧은 설명(네이티브 <details>). 휴대폰 · 화면낭독기로도 열린다.
+ *   §33       툴팁 — 트리거에서 툴팁 위로 포인터를 옮겨도 닫히지 않는다(WCAG 1.4.13 hoverable — 전에는 pointer-events:none 이라 닫혔다).
+ *   §9        LNB 완전 숨김 — .ggc-lnb[data-ggc-lnb-collapse="hide"] 이면 PC 단추가 메뉴를 숨기고 본문이 넓어진다(.ggc-lnb--hidden).
+ *             속성이 없으면 지금처럼 아이콘 줄로 접는다. 아이콘 줄의 이름은 디자인 툴팁(.ggc-tooltip--float)으로 보인다.
+ *   §3        KPI 라벨 줄 최소 높이 24 — ⓘ 가 있는 타일과 없는 타일의 숫자 줄이 맞는다.
+ *   새 토큰은 없다 — 폭은 .ggc-split 처럼 간격 토큰으로 잰다(400 = space-11 × 5 · 320 = space-11 × 4).
  *
  * -- v3.2.2 에서 바뀐 것 (2026-10-25) ----------------------------------------
  *   §41       서명 패드가 400px 보다 좁은 화면에서 본문 밖으로 나가던 것 — 열 minmax(0, 1fr) · 패드 width 100%.
@@ -232,10 +241,11 @@
   border-radius: var(--ggc-radius-lg);
   padding: var(--ggc-space-3) var(--ggc-space-4);
 }
-.ggc-stat .label-row {           /* 라벨 + 아이콘 박스 한 줄 */
+.ggc-stat .label-row {           /* 라벨 + 아이콘 박스(또는 ⓘ 토글팁, v3.3) 한 줄 */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: var(--ggc-space-6);   /* v3.3: ⓘ(24) 가 있는 타일과 없는 타일의 숫자 줄을 맞춘다 */
   margin-bottom: var(--ggc-space-2);
 }
 .ggc-stat .label { font-size: var(--ggc-text-sm); font-weight: 600; color: var(--ggc-text-muted); }
@@ -875,6 +885,11 @@
 .ggc-lnb--icon .ggc-lnb-item { justify-content: center; padding: 0; }
 .ggc-lnb--icon .ggc-lnb-item .label, .ggc-lnb--icon .ggc-lnb-item .count, .ggc-lnb--icon .ggc-lnb-group {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0;
+}
+/* 완전 숨김 (v3.3, ADR 0015) — <nav class="ggc-lnb" data-ggc-lnb-collapse="hide"> 이면 PC 단추가 메뉴를 숨긴다.
+ * display:none 이라 숨은 링크에 Tab 이 들어가지 않고 본문이 그 폭을 가진다. ≤900 은 서랍이라 이 클래스가 듣지 않는다 */
+@media not all and (max-width: 900px) {
+  .ggc-lnb--hidden { display: none; }
 }
 
 /* 본문 — 계약 §2: 대시보드 1320, 기타 업무화면 1360 */
@@ -2086,6 +2101,7 @@
  * 여닫기는 ggc-behaviors.js(data-ggc-modal-open / -close). 없으면 showModal() 을 직접 부른다.
  * 파괴적 동작(반려·회수·삭제)은 .ggc-modal--alert + role="alertdialog" 로 확인 단계를 둔다.
  * 크기: 기본 560 · --sm 420 · --lg 800. 모바일(≤480)은 화면 폭 가득.
+ * 오른쪽 정보 서랍은 --sheet(§45, v3.3) · 전체 화면은 --full(§40).
  * ============================================================================= */
 .ggc-modal {
   width: min(560px, calc(100vw - 32px));
@@ -2887,6 +2903,7 @@ html[data-ggc-modal-active] { overflow: hidden; }
  * 33. .ggc-tooltip — 툴팁   (v2.0 P2)
  * 출처: KRDS tooltip. **보조 설명**(아이콘 버튼의 이름 풀이 · 약어 · 잘린 값)에만 쓴다 — 툴팁에만 있는 정보는
  *       없는 정보다(터치 · 스크린리더 · hover 없는 사용자). 필수 내용은 화면에 적는다.
+ *       눌러서 읽는 보충 설명은 §46 .ggc-toggletip, 한 건의 부가 정보는 §45 .ggc-modal--sheet (v3.3, ADR 0015).
  * 마크업 (트리거를 감싸고, 툴팁 본문은 형제):
  *   <span class="ggc-tooltip-wrap">
  *     <button class="ggc-icon-btn" type="button" aria-describedby="tt1">…</button>
@@ -2894,6 +2911,8 @@ html[data-ggc-modal-active] { overflow: hidden; }
  *   </span>
  *   --top(기본) --bottom --start --end : 위치. 좁은 폭에서 잘리면 --bottom 으로.
  * hover · focus-within 에 CSS 만으로 보이고, ESC 로 닫힌다(ggc-behaviors.js ⑧ — WCAG 1.4.13 dismissable).
+ * 포인터를 툴팁 위로 옮겨도 보인다(hoverable, v3.3 — 간격을 ::before 로 메운다). 안에 링크 · 단추는 넣지 않는다.
+ * .ggc-tooltip--float : 접힌 LNB 아이콘 줄 이름 전용. behaviors ③ 이 body 에 하나 두고 position:fixed 로 놓는다(LNB 스크롤에 잘리지 않게).
  * 트리거의 접근 가능한 이름이 이미 툴팁과 같다면 aria-describedby 를 두지 않는다(두 번 읽는다).
  * overflow:auto 컨테이너(.ggc-table-wrap) 안에서는 잘린다 — 거기서는 --bottom 이나 셀 밖 배치.
  * ============================================================================= */
@@ -2930,7 +2949,14 @@ html[data-ggc-modal-active] { overflow: hidden; }
   border-top-color: var(--ggc-text-strong);
 }
 .ggc-tooltip-wrap:hover > .ggc-tooltip,
-.ggc-tooltip-wrap:focus-within > .ggc-tooltip { display: block; opacity: 1; visibility: visible; }
+.ggc-tooltip-wrap:focus-within > .ggc-tooltip { display: block; opacity: 1; visibility: visible; pointer-events: auto; }
+/* v3.3 — 트리거와 툴팁 사이 간격을 메운다. 포인터가 건너가는 동안 wrap 의 :hover 가 끊기지 않아 툴팁 위에서 읽을 수 있다(WCAG 1.4.13) */
+.ggc-tooltip::before { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: var(--ggc-space-2); }
+.ggc-tooltip--bottom::before { top: auto; bottom: 100%; }
+.ggc-tooltip--float { position: fixed; left: 0; top: 0; bottom: auto; transform: none; margin-left: var(--ggc-space-2); }
+.ggc-tooltip--float[data-show] { display: block; opacity: 1; visibility: visible; pointer-events: auto; }
+.ggc-tooltip--float::before { top: 0; bottom: 0; left: auto; right: 100%; width: var(--ggc-space-2); height: auto; }   /* 항목과의 간격(왼쪽) */
+.ggc-tooltip--float::after { display: none; }
 .ggc-tooltip-wrap[data-ggc-tooltip-dismissed] > .ggc-tooltip { opacity: 0; visibility: hidden; }
 .ggc-tooltip--bottom { bottom: auto; top: calc(100% + 8px); }
 .ggc-tooltip--bottom::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--ggc-text-strong); }
@@ -3623,4 +3649,82 @@ html[data-ggc-modal-lock] body { position: fixed; inset-inline: 0; overflow: hid
 @media (prefers-contrast: more) {
   .ggc-signature-pad { border-color: var(--ggc-text-muted); }
   .ggc-split-handle::before { width: 2px; background: var(--ggc-border-strong); }
+}
+
+/* =============================================================================
+ * 45. .ggc-modal--sheet — 오른쪽 정보 서랍   (v3.3, ADR 0015)
+ * 한 건의 부가 정보(담당 · 소관 · 접수/수정 시각 · 장소 · 이력 요약)를 목록 위에 덮어서 보인다.
+ * 모달(§19)과 같은 <dialog> 라 여닫기 · 초점 가두기 · ESC · 배경 클릭 · 초점 복귀를 behaviors ② 가 그대로 한다.
+ * 마크업:
+ *   <a class="ggc-link ggc-link--quiet" href="/bills/2026-0147" data-ggc-modal-open="#bill-147">경기도 청년 기본조례 일부개정조례안</a>   ← 스크립트가 없으면 상세 화면으로
+ *   <dialog class="ggc-modal ggc-modal--sheet" id="bill-147" aria-labelledby="bill-147-t">
+ *     <div class="head"><h2 class="title" id="bill-147-t">경기도 청년 기본조례 일부개정조례안</h2>
+ *       <button class="close" type="button" data-ggc-modal-close aria-label="닫기">…lucide x…</button></div>
+ *     <div class="body"><dl><dt>의안번호</dt><dd>2026-0147</dd> …</dl></div>
+ *     <div class="foot"><a class="ggc-btn ggc-btn--secondary" href="…">상세 화면 열기</a></div>   ← 선택
+ *   </dialog>
+ * 폭 400(space-11 × 5 — .ggc-split 기본 폭과 같다) · ≤900 은 화면 가득. 높이는 화면 전체이고 본문만 스크롤한다.
+ * 편집 · 결재 확정 · 긴 본문은 넣지 않는다 — 상세 화면이나 .ggc-split 이다(docs/components/sheet.md).
+ * 휴대폰 「전체메뉴」 서랍(§9)과는 한 번에 하나만 열린다 — 서랍을 열면 behaviors 가 전체메뉴를 닫는다.
+ * ============================================================================= */
+.ggc-modal--sheet {
+  width: min(calc(var(--ggc-space-11) * 5), 100vw); max-width: none;
+  height: 100vh; height: 100dvh; max-height: none;
+  margin: 0 0 0 auto; inset: 0;
+  border: 0; border-left: 1px solid var(--ggc-border); border-radius: 0;
+}
+.ggc-modal--sheet > .head { padding-top: calc(var(--ggc-space-4) + env(safe-area-inset-top)); }
+.ggc-modal--sheet > .body { flex: 1; min-height: 0; }
+.ggc-modal--sheet > .foot { justify-content: flex-start; border-radius: 0; padding-bottom: max(var(--ggc-space-4), env(safe-area-inset-bottom)); }
+.ggc-modal--sheet .body dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--ggc-space-2) var(--ggc-space-4); margin: 0; font-size: var(--ggc-text-base); }
+.ggc-modal--sheet .body dt { color: var(--ggc-text-muted); }
+.ggc-modal--sheet .body dd { margin: 0; color: var(--ggc-text); overflow-wrap: anywhere; }
+.ggc-modal--sheet .body h3 { margin: var(--ggc-space-6) 0 var(--ggc-space-2); font-size: var(--ggc-text-base); font-weight: 600; color: var(--ggc-text-strong); }
+@media (prefers-reduced-motion: no-preference) {
+  .ggc-modal--sheet[open] { animation: ggc-sheet-in .16s ease-out; }   /* 연 동작에 답하는 한 번 — 어디서 왔는지 보인다 */
+}
+@keyframes ggc-sheet-in { from { transform: translateX(var(--ggc-space-6)); opacity: 0; } }
+@media (max-width: 900px) {
+  .ggc-modal--sheet { width: 100vw; border-left: 0; }
+}
+
+/* =============================================================================
+ * 46. .ggc-toggletip — 누르면 열리는 짧은 설명   (v3.3, ADR 0015)
+ * 툴팁(§33)은 마우스 · 초점에만 보여 휴대폰에서 못 연다. 집계 기준 · 용어 풀이 · 전 회기 대비처럼
+ * **누르기 전에도 일을 할 수 있는 보충 설명**은 이것으로 둔다. 상태 · 마감 · 오류 같은 필수 정보는 화면에 적는다.
+ * 마크업:
+ *   <details class="ggc-toggletip">
+ *     <summary aria-label="접수 의안 집계 기준"><svg class="ggc-icon" aria-hidden="true"><use href="#i-info"/></svg></summary>
+ *     <div class="ggc-toggletip-body">제380회 정례회 접수분. 전 회기보다 12건 많다.</div>
+ *   </details>
+ *   --end : 오른쪽 정렬(오른쪽 끝 칸에서 잘리지 않게).
+ * 네이티브 <details> 라 스크립트 없이 누르기 · Enter · Space 로 열고 닫는다. ESC · 바깥 누르기 닫기와
+ * 화면 가장자리 보정은 behaviors ⑥. 폭 320(space-11 × 4). 링크 하나까지는 넣는다 — 단추 · 입력이 필요하면 모달이다.
+ * ============================================================================= */
+.ggc-toggletip { position: relative; display: inline-flex; vertical-align: middle; font-family: var(--ggc-font); font-weight: 400; }
+.ggc-toggletip > summary {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--ggc-space-6); height: var(--ggc-space-6);
+  border-radius: var(--ggc-radius-sm);
+  color: var(--ggc-text-muted);
+  list-style: none; cursor: pointer;
+}
+.ggc-toggletip > summary::-webkit-details-marker { display: none; }
+.ggc-toggletip > summary:hover, .ggc-toggletip[open] > summary { background: var(--ggc-control-bg); color: var(--ggc-text); }
+.ggc-toggletip > summary svg { width: var(--ggc-icon); height: var(--ggc-icon); }
+.ggc-toggletip-body {
+  position: absolute; top: calc(100% + var(--ggc-space-1)); left: 0; z-index: 60;
+  width: max-content; max-width: min(calc(var(--ggc-space-11) * 4), calc(100vw - var(--ggc-space-4) * 2));
+  padding: var(--ggc-space-3);
+  border: 1px solid var(--ggc-border-strong); border-radius: var(--ggc-radius);
+  background: var(--ggc-surface); color: var(--ggc-text-body); box-shadow: var(--ggc-shadow);
+  font-size: var(--ggc-text-sm); line-height: var(--ggc-leading-normal); text-align: left; white-space: normal;
+}
+.ggc-toggletip--end > .ggc-toggletip-body { left: auto; right: 0; }
+.ggc-toggletip-body > :first-child { margin-top: 0; }
+.ggc-toggletip-body > :last-child { margin-bottom: 0; }
+@media (forced-colors: active) {
+  .ggc-modal--sheet { border-left: 1px solid; }
+  .ggc-toggletip-body { border: 1px solid; }
+  .ggc-toggletip[open] > summary { outline: 1px solid Highlight; }
 }

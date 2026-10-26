@@ -273,7 +273,7 @@ body {
   </header>
 
   <div class="ggc-shell-body">
-    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록" data-ggc-lnb-collapse="hide">
       <div class="ggc-lnb-group">갤러리</div>
 @@LNB@@
     </nav>

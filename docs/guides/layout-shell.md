@@ -10,9 +10,9 @@
   <div class="ggc-utility-bar">     기관명 + 통합서비스 스위처 — 기본 숨김(v3.2.1). 마크업은 둔다
   <header class="ggc-gnb">          64px 흰 띠 — [PC 접기 단추] · 브랜드 슬롯(256px, LNB 와 세로선이 이어진다) · 경로부(.ggc-gnb-page: 브레드크럼만) · 검색 300×36 · 아이콘 버튼 · [≤900 「전체메뉴」]
   <div class="ggc-shell-body">
-    <nav class="ggc-lnb">           256px, sticky · 접힘 .ggc-lnb--icon 48px. .ggc-lnb-group(캡션) · .ggc-lnb-item(svg 아이콘 + .label + .count · aria-current)
+    <nav class="ggc-lnb">           256px, sticky · 접힘 .ggc-lnb--icon 48px · [data-ggc-lnb-collapse="hide"] 면 완전 숨김(v3.3). .ggc-lnb-group(캡션) · .ggc-lnb-item(svg 아이콘 + .label · aria-current)
     <main class="ggc-shell-main">   1320px (대시보드) / --wide 1360px (그 외) / --split (Converse 만) · aria-labelledby="page-title"
-      <div class="ggc-page-head">   본문 첫 줄 — <h1 class="ggc-page-title"> 24px + .desc + .actions (v3.0, ADR 0010)
+      <div class="ggc-page-head">   본문 첫 줄 — <h1 class="ggc-page-title"> 24px + 주 액션(있을 때) · 설명 줄은 기본 없음 (ADR 0010 · 0012)
   <footer class="ggc-footer">       기관 · 소관 부서
 ```
 
@@ -20,7 +20,8 @@
 GNB/LNB 는 `ggc-components.css` §9.
 
 **페이지 제목은 본문 첫 줄에 있다**(v3.0, [ADR 0010](../decisions/0010-page-title-in-content.md) — 0008 대체). 헤더의 `.ggc-gnb-page` 에는 브레드크럼만 두고,
-`.ggc-page-head` 가 `<h1 class="ggc-page-title" id="page-title">`(24px) + 설명 + 주 액션을 갖는다. 마크업은 [components/shell.md](../components/shell.md) · [page-head.md](../components/page-head.md).
+`.ggc-page-head` 가 `<h1 class="ggc-page-title" id="page-title">`(24px) + 주 액션을 갖는다. 설명 줄 · 메타는 쓰임이 있을 때만이고([less.md](less.md) R2),
+자세한 정보는 툴팁 · 토글팁 · 정보 서랍으로 옮긴다([less.md](less.md) 「덜어낸 정보는 어디로」). 마크업은 [components/shell.md](../components/shell.md) · [page-head.md](../components/page-head.md).
 
 ## 치수 (토큰)
 
@@ -43,7 +44,9 @@ GNB/LNB 는 `ggc-components.css` §9.
 
 ## 반응형
 
-- **>900px (PC)**: GNB 맨 앞 접기 단추 `[data-ggc-lnb-toggle]`(아이콘만, `aria-label` 「메뉴 접기」/「메뉴 펼치기」)가 LNB 를 아이콘 줄(`.ggc-lnb--icon`)로 접고 편다. 접힘은 그 화면이 열려 있는 동안 기억하고, 휴대폰 폭에서 돌아오면 되살린다.
+- **>900px (PC)**: GNB 맨 앞 접기 단추 `[data-ggc-lnb-toggle]`(아이콘만, `aria-label` 「메뉴 접기」/「메뉴 펼치기」)가 LNB 를 아이콘 줄(`.ggc-lnb--icon`)로 접고 편다.
+  LNB 에 `data-ggc-lnb-collapse="hide"` 를 두면 같은 단추(「메뉴 숨기기」/「메뉴 표시」)가 메뉴를 **완전히 숨기고** 본문이 그 폭을 갖는다(v3.3, ADR 0015 — 새 화면은 이 방식).
+  처음엔 펼친다. 접힘 · 숨김은 서비스(첫 경로 조각)마다 `localStorage` 에 기억하고, 휴대폰 폭에서 돌아오면 되살린다. 아이콘 줄의 항목 이름은 디자인 툴팁으로 보인다.
 - **≤900px**: GNB 압축(브랜드 슬롯 폭 auto · 서비스명 숨김). 순서는 **CI 왼쪽 → 검색 → 알림 → 「전체메뉴」 맨 오른쪽**이다 — 대민 셸과 같은 자리 · 같은 말([ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md)).
   LNB 는 **오른쪽에서 나오는 서랍**(`data-open`)이 된다. 폭 · 그림자는 대민 `.ggc-main-menu` 패널과 같고, 머리는 「전체메뉴」 + 닫기 아이콘 단추다. 단추는 `.ggc-gnb-menu` `[data-ggc-drawer-toggle]`, 동작은 `ggc-behaviors.js` ③([behaviors-js.md](behaviors-js.md)). PC 접기 단추는 이 폭에서 숨는다.
   본문 패딩 18/16/40. **390px 에서 가로 스크롤 0.** GNB 경로부는 브레드크럼을 접고(경로는 서랍의 `aria-current`), 검색이 남은 폭을 쓴다. h1 은 본문이라 숨지 않고 크기(`--ggc-h1-size`)도 그대로다(v3.2 — ≤480 에서 줄이던 규칙은 지웠다).
@@ -59,8 +62,8 @@ GNB/LNB 는 `ggc-components.css` §9.
 
 | 패턴 | 판정(구성요소) | 격자 |
 |---|---|---|
-| Monitor | KPI 4열 + 업무 큐, 표 없음 | `.ggc-shell-main` 1320 · 하단 `1fr 320px` |
-| Explore | 필터 스트립 + 표 + 페이지네이션 — 첫 화면 15행 이상 | `--wide` 단일 컬럼 · 실물 `explore.html` |
+| Monitor | 업무 큐 우선 + 요약 숫자(쓰임이 있을 때 0~4), 표 없음 | `.ggc-shell-main` 1320 · 하단 `1fr 320px` |
+| Explore | 필터 스트립 + 표 + 페이지네이션 — 행 수는 참고 목표(less.md R8). 한 건의 부가 정보는 정보 서랍 | `--wide` 단일 컬럼 · 실물 `explore.html` |
 | Learn/Decide | 단일 레코드 상세 + 결재 레일 | `--wide` · `1fr 320px` |
 | Configure | 스텝퍼 + **스티키 액션바** | `--wide` |
 | Converse | 대화 + 출처 패널 | `--split` |

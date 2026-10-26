@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (27de2b5d) · design/components.tsv (102adf3b) -->
+<!-- 원천: design/ggc-tokens.css (27de2b5d) · design/components.tsv (398b4b44) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -128,7 +128,7 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | QR 로그인 블록 | `.ggc-qr .ggc-qr-install .ggc-login .ggc-login-credentials` | `ggc-qr-login` | work | P1 | 있음 |
 | 본문 조판 | `.ggc-prose` | `ggc-prose` | both | P1 | 있음 |
 | 하단 스티키 액션바 | `.ggc-actionbar` | `ggc-actionbar` | work | P0 | 있음 |
-| 모달 / 다이얼로그 | `.ggc-modal (<dialog>, --sm --lg --alert --full)` | `dialog alert-dialog` | both | P0 | 있음 |
+| 모달 / 다이얼로그 | `.ggc-modal (<dialog>, --sm --lg --alert --full --sheet)` | `dialog alert-dialog` | both | P0 | 있음 |
 | 탭 | `.ggc-tabs .ggc-tablist .ggc-tab .ggc-tabpanel` | `tabs` | both | P0 | 있음 |
 | 셀렉트 (네이티브) | `.ggc-select` | `select` | both | P0 | 있음 |
 | 체크박스 · 라디오 · 칩 | `.ggc-check .ggc-radio .ggc-check-group(--column) .ggc-chip` | `checkbox radio-group` | both | P0 | 있음 |
@@ -168,13 +168,15 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 상세 배치 (본문 + 결재 레일) | `—` | `ggc-detail-layout` | work | P1 | 있음 |
 | 위저드 배치 | `—` | `ggc-wizard-layout` | work | P1 | 있음 |
 | 반응형 업무 배치 | `.ggc-work .ggc-work-grid .ggc-work-switch .ggc-work-filter .ggc-work-results .ggc-work-actions` | `—` | work | P0 | 있음 |
-| 업무 전체메뉴 서랍(오른쪽) | `.ggc-drawer-backdrop .ggc-drawer-head .ggc-gnb-menu` | `—` | work | P0 | 있음 |
+| 업무 전체메뉴 서랍(오른쪽 · 메뉴 전용 — 정보는 sheet) | `.ggc-drawer-backdrop .ggc-drawer-head .ggc-gnb-menu` | `—` | work | P0 | 있음 |
 | 진행 막대 | `.ggc-progress (네이티브 <progress>)` | `progress` | both | P1 | 있음 |
 | 긴 작업 진행 | `.ggc-job (--compact · data-state queued/running/stopping/unknown/done/failed/partial/stopped)` | `—` | both | P1 | 있음 |
 | 휴대폰 1인 링크 화면 | `.ggc-solo .ggc-solo-head .ggc-solo-main .ggc-solo-bar` | `—` | public | P1 | 있음 |
 | 서명 패드 | `.ggc-signature .ggc-signature-pad` | `—` | both | P1 | 있음 |
 | 문서 미리보기 틀 (렌더러는 서비스) | `.ggc-viewer .ggc-viewer-tools .ggc-viewer-body .ggc-viewer-pages .ggc-viewer-page .ggc-viewer-state .ggc-viewer-note (--frame)` | `—` | both | P1 | 있음 |
 | 좌우 두 칸 작업대 | `.ggc-split .ggc-split-list .ggc-split-handle .ggc-split-view .ggc-split-back` | `—` | work | P1 | 있음 |
+| 오른쪽 정보 서랍 (한 건의 부가 정보) | `.ggc-modal--sheet` | `sheet` | both | P1 | 있음 |
+| 토글팁 (누르면 열리는 짧은 설명) | `.ggc-toggletip .ggc-toggletip-body (--end)` | `popover` | both | P1 | 있음 |
 
 핵심 규칙:
 
