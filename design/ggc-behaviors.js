@@ -1,16 +1,19 @@
 /* =============================================================================
- * ggc-behaviors.js — 경기도의회 공통 컴포넌트 동작 v3.2 (2026-10-24)
- * 전제: design/ggc-components.css v3.2 (마크업 계약은 그 파일의 §14·§19·§9 주석)
+ * ggc-behaviors.js — 경기도의회 공통 컴포넌트 동작 v3.3.0 (2026-10-26)
+ * 전제: design/ggc-components.css v3.3 (마크업 계약은 그 파일의 §14·§19·§9·§45·§46 주석)
  *
  * 하는 일은 전부 **마크업의 ARIA 상태를 옮기는 것**이고, 스타일은 CSS 가 그 상태를
  * 보고 그린다. 그래서 이 파일이 없어도 화면은 깨지지 않는다 — 동작만 없다.
  *   ① 탭      role="tab" 의 aria-selected · tabindex(roving) · 패널 hidden · 화살표/Home/End
  *   ② 모달    <dialog>.showModal() · data-ggc-modal-open / -close · 배경 클릭 · 포커스 복귀
+ *             .ggc-modal--sheet(오른쪽 정보 서랍)도 같은 길 — 열면 열린 「전체메뉴」 서랍을 닫는다 (v3.3)
  *   ③ drawer  PC 접기 [data-ggc-lnb-toggle] · ≤900px 「전체메뉴」 오른쪽 서랍 .ggc-lnb[data-open] · ESC · 바깥 클릭 (v3.2 — 단추 둘로 나눔)
+ *             v3.3: [data-ggc-lnb-collapse="hide"] 면 접기 = 완전 숨김 · 접힘/숨김을 localStorage 에 기억 · 아이콘 줄 이름은 디자인 툴팁
  *   ④ 대민 메뉴 .ggc-main-menu[data-open](모바일 패널) · [data-ggc-submenu] aria-expanded ·
  *             [data-ggc-search-toggle] 통합검색 패널  (ggc-public.css, v2.0)
  *   ⑤ 토스트   GGC.toast({title, desc, variant, duration, action}) · [data-ggc-toast] 선언형 · 3개 상한 · hover/focus 에 정지
  *   ⑥ 메뉴     details.ggc-menu — 열리면 첫 항목, ↑↓ Home End, ESC/바깥 클릭/실행 시 닫고 summary 복귀
+ *             details.ggc-toggletip — ESC/바깥 클릭에 닫고 summary 복귀 · 가장자리 보정 · 서랍 안에서는 첫 ESC 가 토글팁만 (v3.3)
  *   ⑦ 파일     [data-ggc-file] — change/drop → .ggc-file-list 갱신, 삭제를 input.files 에 되돌림(DataTransfer)
  *   ⑧ 툴팁     ESC 로 hover/focus 중인 .ggc-tooltip 닫기(WCAG 1.4.13), 떠나면 복구
  *   ⑨ 리스트박스 [data-ggc-listbox] — aria-activedescendant · ↑↓ Home End · Enter/Space · 앞글자 · .filter
@@ -88,11 +91,13 @@
   function openModal(target, opener) {
     var dialog = resolve(target);
     if (!dialog || dialog.open || typeof dialog.showModal !== "function") return;
+    var nav = lnb();
+    if (nav && nav.getAttribute("data-open") === "true") setDrawer(false);   /* 서랍은 한 번에 하나(v3.3) — 전체메뉴를 닫고 연다 */
     if (openerOf) openerOf.set(dialog, opener || document.activeElement);
     dialog.showModal();
     document.documentElement.setAttribute("data-ggc-modal-active", "");
-    if (dialog.classList.contains("ggc-modal--full") && !document.documentElement.hasAttribute("data-ggc-modal-lock")) {
-      /* 전체 화면 창(v3.2) — 뒤 문서를 제자리에 고정한다. overflow:hidden 만으로는 iOS·카톡이 뒤를 끌어 올린다 */
+    if (dialog.matches(".ggc-modal--full, .ggc-modal--sheet") && !document.documentElement.hasAttribute("data-ggc-modal-lock")) {
+      /* 전체 화면 창(v3.2) · 정보 서랍(v3.3) — 뒤 문서를 제자리에 고정한다. overflow:hidden 만으로는 iOS·카톡이 뒤를 끌어 올린다 */
       lockY = window.pageYOffset || 0;
       document.body.style.top = -lockY + "px";
       document.documentElement.setAttribute("data-ggc-modal-lock", "");
@@ -170,6 +175,13 @@
   function lnb() { return document.querySelector(".ggc-lnb"); }
   var drawerMedia = window.matchMedia('(max-width: 900px)');
   var drawerOpener, drawerBackdrop, lnbCollapsed = false;
+
+  /* v3.3 — 접기 방식: data-ggc-lnb-collapse="hide" 면 완전 숨김, 없으면 아이콘 줄(옛 마크업 그대로) */
+  function collapseClass(nav) { return nav.getAttribute('data-ggc-lnb-collapse') === 'hide' ? 'ggc-lnb--hidden' : 'ggc-lnb--icon'; }
+  /* 접힘은 서비스(첫 경로 조각)마다 기억한다. 저장이 막히거나 값이 낯설면 마크업 그대로(보통 펼침) */
+  function lnbKey(nav) { return 'ggc-lnb:' + (nav.getAttribute('data-ggc-lnb-key') || location.pathname.split('/')[1] || '/'); }
+  function lnbSaved(nav) { try { var v = localStorage.getItem(lnbKey(nav)); return v === '1' ? true : v === '0' ? false : null; } catch (e) { return null; } }
+  function lnbSave(nav) { try { localStorage.setItem(lnbKey(nav), lnbCollapsed ? '1' : '0'); } catch (e) { /* 기억 못 해도 지금 화면은 동작한다 */ } }
   var MENU_SVG = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';   // lucide menu
   var CLOSE_SVG = '<svg class="ggc-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>';   // lucide x
 
@@ -178,7 +190,8 @@
     if (!nav || !header || nav.__ggcDrawer) return;
     nav.__ggcDrawer = true;
     if (!nav.id) nav.id = 'ggc-navigation';
-    lnbCollapsed = nav.classList.contains('ggc-lnb--icon');
+    var saved = lnbSaved(nav);
+    lnbCollapsed = saved === null ? nav.classList.contains(collapseClass(nav)) : saved;
     var collapse = header.querySelector('[data-ggc-lnb-toggle]');
     if (!collapse) {
       collapse = document.createElement('button');
@@ -230,7 +243,8 @@
     function sync() {
       var had = document.activeElement, menuFocus = had && had !== document.body && (nav.contains(had) || had === toggle || had === collapse);
       setDrawer(false);
-      nav.classList.toggle('ggc-lnb--icon', !drawerMedia.matches && lnbCollapsed);   // 서랍은 늘 펼친 모양 · PC 로 돌아오면 접힘을 되살린다
+      nav.classList.toggle(collapseClass(nav), !drawerMedia.matches && lnbCollapsed);   // 서랍은 늘 펼친 모양 · PC 로 돌아오면 접힘을 되살린다
+      hideNavTip();
       navLabels();
       // 900 경계를 넘으면 초점이 숨은 단추·닫힌 서랍에 남는다 — 그때만 이 폭에서 보이는 메뉴 단추로 넘긴다(본문의 초점은 그대로)
       var now = document.activeElement;
@@ -245,10 +259,10 @@
   function navLabels() {
     var nav = lnb();
     if (!nav) return;
-    var open = nav.getAttribute('data-open') === 'true', collapsed = nav.classList.contains('ggc-lnb--icon');
+    var open = nav.getAttribute('data-open') === 'true', hide = collapseClass(nav) === 'ggc-lnb--hidden', collapsed = nav.classList.contains(collapseClass(nav));
     document.querySelectorAll('[data-ggc-lnb-toggle]').forEach(function (b) {
       b.setAttribute('aria-expanded', String(!collapsed));
-      b.setAttribute('aria-label', collapsed ? '메뉴 펼치기' : '메뉴 접기');
+      b.setAttribute('aria-label', hide ? (collapsed ? '메뉴 표시' : '메뉴 숨기기') : (collapsed ? '메뉴 펼치기' : '메뉴 접기'));
     });
     document.querySelectorAll('[data-ggc-drawer-toggle]').forEach(function (b) {
       b.setAttribute('aria-expanded', String(open));
@@ -276,10 +290,42 @@
   function toggleCollapse() {
     var nav = lnb();
     if (!nav || drawerMedia.matches) return;
-    lnbCollapsed = nav.classList.toggle('ggc-lnb--icon');
-    nav.querySelectorAll('a').forEach(function (a) { a.title = a.textContent.trim(); });
+    lnbCollapsed = nav.classList.toggle(collapseClass(nav));
+    lnbSave(nav);
+    hideNavTip();
     navLabels();
   }
+
+  /* 아이콘 줄 이름 (v3.3) — 디자인 툴팁 하나를 body 에 두고 항목 오른쪽에 놓는다(LNB 의 overflow 에 잘리지 않게).
+   * 링크 이름은 이미 시각 숨김 .label 이 준다 — 이 툴팁은 눈에만 보이게 aria-hidden(두 번 읽지 않게) */
+  var navTip;
+  function showNavTip(item) {
+    var label = item.querySelector('.label'), text = (label || item).textContent.trim();
+    if (!text || drawerMedia.matches) return;
+    if (!navTip) {
+      navTip = document.createElement('span');
+      navTip.className = 'ggc-tooltip ggc-tooltip--float';
+      navTip.setAttribute('aria-hidden', 'true');
+      navTip.addEventListener('mouseleave', function (e) { if (!(navTip.__item && navTip.__item.contains(e.relatedTarget))) hideNavTip(); });
+      document.body.appendChild(navTip);
+    }
+    navTip.textContent = text;
+    navTip.__item = item;
+    navTip.setAttribute('data-show', '');
+    var r = item.getBoundingClientRect();
+    navTip.style.left = r.right + 'px';
+    navTip.style.top = (r.top + (r.height - navTip.offsetHeight) / 2) + 'px';
+  }
+  function hideNavTip() { if (navTip) { navTip.removeAttribute('data-show'); navTip.__item = null; } }
+  function navTipItem(el) { return el && el.closest ? el.closest('.ggc-lnb--icon .ggc-lnb-item') : null; }
+  document.addEventListener('mouseover', function (e) { var it = navTipItem(e.target); if (it) showNavTip(it); });
+  document.addEventListener('mouseout', function (e) {
+    var it = navTipItem(e.target);
+    if (it && !it.contains(e.relatedTarget) && !(navTip && navTip.contains(e.relatedTarget))) hideNavTip();
+  });
+  document.addEventListener('focusin', function (e) { var it = navTipItem(e.target); if (it) showNavTip(it); else hideNavTip(); });
+  document.addEventListener('scroll', hideNavTip, true);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideNavTip(); });
 
   /* GGC.toggleDrawer — PC 는 접기, ≤900 은 서랍(예전 한 단추 시절과 같은 뜻) */
   function toggleDrawer() {
@@ -512,8 +558,30 @@
     });
   }
 
+  /* 토글팁 (v3.3) — 여닫기는 <details> 가 한다. 여기서는 하나만 열기 · 가장자리 보정 · ESC */
+  function initToggletips(root) {
+    (root || document).querySelectorAll("details.ggc-toggletip").forEach(function (tip) {
+      if (tip.__ggcToggletip) return;
+      tip.__ggcToggletip = true;
+      tip.addEventListener("toggle", function () {
+        var body = tip.querySelector(".ggc-toggletip-body");
+        if (!tip.open || !body) return;
+        document.querySelectorAll("details.ggc-toggletip[open]").forEach(function (o) { if (o !== tip) o.open = false; });
+        body.style.marginLeft = "0px";
+        var r = body.getBoundingClientRect(), edge = 12;
+        body.style.marginLeft = (r.right > window.innerWidth - edge ? window.innerWidth - edge - r.right : r.left < edge ? edge - r.left : 0) + "px";
+      });
+      tip.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape" || !tip.open) return;
+        e.preventDefault(); e.stopPropagation();   /* 정보 서랍(<dialog>) 안이면 서랍은 그대로 — 첫 ESC 는 토글팁만 닫는다 */
+        tip.open = false;
+        var s = tip.querySelector("summary"); if (s) s.focus();
+      });
+    });
+  }
+
   document.addEventListener("click", function (e) {
-    document.querySelectorAll("details.ggc-menu[open]").forEach(function (menu) {
+    document.querySelectorAll("details.ggc-menu[open], details.ggc-toggletip[open]").forEach(function (menu) {
       if (!menu.contains(e.target)) menu.open = false;
     });
   });
@@ -1127,6 +1195,7 @@
   GGC.toast = toast;
   GGC.dismissToast = dismissToast;
   GGC.initMenus = initMenus;
+  GGC.initToggletips = initToggletips;
   GGC.initFiles = initFiles;
   GGC.initListboxes = initListboxes;
   GGC.initInPageNav = initInPageNav;
@@ -1150,7 +1219,7 @@
       }
       wrap.addEventListener('mouseenter', position); wrap.addEventListener('focusin', position);
     });
-    initTabs(root); initModals(root); initMenus(root); initFiles(root); initListboxes(root); initInPageNav(root);
+    initTabs(root); initModals(root); initMenus(root); initToggletips(root); initFiles(root); initListboxes(root); initInPageNav(root);
     initJobs(root); initSolo(root); initSignatures(root); initViewers(root); initSplits(root);
   };
 

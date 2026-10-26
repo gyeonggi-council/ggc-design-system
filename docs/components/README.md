@@ -20,6 +20,7 @@
 | 체크박스 · 라디오 · 칩 `.ggc-check` `.ggc-radio` `.ggc-chip` | [check-radio.md](check-radio.md) | components-forms | 있음 |
 | 알림 `.ggc-alert` | [alert.md](alert.md) | [components-overlay](../../design/examples/components-overlay.html) | 있음 |
 | 모달 `.ggc-modal` (전체 화면 `--full` — 서명 · 제출 전 확인 · 문서 크게 보기) | [modal.md](modal.md) | components-overlay · [public/solo](../../design/examples/public/solo.html) | 있음 (`--full` v3.2) |
+| 정보 서랍 `.ggc-modal--sheet` (오른쪽 · 한 건의 담당 · 소관 · 시각 · 이력 요약) | [sheet.md](sheet.md) | components-overlay · explore · dashboard | 있음 (v3.3) |
 | 하단 액션바 `.ggc-actionbar` | [actionbar.md](actionbar.md) | components-overlay | 있음 |
 | 스피너 `.ggc-spinner` | [spinner.md](spinner.md) | components-overlay | 있음 |
 | 스켈레톤 `.ggc-skeleton` | [skeleton.md](skeleton.md) | components-overlay | 있음 |
@@ -35,6 +36,7 @@
 | 페이지 내 내비 `.ggc-in-page-nav` | [in-page-nav.md](in-page-nav.md) | components-nav | 있음 |
 | 토스트 `.ggc-toast` | [toast.md](toast.md) | components-overlay | 있음 |
 | 툴팁 `.ggc-tooltip` | [tooltip.md](tooltip.md) | components-overlay | 있음 |
+| 토글팁 `.ggc-toggletip` (누르면 열리는 짧은 설명) | [toggletip.md](toggletip.md) | components-overlay · dashboard | 있음 (v3.3) |
 | 빈 상태 `.ggc-empty` | [empty.md](empty.md) | components-overlay | 있음 |
 | 버튼 `.ggc-btn` | [button.md](button.md) | [components](../../design/examples/components.html) | 있음 |
 | 배지 · 태그 `.ggc-badge` `.ggc-tag` | [badge.md](badge.md) | components | 있음 |

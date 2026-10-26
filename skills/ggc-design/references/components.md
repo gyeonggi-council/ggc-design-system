@@ -8,9 +8,9 @@
 | 과업 | Tier 1 | Tier 2 | 문서 · 갤러리 |
 |---|---|---|---|
 | 업무 화면 배치 · 모바일 기능 유지 (v3.2: 배치만 — 카드 · KPI · 행 · 휴대폰 보정은 기본 부품) | `.ggc-work` `.ggc-work-grid` `.ggc-work-switch` `.ggc-work-actions` | 기존 shell·data-table 사용 | components/work-layout.md · explore.html · wizard.html |
-| 업무 셸 (유틸리티바 · 헤더 경로부 · 사이드바(아이콘 · 접힘) · ≤900 「전체메뉴」 오른쪽 서랍(v3.2) · 본문) | `.ggc-utility-bar` `.ggc-gnb` `.ggc-gnb-page` `.ggc-lnb(--icon)` `[data-ggc-lnb-toggle]` `.ggc-gnb-menu[data-ggc-drawer-toggle]` `.ggc-shell-main(--wide)` | `ggc-shell` (`AppSidebar` `ShellHeader` `ShellMain`) + `sidebar` | components/shell.md · sidebar.md · dashboard.html · explore.html |
+| 업무 셸 (유틸리티바 · 헤더 경로부 · 사이드바(아이콘 · 접힘 · 완전 숨김 `data-ggc-lnb-collapse="hide"` v3.3) · ≤900 「전체메뉴」 오른쪽 서랍(v3.2) · 본문) | `.ggc-utility-bar` `.ggc-gnb` `.ggc-gnb-page` `.ggc-lnb(--icon)` `[data-ggc-lnb-toggle]` `.ggc-gnb-menu[data-ggc-drawer-toggle]` `.ggc-shell-main(--wide)` | `ggc-shell` (`AppSidebar` `ShellHeader` `ShellMain`) + `sidebar` | components/shell.md · sidebar.md · dashboard.html · explore.html |
 | 대민 셸 (마스트헤드 · 헤더 · 주 메뉴 · 공개 푸터 · 아이덴티파이어) | `.ggc-masthead` `.ggc-header` `.ggc-main-menu` `.ggc-footer--public` `.ggc-identifier` | `ggc-masthead` `ggc-public-header` `ggc-public-footer` `ggc-identifier` | guides/public-shell.md · public/index.html |
-| 페이지 헤더 (**h1 24** · 설명 · 주 액션 — 브레드크럼은 헤더) | `.ggc-page-head` `.ggc-page-title` | `ggc-page-head` (`PageHead` `SectionTitle`) | components/page-head.md |
+| 페이지 헤더 (**h1 24** · 주 액션 — 설명 줄은 기본 없음 · 브레드크럼은 헤더) | `.ggc-page-head` `.ggc-page-title` | `ggc-page-head` (`PageHead` `SectionTitle`) | components/page-head.md |
 | 대민 페이지 타이틀 · 히어로 | `.ggc-page-title` `.ggc-hero` | `ggc-public-layout` `ggc-hero` | guides/public-shell.md |
 | 현재 경로 (업무 셸은 헤더 경로부 안이 기본) | `.ggc-breadcrumb` | `breadcrumb` | components/breadcrumb.md |
 | 제목 스케일 · 아이콘 | `.ggc-h1/.ggc-h2/.ggc-h3` · `.ggc-icon(--lg)` + 스프라이트 | `SectionTitle` · `lucide-react` | guides/typography.md · icons.md |
@@ -23,7 +23,7 @@
 
 | 과업 | Tier 1 | Tier 2 | 문서 · 갤러리 |
 |---|---|---|---|
-| 건수 · KPI | `.ggc-stat-grid` `.ggc-stat` (정확히 4) | `ggc-stat` | components.html |
+| 건수 · KPI (쓰임이 있을 때 0~4 · 추세 줄은 기본 없음) | `.ggc-stat-grid` `.ggc-stat` | `ggc-stat` | components.html |
 | 목록 (표) | `.ggc-table-wrap` `.ggc-table` (`--kv` `--flat` `.num` `tr.total`) | `table` · **`ggc-data-table`**(정렬 · 검색 · 열 · 쪽) | components.html · explore.html · components/data-table.md |
 | 목록 (행 — 제목은 줄바꿈 · 단추가 있으면 상태 위 · 단추 아래, v3.2) | `.ggc-card` + `.ggc-list-row` | `ggc-list-row` | components.html · components/list-row.md |
 | 목록 (대민 카드 격자) | `.ggc-structured-list` | `ggc-structured-list` | components/structured-list.md |
@@ -40,7 +40,9 @@
 | 본문 링크 · 새 창 · 내려받기 | `.ggc-link(--external/--download/--quiet)` | — | components/link.md |
 | 안내 · 유의사항 · 제출 서류 목록 | `.ggc-text-list(--check/--dash)` | — | components/text-list.md |
 | 긴 문서의 절 목차 | `.ggc-in-page-nav` + `data-ggc-in-page-nav` | — | components/in-page-nav.md |
-| 아이콘 · 약어 보조 설명 | `.ggc-tooltip-wrap` + `.ggc-tooltip` | `tooltip` | components/tooltip.md |
+| 아이콘 · 약어 보조 설명 (마우스 · 초점) | `.ggc-tooltip-wrap` + `.ggc-tooltip` | `tooltip` | components/tooltip.md |
+| 집계 기준 · 용어 · 보충 숫자 (누르면 열림 — 휴대폰 가능, v3.3) | `.ggc-toggletip` (`<details>`) | `popover` | components/toggletip.md · components-overlay.html |
+| 한 건의 담당 · 소관 · 시각 · 이력 요약 (오른쪽 정보 서랍, v3.3) | `.ggc-modal--sheet` + `data-ggc-modal-open` | `sheet` (`side="right"`) | components/sheet.md · explore.html |
 | 한글 · PDF 미리보기 (렌더러는 서비스, v3.2) | `.ggc-viewer` + `data-ggc-viewer` (`--frame` = iframe) | — | components/viewer.md · workbench.html |
 | 3초 넘는 시스템 작업의 진행 (레코드 처리 단계는 배지 하나, v3.2) | `.ggc-job` + `data-ggc-job` (`--compact`) | — | components/job.md · workbench.html |
 | 센 값의 진행 (6건 중 4건 — 모르면 스피너, v3.2) | `.ggc-progress` (`<progress>`) | `progress` | components/progress.md |

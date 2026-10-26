@@ -277,8 +277,13 @@
               e.preventDefault();
               var card = a.closest('.ggc-card');
               var content = el('div');
-              card.querySelectorAll('.ggc-list-row').forEach(function (row) { content.appendChild(row.cloneNode(true)); });
-              workNotice(card.querySelector('.title').textContent, content);
+              card.querySelectorAll('.ggc-list-row').forEach(function (row) {
+                var copy = row.cloneNode(true);
+                // 창 안에서 정보 서랍을 또 열지 않는다(모달 안 모달 금지) — 서랍 링크는 글자로
+                copy.querySelectorAll('[data-ggc-modal-open]').forEach(function (link) { link.replaceWith(link.textContent); });
+                content.appendChild(copy);
+              });
+              workNotice(card.querySelector('.ggc-card-head .title').firstChild.textContent.trim(), content);
             });
           }
           if (a.textContent.includes('내려받기')) a.addEventListener('click', function (e) {
@@ -310,8 +315,13 @@
   }
   function initExplore(main) {
     var form = main.querySelector('form'), table = main.querySelector('table'), tbody = table.tBodies[0];
-    var rows = [].slice.call(tbody.rows), labels = [].map.call(table.tHead.rows[0].cells, function (c) { return c.textContent.trim(); });
-    var records = rows.map(function (row) { return { row: row, values: [].map.call(row.cells, function (c) { return c.textContent.trim(); }) }; });
+    // 표는 비교에 쓰는 6열만 보인다(v3.3, ADR 0015). 종류 · 제안자 · 경과는 행의 data-* 에 있고 정보 서랍 · CSV 에 나온다.
+    // 아래 값 순서는 예전 9열 그대로 — 필터 · 정렬 · 카드가 같은 번호를 쓴다
+    var rows = [].slice.call(tbody.rows), labels = ['의안번호', '의안명', '종류', '소관위원회', '제안자', '접수일', '경과(일)', '상태', '동작'];
+    var records = rows.map(function (row) {
+      var c = [].map.call(row.cells, function (td) { return td.textContent.trim(); });
+      return { row: row, values: [c[0], c[1], row.dataset.kind, c[2], row.dataset.proposer, c[3], row.dataset.days, c[4], c[5]] };
+    });
     var q = form.querySelector('#work-q'), committee = form.querySelector('#work-c'), status = form.querySelector('#work-s'), term = form.querySelector('#work-t');
     // There is no signed-in user's committee in this offline example. Default to all records.
     committee.options[0].remove(); committee.options[0].selected = true;
@@ -330,21 +340,24 @@
     var mobile = window.matchMedia('(max-width: 600px)'), cardMode = mobile.matches, pageSize = cardMode ? 5 : 15, pageIndex = 0, filtered = records.slice();
     size.value = String(pageSize); pager.append(summary, prev, size, next);
     var view = main.querySelector('[data-work-view]'), sort = main.querySelector('#work-sort');
-    function recordDetails(record) {
-      var dl = el('dl', 'ggc-work-detail');
-      record.values.slice(0, 8).forEach(function (v, i) { dl.append(el('dt', '', labels[i]), el('dd', '', v)); });
-      return dl;
-    }
-    function openRecord(record) {
-      var content = el('div'); content.appendChild(recordDetails(record));
-      content.appendChild(el('p', '', '예시 데이터입니다. 실제 의안 처리나 제출은 수행하지 않습니다.'));
-      var write = el('a', 'ggc-btn ggc-btn--primary', '초안 작성 화면'); write.href = workLink('wizard');
-      write.addEventListener('click', function () { var d = document.querySelector('#work-dialog'); if (d) d.close(); });
-      content.appendChild(write); workNotice(record.values[0] + ' · 의안 상세', content);
+    // 한 건의 정보는 오른쪽 정보 서랍(.ggc-modal--sheet, v3.3) — 읽기 전용, 여는 요소로 초점이 돌아온다
+    function openRecord(record, opener) {
+      var old = document.querySelector('#bill-sheet'); if (old) old.remove();
+      var sheet = el('dialog', 'ggc-modal ggc-modal--sheet'); sheet.id = 'bill-sheet'; sheet.setAttribute('aria-labelledby', 'bill-sheet-title');
+      var head = el('div', 'head'), heading = el('h2', 'title', record.values[1]); heading.id = 'bill-sheet-title';
+      var close = el('button', 'close'); close.type = 'button'; close.setAttribute('data-ggc-modal-close', ''); close.setAttribute('aria-label', '닫기');
+      close.innerHTML = '<svg class="ggc-icon" aria-hidden="true"><use href="#i-x"/></svg>'; head.append(heading, close);
+      var body = el('div', 'body'), dl = el('dl');
+      record.values.slice(0, 8).forEach(function (v, i) { if (i !== 1) dl.append(el('dt', '', labels[i]), el('dd', '', v)); });
+      body.append(dl, el('p', '', '예시 데이터입니다. 실제 의안 처리나 제출은 수행하지 않습니다.'));
+      var foot = el('div', 'foot'), write = el('a', 'ggc-btn ggc-btn--secondary', '초안 작성 화면'); write.href = workLink('wizard');
+      write.addEventListener('click', function () { sheet.close(); }); foot.appendChild(write);
+      sheet.append(head, body, foot); document.body.appendChild(sheet);
+      window.GGC.initModals(); window.GGC.openModal(sheet, opener);
     }
     records.forEach(function (r) {
       [].forEach.call(r.row.cells, function (c) { c.title = c.textContent.trim(); });
-      r.row.querySelectorAll('a, button').forEach(function (b) { b.addEventListener('click', function (e) { e.preventDefault(); openRecord(r); }); });
+      r.row.querySelectorAll('a, button').forEach(function (b) { b.addEventListener('click', function (e) { e.preventDefault(); openRecord(r, b); }); });
     });
     function render() {
       var count = Math.max(1, Math.ceil(filtered.length / pageSize)); pageIndex = Math.min(pageIndex, count - 1);
@@ -355,14 +368,13 @@
         // 카드도 목록 행과 같은 구조(v3.2) — 왼쪽 본문 · 오른쪽 칸(상태 배지 위 · 동작 단추 아래 · 오른쪽 끝)
         var card = el('article', 'ggc-work-record ggc-list-row'), body = el('div', 'body'), end = el('div', 'end');
         body.appendChild(el('code', '', r.values[0]));
-        var title = el('h2', 'title'); var link = el('a', '', r.values[1]); link.href = '#'; link.addEventListener('click', function (e) { e.preventDefault(); openRecord(r); }); title.appendChild(link); body.appendChild(title);
-        body.appendChild(el('p', 'meta', r.values[3] + ' · ' + r.values[5]));
-        var details = el('details'); details.appendChild(el('summary', '', '모든 정보')); details.appendChild(recordDetails(r)); body.appendChild(details);
-        var action = el('button', 'ggc-btn ggc-btn--secondary ggc-btn--sm', r.values[8]); action.type = 'button'; action.addEventListener('click', function () { openRecord(r); });
-        end.append(r.row.cells[7].firstElementChild.cloneNode(true), action); card.append(body, end); cards.appendChild(card);
+        var title = el('h2', 'title'); var link = el('a', '', r.values[1]); link.href = '#'; link.addEventListener('click', function (e) { e.preventDefault(); openRecord(r, link); }); title.appendChild(link); body.appendChild(title);
+        body.appendChild(el('p', 'meta', r.values[3] + ' · ' + r.values[5]));   // 표와 같은 비교 항목만 — 나머지는 제목을 누르면 정보 서랍
+        var action = el('button', 'ggc-btn ggc-btn--secondary ggc-btn--sm', r.values[8]); action.type = 'button'; action.addEventListener('click', function () { openRecord(r, action); });
+        end.append(r.row.cells[4].firstElementChild.cloneNode(true), action); card.append(body, end); cards.appendChild(card);
       });
       table.parentElement.hidden = cardMode || !filtered.length; cards.hidden = !cardMode || !filtered.length; empty.hidden = !!filtered.length;
-      main.querySelector('[data-work-count]').textContent = '총 ' + filtered.length + '건 · ' + sort.selectedOptions[0].text;
+      main.querySelector('[data-work-count]').textContent = '총 ' + filtered.length + '건';   // 정렬은 옆 선택 상자에 이미 보인다(R3)
       summary.textContent = (pageIndex + 1) + ' / ' + count + '쪽'; prev.disabled = pageIndex === 0; next.disabled = pageIndex >= count - 1;
       view.textContent = cardMode ? '표 보기' : '카드 보기'; view.setAttribute('aria-pressed', String(cardMode));
       table.parentElement.scrollTop = 0;

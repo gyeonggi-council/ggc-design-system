@@ -7,7 +7,7 @@
 ```html
 <div class="ggc-card">
   <div class="ggc-card-head">
-    <div><div class="title">입법검토보고서 결재 흐름</div><div class="sub">최근 7일 · 12건</div></div>
+    <div class="title">입법검토보고서 결재 흐름</div>
     <a class="action" href="…">전체 보기</a>
   </div>
   <div class="ggc-list-row">…</div>
@@ -22,7 +22,7 @@
 
 | 클래스 | 무엇 |
 |---|---|
-| `.ggc-card-head` · `.title` · `.sub` · `.action` | 제목 `--ggc-h3-size`/600 · 부제 · 우측 링크. 여백 `--ggc-row-pad` — 목록 행과 같아 카드 제목과 행 제목의 왼쪽 끝이 맞는다. 좁으면 줄을 바꾼다(`flex-wrap`). `--band` 는 인셋 배경의 밴드형 헤더(여백 같음) |
+| `.ggc-card-head` · `.title` · `.sub` · `.action` | 제목 `--ggc-h3-size`/600 · 부제(기본 없음 — 제목만으로 범위가 모호할 때 한 줄, v3.3) · 우측 링크. 여백 `--ggc-row-pad` — 목록 행과 같아 카드 제목과 행 제목의 왼쪽 끝이 맞는다. 좁으면 줄을 바꾼다(`flex-wrap`). `--band` 는 인셋 배경의 밴드형 헤더(여백 같음) |
 | `.ggc-card--pad` | 패딩 `--ggc-card-pad`(값은 프로필이 정한다), 넘침 허용 |
 | `.ggc-card-foot` | 상단 hairline. 여백 `--ggc-row-pad` · 좁으면 줄을 바꾼다. `--inset` 인셋 배경, `--center` 가운데 정렬 |
 

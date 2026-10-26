@@ -131,7 +131,7 @@
   </header>
 
   <div class="ggc-shell-body">
-    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록">
+    <nav class="ggc-lnb ggc-scroll" aria-label="예제 목록" data-ggc-lnb-collapse="hide">
       <div class="ggc-lnb-group">갤러리</div>
       <a class="ggc-lnb-item" href="index.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-house"/></svg><span class="label">개요</span></a>
       <a class="ggc-lnb-item" href="tokens.html"><svg class="ggc-icon" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg><span class="label">토큰 · 팔레트</span></a>
@@ -376,6 +376,25 @@
       </section>
 
       <section class="ex-section">
+        <h2>옮길 자리 다섯 <span class="cls">v3.3 · ADR 0015</span></h2>
+        <p>덜어낸 정보에 쓰임이 남아 있으면 지우지 않고 <b>한 번 눌러 닿는 자리</b>로 옮긴다. 자리는 정보 종류로 정한다.
+        여러 행을 나란히 비교하는 항목(목록의 소관 · 접수일)은 화면에 남긴다. 실물은 <a href="dashboard.html">대시보드</a> · <a href="explore.html">의안 목록</a> · <a href="components-overlay.html">오버레이</a>.</p>
+        <div class="ggc-card" style="overflow-x:auto">
+        <table class="ggc-table">
+          <caption class="ggc-sr">정보 종류별 기본 자리</caption>
+          <thead><tr><th scope="col">어디에</th><th scope="col">무엇을</th><th scope="col">부품</th></tr></thead>
+          <tbody>
+            <tr><td>화면에 늘</td><td>화면 이름 · 대상 이름 · 현재 상태 · 지금 할 행동 · 결과 건수(한 곳) · 마감 일시 · 저장 상태 · 오류와 복구 방법</td><td>—</td></tr>
+            <tr><td>마우스 · 초점</td><td>아이콘 단추 이름 · 약어 풀이 · 잘린 값 전체</td><td><code class="ex-inline">.ggc-tooltip</code></td></tr>
+            <tr><td>ⓘ 누르면</td><td>집계 기준 · 용어 설명 · 전 회기 대비 같은 보충 숫자</td><td><code class="ex-inline">.ggc-toggletip</code></td></tr>
+            <tr><td>오른쪽 서랍</td><td>한 건의 담당 · 소관 · 접수/수정 시각 · 장소 · 이력 요약</td><td><code class="ex-inline">.ggc-modal--sheet</code></td></tr>
+            <tr><td>상세 화면 · 두 칸</td><td>긴 본문 · 전체 이력 · 편집 · 결재 판단</td><td><code class="ex-inline">.ggc-split</code></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </section>
+
+      <section class="ex-section">
         <h2>덜어내지 않은 것</h2>
         <p>상태 배지 · <b>자동 저장 상태</b> · 마감 시각(한 곳) · 문서 실제 모양 · 파일 올리기의 입력 조건 · 화면 낭독기용 제목은 「후」에도 있다.
         오류 사유와 복구 방법, 밖으로 나가는 문안의 미리보기, AI 결과의 출처도 마찬가지다(R10). 덜어내기는 "적게"가 아니라 <b>"필요한 것만, 필요한 때에"</b>다.</p>
@@ -387,7 +406,7 @@
   <footer class="ggc-footer">
     <div class="inner">
       예시 데이터다 · 의안명 · 숫자 · 이름은 전부 가상 ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.2
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.3
     </div>
   </footer>
 </div>

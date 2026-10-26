@@ -117,6 +117,7 @@ Tailwind 서비스는 `@theme { --color-brand: var(--ggc-primary); }` 처럼 **�
 - **work**: `.ggc-utility-bar` · `.ggc-badge` · `.ggc-footer` 는 토큰 파일에 들어 있어 복사하면 따라온다. 유틸리티 바는 기본 숨김이다(v3.2.1) — 마크업은 둔다. GNB/LNB 풀셸은
   `ggc-components.css` §9. 마크업은 `$ROOT/design/examples/dashboard.html` 에서 복사한다.
   휴대폰 메뉴는 **GNB 맨 끝 「전체메뉴」 → 오른쪽 서랍**이다(v3.2, ADR 0014 — 대민 셸과 같은 자리). `ggc-behaviors.js` 가 단추를 만들고, 옛 마크업이 맨 앞에 둔 단추는 맨 끝으로 옮긴다.
+  새 화면의 LNB 에는 `data-ggc-lnb-collapse="hide"` 를 둔다 — PC 단추가 메뉴를 완전히 숨기고 서비스마다 기억한다(v3.3, ADR 0015). 이 셸의 제목은 기본형(h1 보임).
   **하단 탭 바를 만들지 않는다** — 바닥은 스티키 액션바 자리다.
 - **public**: `docs/guides/public-shell.md` 순서대로 — 마크업은 `$ROOT/design/examples/public/index.html` 에서 복사.
   마스트헤드 문구는 바꾸지 않고, 국가 상징 이미지는 서비스가 정부 자산으로 채운다.
@@ -133,6 +134,8 @@ work 는 `references/archetypes.md` 의 슬롯 순서를, public 은 `references
 0. **덜어내기부터**(v3.1). 화면을 다 짜면 [`docs/guides/less.md`](../../docs/guides/less.md) 의 「군더더기 열 가지」를 대 보고, 판정 목록을 `design-decisions.md` 에 적는다.
    설명 줄(`.desc`)은 기본 없음, 제목은 화면군마다 기본형/간결형, 단계 막대는 사용자가 단계를 오가는 입력과 사용 안내에만.
    **오류 사유 · 저장 상태 · 출처 · 외부 발송 미리보기 · 낯선 말의 한 줄 풀이는 덜어낼 대상이 아니다.**
+   덜어낸 보조 정보는 지우지 말고 옮긴다(v3.3, ADR 0015) — 아이콘 이름 · 약어는 툴팁, 집계 기준 · 보충 숫자는 토글팁(`.ggc-toggletip`),
+   한 건의 담당 · 소관 · 시각 · 이력은 정보 서랍(`.ggc-modal--sheet`). 표는 less.md 「덜어낸 정보는 어디로」.
 
 1. **빈 상태 · 오류 · 로딩 3종을 함께 만든다.** 시연 당일에 드러나는 것이 이것이다. 로딩은 `.ggc-skeleton`/`.ggc-spinner`, 빈 상태는 다음 행동을 말한다.
 2. **정본에 없는 것을 정본이라 하지 않는다.** 디자인 원본(.dc.html)에는 반응형·접근성이 없다 — 그것은 계약 §2·§3 이 근거다.
