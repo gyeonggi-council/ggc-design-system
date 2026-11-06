@@ -8,6 +8,8 @@
 #   2. 갤러리 (D1~D5)         업무 9쪽 + 대민 4쪽이 정본 규칙을 지키는가 — 정본의 스모크 테스트
 #   3. 문서 무결성            깨진 상대 링크 · 절대경로 · 원문 IP 패턴
 #   4. Tier 2 레지스트리      registry.json ↔ public/r ↔ 소스 (R1~R5)
+#   5. 지식 기록 (K1~K6)      docs/records.tsv ↔ 트리 ↔ 정본 선택자 — current 기록만 지배한다 (v3.3, ADR 0015)
+#   6. vibe 채점기 자체 검증   갤러리 7쪽으로 tools/vibe-test/grade.py 를 검증 (생성 단계는 CI 밖)
 # 브라우저 검증(동작 · 오버플로 · 계산 스타일)은 스킬의 Phase 5 가 서비스마다 한다 — 여기서는 돌리지 않는다.
 set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -27,6 +29,8 @@ run "갤러리 · 업무 (D1~D5)"       "$PY" design/check_design.py --gate desi
 run "갤러리 · 대민 (D1~D5)"       "$PY" design/check_design.py --gate design/examples/public --aa=observe --profile public
 run "문서 링크 · 금지 문자열"      "$PY" tools/check-links.py
 run "Tier 2 레지스트리 (R1~R5)"   "$PY" tools/check-registry.py
+run "지식 기록 (K1~K6)"          "$PY" tools/check-knowledge.py
+run "vibe 채점기 자체 검증"       "$PY" tools/vibe-test/grade.py --self-check
 
 if [ "$fail" -eq 0 ]; then echo "check-all: 전부 통과"; else echo "check-all: $fail 항목 실패"; fi
 exit "$fail"

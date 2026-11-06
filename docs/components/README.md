@@ -5,7 +5,8 @@
 펼치면 그대로 복사할 수 있다.
 
 인벤토리 정본은 [`design/components.tsv`](../../design/components.tsv) 다. 이 표와 CSS 가
-어긋나면 `check_design.py --canon` 이 잡는다.
+어긋나면 `check_design.py --canon` 이 잡는다. 형제 부품이 함께 지키는 규칙(높이 토큰 · 포커스 · 닫는 법 · 색 단독 금지)은
+부품마다 되풀이하지 않고 [패밀리](../families/README.md)에 한 번 둔다. 명령으로 꺼내려면 `python tools/ggc.py component <id> [--markup]`.
 
 ## Tier 1 — CSS 클래스 (전 스택 공용)
 

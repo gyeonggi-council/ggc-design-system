@@ -1,0 +1,151 @@
+# records.tsv — 지식 기록 레지스트리 정본 (v3.3, ADR 0015)
+#
+# 이 저장소의 문서는 전부 「지식 기록」이고, 기록마다 **권위**(authority)가 있다.
+#   current  = 지금 구현과 검토를 지배한다. 현재형으로 쓴다. 제안·이력·PR 이야기는 넣지 않는다
+#   draft    = 제안. docs/specs/ 에만 산다. 구현을 지배하지 않는다
+#   archived = 이력·증거·대체된 결정. 참고만 한다
+# 어떤 파일이 어떤 기록의 지배를 받는지는 governs 열이 말한다 → `python tools/ggc.py specs --for <경로>`
+#   경로 글롭(design/ggc-tokens.css · registry/ggc/** …) 또는 class:.ggc-xxx (정본 CSS 의 선택자 — 바뀐 줄로 찾는다). 없으면 -
+# 제목은 여기 적지 않는다 — 파일의 첫 # 제목을 읽는다(값은 한 곳에).
+# 검사: python tools/check-knowledge.py  (K1 등록 누락 · K2 값 · K3 governs 실재 · K4 draft 위치 · K5 템플릿 분리 · K6 인벤토리 문서 범위)
+#
+# path	kind	authority	governs	owner
+AGENTS.md	instructions	current	**	-
+CLAUDE.md	instructions	current	-	AGENTS.md
+README.md	index	current	-	-
+CHANGELOG.md	changelog	current	-	-
+DESIGN.md	generated	current	-	tools/build-design-md.py
+design/brand/SOURCE.md	guide	current	design/brand/**	ADR 0007
+design/examples/README.md	guide	current	design/examples/**	-
+design/ppt/README.md	guide	current	design/ppt/**	-
+tools/vibe-test/README.md	guide	current	tools/vibe-test/**	ADR 0015
+docs/README.md	index	current	docs/**	-
+docs/contract.md	contract	current	design/ggc-tokens.css;design/ggc-components.css;design/ggc-public.css;design/ggc-behaviors.js;design/ggc-fonts.css;design/examples/**;registry/ggc/**	-
+docs/krds-alignment.md	guide	current	design/ggc-tokens.css;design/ggc-public.css	ADR 0001;ADR 0009
+docs/design-decisions.md	evidence	current	design/examples/**	-
+docs/architecture/system.md	architecture	current	design/**;registry/**;tools/**;public/r/**	ADR 0015
+docs/contributing/pull-requests.md	contributing	current	.github/**	ADR 0015
+docs/contributing/record-writing.md	contributing	current	docs/**;skills/**	ADR 0015
+docs/contributing/component-lifecycle.md	contributing	current	design/components.tsv;design/ggc-components.css;registry/ggc/**;docs/components/**	ADR 0015
+docs/families/README.md	index	current	docs/families/**	-
+docs/families/form-controls.md	family	current	class:.ggc-field;class:.ggc-select;class:.ggc-check;class:.ggc-radio;class:.ggc-switch;class:.ggc-date;class:.ggc-file;class:.ggc-listbox;class:.ggc-search	-
+docs/families/overlays.md	family	current	class:.ggc-modal;class:.ggc-menu;class:.ggc-tooltip;class:.ggc-toast;class:.ggc-main-menu;class:.ggc-drawer-head	-
+docs/families/status.md	family	current	class:.ggc-badge;class:.ggc-tag;class:.ggc-alert;class:.ggc-toast;class:.ggc-progress;class:.ggc-job;class:.ggc-empty;class:.ggc-spinner;class:.ggc-skeleton	-
+docs/families/shell.md	family	current	class:.ggc-shell;class:.ggc-gnb;class:.ggc-lnb;class:.ggc-header;class:.ggc-masthead;class:.ggc-identifier;class:.ggc-solo;class:.ggc-page-head	ADR 0010;ADR 0014
+docs/specs/README.md	index	current	docs/specs/**	-
+docs/templates/knowledge/record.md	template	current	-	-
+docs/templates/knowledge/adr.md	template	current	-	-
+docs/templates/knowledge/component.md	template	current	-	-
+docs/templates/knowledge/family.md	template	current	-	-
+docs/templates/knowledge/spec.md	template	current	-	-
+docs/audit/2026-09-05-shadcn-krds-audit.md	audit	archived	-	ADR 0009
+docs/audit/2026-09-15-responsive-ux-review.md	audit	archived	-	-
+docs/components/README.md	index	current	docs/components/**	-
+docs/components/accordion.md	component	current	class:.ggc-accordion;class:.ggc-accordion-group	-
+docs/components/actionbar.md	component	current	class:.ggc-actionbar	-
+docs/components/alert.md	component	current	class:.ggc-alert	-
+docs/components/badge.md	component	current	class:.ggc-badge;class:.ggc-tag	-
+docs/components/breadcrumb.md	component	current	class:.ggc-breadcrumb	ADR 0010
+docs/components/button.md	component	current	class:.ggc-btn;class:.ggc-icon-btn	-
+docs/components/card.md	component	current	class:.ggc-card;class:.ggc-card-head;class:.ggc-card-foot	ADR 0013
+docs/components/check-radio.md	component	current	class:.ggc-check;class:.ggc-radio;class:.ggc-chip;class:.ggc-check-group	-
+docs/components/data-table.md	component	current	registry/ggc/blocks/ggc-data-table/**	ADR 0011
+docs/components/date.md	component	current	class:.ggc-date;class:.ggc-date-range	-
+docs/components/detail-layout.md	component	current	registry/ggc/blocks/ggc-detail-layout/**	ADR 0011
+docs/components/empty.md	component	current	class:.ggc-empty	ADR 0006
+docs/components/field.md	component	current	class:.ggc-field	-
+docs/components/file-upload.md	component	current	class:.ggc-file;class:.ggc-file-list	-
+docs/components/filter-bar.md	component	current	registry/ggc/blocks/ggc-filter-bar/**	ADR 0011
+docs/components/identifier.md	component	current	class:.ggc-identifier	-
+docs/components/in-page-nav.md	component	current	class:.ggc-in-page-nav	-
+docs/components/job.md	component	current	class:.ggc-job	ADR 0013
+docs/components/link.md	component	current	class:.ggc-link	-
+docs/components/list-row.md	component	current	class:.ggc-list-row	ADR 0014
+docs/components/listbox.md	component	current	class:.ggc-listbox	-
+docs/components/masthead.md	component	current	class:.ggc-masthead	-
+docs/components/menu.md	component	current	class:.ggc-menu	-
+docs/components/modal.md	component	current	class:.ggc-modal	-
+docs/components/page-head.md	component	current	class:.ggc-page-head;class:.ggc-page-title	ADR 0010;ADR 0012
+docs/components/pagination.md	component	current	class:.ggc-pagination	-
+docs/components/progress.md	component	current	class:.ggc-progress	ADR 0013
+docs/components/prose.md	component	current	class:.ggc-prose	-
+docs/components/public-footer.md	component	current	class:.ggc-footer--public	-
+docs/components/public-header.md	component	current	class:.ggc-header;class:.ggc-main-menu	ADR 0014
+docs/components/qr-login.md	component	current	class:.ggc-qr;class:.ggc-login	-
+docs/components/select.md	component	current	class:.ggc-select	-
+docs/components/shell.md	component	current	class:.ggc-shell;class:.ggc-gnb;class:.ggc-lnb;class:.ggc-lnb--icon;class:.ggc-utility-bar;class:.ggc-footer;class:.ggc-skip-link;class:.ggc-search;class:.ggc-drawer-backdrop	ADR 0010;ADR 0014
+docs/components/side-nav.md	component	current	class:.ggc-side-nav	-
+docs/components/sidebar.md	component	current	registry/ggc/blocks/ggc-shell/**;registry/ggc/ui/sidebar.tsx	ADR 0011
+docs/components/signature.md	component	current	class:.ggc-signature	ADR 0013
+docs/components/skeleton.md	component	current	class:.ggc-skeleton	-
+docs/components/solo.md	component	current	class:.ggc-solo	ADR 0013
+docs/components/spinner.md	component	current	class:.ggc-spinner	-
+docs/components/split.md	component	current	class:.ggc-split	ADR 0013
+docs/components/stat.md	component	current	class:.ggc-stat;class:.ggc-stat-grid	-
+docs/components/stepper.md	component	current	class:.ggc-wizard;class:.ggc-wizard-mini	-
+docs/components/structured-list.md	component	current	class:.ggc-structured-list	-
+docs/components/switch.md	component	current	class:.ggc-switch	-
+docs/components/table.md	component	current	class:.ggc-table;class:.ggc-table-wrap	-
+docs/components/tabs.md	component	current	class:.ggc-tabs;class:.ggc-tab;class:.ggc-tabpanel	-
+docs/components/text-list.md	component	current	class:.ggc-text-list	-
+docs/components/toast.md	component	current	class:.ggc-toast;class:.ggc-toast-region	ADR 0013
+docs/components/tooltip.md	component	current	class:.ggc-tooltip;class:.ggc-tooltip-wrap	-
+docs/components/viewer.md	component	current	class:.ggc-viewer	ADR 0013
+docs/components/wizard-layout.md	component	current	registry/ggc/blocks/ggc-wizard-layout/**	ADR 0011
+docs/components/work-layout.md	component	current	class:.ggc-work;class:.ggc-work-grid;class:.ggc-work-actions	ADR 0014
+docs/decisions/README.md	index	current	docs/decisions/**	-
+docs/decisions/0001-status-colors-keep-ci.md	decision	current	-	-
+docs/decisions/0002-high-contrast-without-dark.md	decision	current	-	-
+docs/decisions/0003-single-token-file-profiles.md	decision	current	-	-
+docs/decisions/0004-copy-not-package-and-tier2.md	decision	current	-	-
+docs/decisions/0005-radix-and-tailwind-v4.md	decision	current	-	-
+docs/decisions/0006-empty-state-assembled.md	decision	current	-	-
+docs/decisions/0007-brand-identity-separate-repo.md	decision	current	-	-
+docs/decisions/0008-page-title-in-gnb.md	decision	archived	-	ADR 0010
+docs/decisions/0009-work-profile-shadcn-density.md	decision	current	-	-
+docs/decisions/0010-page-title-in-content.md	decision	current	-	-
+docs/decisions/0011-tier2-primary-for-react.md	decision	current	-	-
+docs/decisions/0012-show-what-is-needed.md	decision	current	-	-
+docs/decisions/0013-github-tidy-and-shared-parts.md	decision	current	-	-
+docs/decisions/0014-mobile-menu-right-and-shared-rules.md	decision	current	-	-
+docs/decisions/0015-one-system-for-humans-and-agents.md	decision	current	-	-
+docs/design-evidence/legislative-studio-v2-implementation.md	evidence	archived	-	-
+docs/design-evidence/screenshots/README.md	evidence	archived	-	-
+docs/design-evidence/v3-tier2-consumer.md	evidence	archived	-	ADR 0011
+docs/design-evidence/v3.2.1-service-drink.md	evidence	archived	-	ADR 0013
+docs/guides/accessibility.md	guide	current	design/ggc-tokens.css;design/ggc-components.css;design/ggc-public.css	ADR 0002
+docs/guides/behaviors-js.md	guide	current	design/ggc-behaviors.js	-
+docs/guides/brand-assets.md	guide	current	design/brand/**	ADR 0007
+docs/guides/fonts.md	guide	current	design/ggc-fonts.css;design/fonts/**	-
+docs/guides/icons.md	guide	current	design/ggc-icons.svg;design/icons/**;design/build-icons.py;class:.ggc-icon	ADR 0009
+docs/guides/layout-shell.md	guide	current	class:.ggc-shell;class:.ggc-gnb;class:.ggc-lnb;design/examples/dashboard.html	ADR 0010;ADR 0014
+docs/guides/less.md	guide	current	design/examples/**	ADR 0012
+docs/guides/ppt.md	guide	current	design/ppt/**	-
+docs/guides/profiles.md	guide	current	design/ggc-tokens.css;design/ggc-public.css;design/examples/public/**	ADR 0003
+docs/guides/public-shell.md	guide	current	design/ggc-public.css;design/examples/public/**;class:.ggc-public;class:.ggc-hero	-
+docs/guides/states.md	guide	current	class:.ggc-job;class:.ggc-progress;class:.ggc-empty;class:.ggc-toast;class:.ggc-alert;class:.ggc-skeleton;class:.ggc-spinner	ADR 0013
+docs/guides/tokens.md	guide	current	design/ggc-tokens.css	ADR 0003
+docs/guides/typography.md	guide	current	design/ggc-tokens.css;design/ggc-fonts.css	ADR 0009
+docs/migration/platform-services-2026-08.md	migration	archived	-	-
+docs/migration/v1.2-to-v2.md	migration	current	-	-
+docs/migration/v2-to-v3.md	migration	current	-	-
+docs/migration/v3.1-to-v3.2.md	migration	current	-	ADR 0013
+docs/quickstart/fastapi-static.md	quickstart	current	-	-
+docs/quickstart/jinja2.md	quickstart	current	-	-
+docs/quickstart/jsp-tiles.md	quickstart	current	-	-
+docs/quickstart/next-app-router.md	quickstart	current	-	-
+docs/quickstart/react-tier2.md	quickstart	current	registry/**;components.json	ADR 0011
+docs/quickstart/static-html.md	quickstart	current	-	-
+docs/quickstart/vite-react.md	quickstart	current	-	-
+skills/ggc-design/SKILL.md	skill	current	skills/**	-
+skills/ggc-design/references/archetypes.md	reference	current	design/examples/dashboard.html;design/examples/explore.html;design/examples/wizard.html;design/examples/operate.html;design/examples/less.html;design/examples/workbench.html	ADR 0012
+skills/ggc-design/references/brand-assets.md	reference	current	design/brand/**	-
+skills/ggc-design/references/components.md	reference	current	design/components.tsv	-
+skills/ggc-design/references/contract.md	reference	current	design/ggc-tokens.css;design/ggc-components.css	-
+skills/ggc-design/references/domain-language.md	reference	current	-	ADR 0012
+skills/ggc-design/references/porting.md	reference	current	-	-
+skills/ggc-design/references/profiles.md	reference	current	-	ADR 0003
+skills/ggc-design/references/public-patterns.md	reference	current	design/examples/public/**	-
+skills/ggc-design/references/registry.md	reference	current	registry/**;registry.json;public/r/**;components.json	ADR 0004;ADR 0011
+skills/ggc-design/references/reskin.md	reference	current	tools/sync-canon.py	-
+skills/ggc-design/references/verify.md	reference	current	design/check_design.py;tools/check-all.sh;tools/check-links.py;tools/check-registry.py;tools/check-knowledge.py	-

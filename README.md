@@ -3,8 +3,8 @@
 경기도의회 사무처의 업무 웹 서비스(의안·자막·주간보고·지식창고 등)가 **같은 모양, 같은 규칙**으로 화면을 만들도록 돕는 안내서다.
 색과 글꼴을 맞추는 것뿐 아니라, **지금 필요 없는 정보를 덜어내** 담당자가 할 일을 바로 찾게 하는 것이 목표다.
 
-- 현재 판: **v3.2** (2026-10-24) — 화면 바탕을 흰색으로 바꾸고 칸은 선으로 나눴다(GitHub 처럼). 여러 서비스가 따로 만들던 부품 다섯(오래 걸리는 작업의 진행 표시 · 휴대폰 서명 화면 · 한글 문서 보기 · 왼쪽 목록+오른쪽 보기)을 공통으로 만들었다. 글자 크기·간격은 그대로다.
-- 직전 판 v3.1 (2026-10-18) — 「덜어내기」 규칙을 더했다.
+- 현재 판: **v3.3** (2026-11-06) — 저장소가 **사람과 AI 에게 같은 말로 설명되게** 다시 짰다(Meta 의 공개 디자인 시스템 Astryx 의 구성 방식을 참고). 화면의 색 · 글자 · 부품은 **바뀌지 않았다** — 서비스가 다시 복사할 것이 없다.
+- 직전 판 v3.2 (2026-10-24) — 화면 바탕을 흰색으로 바꾸고 칸은 선으로 나눴다(GitHub 처럼). 여러 서비스가 따로 만들던 부품 다섯을 공통으로 만들었다. v3.1 (2026-10-18) — 「덜어내기」 규칙.
 - 이 문서의 앞부분은 디자인을 몰라도 읽을 수 있게 썼다. 개발자용 내용은 [아래](#여기부터-개발자용)에 있다.
 
 ## 한눈에 보기 — 같은 화면, 덜어내기 전과 후
@@ -78,7 +78,38 @@
 ## 여기부터 개발자용
 
 화면을 직접 만드는 사람을 위한 내용이다. 용어는 위 「말 풀이」를 본다.
+**사람이든 에이전트든 시작점은 [`AGENTS.md`](AGENTS.md) 하나다** — 원칙 · 철칙 · 부트스트랩 · 흐름이 거기 있고, 이 README 는 그것을 되풀이하지 않는다.
 
+### 원칙 넷
+
+1. **안내가 강제보다 먼저, 값은 검사기가 지킨다.** 부품은 쓰임을 막지 않는다. 두 달 뒤에 갈라지는 것(값의 복제 · 낡은 생성물 · 지배 기록 누락)만 검사기가 막는다.
+2. **강하고 문서화된 규약.** 토큰 · 선택자 이름은 한 번 정하면 바꾸지 않는다. 마크업 · 슬롯 순서는 기록에 있고, 기록은 갤러리 실물과 같다.
+3. **사람과 AI 가 한 시스템.** 같은 CLI · 같은 지식 기록 · 같은 검사. 에이전트가 틀리면 고칠 것은 지시면이다(`tools/vibe-test/`).
+4. **측정으로 번다.** 규칙은 사용자 말 · 서비스 실측 · 캡처에서 나왔고, 느슨하게 쥐고 다시 본다(결정 기록 [ADR](docs/decisions/README.md)).
+
+### 세 층
+
+| 층 | 무엇 | 정본 |
+|---|---|---|
+| **기반** | 색 · 서체 · 타이포 스케일 · 간격 · 형태 · 포커스 · 셸 치수 · 두 프로필 | `design/ggc-tokens.css` · `ggc-fonts.css` · `ggc-icons.svg` |
+| **부품** | 인벤토리 `design/components.tsv` 의 행 하나가 부품 하나 — Tier 1 클래스 / Tier 2 shadcn 항목. 형제끼리의 계약은 [패밀리](docs/families/README.md) | `ggc-components.css` · `ggc-public.css` · `ggc-behaviors.js` / `registry/ggc/` |
+| **패턴** | 화면 틀 14종(업무 Archetype 6 · 대민 6 · 작업대 · 1인 링크) · 덜어내기 · 상태 보이기 | `design/templates.tsv` → 갤러리 + 처방 문서 |
+
+구조 · 경계 · 불변 조건 10: [docs/architecture/system.md](docs/architecture/system.md).
+
+### 사람과 에이전트가 같은 명령으로 (v3.3)
+
+```bash
+python tools/ggc.py docs principles --dense   # 원칙 · 철칙          python tools/ggc.py component --list      # 부품 → 문서
+python tools/ggc.py docs tokens --dense       # 토큰 = 값 (실시간)   python tools/ggc.py component button --markup
+python tools/ggc.py docs profile --dense      # 대민이 덮어쓰는 치수  python tools/ggc.py template --list       # 화면 틀 14종
+python tools/ggc.py specs --for <경로>        # 이 경로를 지배하는 기록 (또는 --diff origin/main)
+python tools/ggc.py check [<서비스>]           # 검사 — 없으면 저장소 전수
+```
+
+표준 라이브러리만 쓴다 — 망분리 PC 에서도 돈다. 전체 목록은 `python tools/ggc.py help`.
+
+**v3.3 (2026-11-06)** — 문서 · 도구만. CSS · 토큰 **무변경**(D1 재복사 불필요). `AGENTS.md` 정본 지시면 · CLI `tools/ggc.py` · 지식 기록 레지스트리 [`docs/records.tsv`](docs/records.tsv)(권위 current/draft/archived · 지배 범위 · 검사 K1~K6) · [패밀리 4종](docs/families/README.md) · [기여 절차 3종](docs/contributing/pull-requests.md) · PR 의도 템플릿 5종 · [vibe test](tools/vibe-test/README.md). 결정: [ADR 0015](docs/decisions/0015-one-system-for-humans-and-agents.md).
 **v3.2 (2026-10-24)** ⚠ D1 — 면은 흰 바탕 + 테두리(GitHub 식) · 제목 굵기 600 · 상태 보이기 가이드([docs/guides/states.md](docs/guides/states.md)) · 서비스 부품 다섯(`.ggc-job` · `.ggc-solo` · `.ggc-signature` · `.ggc-viewer` · `.ggc-split`) · 검사기 판 표시 · 재복사 도구 `tools/sync-canon.py`. 이전 안내 [v3.1→v3.2](docs/migration/v3.1-to-v3.2.md) · ADR 0013.
 **v3.1 (2026-10-18)** — 덜어내기 규칙([docs/guides/less.md](docs/guides/less.md))과 Operate(실시간 화면) 정본을 더했다. **CSS·토큰 파일은 바뀌지 않았다** — 서비스는 다시 복사할 필요가 없고, 그 화면을 다음에 고칠 때 규칙을 적용한다.
 **v3.0.0 (2026-09-05)** — 업무 프로필이 **shadcn 기본 밀도**로, 제목은 본문으로, 아이콘은 lucide 로(ADR 0009 · 0010 · 0011).
@@ -173,7 +204,10 @@ npx shadcn add @ggc/ggc-shell @ggc/ggc-page-head @ggc/ggc-data-table   # 사이�
 | `design/brand/` | 파비콘 세트 · 의회 마크 · stdlib 전용 생성기 · 배포 매핑표 |
 | **`design/examples/`** | **예제 갤러리 18쪽**(업무 13 + 대민 5) — 빌드 없이 열리는 실물. 여기부터 보면 된다 |
 | `design/ggc-public.css` + `design/ggc-behaviors.js` | **대민 셸 v3.2**(마스트헤드·헤더·주 메뉴·공개 푸터·아이덴티파이어) · 공통 동작(탭·모달·drawer·대민 메뉴·토스트·드롭다운·파일·툴팁·리스트박스·목차) |
-| `design/components.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 |
+| `design/components.tsv` · `design/templates.tsv` | **컴포넌트 인벤토리 정본** — 문서·DESIGN.md·레지스트리 lint 가 이 표를 읽는다 · **화면 틀 레지스트리**(v3.3) — `ggc template` 이 읽는다 |
+| `AGENTS.md` · `tools/ggc.py` | **정본 지시면**(사람 · 에이전트 공용) · **CLI** — 문서 · 토큰 · 부품 · 틀 · 검사 · 지배 기록 찾기 (v3.3) |
+| `docs/records.tsv` · `docs/architecture/` · `docs/families/` · `docs/contributing/` | **지식 기록 레지스트리**(권위 · 지배 범위, 검사 K1~K6) · 세 층과 불변 조건 · 패밀리 계약 4종 · PR/기록/부품 한살이 절차 (v3.3) |
+| `tools/vibe-test/` | **에이전트 생성 평가** — AGENTS.md 만 주고 화면 7종을 만들게 해 같은 검사기로 채점 (v3.3) |
 | `registry.json` · `registry/ggc/` · `public/r/` | **Tier 2 shadcn 레지스트리 74항목** — shadcn 공식 소스 + 토큰(UI 45 · 블록 27 · 훅). `registry.json` 은 생성물(`tools/build-registry-json.py`). 검사는 `tools/check-registry.py` |
 | `DESIGN.md` | **생성물** — Claude Design 「디자인 시스템 가져오기」가 읽는 루트 문서 (`tools/build-design-md.py`) |
 | `skills/ggc-design/` | **디자인 가이드 본문** — 화면 처방·스택별 착지점·리스킨·검증 |
@@ -183,9 +217,9 @@ npx shadcn add @ggc/ggc-shell @ggc/ggc-page-head @ggc/ggc-data-table   # 사이�
 
 ## 가이드 읽는 순서
 
-0. **[design/examples/index.html](design/examples/index.html)** — 먼저 눈으로 본다.
+0. **[AGENTS.md](AGENTS.md)** — 원칙 · 철칙 · 부트스트랩 다섯 명령. 그리고 **[design/examples/index.html](design/examples/index.html)** 을 눈으로 본다.
    글로 읽기 전에 무엇이 나오는지 알면 나머지가 훨씬 빨리 읽힌다
-1. **[docs/README.md](docs/README.md)** — 사람용 문서 진입: 내 스택의 5단계 quickstart · 업무/대민 판정 · 컴포넌트 찾기
+1. **[docs/README.md](docs/README.md)** — 사람용 문서 진입: 내 스택의 5단계 quickstart · 업무/대민 판정 · 컴포넌트 찾기 · 구조 · 패밀리 · 기여
 2. **[skills/ggc-design/SKILL.md](skills/ggc-design/SKILL.md)** — Claude Code 스킬 (전체 절차 · 결정 트리 · 완료 체크리스트).
    설치는 `bash tools/install-skill.sh` — 링크라 복사본이 생기지 않는다
 3. [docs/guides/less.md](docs/guides/less.md) — **덜어내기**(v3.1). 화면을 다 짠 뒤 「군더더기 열 가지」부터 대 본다
@@ -199,7 +233,7 @@ python design/check_design.py --canon                 # 정본 자체 (문서↔
 python design/check_design.py --report <서비스경로>    # 판정만
 python design/check_design.py --gate   <서비스경로>    # FAIL 이면 exit 1
 python design/check_design.py --all    <서비스루트>    # 전수 요약
-bash tools/check-all.sh                                # 이 저장소 자체 전수 (CI 가 도는 것과 같다)
+bash tools/check-all.sh                                # 이 저장소 자체 전수 (CI 가 도는 것과 같다) = python tools/ggc.py check
 ```
 
 | ID | 검사 | 왜 필요했나 |
@@ -211,6 +245,8 @@ bash tools/check-all.sh                                # 이 저장소 자체 �
 | D5 | `:focus-visible` · 대체 없는 `outline:none` · 대비 | |
 | D6 | **정본 자체** — 계약 문서 ↔ 토큰 ↔ 컴포넌트 ↔ 인벤토리 ↔ 생성물 · 프로필 블록 | 갭이 두 달간 안 보였다 |
 | D7 | Tier 2 소비 프로젝트 — 토큰 `@import` · `:root` 매핑이 전부 `var(--ggc-*)` · 다크 팔레트 없음 | 값을 두 번 적는 순간 갈라진다 |
+| **K1~K6** | **지식 기록** — 전부 등록 · 권위 값 · 지배 범위(글롭 · 정본 선택자)가 실재 · draft 는 specs 에만 · 템플릿 분리 · 인벤토리 전수가 기록에 잡힘 (`tools/check-knowledge.py`, v3.3) | 114개 문서 중 어느 것이 지배하는지 아무 데도 없었다 |
+| vibe | 채점기 자체 검증 — 갤러리 7쪽을 과제 출력처럼 채점 (`tools/vibe-test/grade.py --self-check`) | 채점기가 틀리면 지시면을 엉뚱하게 고친다 |
 
 검사기는 **설명을 위반으로 세지 않는다.** 주석과 HTML `<code>`/`<pre>` 본문은 스캔에서
 제외한다 — 그러지 않으면 “`#256ef4` 는 폐기값” 이라고 적는 순간 그 문장이 FAIL 이 되어

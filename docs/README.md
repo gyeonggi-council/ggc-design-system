@@ -3,6 +3,17 @@
 정본은 `design/`(토큰·컴포넌트·검사기)이고, 이 폴더는 그것을 **쓰는 법**이다. 값은 어디에도 적지 않는다 —
 값은 `design/ggc-tokens.css` 한 곳에만 있다.
 
+여기 있는 문서는 전부 **지식 기록**이다(v3.3, ADR 0015). 기록마다 권위(current · draft · archived)와 지배 범위가 [`records.tsv`](records.tsv) 에 있고,
+**current 기록만 구현과 검토를 지배한다.** 어떤 파일을 고치기 전에 그것을 지배하는 기록을 찾는다:
+
+```bash
+python tools/ggc.py specs --for design/ggc-components.css   # 또는 --diff origin/main
+python tools/ggc.py docs records --kind family              # 종류별 목록
+python tools/ggc.py docs less --dense                       # 기록을 밀도 높게 (제목 · 목록 · 표만)
+```
+
+사람도 에이전트도 같은 명령을 쓴다 — 시작점은 루트의 [`AGENTS.md`](../AGENTS.md).
+
 ## 5분 안에 붙이기 — 내 스택은?
 
 | 스택 | 문서 |
@@ -30,6 +41,18 @@
 
 [components/README.md](components/README.md) — 한 컴포넌트 한 쪽(용도 · 마크업 · 상태 · 키보드 · 프로필 · 하지 말 것).
 마크업은 갤러리 `design/examples/` 의 "마크업" 을 펼쳐 복사한다. 과업에서 찾으려면 `skills/ggc-design/references/components.md`.
+
+## 구조 · 패밀리 · 기여
+
+| 문서 | 무엇 |
+|---|---|
+| [architecture/system.md](architecture/system.md) | **세 층**(기반 · 부품 · 패턴) · 두 Tier · 두 프로필 · 경계(이 저장소가 하지 않는 것) · 불변 조건 10 과 검사기 |
+| [families/](families/README.md) | **패밀리** — 형제 부품이 함께 지키는 계약: [입력 컨트롤](families/form-controls.md) · [뜨는 층](families/overlays.md) · [상태 보이기](families/status.md) · [셸](families/shell.md) |
+| [contributing/pull-requests.md](contributing/pull-requests.md) | PR 은 의도 하나 — canon · record · gallery · registry · tooling 템플릿과 올리기 전 명령 |
+| [contributing/record-writing.md](contributing/record-writing.md) | 기록을 쓰는 법 — 종류 · 권위 · 쓰기 기준표 W1~W9 |
+| [contributing/component-lifecycle.md](contributing/component-lifecycle.md) | 부품의 한살이 — 제안 → 인벤토리 → 패밀리 → CSS → 갤러리 → 기록 → Tier 2 → 생성물 → 폐기 |
+| [specs/](specs/README.md) | 제안(draft) — 결과가 큰 변경만. 채택되면 ADR + 지배 기록으로 옮긴다 |
+| [templates/knowledge/](templates/knowledge/record.md) | 기록 틀 5종 — record · adr · component · family · spec |
 
 ## 규칙과 근거
 
@@ -59,8 +82,9 @@
 ## 검사
 
 ```bash
-python design/check_design.py --gate <서비스경로>   # D1~D5 (+ D7 Tier 2)
-python design/check_design.py --canon              # 정본 자체 (D6)
+python tools/ggc.py check <서비스경로>             # = check_design.py --gate  D1~D5 (+ D7 Tier 2)
+python tools/ggc.py check                          # = bash tools/check-all.sh  정본 D6 · 갤러리 · 링크 · R1~R5 · K1~K6 · vibe 자체 검증
+python tools/check-knowledge.py                    # 지식 기록 K1~K6 만
 ```
 
 검사 항목 설명은 `skills/ggc-design/references/verify.md`. 실패 시 복귀 지점도 거기 있다.

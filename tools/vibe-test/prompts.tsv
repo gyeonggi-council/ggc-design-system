@@ -1,0 +1,23 @@
+# prompts.tsv — 에이전트 생성 평가 과제 (v3.3, ADR 0015)
+#
+# AGENTS.md 와 스킬이 에이전트에게 충분한지 잰다. 과제마다 에이전트가 out/<id>/ 에 화면을 만들고,
+# grade.py 가 같은 검사기(check_design.py)와 규칙 몇 개로 채점한다. 점수는 "지시면이 얼마나 쓸 만한가"이지 에이전트 순위가 아니다.
+#
+# 기대(expect) 문법 — 세미콜론으로 잇는다:
+#   gate            check_design.py --gate 가 PASS (D1~D5 · 프로필 자동 판정)
+#   h1=1            h1 이 정확히 하나이고 <main> 안에 있다(헤더 안 0 — 계약 §2 · ADR 0010).  h1  = 하나 이상(상태별 화면이 여럿인 1인 링크)
+#   any:.a|.b       둘 중 하나는 쓰였다
+#   has:.ggc-x      이 클래스가 쓰였다          no:.ggc-x   쓰이지 않았다
+#   profile:public  <html data-ggc-profile="public">   profile:work  속성 없음
+#   no-emoji        이모지 · 기호 아이콘 없음(ADR 0009)
+#   no-desc         .ggc-page-head 에 설명 줄(.desc) 없음 (덜어내기 기본 — 메타 한 줄은 갤러리도 쓰므로 기대에 넣지 않는다)
+#   copies          정본 사본(ggc-tokens.css 등)이 폴더 안에 있다 (손으로 옮겨 적지 않고 복사했는가 — D1 이 판정)
+#
+# id	프로필	과제(에이전트에게 주는 말)	expect
+explore-bills	work	의안 목록 화면을 만든다. 담당자가 소관 의안을 찾아 하나를 골라 들어간다. 검색 · 조건 · 표 · 쪽 이동 · 결과 없음 상태가 있다.	gate;copies;h1=1;has:.ggc-page-head;has:.ggc-table;has:.ggc-pagination;has:.ggc-empty;has:.ggc-skip-link;no-emoji;profile:work
+monitor-today	work	오늘의 의정 화면을 만든다. 담당자가 이번 주 처리할 것의 상태를 한 번에 본다. 숫자는 다음 행동을 바꾸는 것만.	gate;copies;h1=1;has:.ggc-page-head;has:.ggc-stat;has:.ggc-list-row;no-emoji;profile:work
+configure-draft	work	조례 초안 작성 위저드를 만든다. 3단계, 단계를 오가며 입력하고 마지막에 상신한다. 저장 상태가 보인다.	gate;copies;h1=1;has:.ggc-wizard;has:.ggc-field;any:.ggc-actionbar|.ggc-work-actions;no-emoji;profile:work
+login-qr	work	전 시스템 공통 로그인 화면을 만든다. 휴대폰 앱의 QR 로 들어온다.	gate;copies;h1=1;has:.ggc-qr;no-emoji;profile:work
+public-bills	public	도민이 보는 의안 검색 화면을 만든다. 로그인 없이 열린다. 목록 · 검색 · 쪽 이동.	gate;copies;h1=1;profile:public;has:.ggc-masthead;has:.ggc-header;has:.ggc-footer--public;has:.ggc-identifier;no:.ggc-lnb;no:.ggc-gnb;no-emoji
+solo-sign	public	회의 출석 서명 화면을 만든다. 의원이 휴대폰으로 개인 링크를 열어 서명 한 번 하고 끝낸다. 로그인 없음.	gate;copies;h1;has:.ggc-solo;has:.ggc-signature;no:.ggc-masthead;no:.ggc-lnb;no-emoji
+job-convert	work	한글 문서를 변환해 미리보는 작업대를 만든다. 변환은 수십 초 걸린다. 왼쪽 목록 · 오른쪽 문서 · 진행 상태.	gate;copies;h1=1;has:.ggc-split;has:.ggc-job;has:.ggc-viewer;no-emoji;profile:work

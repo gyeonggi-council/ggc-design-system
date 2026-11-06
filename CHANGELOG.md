@@ -3,6 +3,21 @@
 소비자(11개 서비스)에게 영향이 있는 변경을 적는다.
 **토큰 파일 바이트가 바뀌는 변경은 D1 재복사가 필요하다** — 그런 항목은 ⚠ D1 로 표시한다.
 
+## [3.3.0] — 2026-11-06 · 사람과 에이전트가 같은 시스템을 쓴다 (문서·도구만, CSS·토큰 무변경)
+
+사용자 지시(11-06) "github.com/meta/astryx 이거 참고해서 전면 개편해줘". Astryx(Meta, 공개 디자인 시스템)의 **구성 방식**을 들여왔다 — 지시면 하나 · CLI · 권위 있는 지식 기록 · 패밀리 · 의도별 PR · 생성 평가.
+기술(React/StyleX · npm · 테마 · 다크)은 들여오지 않았다 — 이유는 [ADR 0015](docs/decisions/0015-one-system-for-humans-and-agents.md).
+
+- **`AGENTS.md` 신설** — 사람 · 에이전트 공용 정본 지시면(원칙 넷 · 부트스트랩 다섯 명령 · 두 종류의 일 · 철칙(검사기 ID 와 짝) · 생성물 표 · 흐름 · 지도 · 명령 한 장). `CLAUDE.md` 는 그것을 끌어오고 Claude Code 전용 넉 줄만. 스킬 §0 이 CLI 부트스트랩을 가리킨다.
+- **CLI `tools/ggc.py`** — 표준 라이브러리만. `docs <주제> --dense`(토큰 · 프로필은 정본에서 실시간) · `component --list|<id> --markup` · `template --list|<id> --markup` · `icon --list` · `specs --for|--diff` · `check` · `upgrade` · `knowledge` · `vibe`.
+- **지식 기록 레지스트리 `docs/records.tsv`** — 기록 139개에 kind · authority(current/draft/archived) · governs(경로 글롭 · `class:.ggc-*`) · owner. 검사기 `tools/check-knowledge.py` K1~K6 (등록 · 값 · 지배 범위 실재 · draft 위치 · 템플릿 분리 · 인벤토리 범위) — `check-all.sh` · CI 에 추가.
+- **새 기록** — `docs/architecture/system.md`(세 층 · 두 Tier · 두 프로필 · 경계 · 불변 조건 10) · `docs/families/`(입력 컨트롤 · 뜨는 층 · 상태 보이기 · 셸) · `docs/contributing/`(PR 절차 · 쓰기 기준표 W1~W9 · 부품 한살이) · `docs/specs/`(draft 전용) · `docs/templates/knowledge/`(틀 5종).
+- **화면 틀 레지스트리 `design/templates.tsv`** — 갤러리 14쪽을 틀로(프로필 · 패턴 · 처방 문서 · 절).
+- **PR 의도 템플릿 5종** `.github/PULL_REQUEST_TEMPLATE/`(canon ⚠ D1 · record · gallery · registry · tooling) + 기본 템플릿.
+- **vibe test `tools/vibe-test/`** — 과제 7종(업무 4 · 대민 2 · 작업대 1), 에이전트에게는 AGENTS.md 만. 채점은 `check_design.py --gate` + 기록에 있는 규칙(h1 위치 · 이모지 · 프로필 · 셸 부품). `--self-check` 가 갤러리로 채점기를 검증(CI).
+- **README** 개발자용 앞부분 — 원칙 넷 · 세 층 · 같은 명령. `docs/README.md` 에 구조 · 패밀리 · 기여 절. 플러그인 판 3.3.0.
+- **D1 재복사 불필요** — `ggc-tokens.css` · `ggc-components.css` · `ggc-public.css` · `ggc-behaviors.js` · `ggc-icons.svg` 바이트 그대로. 생성물도 그대로다.
+
 ## [3.2.2] — 2026-10-25 ⚠ D1 · 서명 패드가 좁은 화면에서 넘치던 것
 
 출석 서비스에 v3.2 를 옮기다 잡았다 — 페이지 안에 둔 `.ggc-signature`(문서의 기본 마크업)가 400px 보다 좁은 화면에서 본문 밖으로 나갔다(390 에서 26px · 320 에서 96px).
