@@ -1,0 +1,15 @@
+/* app.css — 차량등록지원 관리시스템 목업 전용. 정본 다음에 로드한다. 값은 전부 토큰 — 색 리터럴 0. */
+.vr-first { padding-left: var(--ggc-space-5); }
+.vr-who { display: inline-flex; align-items: center; gap: var(--ggc-space-2); }
+.vr-who a { color: var(--ggc-primary-deep); text-underline-offset: .2em; }
+.vr-due { font-weight: 700; color: var(--ggc-danger); }
+.vr-chips { gap: var(--ggc-space-2); margin-top: var(--ggc-space-3); }
+.vr-filter-count { font-weight: 400; color: var(--ggc-text-subtle); }
+.vr-checklist { padding: var(--ggc-space-2) var(--ggc-space-5) var(--ggc-space-4); }
+.vr-save { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.vr-step-title { font-size: var(--ggc-text-md); font-weight: 600; color: var(--ggc-text-strong); }
+.vr-grid { display: grid; gap: var(--ggc-space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); margin-top: var(--ggc-space-4); }
+.vr-wizard-plain { border: none; padding: 0; background: transparent; }
+.vr-row-actions { display: flex; align-items: center; gap: var(--ggc-space-1); }
+.ggc-table td .mono, .ggc-table td .mono, .ggc-page-head .mono { font-family: var(--ggc-font-mono); font-size: var(--ggc-text-sm); }
+.ggc-stat .delta { margin-top: var(--ggc-space-1); font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
