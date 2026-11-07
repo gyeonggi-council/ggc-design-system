@@ -11,7 +11,7 @@ function StatGrid({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 const TONE = {
-  primary: "bg-(--ggc-primary-light) text-primary",
+  primary: "bg-(--ggc-accent-muted) text-foreground",
   info: "bg-(--ggc-info-tint) text-(--ggc-info)",
   success: "bg-(--ggc-success-tint) text-(--ggc-success)",
   warning: "bg-(--ggc-warning-tint) text-(--ggc-warning)",

@@ -1,8 +1,8 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "toggle-group",
-  "title": "토글 그룹",
-  "description": "칩형 필터(내 소관 · 처리 대기) · 보기 전환.",
+  "title": "토글 그룹 · 세그먼트",
+  "description": "같은 판의 표현 바꾸기(목록/카드 · 주/월) — Tier 1 .ggc-segmented 와 같은 자리. 칩형 필터에도.",
   "dependencies": [
     "class-variance-authority",
     "radix-ui"

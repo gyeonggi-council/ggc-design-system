@@ -144,7 +144,7 @@
       "name": "avatar",
       "type": "registry:ui",
       "title": "아바타",
-      "description": "사용자 표시 — 실명 · 역할 · 부서 옆. 사진이 없으면 머리글자.",
+      "description": "사람 · 기관 · AI — 실명 · 역할 · 부서 옆. 사진이 없으면 머리글자, AI 는 잉크 바탕 사각(Tier 1 .ggc-avatar--ai).",
       "dependencies": [
         "radix-ui"
       ],
@@ -191,7 +191,7 @@
       "name": "button",
       "type": "registry:ui",
       "title": "버튼",
-      "description": "default · secondary · outline · ghost · link · destructive + dashed(점선 추가). 높이는 --ggc-control-h*(프로필을 따른다). primary 만 그림자.",
+      "description": "default · secondary · outline · ghost · link · destructive + dashed(점선 추가). 높이는 --ggc-control-h*(프로필을 따른다). default 는 잉크(--ggc-accent, v4.0) · 그림자 없음.",
       "dependencies": [
         "class-variance-authority",
         "radix-ui"
@@ -245,7 +245,7 @@
       "name": "card",
       "type": "registry:ui",
       "title": "카드",
-      "description": "흰 면 · 1px 테두리 · radius 14 · 그림자 없음(계약 §2). CardTitle 은 --ggc-h3-size.",
+      "description": "흰 면 · 1px 테두리 · radius 12 · 낮은 그림자 --ggc-shadow-low(v4.0, 계약 §2). CardTitle 은 --ggc-h3-size.",
       "files": [
         {
           "path": "registry/ggc/ui/card.tsx",
@@ -272,7 +272,7 @@
       "name": "checkbox",
       "type": "registry:ui",
       "title": "체크박스",
-      "description": "선택은 네이비 채움 + 흰 체크.",
+      "description": "선택은 잉크(--ggc-accent) 채움 + 흰 체크(v4.0).",
       "dependencies": [
         "lucide-react",
         "radix-ui"
@@ -782,8 +782,8 @@
     {
       "name": "toggle-group",
       "type": "registry:ui",
-      "title": "토글 그룹",
-      "description": "칩형 필터(내 소관 · 처리 대기) · 보기 전환.",
+      "title": "토글 그룹 · 세그먼트",
+      "description": "같은 판의 표현 바꾸기(목록/카드 · 주/월) — Tier 1 .ggc-segmented 와 같은 자리. 칩형 필터에도.",
       "dependencies": [
         "class-variance-authority",
         "radix-ui"

@@ -3,6 +3,21 @@
 소비자(11개 서비스)에게 영향이 있는 변경을 적는다.
 **토큰 파일 바이트가 바뀌는 변경은 D1 재복사가 필요하다** — 그런 항목은 ⚠ D1 로 표시한다.
 
+## [4.0.0] — 2026-11-07 ⚠ D1 · Astryx 식 모양·깊이·중립색 · 주 강조는 잉크 · 부품 셋
+
+사용자 지시(11-07) "디자인 자체도 바꾸고 싶어" — 범위 **모양·깊이·중립색 + 주색 체계 + 부품 추가**, 정본에 바로, 글자 크기·밀도는 그대로. 결정: [ADR 0016](docs/decisions/0016-astryx-look-ink-accent.md).
+이전 안내: [docs/migration/v3.2-to-v4.md](docs/migration/v3.2-to-v4.md). 다크 모드 · 회색 바탕 · 주색 폐기는 들여오지 않았다(표는 ADR).
+
+- **토큰 v4.0** ⚠ D1 — 신설 `--ggc-accent` / `-hover` / `-active` / `--ggc-on-accent` / `--ggc-accent-muted` / `-strong`(잉크 강조 · 선택 배경) · `--ggc-radius-full` · `--ggc-shadow-low/-med/-high` · `--ggc-hover-tint` / `-pressed-tint` · `--ggc-motion-fast/-medium/-slow`.
+  중립 램프 전부 OKLCH 재생성(의회 남색 색상각 · 차가운 회색 · AA 유지) · 모서리 6/4/12 → **10/6/12** · `--ggc-border` 한 단계 옅게 · `--ggc-shadow` = low 별칭. 남색 · 상태색 · 치수 · 서체 무변경. 이름은 늘기만 했다.
+- **컴포넌트 v4.0** ⚠ D1 — 주 버튼 · 체크 · 라디오 · 스위치 · 칩 선택 · 현재 단계 · 탭 밑줄 · 현재 쪽 · 진행 막대 · 스피너 · 선택 배경(LNB · 리스트박스 · 메뉴 · 작업대 전환) · 표 머리선 · 스킵 링크가 **잉크**로. 2차 버튼 회색 채움 · ghost hover 반투명.
+  카드 · KPI `--ggc-shadow-low`, 메뉴 · 토스트 `-med`, 모달 `-high`. 알약 999px → `--ggc-radius-full`. **§45~§48 신설**: `.ggc-segmented` · `.ggc-avatar` · `.ggc-agent`(AI 작업 상태 7종) · 고대비 보강.
+- **대민 v4.0** ⚠ D1 — 현재 메뉴 · 사이드 내비 현재 항목이 잉크 + 중립 선택 배경. 전체메뉴 `-med`. 히어로 · 사이드 내비 머리 · 로고의 남색은 그대로.
+- **Tier 2** — `ggc-theme` 매핑 `--primary` · `--accent` · `--secondary` · `--sidebar-*` → 잉크 계열 · `card` 에 low 그림자 · 블록 8(qr-login · stepper · shell · file-upload · side-nav · listbox · public-header · prose) 선택 색 정리. `toggle-group`(= 세그먼트) · `avatar` 설명 갱신. 레지스트리 재빌드.
+- **기록** — 계약 §2 · §3(v4.0 색인 · 잉크 규칙) · 토큰 가이드 · [states.md §11](docs/guides/states.md) · 패밀리 셋 · 부품 기록 3 신설 · button/card · KRDS 정렬(모서리 6·10·12) · 스킬 참조 2 · 갤러리 3쪽(세그먼트 · 아바타 · AI 작업 상태) + 토큰 쪽(깊이 세 단계) · 인벤토리 3행(단계 14).
+- **생성물** 전부 재생성 — DESIGN.md · 팔레트 SVG · 합본 · README 미리보기 PNG · PPT · registry.json · public/r.
+- **서비스가 할 일** — 재복사 · 서비스 CSS 의 남색 주 버튼 덧칠 제거 · Tier 2 는 `ggc-style` 재설치. 글자 크기 · 밀도는 그대로라 리플로우가 없다.
+
 ## [3.3.0] — 2026-11-06 · 사람과 에이전트가 같은 시스템을 쓴다 (문서·도구만, CSS·토큰 무변경)
 
 사용자 지시(11-06) "github.com/meta/astryx 이거 참고해서 전면 개편해줘". Astryx(Meta, 공개 디자인 시스템)의 **구성 방식**을 들여왔다 — 지시면 하나 · CLI · 권위 있는 지식 기록 · 패밀리 · 의도별 PR · 생성 평가.

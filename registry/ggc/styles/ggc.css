@@ -15,14 +15,14 @@
   --card-foreground: var(--ggc-text);
   --popover: var(--ggc-surface);
   --popover-foreground: var(--ggc-text);
-  --primary: var(--ggc-primary);
-  --primary-foreground: #ffffff;
-  --secondary: var(--ggc-surface-inset);
-  --secondary-foreground: var(--ggc-primary-deep);
+  --primary: var(--ggc-accent);                 /* v4.0: 주 강조는 잉크. 브랜드 남색은 --ggc-primary 로 직접 쓴다(링크 · 포커스 링) */
+  --primary-foreground: var(--ggc-on-accent);
+  --secondary: var(--ggc-accent-muted);
+  --secondary-foreground: var(--ggc-text-strong);
   --muted: var(--ggc-control-bg);
   --muted-foreground: var(--ggc-text-muted);
-  --accent: var(--ggc-primary-light);
-  --accent-foreground: var(--ggc-primary-deep);
+  --accent: var(--ggc-accent-muted);
+  --accent-foreground: var(--ggc-text-strong);
   --destructive: var(--ggc-danger);
   --destructive-foreground: #ffffff;
   --border: var(--ggc-border);
@@ -36,10 +36,10 @@
   --chart-5: var(--ggc-danger);
   --sidebar: var(--ggc-surface);
   --sidebar-foreground: var(--ggc-text);
-  --sidebar-primary: var(--ggc-primary);
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: var(--ggc-primary-light);
-  --sidebar-accent-foreground: var(--ggc-primary-deep);
+  --sidebar-primary: var(--ggc-accent);
+  --sidebar-primary-foreground: var(--ggc-on-accent);
+  --sidebar-accent: var(--ggc-accent-muted);
+  --sidebar-accent-foreground: var(--ggc-text-strong);
   --sidebar-border: var(--ggc-shell-border);
   --sidebar-ring: var(--ggc-primary);
 }

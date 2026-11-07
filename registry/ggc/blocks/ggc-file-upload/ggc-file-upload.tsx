@@ -124,7 +124,7 @@ function FileUpload({
         }}
         className={cn(
           "flex cursor-pointer flex-col items-center gap-1.5 rounded-(--ggc-radius) border-[1.5px] border-dashed border-(--ggc-border-strong) bg-(--ggc-surface-inset) px-4 py-5 text-center transition-[border-color,background-color]",
-          "hover:border-primary hover:bg-(--ggc-primary-light) data-[over]:border-primary data-[over]:bg-(--ggc-primary-light)",
+          "hover:border-primary hover:bg-(--ggc-surface-inset) data-[over]:border-primary data-[over]:bg-(--ggc-surface-inset)",
           "focus-within:border-primary focus-within:shadow-(--ggc-focus-ring)"
         )}
       >
@@ -145,7 +145,7 @@ function FileUpload({
           />
           <span
             data-slot="file-button"
-            className="inline-flex h-(--ggc-control-h-sm) shrink-0 items-center justify-center rounded-[8px] border border-(--ggc-border-strong) bg-card px-[14px] text-(length:--ggc-control-font-sm) font-bold whitespace-nowrap text-(--ggc-primary-deep)"
+            className="inline-flex h-(--ggc-control-h-sm) shrink-0 items-center justify-center rounded-[8px] border border-(--ggc-border-strong) bg-card px-[14px] text-(length:--ggc-control-font-sm) font-bold whitespace-nowrap text-foreground"
           >
             {label}
           </span>

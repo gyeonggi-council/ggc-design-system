@@ -54,6 +54,9 @@
 | 서명 패드 `.ggc-signature` | [signature.md](signature.md) | public/solo | 있음 (v3.2) |
 | 문서 미리보기 틀 (렌더러는 서비스) `.ggc-viewer` | [viewer.md](viewer.md) | workbench | 있음 (v3.2) |
 | 좌우 두 칸 작업대 `.ggc-split` | [split.md](split.md) | workbench | 있음 (v3.2) |
+| 세그먼트 컨트롤 `.ggc-segmented` | [segmented.md](segmented.md) | components-forms | 있음 (v4.0) |
+| 아바타 `.ggc-avatar` | [avatar.md](avatar.md) | components | 있음 (v4.0) |
+| AI 작업 상태 `.ggc-agent` | [agent.md](agent.md) | components-overlay | 있음 (v4.0) |
 
 ## 대민 셸 — `design/ggc-public.css` (대민 전용)
 

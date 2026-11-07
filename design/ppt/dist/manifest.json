@@ -1,6 +1,6 @@
 {
   "_": "생성물이다. design/ppt/build-ppt.py 가 만든다 — 직접 고치지 말 것.",
-  "sha256": "a217fa33cc1e85d40d63586e925afae3a711177085fb2f904c64585d2fe149a4",
+  "sha256": "3208c1f4e1d350f9e9ad4dd0441d78a8052b7190f9c8fa2e10d2c667423290b6",
   "sources": [
     "design/ggc-tokens.css",
     "design/ppt/build-ppt.py",

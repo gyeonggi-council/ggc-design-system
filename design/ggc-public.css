@@ -1,5 +1,6 @@
 /* =============================================================================
- * ggc-public.css — 경기도의회 대민(공개) 셸 v3.2 (2026-10-25)
+ * ggc-public.css — 경기도의회 대민(공개) 셸 v4.0 (2026-11-07)
+ *   v4.0(ADR 0016): 현재 메뉴 · 사이드 내비 현재 항목은 잉크(--ggc-accent)와 중립 선택 배경으로. 남색은 로고 · 링크 · 히어로 바탕 · 사이드 내비 머리에 남는다.
  *   v3.2(ADR 0014): ≤900 사이드 메뉴 숨김(전체메뉴로) · 전체메뉴 머리 굵기 600 · 메인 검색칸 높이 56 유지. 그 밖은 v2.0 그대로.
  * 전제: ggc-tokens.css v2.0 → ggc-components.css v2.0 → 이 파일 순으로 로드.
  *       문서 루트에 <html data-ggc-profile="public"> — 컨트롤·글자·밀도가 KRDS 치수가 된다.
@@ -217,8 +218,8 @@
 .ggc-main-menu .depth1 > li:focus-within > button,
 .ggc-main-menu .depth1 > li > [aria-current],
 .ggc-main-menu .depth1 > li > [aria-expanded="true"] {
-  color: var(--ggc-primary-deep);
-  border-bottom-color: var(--ggc-primary);
+  color: var(--ggc-text-strong);
+  border-bottom-color: var(--ggc-accent);
 }
 .ggc-main-menu .depth2 {
   display: none;
@@ -228,7 +229,7 @@
   background: var(--ggc-surface);
   border: 1px solid var(--ggc-border);
   border-radius: 0 0 var(--ggc-radius-lg) var(--ggc-radius-lg);
-  box-shadow: 0 12px 32px rgba(20, 30, 50, 0.12);
+  box-shadow: var(--ggc-shadow-med);
 }
 .ggc-main-menu .depth1 > li:hover > .depth2,
 .ggc-main-menu .depth1 > li:focus-within > .depth2,
@@ -240,8 +241,8 @@
   color: var(--ggc-text); text-decoration: none;
 }
 .ggc-main-menu .depth2 a:hover,
-.ggc-main-menu .depth2 a:focus-visible { background: var(--ggc-primary-light); color: var(--ggc-primary-deep); }
-.ggc-main-menu .depth2 a[aria-current] { font-weight: 700; color: var(--ggc-primary-deep); }
+.ggc-main-menu .depth2 a:focus-visible { background: var(--ggc-accent-muted); color: var(--ggc-text-strong); }
+.ggc-main-menu .depth2 a[aria-current] { font-weight: 700; color: var(--ggc-text-strong); }
 .ggc-main-menu .head { display: none; }             /* 모바일 패널 머리 (닫기 버튼) */
 
 /* --- 4. .ggc-public-main — 본문 컨테이너 ------------------------------------------
@@ -298,7 +299,7 @@
   height: var(--ggc-control-h-sm);
   padding: 0 14px;
   border: 1px solid var(--ggc-border-strong);
-  border-radius: 999px;
+  border-radius: var(--ggc-radius-full);
   background: var(--ggc-surface);
   font-size: var(--ggc-control-font-sm); font-weight: 600;
   color: var(--ggc-primary-deep); text-decoration: none;
@@ -346,7 +347,7 @@
 }
 .ggc-side-nav details[open] > summary::after { transform: rotate(-135deg); margin-top: 3px; }
 .ggc-side-nav a:hover, .ggc-side-nav summary:hover { background: var(--ggc-surface-inset); }
-.ggc-side-nav a[aria-current] { background: var(--ggc-primary-light); color: var(--ggc-primary-deep); font-weight: 700; box-shadow: inset 3px 0 0 var(--ggc-primary); }
+.ggc-side-nav a[aria-current] { background: var(--ggc-accent-muted); color: var(--ggc-text-strong); font-weight: 700; box-shadow: inset 3px 0 0 var(--ggc-accent); }
 .ggc-side-nav details ul { background: var(--ggc-surface-inset); border-top: 1px solid var(--ggc-hairline); padding: 6px 0; }
 .ggc-side-nav details ul a { padding: 9px 20px 9px 32px; font-size: 14px; font-weight: 500; }
 

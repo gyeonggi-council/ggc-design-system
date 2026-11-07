@@ -1,5 +1,5 @@
 /* =============================================================================
- * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v3.2.1 (2026-10-25)
+ * ggc-tokens.css — 경기도의회 의정정보시스템 공통 디자인 토큰 v4.0.0 (2026-11-07)
  * 근거: docs/contract.md (AUTHORITATIVE) · 구판 가이드는 archive/03-공통디자인가이드.md
  * 원천: 입법역량지원 플랫폼의 운영 팔레트 — 경기도의회 네이비(#3C5D93, ggc.go.kr 톤)로
  *       KRDS 를 오버라이드한 체계. 모든 시스템이 이 값으로 수렴한다.
@@ -7,6 +7,23 @@
  * 사용: 각 앱이 이 파일을 복사(또는 값 이식)해 자체 스타일의 최상단에 둔다.
  *       대민(공개) 화면은 <html data-ggc-profile="public"> 을 붙인다 — 그 외에는 같다.
  * 검사: python design/check_design.py --canon   /   --gate <서비스>
+ *
+ * ── v4.0 에서 바뀐 것 (Astryx 식 모양·깊이·중립색 · 잉크 강조 — 사용자 결정 2026-11-07, ADR 0016) ──
+ * 사용자 지시 "디자인 자체도 바꾸고 싶어" → 모양·깊이·중립색 + 주색 체계, 정본에 바로. 글자 크기·밀도·간격은 그대로다.
+ *
+ *   신설  --ggc-accent / -hover / -active / --ggc-on-accent    주 강조는 색이 아니라 **잉크**(거의 검정)다 — 주 버튼 · 선택 · 현재 단계 · 체크.
+ *         --ggc-primary(의회 남색)는 **브랜드 자리**에만 남는다: GNB 브랜드 · 링크 · 포커스 링 · 유틸리티 바 · 역할/납부 배지 · 대민 히어로.
+ *         이름은 늘기만 했다(v1.2 이후 불변) — 옛 사본은 그대로 렌더되고, 재복사하면 새 모양이 된다.
+ *   신설  --ggc-accent-muted / -strong    선택 배경(LNB 현재 · 칩 · 리스트박스 · 2차 버튼). 색 틴트(primary-light) 대신 중립.
+ *   변경  중립 램프 전부 → OKLCH 로 다시 생성(의회 남색의 색상각 259.8° · 채도 ≤0.014 의 차가운 회색, 21 스텝 중 고른 값).
+ *         text-strong #131722→#111419 · text #1a1f29→#1c1f25 · text-body #3a4150→#3c4047 · text-muted #4a5566→#535860 ·
+ *         text-subtle #5a6577→#646971 · text-faint #8a94a3→#8f949c · border #d5dce5→#dde0e5 · border-strong →#d6d9df ·
+ *         hairline #f0f3f7→#eef0f4 · control-bg #f3f5f9→#f2f3f7 · surface-inset #f6f8fb→#f5f7f9 · row-hover #fafbfd→#f9fafc.
+ *         AA 는 전부 유지(text-subtle 흰 5.52 · 옛 바탕 4.88). bg · surface 는 흰색 그대로(ADR 0013).
+ *   변경  --ggc-radius / -sm / -lg   6 / 4 / 12 → 10 / 6 / 12   (Astryx element 10 · inner 6 · container 12)   신설 --ggc-radius-full
+ *   신설  --ggc-shadow-low / -med / -high   깊이는 조용히 — 카드·KPI 는 low, 메뉴·토스트는 med, 모달은 high. --ggc-shadow = low 별칭.
+ *   신설  --ggc-hover-tint / --ggc-pressed-tint   면 위에 겹치는 반투명 상태색(불투명 덩어리로 바꾸지 않는다) · --ggc-motion-fast/-medium/-slow
+ *   ⚠ D1 — 바이트가 바뀌었다. 전 서비스가 재복사한다(docs/migration/v3.2-to-v4.md).
  *
  * ── v3.2 에서 바뀐 것 (GitHub 식 정돈 — 면은 흰 바탕 + 테두리, 그림자는 뜨는 층만) ────────
  * 사용자 결정(2026-10-24, ADR 0013): "GitHub UI 가 괜찮다" → 바로 정본에 반영. 새 색은 없다 —
@@ -74,6 +91,15 @@
   --ggc-primary-light: #eef3fa;  /* 선택 배경, 강조 배경 (tint) */
   --ggc-primary-light-strong: #dbe6f5;
 
+  /* --- 강조 잉크 (v4.0 — 주 강조는 색이 아니라 잉크다. 남색은 브랜드 자리에만) ---
+   * 주 버튼 · 체크 · 선택 · 현재 단계 · 진행 막대. 흰 위 17.26:1. 색이 하나 줄어 상태색 넷이 더 또렷해진다. */
+  --ggc-accent:        #181b20;   /* OKLCH L .22 */
+  --ggc-accent-hover:  #2a2e34;   /* L .30 */
+  --ggc-accent-active: #090b0f;   /* L .15 */
+  --ggc-on-accent:     #ffffff;
+  --ggc-accent-muted:        #e4e6eb;   /* 선택 배경 — LNB 현재 항목 · 칩 · 리스트박스 · 2차 버튼 (L .925) */
+  --ggc-accent-muted-strong: #d8dbe0;   /* 2차 버튼 hover · 진행 막대 바탕 · 스피너 트랙 (L .89) */
+
   /* --- 상태 (v1.2 — 전부 자기 틴트 위 4.5:1 이상) ---
    * 흰 글자를 얹어도 5.2:1 이상이라 채움 버튼·배지 양방향으로 쓸 수 있다. */
   --ggc-success: #0a7b4e;  --ggc-success-tint: #e6f4ee;  /* 틴트 4.69 · 흰 5.31 */
@@ -82,31 +108,31 @@
   --ggc-info:    #1f6a97;  --ggc-info-tint:    #e2f0f8;  /* 틴트 5.06 · 흰 5.89 */
 
   /* --- 중립 텍스트 램프 (4단, 전부 흰·인셋 면 양쪽에서 AA) ---
-   * 단조성 유지: 17.90 > 16.51 > 7.55 > 5.89 (흰 기준 — v3.2 부터 페이지 바탕도 흰색).
-   * v3.1 까지의 페이지 배경 #EEF1F5 위에서도 15.80 > 14.57 > 6.66 > 5.20 으로 AA 였다. */
-  --ggc-text-strong: #131722;  /* 흰 17.90 · bg 15.80 */
-  --ggc-text:        #1a1f29;  /* 흰 16.51 · bg 14.57 */
-  --ggc-text-muted:  #4a5566;  /* 흰  7.55 · bg  6.66 */
-  --ggc-text-subtle: #5a6577;  /* 흰  5.89 · bg  5.20 */
+   * v4.0: OKLCH 램프(색상각 259.8° · 채도 ≤ .014)에서 고른 값. 단조성 유지: 18.45 > 16.51 > 7.16 > 5.52 (흰 기준).
+   * v3.1 까지의 페이지 배경 #EEF1F5 위에서도 16.29 > 14.57 > 6.32 > 4.88 로 AA 다. */
+  --ggc-text-strong: #111419;  /* L .19 · 흰 18.45 · bg 16.29 */
+  --ggc-text:        #1c1f25;  /* L .24 · 흰 16.51 · bg 14.57 */
+  --ggc-text-muted:  #535860;  /* L .46 · 흰  7.16 · bg  6.32 */
+  --ggc-text-subtle: #646971;  /* L .52 · 흰  5.52 · bg  4.88 */
 
   /* ⚠ --ggc-text-faint 는 **텍스트에 쓰지 않는다.** 흰 위 3.07:1 로 AA 미달이다.
    *   아이콘 stroke · 구분 · 장식 등 3:1 대상 전용이다. v1.1 의 text-subtle 이었고
    *   정본 최다 사용색이라 삭제하지 않고 역할만 강등했다. */
-  --ggc-text-faint: #8a94a3;
+  --ggc-text-faint: #8f949c;   /* L .665 · 흰 3.05 */
 
-  /* 카드 안 긴 본문 단락 — 흰 위 10.23:1. v2.0 에서 컴포넌트 레이어로부터 승격(값 동일) */
-  --ggc-text-body: #3a4150;
+  /* 카드 안 긴 본문 단락 — 흰 위 10.41:1 (L .37). v2.0 에서 컴포넌트 레이어로부터 승격 */
+  --ggc-text-body: #3c4047;
 
   /* --- 중립 면·선 --- */
-  --ggc-border:        #d5dce5;  /* 카드·상자 테두리 (v3.2: #e6ebf1 → 흰 바탕에서 면을 가르는 선) */
-  --ggc-border-strong: #d5dce5;  /* 버튼 테두리, 강조 구분 */
-  --ggc-shell-border:  #d5dce5;  /* GNB 하단선 · LNB 우측선 (계약 §2 · v3.2: #e2e7ee → border 와 같은 선) */
-  --ggc-hairline:      #f0f3f7;  /* 표 행 구분, 옅은 구분선 */
+  --ggc-border:        #dde0e5;  /* 카드·상자 테두리 (L .905 — v4.0: 선은 한 단계 옅게, 면은 낮은 그림자가 함께 가른다. 둘 다 세게 쓰지 않는다) */
+  --ggc-border-strong: #d6d9df;  /* 버튼·입력 테두리, 강조 구분 (L .885) */
+  --ggc-shell-border:  #dde0e5;  /* GNB 하단선 · LNB 우측선 (계약 §2 — border 와 같은 선) */
+  --ggc-hairline:      #eef0f4;  /* 표 행 구분, 옅은 구분선 (L .955) */
   --ggc-bg:            #ffffff;  /* 페이지 배경 (v3.2: #eef1f5 → 흰색. 면 구분은 테두리로) */
   --ggc-surface:       #ffffff;  /* 카드·패널 */
-  --ggc-surface-inset: #f6f8fb;  /* 인셋 영역, 표 합계행 */
-  --ggc-control-bg:    #f3f5f9;  /* 검색창·입력 컨트롤 */
-  --ggc-row-hover:     #fafbfd;  /* 목록 행 hover */
+  --ggc-surface-inset: #f5f7f9;  /* 인셋 영역, 표 합계행 (L .975) */
+  --ggc-control-bg:    #f2f3f7;  /* 검색창·입력 컨트롤 · 세그먼트 트랙 (L .965) */
+  --ggc-row-hover:     #f9fafc;  /* 목록 행 hover (L .986) */
 
   /* --- 역할 색쌍 (신원 표시 — 상태 배지와 다른 축이다) ---
    * 원본 roleBadgeStyle() 4쌍. 앰버쌍은 #8A6A20 이 4.39:1 이라 원본의 #7A5F1F(5.24)로 보정.
@@ -140,12 +166,27 @@
   --ggc-space-10: 64px;
   --ggc-space-11: 80px;
 
-  /* --- 형태 --- */
-  --ggc-radius:     6px;   /* 버튼·입력 (v3.2: 10 → 6) */
-  --ggc-radius-sm:  4px;   /* 배지·칩 (v3.2: 6 → 4) */
-  --ggc-radius-lg: 12px;   /* 카드 (계약 §2: 12px, 그림자 없음 · v3.2: 14 → 12) */
-  --ggc-shadow: 0 1px 2px rgba(20, 30, 50, 0.04);
-  --ggc-shadow-primary: none;  /* primary 버튼 전용 (v3.2: 색 그림자 제거 — 그림자는 모달·메뉴처럼 뜨는 층만) */
+  /* --- 형태 (v4.0 — Astryx: inner 6 · element 10 · container 12 · full) --- */
+  --ggc-radius:      10px;  /* 버튼·입력·세그먼트 (v4.0: 6 → 10) */
+  --ggc-radius-sm:    6px;  /* 태그·작은 상자 (v4.0: 4 → 6) */
+  --ggc-radius-lg:   12px;  /* 카드·KPI·위저드 (계약 §2) */
+  --ggc-radius-full: 9999px;  /* 배지·칩·스위치 트랙·알약 */
+
+  /* --- 깊이 (v4.0 — 「깊이는 조용히」: 그림자는 경계를 돕는 것이지 주 신호가 아니다) ---
+   * low  카드 · KPI 타일 · 세그먼트 선택 항목     med  메뉴 · 토스트 · 팝오버     high  모달
+   * 테두리와 그림자를 둘 다 세게 쓰지 않는다 — border 가 한 단계 옅어진 이유다. forced-colors 에서는 사라지므로 경계는 테두리가 지킨다. */
+  --ggc-shadow-low:  0 2px 4px rgba(20, 30, 50, 0.05), 0 4px 8px rgba(20, 30, 50, 0.10);
+  --ggc-shadow-med:  0 2px 4px rgba(20, 30, 50, 0.05), 0 4px 12px rgba(20, 30, 50, 0.10);
+  --ggc-shadow-high: 0 4px 6px rgba(20, 30, 50, 0.10), 0 12px 24px rgba(20, 30, 50, 0.15);
+  --ggc-shadow: var(--ggc-shadow-low);   /* v3 이름 호환 — 카드 기본 그림자 */
+  --ggc-shadow-primary: none;  /* primary 버튼 전용 — 잉크 버튼은 그림자가 없다 */
+  --ggc-hover-tint:   rgba(20, 30, 50, 0.05);   /* 면 위에 겹치는 hover (ghost 버튼 · 행) */
+  --ggc-pressed-tint: rgba(20, 30, 50, 0.10);
+
+  /* --- 움직임 (v4.0) --- */
+  --ggc-motion-fast:   125ms;   /* hover · 포커스 · 토글 */
+  --ggc-motion-medium: 300ms;   /* 패널 · 메뉴 · 토스트 */
+  --ggc-motion-slow:   700ms;   /* 진행 막대 · 큰 전환 */
 
   /* --- 포커스 (계약 §3 — 알파 .20) --- */
   --ggc-focus-ring: 0 0 0 3px rgba(60, 93, 147, 0.20);
@@ -282,15 +323,15 @@
 /* 색 반전 없이 대비만 더 원하는 사용자. 중립을 한 단계 진하게, 링을 두껍게. */
 @media (prefers-contrast: more) {
   :root {
-    --ggc-text-muted: #3a4150;   /* 7.55 → 10.23:1 (원본 ×27) */
-    --ggc-text-subtle: #4a5566;  /* 5.89 →  7.55:1 (원본 ×53) */
-    --ggc-border: #b9c6da;         /* v3.2: 기본 테두리가 #d5dce5 가 되어 한 단계 위로 */
-    --ggc-shell-border: #b9c6da;
-    --ggc-border-strong: #b9c6da;
+    --ggc-text-muted: #3c4047;   /* 7.16 → 10.41:1 (= text-body) */
+    --ggc-text-subtle: #535860;  /* 5.52 →  7.16:1 (= text-muted) */
+    --ggc-border: #babec5;         /* 램프 L .80 — 기본 테두리보다 두 단계 위 */
+    --ggc-shell-border: #babec5;
+    --ggc-border-strong: #babec5;
     --ggc-focus-ring: 0 0 0 4px rgba(60, 93, 147, 0.45);
   }
   /* faint 는 여전히 텍스트가 아니지만, 아이콘 대비 3:1 을 확보한다 */
-  :root { --ggc-text-faint: #6b7585; }
+  :root { --ggc-text-faint: #70757d; }   /* L .56 · 흰 4.64 */
 }
 
 /* --- 공통 유틸리티 바 (통합서비스 띠) ---
@@ -327,7 +368,7 @@
 .ggc-badge {
   display: inline-flex; align-items: center; gap: 4px;
   font-family: var(--ggc-font); font-size: 12px; font-weight: 600; line-height: 1;
-  padding: 4px 8px; border-radius: 999px; white-space: nowrap;
+  padding: 4px 8px; border-radius: var(--ggc-radius-full); white-space: nowrap;
 }
 .ggc-badge--session  { background: var(--ggc-info-tint); color: var(--ggc-info); }        /* 회기 중 */
 .ggc-badge--meeting  { background: var(--ggc-success-tint); color: var(--ggc-success); }  /* 회의일 */

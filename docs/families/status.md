@@ -1,6 +1,6 @@
 # 패밀리 — 상태 보이기 부품
 
-**권위: current.** 형제: `.ggc-badge` · `.ggc-tag` · `.ggc-alert` · `.ggc-toast` · `.ggc-progress` · `.ggc-job` · `.ggc-empty` · `.ggc-spinner` · `.ggc-skeleton`. **언제 무엇을 보이나**는 [guides/states.md](../guides/states.md)(상태 사전 포함)가 정하고, 이 기록은 형제들이 함께 지키는 꼴을 정한다.
+**권위: current.** 형제: `.ggc-badge` · `.ggc-tag` · `.ggc-alert` · `.ggc-toast` · `.ggc-progress` · `.ggc-job` · `.ggc-empty` · `.ggc-spinner` · `.ggc-skeleton` · `.ggc-agent`(v4.0). **언제 무엇을 보이나**는 [guides/states.md](../guides/states.md)(상태 사전 포함)가 정하고, 이 기록은 형제들이 함께 지키는 꼴을 정한다.
 
 ## 함께 지키는 것
 
@@ -26,6 +26,7 @@
 | 짧은 확인(복사됨 · 임시저장됨) | `.ggc-toast` |
 | 센 값이 있는 진행(3/10쪽 · 42%) | `.ggc-progress` |
 | 3초 넘는 시스템 작업(변환 · 추출 · 발송) | `.ggc-job` (상태 8종 · 경과 시간 · 오래 걸림) |
+| AI 가 일하는 동안 · 사람 확인이 필요할 때 | `.ggc-agent` (`data-state` 7종 — waiting 은 화면에 하나, 가장 센 테두리) |
 | 짧은 로딩 | `.ggc-spinner` (단추 안 · 블록) · `.ggc-skeleton` (목록 · 카드 자리) |
 | 비어 있음(네 가지 이유) | `.ggc-empty` + 조립 |
 

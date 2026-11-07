@@ -122,6 +122,12 @@ GitHub 의 목록은 **테두리 상자 하나 안에 행**이다. 우리도 그
 
 확인하지 못한 항목은 「미확인」으로 적는다.
 
+## 11. AI 가 일하는 동안 (v4.0)
+
+모델이 지금 무엇을 하는지는 [`.ggc-agent`](../components/agent.md) 하나로 보인다 — 생각 중 · 자료 찾는 중 · 쓰는 중 · **사람 확인 필요** · 완료 · 오류.
+위 1(기다림)·4(못 쓰는 이유)·6(기능 저하)의 규칙이 그대로 적용된다: 3초 넘으면 경과 시간, 사유 없는 오류 없음, 출처 없는 답은 「출처 없음」.
+**사람이 눌러야 다음으로 가는 상태(waiting)는 화면에 하나**이고, 가장 센 테두리를 가진다. 토스트로 알리지 않는다.
+
 ## 근거
 
 - Primer UI patterns — [loading](https://primer.style/product/ui-patterns/loading/) · [saving](https://primer.style/product/ui-patterns/saving/) · [forms](https://primer.style/product/ui-patterns/forms/) ·

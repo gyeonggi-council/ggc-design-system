@@ -59,7 +59,7 @@ python tools/ggc.py docs less --dense                       # 기록을 밀도 �
 | 문서 | 무엇 |
 |---|---|
 | [contract.md](contract.md) | **AUTHORITATIVE** 계약 — 셸 치수 · 토큰 · 접근성 · 아키타입 · 프로필 · 완료 정의 |
-| [guides/tokens.md](guides/tokens.md) | 토큰 이름 색인과 역할(값 없음) · 확장 규칙 |
+| [guides/tokens.md](guides/tokens.md) | 토큰 이름 색인과 역할(값 없음) · 확장 규칙 — v4.0 강조 잉크 · 깊이 세 단계 |
 | [guides/accessibility.md](guides/accessibility.md) | AA · 색 단독 금지 · 포커스 · 고대비 · 키보드 |
 | [guides/fonts.md](guides/fonts.md) | Pretendard GOV 자체 호스팅 |
 | [guides/brand-assets.md](guides/brand-assets.md) | 파비콘 · 마크 |
@@ -76,6 +76,7 @@ python tools/ggc.py docs less --dense                       # 기록을 밀도 �
 
 ## 올리기
 
+- **v3.2 → v4.0** ⚠ D1: [migration/v3.2-to-v4.md](migration/v3.2-to-v4.md) — 정본 3파일 재복사 · 서비스 CSS 의 남색 주 버튼 덧칠 제거 · Tier 2 `ggc-style` 재설치
 - **v2.0 → v3.0**: [migration/v2-to-v3.md](migration/v2-to-v3.md) — 정본 6파일 재복사 · h1 을 본문으로 · 이모지 → 아이콘 · Tier 2 재설치
 - v1.2 → v2.0: [migration/v1.2-to-v2.md](migration/v1.2-to-v2.md). 플랫폼 서비스별 실측은 [migration/platform-services-2026-08.md](migration/platform-services-2026-08.md).
 

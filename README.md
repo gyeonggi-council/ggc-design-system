@@ -3,8 +3,8 @@
 경기도의회 사무처의 업무 웹 서비스(의안·자막·주간보고·지식창고 등)가 **같은 모양, 같은 규칙**으로 화면을 만들도록 돕는 안내서다.
 색과 글꼴을 맞추는 것뿐 아니라, **지금 필요 없는 정보를 덜어내** 담당자가 할 일을 바로 찾게 하는 것이 목표다.
 
-- 현재 판: **v3.3** (2026-11-06) — 저장소가 **사람과 AI 에게 같은 말로 설명되게** 다시 짰다(Meta 의 공개 디자인 시스템 Astryx 의 구성 방식을 참고). 화면의 색 · 글자 · 부품은 **바뀌지 않았다** — 서비스가 다시 복사할 것이 없다.
-- 직전 판 v3.2 (2026-10-24) — 화면 바탕을 흰색으로 바꾸고 칸은 선으로 나눴다(GitHub 처럼). 여러 서비스가 따로 만들던 부품 다섯을 공통으로 만들었다. v3.1 (2026-10-18) — 「덜어내기」 규칙.
+- 현재 판: **v4.0** (2026-11-07) ⚠ — 화면의 **모양이 바뀌었다**(Meta 의 공개 디자인 시스템 Astryx 의 룩을 참고). 주 단추 · 체크 · 선택 표시가 의회 남색에서 **검은 잉크**로, 모서리는 조금 더 둥글게, 카드에는 옅은 선과 낮은 그림자. 남색은 로고 · 링크 · 포커스 테두리처럼 **기관을 알리는 자리**에 남는다. 글자 크기 · 간격은 그대로다. 서비스는 정본 파일을 **다시 복사**해야 한다.
+- 직전 판 v3.3 (2026-11-06) — 저장소가 사람과 AI 에게 같은 말로 설명되게 다시 짰다(AGENTS.md · CLI · 지식 기록). v3.2 (2026-10-24) — 화면 바탕을 흰색으로 바꾸고 칸은 선으로 나눴다(GitHub 처럼). 여러 서비스가 따로 만들던 부품 다섯을 공통으로 만들었다. v3.1 (2026-10-18) — 「덜어내기」 규칙.
 - 이 문서의 앞부분은 디자인을 몰라도 읽을 수 있게 썼다. 개발자용 내용은 [아래](#여기부터-개발자용)에 있다.
 
 ## 한눈에 보기 — 같은 화면, 덜어내기 전과 후
@@ -109,6 +109,7 @@ python tools/ggc.py check [<서비스>]           # 검사 — 없으면 저장�
 
 표준 라이브러리만 쓴다 — 망분리 PC 에서도 돈다. 전체 목록은 `python tools/ggc.py help`.
 
+**v4.0 (2026-11-07)** ⚠ D1 — **Astryx 식 모양 · 깊이 · 중립색 · 잉크 강조 · 부품 셋**. 신설 `--ggc-accent` 계열(주 강조는 잉크, 남색은 브랜드 자리에만) · 중립 램프 OKLCH 재생성 · 모서리 10/6/12 · 그림자 low/med/high · `.ggc-segmented` · `.ggc-avatar` · `.ggc-agent`(AI 작업 상태). 치수 · 상태색 · 서체 무변경. 이전 안내 [v3.2→v4.0](docs/migration/v3.2-to-v4.md) · [ADR 0016](docs/decisions/0016-astryx-look-ink-accent.md).
 **v3.3 (2026-11-06)** — 문서 · 도구만. CSS · 토큰 **무변경**(D1 재복사 불필요). `AGENTS.md` 정본 지시면 · CLI `tools/ggc.py` · 지식 기록 레지스트리 [`docs/records.tsv`](docs/records.tsv)(권위 current/draft/archived · 지배 범위 · 검사 K1~K6) · [패밀리 4종](docs/families/README.md) · [기여 절차 3종](docs/contributing/pull-requests.md) · PR 의도 템플릿 5종 · [vibe test](tools/vibe-test/README.md). 결정: [ADR 0015](docs/decisions/0015-one-system-for-humans-and-agents.md).
 **v3.2 (2026-10-24)** ⚠ D1 — 면은 흰 바탕 + 테두리(GitHub 식) · 제목 굵기 600 · 상태 보이기 가이드([docs/guides/states.md](docs/guides/states.md)) · 서비스 부품 다섯(`.ggc-job` · `.ggc-solo` · `.ggc-signature` · `.ggc-viewer` · `.ggc-split`) · 검사기 판 표시 · 재복사 도구 `tools/sync-canon.py`. 이전 안내 [v3.1→v3.2](docs/migration/v3.1-to-v3.2.md) · ADR 0013.
 **v3.1 (2026-10-18)** — 덜어내기 규칙([docs/guides/less.md](docs/guides/less.md))과 Operate(실시간 화면) 정본을 더했다. **CSS·토큰 파일은 바뀌지 않았다** — 서비스는 다시 복사할 필요가 없고, 그 화면을 다음에 고칠 때 규칙을 적용한다.
@@ -195,8 +196,8 @@ npx shadcn add @ggc/ggc-shell @ggc/ggc-page-head @ggc/ggc-data-table   # 사이�
 
 | 경로 | 무엇 |
 |---|---|
-| `design/ggc-tokens.css` | **토큰 정본 v3.2** — 색·서체·간격·형태·포커스·셸·컨트롤 치수(shadcn 기본 밀도)·**타이포 스케일·아이콘 치수** + 대민 프로필 블록(KRDS) |
-| `design/ggc-components.css` | 컴포넌트 v3.2 — 셸(경로부 · 아이콘 사이드바 · 접힘)·페이지 헤더(h1 본문)·카드·버튼·표·폼·위저드 … §37(제목 유틸 · 아이콘) |
+| `design/ggc-tokens.css` | **토큰 정본 v4.0** — 색(브랜드 남색 · **강조 잉크** · 상태 · OKLCH 중립 램프)·서체·간격·형태(10/6/12 · 알약)·깊이(low/med/high)·포커스·셸·컨트롤 치수(shadcn 기본 밀도)·타이포 스케일·아이콘 치수 + 대민 프로필 블록(KRDS) |
+| `design/ggc-components.css` | 컴포넌트 v4.0 — 셸(경로부 · 아이콘 사이드바 · 접힘)·페이지 헤더(h1 본문)·카드·버튼·표·폼·위저드 … §45 세그먼트 · §46 아바타 · §47 AI 작업 상태 |
 | `design/ggc-icons.svg` + `design/icons/lucide/` | **아이콘 정본 v3.0** — lucide 부분집합 90종 스프라이트(생성물, `build-icons.py`). 이모지 금지 |
 | `design/ppt/` | **대외 발표용 PPT 템플릿**(생성물 — 토큰에서 `build-ppt.py`) · 레이아웃 10종 · 샘플 12장 · [docs/guides/ppt.md](docs/guides/ppt.md) |
 | `design/ggc-fonts.css` + `design/fonts/` | **폰트 정본 v1.0** — @font-face 하나와 가변 woff2 하나. 두 파일을 같은 폴더에 나란히 두고 토큰보다 먼저 링크한다 |

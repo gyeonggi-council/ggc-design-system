@@ -73,3 +73,7 @@ solo	휴대폰 1인 링크 화면	.ggc-solo .ggc-solo-head .ggc-solo-main .ggc-s
 signature	서명 패드	.ggc-signature .ggc-signature-pad	—	award SignaturePad · attendance signature-pad · sign s.js	both	P1	있음	13
 viewer	문서 미리보기 틀 (렌더러는 서비스)	.ggc-viewer .ggc-viewer-tools .ggc-viewer-body .ggc-viewer-pages .ggc-viewer-page .ggc-viewer-state .ggc-viewer-note (--frame)	—	lira · ttime · award · sign · attendance · bims2 미리보기	both	P1	있음	13
 split	좌우 두 칸 작업대	.ggc-split .ggc-split-list .ggc-split-handle .ggc-split-view .ggc-split-back	—	ttime split-pane · compile-split · less.md R9	work	P1	있음	13
+# --- v4.0 (2026-11-07, ADR 0016 — Astryx 식 개편과 함께 들어온 부품) ---
+segmented	세그먼트 컨트롤 (같은 판의 표현 바꾸기)	.ggc-segmented (--block --sm · <button aria-pressed> 또는 radio label)	toggle-group	Astryx SegmentedControl · shadcn toggle-group	both	P1	있음	14
+avatar	아바타 (사람 · 기관 · AI)	.ggc-avatar (--sm --lg --square --ai --member/--staff/--policy/--other) .ggc-avatar-row .ggc-avatar-group	avatar	Astryx Avatar · shadcn avatar · 계약 §2 실명·역할·부서	both	P1	있음	14
+agent	AI 작업 상태 (생각 중 · 자료 찾는 중 · 쓰는 중 · 확인 필요 · 완료 · 오류)	.ggc-agent (data-state thinking/tool/streaming/waiting/done/error/stopped · --inline) .ggc-agent-head .ggc-agent-steps .ggc-agent-body .ggc-agent-sources .ggc-agent-actions	—	Astryx agentic-states · archetypes Converse · AI 의정플랫폼	work	P1	있음	14

@@ -28,6 +28,7 @@
 | 목록 (행 — 제목은 줄바꿈 · 단추가 있으면 상태 위 · 단추 아래, v3.2) | `.ggc-card` + `.ggc-list-row` | `ggc-list-row` | components.html · components/list-row.md |
 | 목록 (대민 카드 격자) | `.ggc-structured-list` | `ggc-structured-list` | components/structured-list.md |
 | 상태 표시 | `.ggc-badge--approved/pending/rejected/session/meeting/recess/paid` · `--role-*` | `badge` | components.html |
+| 사람 · 기관 · AI 표시 (실명 · 역할 · 부서 옆, v4.0) | `.ggc-avatar` (`--sm/--lg --square --ai --member/…`) · `.ggc-avatar-row` · `.ggc-avatar-group` | `avatar` | components/avatar.md · components.html |
 | 분류 · 출처 | `.ggc-tag` | `badge` 의 `Tag` | components.html |
 | 카드 | `.ggc-card` `.ggc-card-head` `.ggc-card-foot` `--pad` | `card` | components.html |
 | 긴 글 (조문 · 보고서 · 안내) | `.ggc-prose` | `ggc-prose` | components/prose.md |
@@ -58,6 +59,7 @@
 | 선택 (부제 · 필터 · 다중 · 항상 펼침) | `.ggc-listbox` + `data-ggc-listbox` | `listbox` | components/listbox.md |
 | 포함 여부 (제출 시 반영) | `.ggc-check` · `.ggc-check-group` | `checkbox` | components/check-radio.md |
 | 켬/끔 (즉시 반영) | `.ggc-switch` (`role="switch"`) | `switch` | components/switch.md |
+| 같은 판의 표현 바꾸기 (목록/카드 · 주/월 · 전체/내 소관, v4.0) | `.ggc-segmented` (`<button aria-pressed>` 또는 radio label) | `toggle-group` | components/segmented.md · components-forms.html |
 | 택일 | `.ggc-radio` · `.ggc-check-group` | `radio-group` | components/check-radio.md |
 | 파일 첨부 | `.ggc-file` + `data-ggc-file` · `.ggc-file-list` | `ggc-file-upload` | components/file-upload.md |
 | 서명 (대안 안내는 패드 앞, v3.2) | `.ggc-signature` + `data-ggc-signature` (`.ggc-signature-pad`) | — | components/signature.md · public/solo.html |
@@ -76,6 +78,7 @@
 | 로딩 | `.ggc-skeleton`(행 높이 유지) · `.ggc-spinner`(짧은 대기) · 버튼 안 `.ggc-spinner--sm` + disabled |
 | 빈 | `.ggc-empty`(제목 = 무엇이 없는지 · 설명 = 왜 없는지 · 행동) — components/empty.md. 필터 때문인지 데이터가 없는지 가른다 |
 | 오류 | 인라인은 `.ggc-alert--danger`(사유 + 근거), 영역 전체는 `.ggc-empty--error` + 다시 시도. 코드·시각을 남긴다 |
+| AI 작업 (v4.0) | `.ggc-agent` `data-state` thinking · tool · streaming · **waiting**(사람 확인 — 가장 센 테두리) · done(출처 칩) · error(사유 + 다시 시도) — components/agent.md · components-overlay.html |
 
 ## 아직 없는 것
 

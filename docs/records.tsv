@@ -28,9 +28,9 @@ docs/contributing/pull-requests.md	contributing	current	.github/**	ADR 0015
 docs/contributing/record-writing.md	contributing	current	docs/**;skills/**	ADR 0015
 docs/contributing/component-lifecycle.md	contributing	current	design/components.tsv;design/ggc-components.css;registry/ggc/**;docs/components/**	ADR 0015
 docs/families/README.md	index	current	docs/families/**	-
-docs/families/form-controls.md	family	current	class:.ggc-field;class:.ggc-select;class:.ggc-check;class:.ggc-radio;class:.ggc-switch;class:.ggc-date;class:.ggc-file;class:.ggc-listbox;class:.ggc-search	-
+docs/families/form-controls.md	family	current	class:.ggc-field;class:.ggc-select;class:.ggc-check;class:.ggc-radio;class:.ggc-switch;class:.ggc-date;class:.ggc-file;class:.ggc-listbox;class:.ggc-search;class:.ggc-segmented	-
 docs/families/overlays.md	family	current	class:.ggc-modal;class:.ggc-menu;class:.ggc-tooltip;class:.ggc-toast;class:.ggc-main-menu;class:.ggc-drawer-head	-
-docs/families/status.md	family	current	class:.ggc-badge;class:.ggc-tag;class:.ggc-alert;class:.ggc-toast;class:.ggc-progress;class:.ggc-job;class:.ggc-empty;class:.ggc-spinner;class:.ggc-skeleton	-
+docs/families/status.md	family	current	class:.ggc-badge;class:.ggc-tag;class:.ggc-alert;class:.ggc-toast;class:.ggc-progress;class:.ggc-job;class:.ggc-empty;class:.ggc-spinner;class:.ggc-skeleton;class:.ggc-agent	-
 docs/families/shell.md	family	current	class:.ggc-shell;class:.ggc-gnb;class:.ggc-lnb;class:.ggc-header;class:.ggc-masthead;class:.ggc-identifier;class:.ggc-solo;class:.ggc-page-head	ADR 0010;ADR 0014
 docs/specs/README.md	index	current	docs/specs/**	-
 docs/templates/knowledge/record.md	template	current	-	-
@@ -149,3 +149,8 @@ skills/ggc-design/references/public-patterns.md	reference	current	design/example
 skills/ggc-design/references/registry.md	reference	current	registry/**;registry.json;public/r/**;components.json	ADR 0004;ADR 0011
 skills/ggc-design/references/reskin.md	reference	current	tools/sync-canon.py	-
 skills/ggc-design/references/verify.md	reference	current	design/check_design.py;tools/check-all.sh;tools/check-links.py;tools/check-registry.py;tools/check-knowledge.py	-
+docs/components/segmented.md	component	current	class:.ggc-segmented	ADR 0016
+docs/components/avatar.md	component	current	class:.ggc-avatar;class:.ggc-avatar-row;class:.ggc-avatar-group	ADR 0016
+docs/components/agent.md	component	current	class:.ggc-agent;class:.ggc-agent-head;class:.ggc-agent-steps;class:.ggc-agent-sources	ADR 0016
+docs/decisions/0016-astryx-look-ink-accent.md	decision	current	-	-
+docs/migration/v3.2-to-v4.md	migration	current	-	ADR 0016
