@@ -124,6 +124,8 @@ API 는 shadcn 문서 그대로다(`Button` · `Dialog` · `Tabs` · `Sidebar` �
 | 알림 | `<Alert variant="info|success|warning|danger">` 틴트 + 좌측 띠 |
 | 토스트 | `sonner` — `<Toaster />` 한 번, `toast.success("저장됨")`. 3개 상한 · 5초 |
 | 테마 radius | `rounded-lg` = 컨트롤(`--ggc-radius`) · `rounded-xl` = 카드(`--ggc-radius-lg`) · `rounded-md` = 메뉴 항목(`--ggc-radius-sm`) — 테마가 토큰을 댄다 |
+| 테마 그림자 | `shadow-2xs`~`shadow-sm` = 카드(`--ggc-shadow-low`) · `shadow-md` = 메뉴 · 팝오버(`-med`) · `shadow-lg`~`shadow-2xl` = 시트 · 모달(`-high`) — Tailwind 기본 그림자 대신 토큰 셋이 그려진다 |
+| 테마 전환 | `transition` · `transition-all` 의 기본 시간 = `--ggc-motion-fast`. `duration-*` 를 적은 곳은 그 값을 따른다 |
 
 Tailwind 유틸에서 토큰을 직접 쓸 때: `h-(--ggc-control-h)` · `text-(length:--ggc-text-sm)` · `bg-(--ggc-success-tint)` · `text-(--ggc-text-muted)`.
 **hex 를 적지 않는다** — D2 가 잡는다. 아이콘은 `lucide-react` 만.

@@ -6,7 +6,7 @@ registry/ggc/ui/*.tsx · blocks/*/*.tsx · hooks/*.ts 를 훑어 항목을 만�
   · npm 패키지(radix-ui · lucide-react · cmdk · sonner · recharts · @tanstack/react-table …) → dependencies
   · @/components/ui/<x> · @/hooks/<x>                                                   → registryDependencies("@ggc/<x>")
 제목·설명은 아래 META 에서 온다(한국어). 새 컴포넌트를 넣으면 META 에 한 줄 추가하고 이 스크립트를 돌린다.
-값(hex)은 여기 없다 — ggc-theme 의 cssVars 는 전부 var(--ggc-*) 다(R4).
+값(hex)은 여기 없다 — ggc-theme 의 cssVars 는 registry/ggc/styles/ggc.css 에서 읽고, 전부 var(--ggc-*) 다(R4).
 
     python tools/build-registry-json.py            생성 → registry.json
     python tools/build-registry-json.py --check    낡았는지만 (다르면 exit 1)
@@ -117,30 +117,33 @@ STYLE_UI = ["button", "badge", "card", "input", "label", "textarea", "select", "
             "accordion", "dropdown-menu", "tooltip", "popover", "sheet", "separator", "avatar", "scroll-area", "collapsible",
             "toggle", "toggle-group", "sonner", "kbd", "field", "empty"]
 
-THEME_LIGHT = {
-    "background": "var(--ggc-bg)", "foreground": "var(--ggc-text)",
-    "card": "var(--ggc-surface)", "card-foreground": "var(--ggc-text)",
-    "popover": "var(--ggc-surface)", "popover-foreground": "var(--ggc-text)",
-    "primary": "var(--ggc-primary)", "primary-foreground": "#ffffff",
-    "secondary": "var(--ggc-surface-inset)", "secondary-foreground": "var(--ggc-primary-deep)",
-    "muted": "var(--ggc-control-bg)", "muted-foreground": "var(--ggc-text-muted)",
-    "accent": "var(--ggc-primary-light)", "accent-foreground": "var(--ggc-primary-deep)",
-    "destructive": "var(--ggc-danger)", "destructive-foreground": "#ffffff",
-    "border": "var(--ggc-border)", "input": "var(--ggc-border-strong)", "ring": "var(--ggc-primary)",
-    "radius": "var(--ggc-radius)",
-    "chart-1": "var(--ggc-primary)", "chart-2": "var(--ggc-info)", "chart-3": "var(--ggc-success)",
-    "chart-4": "var(--ggc-warning)", "chart-5": "var(--ggc-danger)",
-    "sidebar": "var(--ggc-surface)", "sidebar-foreground": "var(--ggc-text)",
-    "sidebar-primary": "var(--ggc-primary)", "sidebar-primary-foreground": "#ffffff",
-    "sidebar-accent": "var(--ggc-primary-light)", "sidebar-accent-foreground": "var(--ggc-primary-deep)",
-    "sidebar-border": "var(--ggc-shell-border)", "sidebar-ring": "var(--ggc-primary)",
-}
-THEME_THEME = {
-    "font-sans": "var(--ggc-font)", "font-heading": "var(--ggc-font)", "font-mono": "var(--ggc-font-mono)",
-    # 공식 소스의 rounded-lg(컨트롤) · rounded-xl(카드) · rounded-md(메뉴 항목)에 계약 §2 형태를 댄다
-    "radius-sm": "var(--ggc-radius-sm)", "radius-md": "var(--ggc-radius-sm)",
-    "radius-lg": "var(--ggc-radius)", "radius-xl": "var(--ggc-radius-lg)", "radius-2xl": "var(--ggc-radius-lg)",
-}
+# ggc-theme 의 cssVars 는 참고본 registry/ggc/styles/ggc.css 에서 읽는다 — 매핑을 두 곳에 적으면 v4.0 처럼 한쪽만 바뀐다.
+#   light = :root 블록 전부 · theme = @theme inline 블록에서 --color-<k>: var(--<k>) 통과 줄을 뺀 나머지(shadcn CLI 가 그 줄을 스스로 만든다)
+THEME_CSS = os.path.join(REG, "styles", "ggc.css")
+DECL_RE = re.compile(r"--([a-z0-9-]+)\s*:\s*([^;]+);")
+
+
+def css_block(css, head):
+    i = css.index(head)
+    j = css.index("{", i) + 1
+    depth = 1
+    k = j
+    while depth:
+        depth += {"{": 1, "}": -1}.get(css[k], 0)
+        k += 1
+    return css[j:k - 1]
+
+
+def theme_vars():
+    with io.open(THEME_CSS, encoding="utf-8") as fh:
+        css = re.sub(r"/\*.*?\*/", "", fh.read(), flags=re.S)
+    light = {k: v.strip() for k, v in DECL_RE.findall(css_block(css, ":root"))}
+    theme = {k: v.strip() for k, v in DECL_RE.findall(css_block(css, "@theme inline"))
+             if not (k.startswith("color-") and k[6:] in light and v.strip() == "var(--%s)" % k[6:])}
+    return light, theme
+
+
+THEME_LIGHT, THEME_THEME = theme_vars()
 
 
 def read(p):
@@ -190,7 +193,7 @@ def build():
         },
         {
             "name": "ggc-theme", "type": "registry:theme", "title": "GGC 테마 — shadcn 변수를 --ggc-* 토큰으로 매핑",
-            "description": "shadcn 의 --primary · --background · --radius · --sidebar-* · --chart-* 를 전부 var(--ggc-*) 로 돌린다. 값(hex)은 하나도 없다. 다크 팔레트는 없다(계약 §3). radius 스텝(sm/md/lg/xl)에 토큰을 대 주어 공식 소스의 rounded-lg · rounded-xl 이 계약 §2 형태가 된다.",
+            "description": "shadcn 의 --primary · --background · --radius · --sidebar-* · --chart-* 를 전부 var(--ggc-*) 로 돌린다. 값(hex)은 하나도 없다. 다크 팔레트는 없다(계약 §3). radius 스텝(sm/md/lg/xl)에 토큰을 대 주어 공식 소스의 rounded-lg · rounded-xl 이 계약 §2 형태가 되고, 그림자 스텝(2xs~2xl)을 토큰 셋으로 접어 shadow-sm · shadow-md · shadow-lg 가 Tier 1 과 같은 깊이가 된다. 매핑의 원본은 registry/ggc/styles/ggc.css 다.",
             "dependencies": ["shadcn", "tw-animate-css"],
             "registryDependencies": ["@ggc/ggc-tokens"],
             "cssVars": {"theme": THEME_THEME, "light": THEME_LIGHT},

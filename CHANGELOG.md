@@ -3,6 +3,17 @@
 소비자(11개 서비스)에게 영향이 있는 변경을 적는다.
 **토큰 파일 바이트가 바뀌는 변경은 D1 재복사가 필요하다** — 그런 항목은 ⚠ D1 로 표시한다.
 
+## [4.0.1] — 2026-11-07 · Tier 2 테마가 Tailwind 그림자 · 전환 이름까지 토큰으로 (토큰 · 정본 CSS 무변경)
+
+사용자 지시(11-07) "github.com/tailwindlabs/tailwindcss 이거 적용할게 있으면 적용해줘". Tailwind 4.3.5 의 기본 테마 이름 가운데 Tier 2 공식 소스가 쓰는데 토큰이 대 주지 않던 것을 메웠다.
+
+- **그림자** — shadcn 공식 소스의 `shadow-sm` · `shadow-md` · `shadow-lg` · `shadow-xl` 이 Tailwind 기본 리터럴로 그려지고 있었다(메뉴 · 팝오버 · 셀렉트 · 시트 · 차트 툴팁). `@theme inline` 에서 일곱 이름을 토큰 셋으로 접는다 — `2xs`~`sm` = low · `md` = med · `lg`~`2xl` = high. Tier 1 의 카드 · 메뉴 · 모달 깊이와 같다.
+- **전환 시간** — `--default-transition-duration` = `--ggc-motion-fast`. 공식 소스의 `transition-all` 이 Tier 1 hover · 포커스 속도를 따른다.
+- **`ggc-theme` 매핑을 v4.0 으로 바로잡음** — 4.0.0 에서 참고본 `registry/ggc/styles/ggc.css` 만 잉크 계열로 바뀌고, 배포되는 `public/r/ggc-theme.json` 은 `--primary` = 남색 그대로였다. 생성기 `tools/build-registry-json.py` 가 이제 매핑을 참고본에서 읽는다 — 두 곳에 적지 않으니 다시 갈라지지 않는다.
+- **확인** — Tailwind 4.3.5 로 공식 소스를 컴파일해 그림자 유틸리티가 토큰을 가리키고 기본 그림자 리터럴이 0 임을, Chromium 계산 스타일로 팝오버 = med · 시트 = high · 전환 125ms 임을 봤다.
+- **들여오지 않은 것** — 글자 크기 이름(`text-sm` 등)은 Tailwind 스텝과 토큰 스텝의 이름이 한 칸 어긋나 매핑하면 공식 소스 본문이 줄어든다(기존 방침 그대로). `drop-shadow-*` · `inset-shadow-*` 는 대응 토큰이 없다. 4.2~4.3 의 새 유틸리티(`scrollbar-*` · 논리 속성 · `zoom-*`)는 쓸 자리가 없다.
+- **서비스가 할 일** — Tier 1 은 없음(D1 재복사 불필요). Tier 2 는 `npx shadcn add @ggc/ggc-theme -o` 로 테마를 다시 받는다.
+
 ## [4.0.0] — 2026-11-07 ⚠ D1 · Astryx 식 모양·깊이·중립색 · 주 강조는 잉크 · 부품 셋
 
 사용자 지시(11-07) "디자인 자체도 바꾸고 싶어" — 범위 **모양·깊이·중립색 + 주색 체계 + 부품 추가**, 정본에 바로, 글자 크기·밀도는 그대로. 결정: [ADR 0016](docs/decisions/0016-astryx-look-ink-accent.md).
