@@ -1,0 +1,14 @@
+/* app.css — 샘플 목업 전용. 정본 다음에 로드한다. 값은 전부 토큰 — 색 리터럴 0. */
+.sm-first { padding-left: var(--ggc-space-5); }
+.sm-title { color: var(--ggc-primary-deep); text-underline-offset: .2em; }
+.sm-due { font-weight: 700; color: var(--ggc-danger); }
+.sm-filter-count { font-weight: 400; color: var(--ggc-text-subtle); }
+.sm-inline-title { display: inline; margin-right: var(--ggc-space-2); }
+.sm-row-link { color: inherit; text-decoration: none; }
+.sm-row-link:hover { text-decoration: underline; }
+.ggc-table td .mono { font-family: var(--ggc-font-mono); font-size: var(--ggc-text-sm); }
+/* 열 너비 — 정본 목록 표(의안 목록 기준)에서 상태 말이 네 글자(「회신 대기」 · 「기관 전달」)라 상태 · 의원 열을 넓히고 제목 열에서 덜어 온다 */
+.sm-results.ggc-work-results .ggc-table th:nth-child(2) { width: 24%; }
+.sm-results.ggc-work-results .ggc-table th:nth-child(3) { width: 8%; }
+.sm-results.ggc-work-results .ggc-table th:nth-child(6) { width: 10%; }
+.sm-results.ggc-work-results .ggc-table th:nth-child(8) { width: 9%; }
