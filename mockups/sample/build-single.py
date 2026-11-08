@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""build-single.py — 샘플 목업 두 쪽을 **파일 하나짜리 HTML** 로 합친다(휴대폰 내려받기 · 메신저 전달용).
+"""build-single.py — 샘플 목업 여섯 쪽을 **파일 하나짜리 HTML** 로 합친다(휴대폰 내려받기 · 메신저 전달용).
 
 이 폴더의 쪽은 정본 사본을 상대경로로 링크해서 파일 열몇 개가 함께 있어야 열린다.
 휴대폰은 폴더째 내려받기 어렵다 — 그래서 CSS · 폰트 · 스크립트 · 이미지를 한 파일에 넣는다.
@@ -16,7 +16,9 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PAGES = [("work.html", "ggc-sample-work.html"), ("public.html", "ggc-sample-public.html")]
+PAGES = [(n + ".html", "ggc-sample-%s.html" % n) for n in ("work", "work-detail", "work-form", "public", "public-detail", "public-form")]
+# 쪽 사이 링크도 합본 이름으로 바꾼다 — 같은 폴더에 함께 받으면 서로 이어진다
+RENAME = dict(PAGES)
 MIME = {".png": "image/png", ".woff2": "font/woff2"}
 
 
@@ -40,6 +42,7 @@ def inline_css(href):
 
 def build(src):
     html = text(os.path.join(HERE, src))
+    html = re.sub(r'href="([a-z-]+\.html)"', lambda m: 'href="%s"' % RENAME.get(m.group(1), m.group(1)), html)
     # 이미지부터 바꾼다 — 정본 CSS · JS 주석에도 <img src="…"> 예시가 있어서, 넣은 뒤에 바꾸면 주석까지 건드린다.
     html = re.sub(r'<link rel="(icon|apple-touch-icon)" href="([^"]+)">',
                   lambda m: '<link rel="%s" href="%s">' % (m.group(1), data_uri(os.path.join(HERE, m.group(2)))), html)

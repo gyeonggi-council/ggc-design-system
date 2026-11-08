@@ -12,3 +12,23 @@
 .sm-results.ggc-work-results .ggc-table th:nth-child(3) { width: 8%; }
 .sm-results.ggc-work-results .ggc-table th:nth-child(6) { width: 10%; }
 .sm-results.ggc-work-results .ggc-table th:nth-child(8) { width: 9%; }
+/* 상세 · 신청서 쪽 */
+.sm-save { font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.sm-step-title { font-size: var(--ggc-text-md); font-weight: 600; color: var(--ggc-text-strong); }
+.sm-grid { display: grid; gap: var(--ggc-space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.sm-block { margin-top: var(--ggc-space-5); }
+.sm-pad { padding: var(--ggc-space-5); }
+.sm-wizard-plain { border: none; padding: 0; background: transparent; }
+.sm-card-head-flush { padding: 0 0 var(--ggc-space-3); }
+.sm-preview { margin-top: var(--ggc-space-3); padding: var(--ggc-space-3) var(--ggc-space-4); border: 1px solid var(--ggc-border); border-radius: var(--ggc-radius-sm); background: var(--ggc-surface-inset); }
+.sm-preview p { margin: 0; }
+.sm-preview p + p { margin-top: var(--ggc-space-2); }
+.sm-gap-top { margin-top: var(--ggc-space-7); }
+.sm-gap-top-sm { margin-top: var(--ggc-space-5); }
+.sm-gap-bottom { margin-bottom: var(--ggc-space-7); }
+.sm-gap-bottom-sm { margin-bottom: var(--ggc-space-4); }
+.sm-narrow { max-width: 920px; }   /* 서식 한 단 — 갤러리 public/form.html 과 같은 폭 */
+.sm-section-title { font-size: var(--ggc-text-md); margin: 0 0 var(--ggc-space-5); }
+.sm-small { font-size: var(--ggc-text-sm); }
+.sm-row-actions { display: flex; flex-wrap: wrap; gap: var(--ggc-space-2); }
+.sm-row-actions--end { justify-content: flex-end; }
