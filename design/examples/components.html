@@ -82,7 +82,7 @@
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title">컴포넌트 카탈로그</h1>
-            <p class="desc">ggc-components.css v3.2</p>
+            <p class="desc">ggc-components.css v4.0</p>
           </div>
         </div>
       </div>
@@ -104,7 +104,7 @@
         <h2>버튼 <span class="cls">.ggc-btn</span></h2>
         <p>높이 <code class="ex-inline">--ggc-control-h</code> · 모서리 <code class="ex-inline">--ggc-radius</code>.
           <code class="ex-inline">--sm</code> 은 <code class="ex-inline">--ggc-control-h-sm</code>, <code class="ex-inline">--lg</code> 는 <code class="ex-inline">--ggc-control-h-lg</code>.
-          그림자는 없다(v3.2 — 그림자는 모달·메뉴처럼 떠 있는 층만). 휴대폰(≤600)에서는 손가락 목표 40 으로 커진다.</p>
+          주 버튼은 <b>잉크</b>(<code class="ex-inline">--ggc-accent</code>, v4.0 — 화면의 주 행동 하나, 색이 아니라 명도로 가장 세다) · 2차는 회색 채움 · 그림자는 없다. 의회 남색은 링크 · 브랜드 자리에 남는다. 휴대폰(≤600)에서는 손가락 목표 40 으로 커진다.</p>
         <div class="ex-demo" id="d-btn">
           <div class="ex-row">
             <button class="ggc-btn ggc-btn--primary" type="button">의안 상정</button>
@@ -160,10 +160,38 @@
         </div>
       </section>
 
+      <!-- ============================================================ 아바타 (v4.0) -->
+      <section class="ex-section">
+        <h2>아바타 <span class="cls">.ggc-avatar · .ggc-avatar-row · .ggc-avatar-group</span></h2>
+        <p>사람 · 기관 · AI 를 한 칸으로. 사진이 없으면 <b>머리글자</b>, 그것도 없으면 lucide <code class="ex-inline">user</code>.
+          옆에는 늘 <b>실명 · 역할 · 부서</b>(계약 §2 — UUID 금지). 역할 색쌍은 배지와 같은 뜻으로만 쓴다 — 장식이 아니다.
+          AI 는 <code class="ex-inline">--ai --square</code>(잉크 바탕)로 사람과 구분한다.</p>
+        <div class="ex-demo" id="d-avatar">
+          <div class="ex-row" style="gap:var(--ggc-space-5);align-items:center">
+            <span class="ggc-avatar ggc-avatar--sm" aria-hidden="true">김</span>
+            <span class="ggc-avatar" aria-hidden="true">이</span>
+            <span class="ggc-avatar ggc-avatar--lg" aria-hidden="true">박</span>
+            <span class="ggc-avatar" role="img" aria-label="사용자"><svg aria-hidden="true"><use href="#i-user"/></svg></span>
+            <span class="ggc-avatar ggc-avatar--square ggc-avatar--ai" role="img" aria-label="AI 의정 비서"><svg aria-hidden="true"><use href="#i-bot"/></svg></span>
+            <span class="ggc-avatar ggc-avatar--square" role="img" aria-label="기획재정위원회"><svg aria-hidden="true"><use href="#i-landmark"/></svg></span>
+          </div>
+          <div class="ex-row" style="gap:var(--ggc-space-6);margin-top:var(--ggc-space-4);align-items:center">
+            <div class="ggc-avatar-row"><span class="ggc-avatar ggc-avatar--member" aria-hidden="true">김</span><span class="who"><span class="name">김○○ 의원</span><span class="meta">기획재정위원회 · 위원장</span></span></div>
+            <div class="ggc-avatar-row"><span class="ggc-avatar ggc-avatar--staff" aria-hidden="true">이</span><span class="who"><span class="name">이○○ 주무관</span><span class="meta">의사담당관실 · 의안 접수</span></span></div>
+            <div class="ggc-avatar-row"><span class="ggc-avatar ggc-avatar--policy" aria-hidden="true">박</span><span class="who"><span class="name">박○○ 정책지원관</span><span class="meta">입법정책담당관실</span></span></div>
+            <div class="ggc-avatar-group" aria-label="검토자 6명">
+              <span class="ggc-avatar ggc-avatar--sm" aria-hidden="true">김</span><span class="ggc-avatar ggc-avatar--sm" aria-hidden="true">이</span><span class="ggc-avatar ggc-avatar--sm" aria-hidden="true">박</span><span class="ggc-avatar ggc-avatar--sm" aria-hidden="true">최</span>
+              <span class="more">+2</span>
+            </div>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-avatar"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
       <!-- ============================================================ 카드 -->
       <section class="ex-section">
         <h2>카드 <span class="cls">.ggc-card</span></h2>
-        <p>모서리 <code class="ex-inline">--ggc-radius-lg</code>, <b>그림자 없음</b>(계약 §2). 머리·바닥 여백은 행과 같은 <code class="ex-inline">--ggc-row-pad</code> 라
+        <p>모서리 <code class="ex-inline">--ggc-radius-lg</code>, 옅은 선 + <b>낮은 그림자</b> <code class="ex-inline">--ggc-shadow-low</code>(v4.0 — 깊이는 조용히: 선과 그림자를 둘 다 세게 쓰지 않는다). 머리·바닥 여백은 행과 같은 <code class="ex-inline">--ggc-row-pad</code> 라
           카드 제목과 행 제목의 왼쪽 끝이 맞는다. 목록을 담는 기본형과, 자유 본문을 담는
           <code class="ex-inline">--pad</code> 두 가지다.</p>
         <div class="ex-demo ex-demo--bg" id="d-card">
@@ -494,7 +522,7 @@
   <footer class="ggc-footer">
     <div class="inner">
       각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.2
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v4.0
     </div>
   </footer>
 </div>

@@ -33,3 +33,4 @@ Thumbs.db
 
 # 실주소 치환 규칙 — 공개 저장소에 절대 올리지 않는다
 redaction.local.sed
+tools/vibe-test/out/

@@ -147,8 +147,8 @@ type MainMenuItem = {
 /* .depth1 > li > a·button — PC 는 li(group/mm) hover/focus-within, 현재·펼침은 aria 속성으로 */
 const TRIGGER = cn(
   "inline-flex h-14 cursor-pointer items-center gap-1.5 border-b-[3px] border-b-transparent px-5 text-[17px] font-bold whitespace-nowrap text-(--ggc-text-strong) no-underline",
-  "group-hover/mm:border-b-primary group-hover/mm:text-(--ggc-primary-deep) group-focus-within/mm:border-b-primary group-focus-within/mm:text-(--ggc-primary-deep)",
-  "aria-expanded:border-b-primary aria-expanded:text-(--ggc-primary-deep) aria-[current=page]:border-b-primary aria-[current=page]:text-(--ggc-primary-deep)",
+  "group-hover/mm:border-b-primary group-hover/mm:text-foreground group-focus-within/mm:border-b-primary group-focus-within/mm:text-foreground",
+  "aria-expanded:border-b-primary aria-expanded:text-foreground aria-[current=page]:border-b-primary aria-[current=page]:text-(--ggc-primary-deep)",
   "forced-colors:aria-[current=page]:outline-2 forced-colors:aria-[current=page]:outline-[Highlight] forced-colors:aria-[current=page]:-outline-offset-2",
   "max-[900px]:h-auto max-[900px]:min-h-[52px] max-[900px]:w-full max-[900px]:justify-between max-[900px]:border-b-0 max-[900px]:px-4 max-[900px]:py-3 max-[900px]:text-left max-[900px]:whitespace-normal"
 )
@@ -162,8 +162,8 @@ const DEPTH2 = cn(
 
 const DEPTH2_LINK = cn(
   "block px-5 py-2.5 text-[15px] font-medium text-foreground no-underline",
-  "hover:bg-(--ggc-primary-light) hover:text-(--ggc-primary-deep) focus-visible:bg-(--ggc-primary-light) focus-visible:text-(--ggc-primary-deep)",
-  "aria-[current=page]:font-bold aria-[current=page]:text-(--ggc-primary-deep)",
+  "hover:bg-(--ggc-accent-muted) hover:text-foreground focus-visible:bg-(--ggc-accent-muted) focus-visible:text-foreground",
+  "aria-[current=page]:font-bold aria-[current=page]:text-foreground",
   "forced-colors:aria-[current=page]:outline-2 forced-colors:aria-[current=page]:outline-[Highlight] forced-colors:aria-[current=page]:-outline-offset-2",
   "max-[900px]:pr-4 max-[900px]:pl-7"
 )

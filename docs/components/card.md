@@ -1,6 +1,6 @@
 # 카드 — `.ggc-card`
 
-흰 면 · 1px `--ggc-border` · 모서리 `--ggc-radius-lg` · **그림자 없음**(계약 §2). 목록을 담는 기본형과 자유 본문을 담는 `--pad` 두 가지.
+흰 면 · 1px `--ggc-border`(옅은 선) · 모서리 `--ggc-radius-lg` · **낮은 그림자** `--ggc-shadow-low`(v4.0 — 깊이는 조용히, 계약 §2). 목록을 담는 기본형과 자유 본문을 담는 `--pad` 두 가지.
 
 ## 마크업
 
@@ -41,4 +41,4 @@
 
 ## 근거
 
-ggc-components.css §2 · 대시보드.dc.html 섹션 실측 · 계약 §2(`--ggc-radius-lg`, 그림자 없음) · [ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md).
+ggc-components.css §2 · 대시보드.dc.html 섹션 실측 · 계약 §2(`--ggc-radius-lg`, `--ggc-shadow-low`) · [ADR 0014](../decisions/0014-mobile-menu-right-and-shared-rules.md).

@@ -3,6 +3,47 @@
 소비자(11개 서비스)에게 영향이 있는 변경을 적는다.
 **토큰 파일 바이트가 바뀌는 변경은 D1 재복사가 필요하다** — 그런 항목은 ⚠ D1 로 표시한다.
 
+## [4.0.1] — 2026-11-07 · Tier 2 테마가 Tailwind 그림자 · 전환 이름까지 토큰으로 (토큰 · 정본 CSS 무변경)
+
+사용자 지시(11-07) "github.com/tailwindlabs/tailwindcss 이거 적용할게 있으면 적용해줘". Tailwind 4.3.5 의 기본 테마 이름 가운데 Tier 2 공식 소스가 쓰는데 토큰이 대 주지 않던 것을 메웠다.
+
+- **그림자** — shadcn 공식 소스의 `shadow-sm` · `shadow-md` · `shadow-lg` · `shadow-xl` 이 Tailwind 기본 리터럴로 그려지고 있었다(메뉴 · 팝오버 · 셀렉트 · 시트 · 차트 툴팁). `@theme inline` 에서 일곱 이름을 토큰 셋으로 접는다 — `2xs`~`sm` = low · `md` = med · `lg`~`2xl` = high. Tier 1 의 카드 · 메뉴 · 모달 깊이와 같다.
+- **전환 시간** — `--default-transition-duration` = `--ggc-motion-fast`. 공식 소스의 `transition-all` 이 Tier 1 hover · 포커스 속도를 따른다.
+- **`ggc-theme` 매핑을 v4.0 으로 바로잡음** — 4.0.0 에서 참고본 `registry/ggc/styles/ggc.css` 만 잉크 계열로 바뀌고, 배포되는 `public/r/ggc-theme.json` 은 `--primary` = 남색 그대로였다. 생성기 `tools/build-registry-json.py` 가 이제 매핑을 참고본에서 읽는다 — 두 곳에 적지 않으니 다시 갈라지지 않는다.
+- **확인** — Tailwind 4.3.5 로 공식 소스를 컴파일해 그림자 유틸리티가 토큰을 가리키고 기본 그림자 리터럴이 0 임을, Chromium 계산 스타일로 팝오버 = med · 시트 = high · 전환 125ms 임을 봤다.
+- **들여오지 않은 것** — 글자 크기 이름(`text-sm` 등)은 Tailwind 스텝과 토큰 스텝의 이름이 한 칸 어긋나 매핑하면 공식 소스 본문이 줄어든다(기존 방침 그대로). `drop-shadow-*` · `inset-shadow-*` 는 대응 토큰이 없다. 4.2~4.3 의 새 유틸리티(`scrollbar-*` · 논리 속성 · `zoom-*`)는 쓸 자리가 없다.
+- **서비스가 할 일** — Tier 1 은 없음(D1 재복사 불필요). Tier 2 는 `npx shadcn add @ggc/ggc-theme -o` 로 테마를 다시 받는다.
+
+## [4.0.0] — 2026-11-07 ⚠ D1 · Astryx 식 모양·깊이·중립색 · 주 강조는 잉크 · 부품 셋
+
+사용자 지시(11-07) "디자인 자체도 바꾸고 싶어" — 범위 **모양·깊이·중립색 + 주색 체계 + 부품 추가**, 정본에 바로, 글자 크기·밀도는 그대로. 결정: [ADR 0016](docs/decisions/0016-astryx-look-ink-accent.md).
+이전 안내: [docs/migration/v3.2-to-v4.md](docs/migration/v3.2-to-v4.md). 다크 모드 · 회색 바탕 · 주색 폐기는 들여오지 않았다(표는 ADR).
+
+- **토큰 v4.0** ⚠ D1 — 신설 `--ggc-accent` / `-hover` / `-active` / `--ggc-on-accent` / `--ggc-accent-muted` / `-strong`(잉크 강조 · 선택 배경) · `--ggc-radius-full` · `--ggc-shadow-low/-med/-high` · `--ggc-hover-tint` / `-pressed-tint` · `--ggc-motion-fast/-medium/-slow`.
+  중립 램프 전부 OKLCH 재생성(의회 남색 색상각 · 차가운 회색 · AA 유지) · 모서리 6/4/12 → **10/6/12** · `--ggc-border` 한 단계 옅게 · `--ggc-shadow` = low 별칭. 남색 · 상태색 · 치수 · 서체 무변경. 이름은 늘기만 했다.
+- **컴포넌트 v4.0** ⚠ D1 — 주 버튼 · 체크 · 라디오 · 스위치 · 칩 선택 · 현재 단계 · 탭 밑줄 · 현재 쪽 · 진행 막대 · 스피너 · 선택 배경(LNB · 리스트박스 · 메뉴 · 작업대 전환) · 표 머리선 · 스킵 링크가 **잉크**로. 2차 버튼 회색 채움 · ghost hover 반투명.
+  카드 · KPI `--ggc-shadow-low`, 메뉴 · 토스트 `-med`, 모달 `-high`. 알약 999px → `--ggc-radius-full`. **§45~§48 신설**: `.ggc-segmented` · `.ggc-avatar` · `.ggc-agent`(AI 작업 상태 7종) · 고대비 보강.
+- **대민 v4.0** ⚠ D1 — 현재 메뉴 · 사이드 내비 현재 항목이 잉크 + 중립 선택 배경. 전체메뉴 `-med`. 히어로 · 사이드 내비 머리 · 로고의 남색은 그대로.
+- **Tier 2** — `ggc-theme` 매핑 `--primary` · `--accent` · `--secondary` · `--sidebar-*` → 잉크 계열 · `card` 에 low 그림자 · 블록 8(qr-login · stepper · shell · file-upload · side-nav · listbox · public-header · prose) 선택 색 정리. `toggle-group`(= 세그먼트) · `avatar` 설명 갱신. 레지스트리 재빌드.
+- **기록** — 계약 §2 · §3(v4.0 색인 · 잉크 규칙) · 토큰 가이드 · [states.md §11](docs/guides/states.md) · 패밀리 셋 · 부품 기록 3 신설 · button/card · KRDS 정렬(모서리 6·10·12) · 스킬 참조 2 · 갤러리 3쪽(세그먼트 · 아바타 · AI 작업 상태) + 토큰 쪽(깊이 세 단계) · 인벤토리 3행(단계 14).
+- **생성물** 전부 재생성 — DESIGN.md · 팔레트 SVG · 합본 · README 미리보기 PNG · PPT · registry.json · public/r.
+- **서비스가 할 일** — 재복사 · 서비스 CSS 의 남색 주 버튼 덧칠 제거 · Tier 2 는 `ggc-style` 재설치. 글자 크기 · 밀도는 그대로라 리플로우가 없다.
+
+## [3.3.0] — 2026-11-06 · 사람과 에이전트가 같은 시스템을 쓴다 (문서·도구만, CSS·토큰 무변경)
+
+사용자 지시(11-06) "github.com/meta/astryx 이거 참고해서 전면 개편해줘". Astryx(Meta, 공개 디자인 시스템)의 **구성 방식**을 들여왔다 — 지시면 하나 · CLI · 권위 있는 지식 기록 · 패밀리 · 의도별 PR · 생성 평가.
+기술(React/StyleX · npm · 테마 · 다크)은 들여오지 않았다 — 이유는 [ADR 0015](docs/decisions/0015-one-system-for-humans-and-agents.md).
+
+- **`AGENTS.md` 신설** — 사람 · 에이전트 공용 정본 지시면(원칙 넷 · 부트스트랩 다섯 명령 · 두 종류의 일 · 철칙(검사기 ID 와 짝) · 생성물 표 · 흐름 · 지도 · 명령 한 장). `CLAUDE.md` 는 그것을 끌어오고 Claude Code 전용 넉 줄만. 스킬 §0 이 CLI 부트스트랩을 가리킨다.
+- **CLI `tools/ggc.py`** — 표준 라이브러리만. `docs <주제> --dense`(토큰 · 프로필은 정본에서 실시간) · `component --list|<id> --markup` · `template --list|<id> --markup` · `icon --list` · `specs --for|--diff` · `check` · `upgrade` · `knowledge` · `vibe`.
+- **지식 기록 레지스트리 `docs/records.tsv`** — 기록 139개에 kind · authority(current/draft/archived) · governs(경로 글롭 · `class:.ggc-*`) · owner. 검사기 `tools/check-knowledge.py` K1~K6 (등록 · 값 · 지배 범위 실재 · draft 위치 · 템플릿 분리 · 인벤토리 범위) — `check-all.sh` · CI 에 추가.
+- **새 기록** — `docs/architecture/system.md`(세 층 · 두 Tier · 두 프로필 · 경계 · 불변 조건 10) · `docs/families/`(입력 컨트롤 · 뜨는 층 · 상태 보이기 · 셸) · `docs/contributing/`(PR 절차 · 쓰기 기준표 W1~W9 · 부품 한살이) · `docs/specs/`(draft 전용) · `docs/templates/knowledge/`(틀 5종).
+- **화면 틀 레지스트리 `design/templates.tsv`** — 갤러리 14쪽을 틀로(프로필 · 패턴 · 처방 문서 · 절).
+- **PR 의도 템플릿 5종** `.github/PULL_REQUEST_TEMPLATE/`(canon ⚠ D1 · record · gallery · registry · tooling) + 기본 템플릿.
+- **vibe test `tools/vibe-test/`** — 과제 7종(업무 4 · 대민 2 · 작업대 1), 에이전트에게는 AGENTS.md 만. 채점은 `check_design.py --gate` + 기록에 있는 규칙(h1 위치 · 이모지 · 프로필 · 셸 부품). `--self-check` 가 갤러리로 채점기를 검증(CI).
+- **README** 개발자용 앞부분 — 원칙 넷 · 세 층 · 같은 명령. `docs/README.md` 에 구조 · 패밀리 · 기여 절. 플러그인 판 3.3.0.
+- **D1 재복사 불필요** — `ggc-tokens.css` · `ggc-components.css` · `ggc-public.css` · `ggc-behaviors.js` · `ggc-icons.svg` 바이트 그대로. 생성물도 그대로다.
+
 ## [3.2.2] — 2026-10-25 ⚠ D1 · 서명 패드가 좁은 화면에서 넘치던 것
 
 출석 서비스에 v3.2 를 옮기다 잡았다 — 페이지 안에 둔 `.ggc-signature`(문서의 기본 마크업)가 400px 보다 좁은 화면에서 본문 밖으로 나갔다(390 에서 26px · 320 에서 96px).

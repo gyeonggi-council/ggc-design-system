@@ -18,6 +18,7 @@
 |---|---|---|
 | 색·치수 | `styles/ggc-tokens.css` (정본 사본, D1) | 정본을 고치고 재복사 |
 | shadcn 변수(`--primary` …) | `@ggc/ggc-theme` 가 `:root` 에 `var(--ggc-*)` 로 넣는다 (D7) | 값을 적지 않는다 |
+| Tailwind 테마 이름(`rounded-*` · `shadow-*` · `transition` 기본 시간) | `@ggc/ggc-theme` 가 `@theme inline` 에 토큰을 댄다. 매핑의 원본은 `registry/ggc/styles/ggc.css` 하나고, 생성기가 그것을 읽는다 | 생성기에 매핑을 옮겨 적지 않는다 |
 | 컴포넌트 소스 | `registry/ggc/**`(shadcn 공식 소스 + 토큰 — `cn` 은 `@/lib/utils` · `dark:` 없음 · 링 알파 .20) → `registry.json`(생성, `tools/build-registry-json.py`) → `public/r/*.json`(빌드 `npx shadcn build`, 검사 `tools/check-registry.py`) | 정본 소스를 고치고 생성·재빌드 → 소비자는 `add -o` 로 갱신 |
 | 마크업·ARIA | Tier 1 과 같은 구조(`docs/components/*.md`) | |
 
@@ -26,6 +27,7 @@
 - **`@import` 는 파일 선두** — CLI 가 토큰 import 를 넣지 못한다. 빠뜨리면 모든 `var(--ggc-*)` 가 비어 화면이 무색이 된다. D7 이 잡는다.
 - **프리셋의 `.dark` 블록** — 남겨 두면 `.dark` 클래스 한 번에 oklch 회색 팔레트로 뒤집힌다. 지운다(D7 WARN).
 - **hex 를 Tailwind 클래스에 적지 않는다** (`bg-[#3c5d93]`) — D2 FAIL. `bg-primary` 또는 `bg-(--ggc-primary)`.
+- **그림자는 이름으로 쓴다** — `shadow-sm` 이하는 카드(`--ggc-shadow-low`), `shadow-md` 는 뜨는 층(`-med`), `shadow-lg` 이상은 모달(`-high`)로 테마가 접는다. `shadow-[0_4px_…]` 리터럴은 토큰 셋 밖의 깊이를 만든다.
 - **shadcn 기본 레지스트리의 같은 이름 항목**(`button`)을 섞지 않는다 — 치수가 토큰이 아니라 프로필이 안 먹는다. 항상 `@ggc/` 접두.
 - **`@import "shadcn/tailwind.css"` 를 빠뜨리면** 공식 소스의 `data-open:` `data-checked:` `data-active:` 변형이 컴파일되지 않아 열림·선택 상태가 그려지지 않는다.
 - **`@tanstack/react-table` 은 v8** — v9 는 API 가 다르다. 레지스트리가 `^8` 을 박는다.

@@ -85,7 +85,7 @@
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title">폼 컨트롤</h1>
-            <p class="desc">ggc-components.css v3.2 · §16~17 · §24 · §27~28 · §32</p>
+            <p class="desc">ggc-components.css v4.0 · §16~17 · §24 · §27~28 · §32 · §45</p>
           </div>
         </div>
       </div>
@@ -238,6 +238,35 @@
           </div>
         </div>
         <details class="ex-reveal" data-src="#d-switch"><summary>마크업</summary><pre class="ex-code"></pre></details>
+      </section>
+
+      <!-- ============================================================ 세그먼트 (v4.0) -->
+      <section class="ex-section">
+        <h2>세그먼트 컨트롤 <span class="cls">.ggc-segmented</span></h2>
+        <p><b>같은 판의 표현을 바꾼다</b>(목록/카드 · 주/월 · 전체/내 것) — 판 자체를 바꾸는 것은 탭이다. 2~5개, 서로 배타.
+          라디오 묶음이면 <code class="ex-inline">&lt;label&gt;&lt;input type="radio"&gt;</code>(화살표 키로 이동), 토글 묶음이면
+          <code class="ex-inline">&lt;button aria-pressed&gt;</code>. 선택 항목은 흰 면 + 테두리이고 트랙 안에서 뜨지 않는다(그림자 없음). 휴대폰에서는 가로 가득.</p>
+        <div class="ex-demo" id="d-segmented">
+          <div class="ex-row" style="gap:var(--ggc-space-5);align-items:center">
+            <div class="ggc-segmented" role="group" aria-label="보기 방식">
+              <button type="button" aria-pressed="true"><svg class="ggc-icon" aria-hidden="true"><use href="#i-list"/></svg>목록</button>
+              <button type="button" aria-pressed="false"><svg class="ggc-icon" aria-hidden="true"><use href="#i-layout-dashboard"/></svg>카드</button>
+              <button type="button" aria-pressed="false"><svg class="ggc-icon" aria-hidden="true"><use href="#i-calendar"/></svg>달력</button>
+            </div>
+            <fieldset class="ggc-segmented ggc-segmented--sm" style="border-width:1px;margin:0">
+              <legend class="ggc-sr">기간</legend>
+              <label><input type="radio" name="seg-period" value="week" checked>이번 주</label>
+              <label><input type="radio" name="seg-period" value="month">이번 달</label>
+              <label><input type="radio" name="seg-period" value="session">이번 회기 <span class="count">12</span></label>
+            </fieldset>
+          </div>
+          <div class="ggc-segmented ggc-segmented--block" role="group" aria-label="범위" style="margin-top:var(--ggc-space-4);max-width:420px">
+            <button type="button" aria-pressed="false">전체</button>
+            <button type="button" aria-pressed="true">내 소관</button>
+            <button type="button" aria-pressed="false" disabled>위임받은 것</button>
+          </div>
+        </div>
+        <details class="ex-reveal" data-src="#d-segmented"><summary>마크업</summary><pre class="ex-code"></pre></details>
       </section>
 
       <!-- ============================================================ 날짜 -->
@@ -410,7 +439,7 @@
   <footer class="ggc-footer">
     <div class="inner">
       각 마크업은 이 페이지가 <b>렌더된 DOM 에서 직접 읽은 것</b>이다 ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v3.2
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-components.css</code> v4.0
     </div>
   </footer>
 </div>

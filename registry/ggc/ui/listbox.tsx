@@ -199,7 +199,7 @@ function Listbox(props: ListboxProps) {
                 "flex min-h-(--ggc-control-h-sm) items-center gap-2 rounded-(--ggc-radius-sm) border-l-[3px] border-l-transparent py-1.5 pr-2.5 pl-3 text-(length:--ggc-control-font-sm) text-foreground",
                 !o.disabled && "cursor-pointer hover:bg-(--ggc-row-hover)",
                 isSelected &&
-                  "border-l-primary bg-(--ggc-primary-light) font-bold text-(--ggc-primary-deep) forced-colors:outline-2 forced-colors:-outline-offset-2 forced-colors:outline-[Highlight]",
+                  "border-l-primary bg-(--ggc-accent-muted) font-bold text-(--ggc-text-strong) forced-colors:outline-2 forced-colors:-outline-offset-2 forced-colors:outline-[Highlight]",
                 isActive && "outline-2 -outline-offset-2 outline-primary forced-colors:outline-[CanvasText]",
                 o.disabled && "text-(--ggc-text-subtle)"
               )}

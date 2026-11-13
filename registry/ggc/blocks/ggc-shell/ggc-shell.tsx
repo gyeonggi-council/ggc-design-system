@@ -166,7 +166,7 @@ function AppSidebar({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <SidebarMenuButton size="lg" aria-label="사용자 메뉴">
-                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-(--ggc-primary-light) text-primary"><UserIcon className="size-4" /></span>
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-(--ggc-accent-muted) text-foreground"><UserIcon className="size-4" /></span>
                       <span className="grid min-w-0 flex-1 leading-tight">
                         <span className="truncate text-sm font-semibold">{user.name}</span>
                         {(user.role || user.dept) && (
@@ -267,7 +267,7 @@ function SkipLink({ className, href = "#main", children = "본문 바로가기",
   return (
     <a
       href={href}
-      className={cn("sr-only z-50 rounded-br-sm bg-(--ggc-primary-deep) px-4 py-2 text-sm font-bold text-primary-foreground focus:not-sr-only focus:absolute focus:top-0 focus:left-0", className)}
+      className={cn("sr-only z-50 rounded-br-sm bg-(--ggc-accent) px-4 py-2 text-sm font-bold text-primary-foreground focus:not-sr-only focus:absolute focus:top-0 focus:left-0", className)}
       {...props}
     >
       {children}

@@ -1,0 +1,21 @@
+# templates.tsv — 화면 틀(템플릿) 레지스트리 정본 (v3.3, ADR 0015)
+#
+# 갤러리의 실물 화면을 「틀」로 등록한다. 에이전트와 사람은 `python tools/ggc.py template --list` 로 고르고,
+# `template <id>` 로 처방(슬롯 순서 · 쓰는 부품 · 덜어내기 기준)을 읽고, `--markup` 으로 그 쪽의 마크업을 꺼낸다.
+# 값은 여기 없다 — 틀의 실체는 갤러리 HTML 이고, 처방은 참조 문서의 그 절이다.
+#
+# id	이름	프로필	패턴	갤러리	처방 문서	절
+monitor	여러 상태를 함께 보는 화면 (대시보드)	work	Monitor	design/examples/dashboard.html	skills/ggc-design/references/archetypes.md	Monitor
+explore	찾고 고르는 목록 화면 (의안 목록)	work	Explore	design/examples/explore.html	skills/ggc-design/references/archetypes.md	Explore
+learn-decide	읽고 결정하는 문서·수치 화면	work	Learn/Decide	design/examples/components-overlay.html	skills/ggc-design/references/archetypes.md	Learn / Decide
+configure	단계를 밟아 만드는 화면 (위저드)	work	Configure	design/examples/wizard.html	skills/ggc-design/references/archetypes.md	Configure
+converse	AI 와 대화하는 화면	work	Converse	design/examples/components-overlay.html	skills/ggc-design/references/archetypes.md	Converse
+operate	실시간 시청 · 반복 처리 작업대	work	Operate	design/examples/operate.html	skills/ggc-design/references/archetypes.md	Operate — 실시간 시청과 반복 처리 작업대 (v3.1 정본)
+workbench	목록 + 문서 두 칸 작업대 (긴 작업 진행)	work	Operate	design/examples/workbench.html	docs/components/split.md	
+login	QR 로그인 (전 시스템 공통 입구)	work	Login	design/examples/login.html	docs/components/qr-login.md	
+less	덜어내기 전/후 — 같은 화면 두 번	work	Explore	design/examples/less.html	docs/guides/less.md	
+public-main	대민 메인 (안내 · 통합검색 · 바로가기)	public	메인	design/examples/public/index.html	skills/ggc-design/references/public-patterns.md	메인
+public-list	대민 목록 (검색 · 필터 · 쪽)	public	목록	design/examples/public/list.html	skills/ggc-design/references/public-patterns.md	목록
+public-detail	대민 상세	public	상세	design/examples/public/detail.html	skills/ggc-design/references/public-patterns.md	상세
+public-form	대민 서식 (의견 제출)	public	서식	design/examples/public/form.html	skills/ggc-design/references/public-patterns.md	서식
+solo	휴대폰 1인 링크 화면 (서명 · 셸 생략)	public	1인 링크	design/examples/public/solo.html	docs/components/solo.md	

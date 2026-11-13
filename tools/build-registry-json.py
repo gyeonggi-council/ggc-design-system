@@ -6,7 +6,7 @@ registry/ggc/ui/*.tsx · blocks/*/*.tsx · hooks/*.ts 를 훑어 항목을 만�
   · npm 패키지(radix-ui · lucide-react · cmdk · sonner · recharts · @tanstack/react-table …) → dependencies
   · @/components/ui/<x> · @/hooks/<x>                                                   → registryDependencies("@ggc/<x>")
 제목·설명은 아래 META 에서 온다(한국어). 새 컴포넌트를 넣으면 META 에 한 줄 추가하고 이 스크립트를 돌린다.
-값(hex)은 여기 없다 — ggc-theme 의 cssVars 는 전부 var(--ggc-*) 다(R4).
+값(hex)은 여기 없다 — ggc-theme 의 cssVars 는 registry/ggc/styles/ggc.css 에서 읽고, 전부 var(--ggc-*) 다(R4).
 
     python tools/build-registry-json.py            생성 → registry.json
     python tools/build-registry-json.py --check    낡았는지만 (다르면 exit 1)
@@ -38,15 +38,15 @@ META = {
     "accordion": ("아코디언", "카드형 묶음 — 정말 접어도 되는 내용에만."),
     "alert": ("알림 · 콜아웃", "공식 default/destructive + info · success · warning · danger(틴트 + 좌측 띠). 아이콘은 lucide 를 자식으로."),
     "alert-dialog": ("확인 다이얼로그", "파괴적 동작(반려 · 회수 · 삭제) 확인. 배경 클릭으로 닫히지 않는다."),
-    "avatar": ("아바타", "사용자 표시 — 실명 · 역할 · 부서 옆. 사진이 없으면 머리글자."),
+    "avatar": ("아바타", "사람 · 기관 · AI — 실명 · 역할 · 부서 옆. 사진이 없으면 머리글자, AI 는 잉크 바탕 사각(Tier 1 .ggc-avatar--ai)."),
     "badge": ("배지 · 태그", "공식 변형 + 상태 7종(회기 · 결재) + 역할 4종. 색 단독 금지 — 텍스트와 lucide 아이콘을 함께. Tag 는 분류·출처."),
     "breadcrumb": ("브레드크럼", "현재 경로. 업무 셸에서는 헤더(ggc-shell ShellHeader.breadcrumb)에 둔다 — 제목은 본문(ADR 0010)."),
-    "button": ("버튼", "default · secondary · outline · ghost · link · destructive + dashed(점선 추가). 높이는 --ggc-control-h*(프로필을 따른다). primary 만 그림자."),
+    "button": ("버튼", "default · secondary · outline · ghost · link · destructive + dashed(점선 추가). 높이는 --ggc-control-h*(프로필을 따른다). default 는 잉크(--ggc-accent, v4.0) · 그림자 없음."),
     "button-group": ("버튼 그룹", "붙은 버튼 묶음 — 보기 전환 · 분할 버튼."),
     "calendar": ("달력", "react-day-picker. 회기·회의일 표시는 modifiers 로. date-picker 와 함께."),
-    "card": ("카드", "흰 면 · 1px 테두리 · radius 14 · 그림자 없음(계약 §2). CardTitle 은 --ggc-h3-size."),
+    "card": ("카드", "흰 면 · 1px 테두리 · radius 12 · 낮은 그림자 --ggc-shadow-low(v4.0, 계약 §2). CardTitle 은 --ggc-h3-size."),
     "chart": ("차트", "Recharts 래퍼. 색은 chart-1..5(= primary · info · success · warning · danger). 데이터 색 이외의 장식색 금지."),
-    "checkbox": ("체크박스", "선택은 네이비 채움 + 흰 체크."),
+    "checkbox": ("체크박스", "선택은 잉크(--ggc-accent) 채움 + 흰 체크(v4.0)."),
     "collapsible": ("접기/펼치기", "필터 상세 · 고급 옵션."),
     "command": ("커맨드 팔레트", "cmdk. 통합검색(⌘K) · 콤보박스의 목록부. 20개 넘는 항목은 이것으로."),
     "dialog": ("모달 · 다이얼로그", "제목 · 본문(DialogBody 스크롤) · 버튼 행. 파괴적 동작은 <DialogContent alert>."),
@@ -78,7 +78,7 @@ META = {
     "tabs": ("탭", "높이 --ggc-control-h. 업무 화면은 variant=\"line\"(밑줄형)."),
     "textarea": ("텍스트 영역", "입력과 같은 규칙. 조문 · 의견."),
     "toggle": ("토글 버튼", "눌림 상태가 있는 버튼 — 보기 전환."),
-    "toggle-group": ("토글 그룹", "칩형 필터(내 소관 · 처리 대기) · 보기 전환."),
+    "toggle-group": ("토글 그룹 · 세그먼트", "같은 판의 표현 바꾸기(목록/카드 · 주/월) — Tier 1 .ggc-segmented 와 같은 자리. 칩형 필터에도."),
     "tooltip": ("툴팁", "보조 설명 전용 — 지연 0. 필수 정보를 툴팁에만 두지 않는다."),
     # ---- hooks ----
     "use-mobile": ("useIsMobile", "≤768 판정 — sidebar 가 Sheet 로 바뀌는 기준."),
@@ -117,30 +117,33 @@ STYLE_UI = ["button", "badge", "card", "input", "label", "textarea", "select", "
             "accordion", "dropdown-menu", "tooltip", "popover", "sheet", "separator", "avatar", "scroll-area", "collapsible",
             "toggle", "toggle-group", "sonner", "kbd", "field", "empty"]
 
-THEME_LIGHT = {
-    "background": "var(--ggc-bg)", "foreground": "var(--ggc-text)",
-    "card": "var(--ggc-surface)", "card-foreground": "var(--ggc-text)",
-    "popover": "var(--ggc-surface)", "popover-foreground": "var(--ggc-text)",
-    "primary": "var(--ggc-primary)", "primary-foreground": "#ffffff",
-    "secondary": "var(--ggc-surface-inset)", "secondary-foreground": "var(--ggc-primary-deep)",
-    "muted": "var(--ggc-control-bg)", "muted-foreground": "var(--ggc-text-muted)",
-    "accent": "var(--ggc-primary-light)", "accent-foreground": "var(--ggc-primary-deep)",
-    "destructive": "var(--ggc-danger)", "destructive-foreground": "#ffffff",
-    "border": "var(--ggc-border)", "input": "var(--ggc-border-strong)", "ring": "var(--ggc-primary)",
-    "radius": "var(--ggc-radius)",
-    "chart-1": "var(--ggc-primary)", "chart-2": "var(--ggc-info)", "chart-3": "var(--ggc-success)",
-    "chart-4": "var(--ggc-warning)", "chart-5": "var(--ggc-danger)",
-    "sidebar": "var(--ggc-surface)", "sidebar-foreground": "var(--ggc-text)",
-    "sidebar-primary": "var(--ggc-primary)", "sidebar-primary-foreground": "#ffffff",
-    "sidebar-accent": "var(--ggc-primary-light)", "sidebar-accent-foreground": "var(--ggc-primary-deep)",
-    "sidebar-border": "var(--ggc-shell-border)", "sidebar-ring": "var(--ggc-primary)",
-}
-THEME_THEME = {
-    "font-sans": "var(--ggc-font)", "font-heading": "var(--ggc-font)", "font-mono": "var(--ggc-font-mono)",
-    # 공식 소스의 rounded-lg(컨트롤) · rounded-xl(카드) · rounded-md(메뉴 항목)에 계약 §2 형태를 댄다
-    "radius-sm": "var(--ggc-radius-sm)", "radius-md": "var(--ggc-radius-sm)",
-    "radius-lg": "var(--ggc-radius)", "radius-xl": "var(--ggc-radius-lg)", "radius-2xl": "var(--ggc-radius-lg)",
-}
+# ggc-theme 의 cssVars 는 참고본 registry/ggc/styles/ggc.css 에서 읽는다 — 매핑을 두 곳에 적으면 v4.0 처럼 한쪽만 바뀐다.
+#   light = :root 블록 전부 · theme = @theme inline 블록에서 --color-<k>: var(--<k>) 통과 줄을 뺀 나머지(shadcn CLI 가 그 줄을 스스로 만든다)
+THEME_CSS = os.path.join(REG, "styles", "ggc.css")
+DECL_RE = re.compile(r"--([a-z0-9-]+)\s*:\s*([^;]+);")
+
+
+def css_block(css, head):
+    i = css.index(head)
+    j = css.index("{", i) + 1
+    depth = 1
+    k = j
+    while depth:
+        depth += {"{": 1, "}": -1}.get(css[k], 0)
+        k += 1
+    return css[j:k - 1]
+
+
+def theme_vars():
+    with io.open(THEME_CSS, encoding="utf-8") as fh:
+        css = re.sub(r"/\*.*?\*/", "", fh.read(), flags=re.S)
+    light = {k: v.strip() for k, v in DECL_RE.findall(css_block(css, ":root"))}
+    theme = {k: v.strip() for k, v in DECL_RE.findall(css_block(css, "@theme inline"))
+             if not (k.startswith("color-") and k[6:] in light and v.strip() == "var(--%s)" % k[6:])}
+    return light, theme
+
+
+THEME_LIGHT, THEME_THEME = theme_vars()
 
 
 def read(p):
@@ -190,7 +193,7 @@ def build():
         },
         {
             "name": "ggc-theme", "type": "registry:theme", "title": "GGC 테마 — shadcn 변수를 --ggc-* 토큰으로 매핑",
-            "description": "shadcn 의 --primary · --background · --radius · --sidebar-* · --chart-* 를 전부 var(--ggc-*) 로 돌린다. 값(hex)은 하나도 없다. 다크 팔레트는 없다(계약 §3). radius 스텝(sm/md/lg/xl)에 토큰을 대 주어 공식 소스의 rounded-lg · rounded-xl 이 계약 §2 형태가 된다.",
+            "description": "shadcn 의 --primary · --background · --radius · --sidebar-* · --chart-* 를 전부 var(--ggc-*) 로 돌린다. 값(hex)은 하나도 없다. 다크 팔레트는 없다(계약 §3). radius 스텝(sm/md/lg/xl)에 토큰을 대 주어 공식 소스의 rounded-lg · rounded-xl 이 계약 §2 형태가 되고, 그림자 스텝(2xs~2xl)을 토큰 셋으로 접어 shadow-sm · shadow-md · shadow-lg 가 Tier 1 과 같은 깊이가 된다. 매핑의 원본은 registry/ggc/styles/ggc.css 다.",
             "dependencies": ["shadcn", "tw-animate-css"],
             "registryDependencies": ["@ggc/ggc-tokens"],
             "cssVars": {"theme": THEME_THEME, "light": THEME_LIGHT},

@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "checkbox",
   "title": "체크박스",
-  "description": "선택은 네이비 채움 + 흰 체크.",
+  "description": "선택은 잉크(--ggc-accent) 채움 + 흰 체크(v4.0).",
   "dependencies": [
     "lucide-react",
     "radix-ui"

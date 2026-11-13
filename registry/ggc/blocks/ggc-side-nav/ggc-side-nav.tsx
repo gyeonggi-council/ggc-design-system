@@ -18,7 +18,7 @@ function SideNavItem({ link, sub }: { link: SideNavLink; sub?: boolean }) {
       className={cn(
         ROW,
         sub && "py-[9px] pr-5 pl-8 text-sm font-medium",
-        "aria-[current=page]:bg-(--ggc-primary-light) aria-[current=page]:font-bold aria-[current=page]:text-(--ggc-primary-deep) aria-[current=page]:shadow-[inset_3px_0_0_var(--ggc-primary)]",
+        "aria-[current=page]:bg-(--ggc-accent-muted) aria-[current=page]:font-bold aria-[current=page]:text-(--ggc-text-strong) aria-[current=page]:shadow-[inset_3px_0_0_var(--ggc-accent)]",
         "forced-colors:aria-[current=page]:outline-2 forced-colors:aria-[current=page]:outline-[Highlight] forced-colors:aria-[current=page]:-outline-offset-2"
       )}
     >

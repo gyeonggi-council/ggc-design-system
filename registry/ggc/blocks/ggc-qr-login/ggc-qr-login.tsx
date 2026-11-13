@@ -120,7 +120,7 @@ function QrLogin({
         <ol data-slot="qr-login-steps" role="list" className="m-0 flex list-none flex-col gap-3 rounded-(--ggc-radius) border border-border bg-(--ggc-surface-inset) p-4 max-[420px]:p-3 forced-colors:border">
           {steps.map((step, i) => (
             <li key={i} className="relative min-h-5 pl-8 text-[13px] leading-[1.5] break-keep text-(--ggc-text-muted) [&_strong]:font-bold [&_strong]:text-foreground">
-              <span aria-hidden="true" className="absolute top-px left-0 inline-flex size-5 items-center justify-center rounded-full bg-(--ggc-primary-light-strong) text-[11px] leading-none font-bold text-(--ggc-primary-deep) forced-colors:border">
+              <span aria-hidden="true" className="absolute top-px left-0 inline-flex size-5 items-center justify-center rounded-full bg-(--ggc-accent) text-[11px] leading-none font-bold text-(--ggc-on-accent) forced-colors:border">
                 {i + 1}
               </span>
               {step}
@@ -144,7 +144,7 @@ function QrLogin({
       )}
 
       {userCode && (
-        <p data-slot="qr-login-usercode" className="m-0 rounded-(--ggc-radius) border border-(--ggc-primary-light-strong) bg-(--ggc-primary-light) p-3 text-center font-mono text-base font-bold tracking-[0.06em] break-all text-(--ggc-primary-deep) select-all forced-colors:border">
+        <p data-slot="qr-login-usercode" className="m-0 rounded-(--ggc-radius) border border-(--ggc-accent-muted-strong) bg-(--ggc-accent-muted) p-3 text-center font-mono text-base font-bold tracking-[0.06em] break-all text-(--ggc-text-strong) select-all forced-colors:border">
           {userCode}
         </p>
       )}

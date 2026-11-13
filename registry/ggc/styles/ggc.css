@@ -15,14 +15,14 @@
   --card-foreground: var(--ggc-text);
   --popover: var(--ggc-surface);
   --popover-foreground: var(--ggc-text);
-  --primary: var(--ggc-primary);
-  --primary-foreground: #ffffff;
-  --secondary: var(--ggc-surface-inset);
-  --secondary-foreground: var(--ggc-primary-deep);
+  --primary: var(--ggc-accent);                 /* v4.0: 주 강조는 잉크. 브랜드 남색은 --ggc-primary 로 직접 쓴다(링크 · 포커스 링) */
+  --primary-foreground: var(--ggc-on-accent);
+  --secondary: var(--ggc-accent-muted);
+  --secondary-foreground: var(--ggc-text-strong);
   --muted: var(--ggc-control-bg);
   --muted-foreground: var(--ggc-text-muted);
-  --accent: var(--ggc-primary-light);
-  --accent-foreground: var(--ggc-primary-deep);
+  --accent: var(--ggc-accent-muted);
+  --accent-foreground: var(--ggc-text-strong);
   --destructive: var(--ggc-danger);
   --destructive-foreground: #ffffff;
   --border: var(--ggc-border);
@@ -36,10 +36,10 @@
   --chart-5: var(--ggc-danger);
   --sidebar: var(--ggc-surface);
   --sidebar-foreground: var(--ggc-text);
-  --sidebar-primary: var(--ggc-primary);
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: var(--ggc-primary-light);
-  --sidebar-accent-foreground: var(--ggc-primary-deep);
+  --sidebar-primary: var(--ggc-accent);
+  --sidebar-primary-foreground: var(--ggc-on-accent);
+  --sidebar-accent: var(--ggc-accent-muted);
+  --sidebar-accent-foreground: var(--ggc-text-strong);
   --sidebar-border: var(--ggc-shell-border);
   --sidebar-ring: var(--ggc-primary);
 }
@@ -87,6 +87,18 @@
   --radius-lg: var(--ggc-radius);
   --radius-xl: var(--ggc-radius-lg);
   --radius-2xl: var(--ggc-radius-lg);
+  /* 그림자 스텝 — 공식 소스는 shadow-sm(떠 있는 사이드바 · 탭) · shadow-md(메뉴 · 팝오버 · 셀렉트) · shadow-lg/xl(시트 · 하위 메뉴 · 차트 툴팁) 을 쓴다.
+   * Tailwind 기본값은 토큰 밖 리터럴이라, 일곱 이름을 토큰 셋(카드 · 뜨는 층 · 모달)으로 접는다 — 그래야 Tier 1 과 같은 깊이가 난다. */
+  --shadow-2xs: var(--ggc-shadow-low);
+  --shadow-xs: var(--ggc-shadow-low);
+  --shadow-sm: var(--ggc-shadow-low);
+  --shadow: var(--ggc-shadow-low);
+  --shadow-md: var(--ggc-shadow-med);
+  --shadow-lg: var(--ggc-shadow-high);
+  --shadow-xl: var(--ggc-shadow-high);
+  --shadow-2xl: var(--ggc-shadow-high);
+  /* transition 유틸리티의 기본 시간 — 공식 소스의 transition-all · transition-[color,box-shadow] 가 Tier 1 의 hover · 포커스 속도를 따른다 */
+  --default-transition-duration: var(--ggc-motion-fast);
 }
 
 @layer base {

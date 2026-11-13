@@ -18,15 +18,15 @@
 ## 2. 공통 셸
 
 - 상단 통합서비스 띠(`.ggc-utility-bar`): **기본 숨김**(v3.2.1, 2026-10-25 사용자 결정 — v1.2 판의 2026-08-25 결정과 같다). 서비스 간 이동은 GNB 와 SSO 가 맡는다. 마크업은 남기고(검사기 D3), 띠가 필요한 문서 허브만 서비스 CSS 에서 `display` 를 되돌린다
-- 상단 GNB(헤더): 64px, 흰색, 하단 `--ggc-shell-border` 1px(v3.2: `#D5DCE5`) — 화면마다 자리가 같은 것만: 브레드크럼(경로부) · 검색 · 알림. **제목은 헤더에 두지 않는다**
+- 상단 GNB(헤더): 64px, 흰색, 하단 `--ggc-shell-border` 1px(v4.0: `#DDE0E5` — 선은 한 단계 옅게, 면은 낮은 그림자가 함께 가른다) — 화면마다 자리가 같은 것만: 브레드크럼(경로부) · 검색 · 알림. **제목은 헤더에 두지 않는다**
 - 페이지 제목(2026-09-05, ADR 0010 — 0008 대체): 본문 첫 줄 `.ggc-page-head` 의 `<h1 class="ggc-page-title">`, 크기 `--ggc-h1-size`(24) · 600(v3.2 — 위계는 위치·간격·크기·굵기를 함께 쓴다). 화면의 h1 은 이것 하나이고 `<main aria-labelledby="page-title">`. ~~설명 한 줄(`.desc`) + 주 액션 하나~~ → **v3.1(ADR 0012): 설명 줄은 기본 없음, 주 액션은 핵심 행동이 있을 때만. 제목 표시는 화면군마다 기본형(보임) 또는 간결형(h1 을 `.ggc-sr` 로 남김) — §11.** 900px 이하 브레드크럼 숨김(경로는 「전체메뉴」 서랍의 현재 항목)
 - 로고 슬롯/LNB(사이드바): 256px · 접힘 48px(`--ggc-lnb-w-icon`, Tier 2 sidebar collapsible=icon). 항목은 lucide 아이콘 + 라벨, 높이 32.
   PC(>900) 접기 단추 `[data-ggc-lnb-toggle]` 는 **GNB 맨 앞**의 아이콘 단추다(`aria-label` 「메뉴 접기」/「메뉴 펼치기」 · `aria-expanded`). 접힘은 그 화면이 열려 있는 동안 기억한다(v3.2, ADR 0014)
-- 페이지 배경: `#FFFFFF`(v3.2, ADR 0013 — 바탕과 카드의 색 차이 대신 테두리로 면을 가른다. v3.1 까지 `#EEF1F5`)
+- 페이지 배경: `#FFFFFF`(v3.2, ADR 0013 — 바탕과 카드의 색 차이 대신 테두리로 면을 가른다. v3.1 까지 `#EEF1F5`). v4.0 도 흰색 — 회색 바탕으로 돌아가지 않는다
 - 본문: 대시보드 최대 1320px, 기타 업무 화면 최대 1360px
-- 카드: 흰색, 1px `#D5DCE5`, radius 12px(`--ggc-radius-lg`), 카드 그림자 없음 · 주 버튼 색 그림자도 없음 — 그림자는 모달·메뉴처럼 뜨는 층만(v3.2).
+- 카드: 흰색, 1px `#DDE0E5`(`--ggc-border`), radius 12px(`--ggc-radius-lg`), **낮은 그림자** `--ggc-shadow-low`(v4.0, ADR 0016 — 「깊이는 조용히」: 선과 그림자를 둘 다 세게 쓰지 않는다. 메뉴·토스트는 `-med`, 모달은 `-high`). 주 버튼은 그림자 없음.
   KPI 타일 · 위저드도 같은 `--ggc-radius-lg` 다. 카드 머리 · 바닥 여백은 목록 행과 같은 `--ggc-row-pad` — 카드 제목과 행 제목의 왼쪽 끝이 맞는다(v3.2, ADR 0014)
-- 검색: 300×`--ggc-search-h`(업무 36 · 대민 48), `#F3F5F9`, radius `--ggc-radius`(v3.2: 10 → 6px)
+- 검색: 300×`--ggc-search-h`(업무 36 · 대민 48), `#F2F3F7`(`--ggc-control-bg`), radius `--ggc-radius`(v4.0: 10px — 버튼·입력과 같다. 작은 상자 6 · 카드 12 · 알약 `--ggc-radius-full`)
 - 사용자: 실명·역할·부서, UUID 금지
 - 모바일: 900px 이하 GNB 압축 + 「전체메뉴」 서랍, 390px 가로 스크롤 0, 주요 업무 동선 도달 가능.
   v3.2([ADR 0014](decisions/0014-mobile-menu-right-and-shared-rules.md)) — 대민 셸과 같은 자리 · 같은 말로 맞춘다.
@@ -39,7 +39,8 @@
 - 한글 줄바꿈(v3.2, ADR 0014): `.ggc-shell` · `.ggc-page` · `.ggc-public` · `.ggc-solo` · `.ggc-modal` 은 `word-break: keep-all` + `overflow-wrap: break-word` — 「기획재 / 정위원회」처럼 낱말 가운데서 끊지 않는다. 칸보다 긴 낱말(주소 · 번호)만 자른다. 넓어진 표는 열을 짓누르지 않고 `.ggc-table-wrap` 안에서 가로로 민다
 - 글꼴: 자체 호스팅 `Pretendard GOV`; 외부 CDN 금지
 - 아이콘: lucide 전용 — Tier 1 은 `design/ggc-icons.svg` 스프라이트, Tier 2 는 `lucide-react`. 이모지 · 유니코드 기호 아이콘 금지(ADR 0009)
-- 밀도(업무, v3.0): 버튼 32/36/40 · 입력 36 · 글자 14 · 표 셀 8×12 — shadcn 기본과 같다(ADR 0009). 값은 토큰
+- 밀도(업무, v3.0): 버튼 32/36/40 · 입력 36 · 글자 14 · 표 셀 8×12 — shadcn 기본과 같다(ADR 0009). 값은 토큰. v4.0 에서도 치수는 바뀌지 않았다
+- 주 강조(v4.0, ADR 0016): **잉크** `--ggc-accent`(거의 검정) — 주 버튼 · 체크 · 스위치 · 라디오 · 현재 단계 · 탭 밑줄 · 현재 쪽 · 진행 막대 · 선택 배경(`--ggc-accent-muted`). 의회 남색 `--ggc-primary` 는 **브랜드 자리**에만: GNB 브랜드 · 링크 · 포커스 링 · 유틸리티 바 · 역할/납부 배지 · 대민 히어로 바탕 · 사이드 내비 머리. 둘 외의 주색은 만들지 않는다
 
 ### 2-1. 와이드 모니터 확폭 (≥1680px — 2026-07-31 신설, 사용자 결정)
 
@@ -52,22 +53,25 @@
 - 확폭을 채택한 시스템은 §8-5 스크린샷에 **1920×1080을 추가**하고, 확폭 발동·기본 폭 보존을 회귀 테스트(css-contract 등)로 고정한다.
 - 선행 구현: BIMS W4(XL-20260731-0003, `ggc_ai_bims` 커밋 `41b0ef1`) — 브레이크포인트·값을 변경할 때는 이 선행 구현과 함께 개정한다.
 
-## 3. 공통 토큰 v1.2
+## 3. 공통 토큰 v4.0
 
 **정본은 `design/ggc-tokens.css` 다.** 아래는 그 파일의 색인이며, 값이 갈리면 파일이 옳다.
-(2026-08-22 실물 반영 완료 — 그 전까지 이 문서의 v1.2 는 선언만 있고 파일은 v1.1 이었다.)
+(2026-08-22 실물 반영 완료 — 그 전까지 이 문서의 v1.2 는 선언만 있고 파일은 v1.1 이었다. v4.0(2026-11-07, ADR 0016): 중립 램프를 OKLCH 로 다시 생성, 잉크 강조 신설. 이름은 늘기만 했다.)
 
-- primary `#3C5D93` · primary-deep `#2E4A78` · primary-dark `#345080` · primary-light `#EEF3FA`
-- text-strong `#131722`
-- text `#1A1F29`
-- text-muted `#4A5566`
-- text-subtle `#5A6577`
-- text-faint `#8A94A3` — **비텍스트 전용**(아이콘·구분·장식). 텍스트에 쓰지 않는다
-- text-body `#3A4150` — 카드 안 긴 본문 단락(흰 위 10.23:1). v2.0 에서 컴포넌트 레이어로부터 승격
+- primary `#3C5D93` · primary-deep `#2E4A78` · primary-dark `#345080` · primary-light `#EEF3FA` — **브랜드 자리에만**(v4.0)
+- accent `#181B20` · accent-hover `#2A2E34` · accent-active `#090B0F` · on-accent `#FFFFFF` — 주 강조 잉크(v4.0)
+- accent-muted `#E4E6EB` · accent-muted-strong `#D8DBE0` — 선택 배경 · 2차 버튼(v4.0)
+- text-strong `#111419`
+- text `#1C1F25`
+- text-muted `#535860`
+- text-subtle `#646971`
+- text-faint `#8F949C` — **비텍스트 전용**(아이콘·구분·장식). 텍스트에 쓰지 않는다
+- text-body `#3C4047` — 카드 안 긴 본문 단락(흰 위 10.41:1). v2.0 에서 컴포넌트 레이어로부터 승격
+- 형태·깊이(v4.0): radius-sm 6 · radius 10 · radius-lg 12 · radius-full · shadow-low/-med/-high · hover-tint/-pressed-tint · motion-fast/-medium/-slow — 값은 토큰 파일
 - 타이포 스케일(v3.0, 값은 토큰 파일): `--ggc-text-xs` ~ `-3xl`(12/13/14/16/18/20/24/30) · `--ggc-h1-size` = 2xl · `--ggc-h2-size` = lg · `--ggc-h3-size` = md · `--ggc-kpi-size` = 3xl · `--ggc-leading-tight/normal`. 대민 프로필은 KRDS 스텝(17 · 20/24/32)으로 덮어쓴다
 - 아이콘 치수(v3.0): `--ggc-icon` 16 · `--ggc-icon-lg` 20 (대민 20/24) · `--ggc-icon-stroke` 2
-- border `#D5DCE5` · border-strong `#D5DCE5` (v3.2: border 가 #E6EBF1 에서 올라와 둘이 같아졌다 — 이름은 쓰임을 가른다)
-- shell-border `#D5DCE5` (v3.2: #E2E7EE)
+- border `#DDE0E5` · border-strong `#D6D9DF` (v4.0: 카드·상자 선은 한 단계 옅게, 버튼·입력 선은 그대로 또렷하게)
+- shell-border `#DDE0E5` (= border)
 - bg `#FFFFFF` (v3.2: #EEF1F5)
 - surface `#FFFFFF`
 - success `#0A7B4E` · warning `#9D5E00` · danger `#CD2D2D` · info `#1F6A97`

@@ -1,5 +1,5 @@
 <!-- 생성물 — 손으로 고치지 말 것. python tools/build-design-md.py -->
-<!-- 원천: design/ggc-tokens.css (27de2b5d) · design/components.tsv (102adf3b) -->
+<!-- 원천: design/ggc-tokens.css (c6130e5a) · design/components.tsv (3a499624) -->
 
 # 경기도의회 공통 디자인 시스템 — DESIGN.md
 
@@ -53,12 +53,12 @@
 
 | 토큰 | Hex | 역할 | 흰 위 | 페이지 배경 위 |
 |---|---|---|---|---|
-| `--ggc-text-strong` | #131722 | 제목 · 강조 수치 | 17.90:1 | 15.80:1 |
-| `--ggc-text` | #1A1F29 | 본문 | 16.51:1 | 14.57:1 |
-| `--ggc-text-body` | #3A4150 | 카드 안 긴 본문 단락 · 표 td | 10.23:1 | 9.03:1 |
-| `--ggc-text-muted` | #4A5566 | 보조 · 라벨 · 표 헤더 | 7.55:1 | 6.66:1 |
-| `--ggc-text-subtle` | #5A6577 | 메타 · 시각 · 힌트 | 5.89:1 | 5.20:1 |
-| `--ggc-text-faint` | #8A94A3 | **텍스트 금지** — 아이콘 stroke · 구분 · 장식 (3:1 대상) | 3.07:1 | — |
+| `--ggc-text-strong` | #111419 | 제목 · 강조 수치 | 18.45:1 | 16.29:1 |
+| `--ggc-text` | #1C1F25 | 본문 | 16.51:1 | 14.57:1 |
+| `--ggc-text-body` | #3C4047 | 카드 안 긴 본문 단락 · 표 td | 10.41:1 | 9.19:1 |
+| `--ggc-text-muted` | #535860 | 보조 · 라벨 · 표 헤더 | 7.16:1 | 6.32:1 |
+| `--ggc-text-subtle` | #646971 | 메타 · 시각 · 힌트 | 5.52:1 | 4.88:1 |
+| `--ggc-text-faint` | #8F949C | **텍스트 금지** — 아이콘 stroke · 구분 · 장식 (3:1 대상) | 3.05:1 | — |
 
 ### 면 · 선
 
@@ -66,13 +66,13 @@
 |---|---|---|
 | `--ggc-bg` | #FFFFFF | 페이지 배경 |
 | `--ggc-surface` | #FFFFFF | 카드 · 패널 · GNB · LNB |
-| `--ggc-surface-inset` | #F6F8FB | 인셋 영역 · 표 합계행 |
-| `--ggc-control-bg` | #F3F5F9 | 검색창 · 입력 컨트롤 · 아이콘 박스 |
-| `--ggc-row-hover` | #FAFBFD | 목록 행 hover |
-| `--ggc-border` | #D5DCE5 | 카드 테두리 |
-| `--ggc-border-strong` | #D5DCE5 | 버튼 · 입력 테두리 |
-| `--ggc-shell-border` | #D5DCE5 | GNB 하단선 · LNB 우측선 |
-| `--ggc-hairline` | #F0F3F7 | 표 행 구분선 |
+| `--ggc-surface-inset` | #F5F7F9 | 인셋 영역 · 표 합계행 |
+| `--ggc-control-bg` | #F2F3F7 | 검색창 · 입력 컨트롤 · 아이콘 박스 |
+| `--ggc-row-hover` | #F9FAFC | 목록 행 hover |
+| `--ggc-border` | #DDE0E5 | 카드 테두리 |
+| `--ggc-border-strong` | #D6D9DF | 버튼 · 입력 테두리 |
+| `--ggc-shell-border` | #DDE0E5 | GNB 하단선 · LNB 우측선 |
+| `--ggc-hairline` | #EEF0F4 | 표 행 구분선 |
 
 ### 역할 색쌍 (신원 — 상태와 다른 축)
 
@@ -175,6 +175,9 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 | 서명 패드 | `.ggc-signature .ggc-signature-pad` | `—` | both | P1 | 있음 |
 | 문서 미리보기 틀 (렌더러는 서비스) | `.ggc-viewer .ggc-viewer-tools .ggc-viewer-body .ggc-viewer-pages .ggc-viewer-page .ggc-viewer-state .ggc-viewer-note (--frame)` | `—` | both | P1 | 있음 |
 | 좌우 두 칸 작업대 | `.ggc-split .ggc-split-list .ggc-split-handle .ggc-split-view .ggc-split-back` | `—` | work | P1 | 있음 |
+| 세그먼트 컨트롤 (같은 판의 표현 바꾸기) | `.ggc-segmented (--block --sm · <button aria-pressed> 또는 radio label)` | `toggle-group` | both | P1 | 있음 |
+| 아바타 (사람 · 기관 · AI) | `.ggc-avatar (--sm --lg --square --ai --member/--staff/--policy/--other) .ggc-avatar-row .ggc-avatar-group` | `avatar` | both | P1 | 있음 |
+| AI 작업 상태 (생각 중 · 자료 찾는 중 · 쓰는 중 · 확인 필요 · 완료 · 오류) | `.ggc-agent (data-state thinking/tool/streaming/waiting/done/error/stopped · --inline) .ggc-agent-head .ggc-agent-steps .ggc-agent-body .ggc-agent-sources .ggc-agent-actions` | `—` | work | P1 | 있음 |
 
 핵심 규칙:
 
@@ -218,10 +221,10 @@ Tier 1 = CSS 클래스(`design/ggc-components.css`, 전 스택 공용) · Tier 2
 
 ## 6. Depth & Elevation (깊이)
 
-- `--ggc-shadow` = `0 1px 2px rgba(20, 30, 50, 0.04)` — 기본, 거의 보이지 않는다.
+- `--ggc-shadow` = `var(--ggc-shadow-low)` — 기본, 거의 보이지 않는다.
 - `--ggc-shadow-primary` = `none` — primary 버튼 전용.
 - 카드·패널은 그림자 없이 1px 테두리로 면을 가른다. 겹침은 색 면(인셋 배경)과 테두리로 표현한다.
-- radius: `--ggc-radius-sm` 4px (배지·칩) · `--ggc-radius` 6px (버튼·입력) · `--ggc-radius-lg` 12px (카드 14~16).
+- radius: `--ggc-radius-sm` 6px (배지·칩) · `--ggc-radius` 10px (버튼·입력) · `--ggc-radius-lg` 12px (카드 14~16).
 - 포커스 링: `--ggc-focus-ring` = `0 0 0 3px rgba(60, 93, 147, 0.20)`. `forced-colors` 에서는 `outline: 3px solid Highlight` 로 복원된다.
 
 ## 7. Do's and Don'ts (규칙)

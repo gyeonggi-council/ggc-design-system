@@ -40,7 +40,8 @@
 | 역할(신원) | `--ggc-role-member` `-staff` `-policy` `-other` (+ `-tint`) | 의원 / 사무처 / 정책지원관 / 기타 |
 | 타이포 | `--ggc-font` `--ggc-font-mono` | |
 | 간격 | `--ggc-space-1` ~ `-7` | 4/8/12/16/20/24/32 |
-| 형태 | `--ggc-radius` `-sm` `-lg` `--ggc-shadow` `--ggc-shadow-primary` | 버튼 / 배지 / 카드 / 기본 / primary 버튼 |
+| 강조 잉크 (v4.0) | `--ggc-accent` `-hover` `-active` `--ggc-on-accent` `--ggc-accent-muted` `-strong` | 주 버튼 · 체크 · 현재 단계 · 선택 배경 — 남색은 브랜드 자리에만 |
+| 형태 | `--ggc-radius` `-sm` `-lg` `-full` · `--ggc-shadow-low` `-med` `-high` · `--ggc-shadow` `--ggc-shadow-primary` | 버튼·입력 / 작은 상자 / 카드 / 알약 · 카드 / 메뉴 / 모달 · low 별칭 / none |
 | 포커스 | `--ggc-focus-ring` | 계약 §3 |
 | 셸 치수 | `--ggc-gnb-h` `--ggc-lnb-w` `--ggc-lnb-w-icon` `--ggc-main-max` `--ggc-main-max-wide` | 64 / 256 / 48 / 1320 / 1360 |
 | 타이포 스케일 (v3.0) | `--ggc-text-xs`~`-3xl` · `--ggc-leading-tight/normal` · `--ggc-h1/h2/h3-size` · `--ggc-kpi-size` | 위계는 크기·굵기로. 프로필이 덮어쓴다 |

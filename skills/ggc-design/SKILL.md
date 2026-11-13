@@ -3,7 +3,7 @@ name: ggc-design
 description: 경기도의회 공통 디자인 시스템을 화면에 적용·검증하는 독립 스킬. "디자인 입혀줘", "화면 만들어줘", "대시보드 짜줘", "대민 사이트 만들어줘", "토큰 적용해줘", "shadcn 으로 붙여줘", "이 서비스만 색이 다르다", "디자인이 제각각이다", "KRDS 맞춰줘", "파비콘 넣어줘" 요청에 사용. 업무/대민 프로필 판정 → 착지 방식(Tier 1 CSS 복사 / Tier 2 shadcn 레지스트리) → 공통 셸 → 화면 패턴(업무 Archetype 6종 / 대민 패턴 6종) → 컴포넌트 → check_design.py 검증 순으로 진행한다. 배포 파이프라인·state.json 을 전제하지 않는다.
 ---
 
-# 경기도의회 공통 디자인 스킬 (v2.0)
+# 경기도의회 공통 디자인 스킬 (v3.3)
 
 **디자인 드리프트는 되돌리기가 가장 비싼 부채다.** 색은 전 화면·전 스크린샷·전 인수 증적을 함께 바꿔야 한다.
 이 조직의 주 색상이 한때 **9종**이었던 것은 "이번만" 이 아홉 번 쌓인 결과다. 이 스킬의 목적은 열 번째를 막는 것이고,
@@ -23,7 +23,18 @@ description: 경기도의회 공통 디자인 시스템을 화면에 적용·검
 
 판정 기준은 하나다 — `$ROOT/design/ggc-tokens.css` 가 있으면 정본이다.
 
-찾았으면 **먼저 갤러리를 브라우저로 연다**: `$ROOT/design/examples/index.html`. 화면을 짜기 전에 무엇이 나오는지 본다.
+찾았으면 **부트스트랩 다섯 명령**(정본 지시면 `$ROOT/AGENTS.md` 와 같다 — 이 스킬은 그것을 되풀이하지 않는다, ADR 0015):
+
+```bash
+python "$ROOT/tools/ggc.py" docs principles --dense   # 원칙 · 철칙
+python "$ROOT/tools/ggc.py" docs tokens --dense       # 토큰 이름 = 값 (정본에서 실시간)
+python "$ROOT/tools/ggc.py" docs profile --dense      # 대민 프로필이 덮어쓰는 치수
+python "$ROOT/tools/ggc.py" component --list          # 부품 → 문서
+python "$ROOT/tools/ggc.py" template --list           # 화면 틀 14종 → 갤러리 · 처방
+```
+
+그리고 **갤러리를 브라우저로 연다**: `$ROOT/design/examples/index.html`. 화면을 짜기 전에 무엇이 나오는지 본다.
+부품 하나의 마크업은 `component <id> --markup`, 틀 하나의 본문은 `template <id> --markup` 으로 꺼낸다(짐작해 짜지 않는다).
 
 ## 1. 관통 원칙 — 이름은 복제해도 되고, 값은 복제하면 안 된다
 
@@ -187,4 +198,6 @@ python "$ROOT/design/check_design.py" --gate <서비스경로> --aa=observe     
 | `references/reskin.md` | ❹ 독자형 — 가동 중 서비스 수렴 절차 |
 | `references/verify.md` | Phase 5 — 검사 7종 · 증거 · 오버플로 스크립트 · 복귀 지점 |
 | `$ROOT/docs/contract.md` | **AUTHORITATIVE** 계약 — 셸 치수 · archetype · 프로필 · 완료 정의 |
+| `$ROOT/docs/families/` | Phase 4 — 형제 부품이 함께 지키는 계약(입력 컨트롤 · 뜨는 층 · 상태 보이기 · 셸). 부품 문서가 되풀이하지 않는 규칙은 여기 |
+| `$ROOT/AGENTS.md` · `tools/ggc.py` | 정본 지시면 · CLI(`docs` · `component` · `template` · `specs` · `check`) — 저장소를 고치는 일(B)은 AGENTS.md 의 흐름 |
 | `$ROOT/design/examples/` | 실물 갤러리 (업무 13쪽 · 대민 5쪽) — v3.1 `less.html`(덜어내기 전/후) · `operate.html`(Operate) · v3.2 `workbench.html`(두 칸 · 문서 보기 · 긴 작업) · `public/solo.html`(휴대폰 1인 링크 · 서명) |

@@ -82,7 +82,7 @@
         <div class="row">
           <div>
             <h1 class="ggc-page-title" id="page-title">토큰 · 팔레트</h1>
-            <p class="desc">ggc-tokens.css v3.2</p>
+            <p class="desc">ggc-tokens.css v4.0</p>
           </div>
         </div>
       </div>
@@ -285,12 +285,18 @@
           </div>
         </div>
 
-        <div class="ex-sub">그림자 — 카드는 그림자를 쓰지 않는다 (계약 §2). primary 버튼만 예외다</div>
+        <div class="ex-sub">깊이 — 세 단계 (v4.0: 「깊이는 조용히」 — 카드·KPI 는 low, 메뉴·토스트는 med, 모달은 high. 주 버튼은 그림자 없음)</div>
         <div class="ex-demo ex-demo--bg ex-row" style="gap:var(--ggc-space-6)">
-          <div style="background:var(--ggc-surface);border:1px solid var(--ggc-border);border-radius:var(--ggc-radius-lg);padding:var(--ggc-space-5);font-size:12.5px;color:var(--ggc-text-muted);box-shadow:var(--ggc-shadow)">
-            <code style="font-family:var(--ggc-font-mono)">--ggc-shadow</code><br>기본 · 거의 보이지 않는다
+          <div style="background:var(--ggc-surface);border:1px solid var(--ggc-border);border-radius:var(--ggc-radius-lg);padding:var(--ggc-space-5);font-size:12.5px;color:var(--ggc-text-muted);box-shadow:var(--ggc-shadow-low)">
+            <code style="font-family:var(--ggc-font-mono)">--ggc-shadow-low</code><br>카드 · KPI 타일 · 확인 필요 상태
           </div>
-          <button class="ggc-btn ggc-btn--primary" type="button">--ggc-shadow-primary</button>
+          <div style="background:var(--ggc-surface);border:1px solid var(--ggc-border-strong);border-radius:var(--ggc-radius);padding:var(--ggc-space-5);font-size:12.5px;color:var(--ggc-text-muted);box-shadow:var(--ggc-shadow-med)">
+            <code style="font-family:var(--ggc-font-mono)">--ggc-shadow-med</code><br>메뉴 · 토스트 · 팝오버
+          </div>
+          <div style="background:var(--ggc-surface);border-radius:var(--ggc-radius-lg);padding:var(--ggc-space-5);font-size:12.5px;color:var(--ggc-text-muted);box-shadow:var(--ggc-shadow-high)">
+            <code style="font-family:var(--ggc-font-mono)">--ggc-shadow-high</code><br>모달
+          </div>
+          <button class="ggc-btn ggc-btn--primary" type="button">주 버튼 — 그림자 없음</button>
         </div>
 
         <div class="ex-sub">포커스 링 — <code class="ex-inline">--ggc-focus-ring</code></div>
@@ -425,7 +431,7 @@
   <footer class="ggc-footer">
     <div class="inner">
       값과 대비비는 이 페이지가 <b>정본에서 실측</b>한 것이다 ·
-      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v3.2
+      정본 <code style="font-family:var(--ggc-font-mono)">design/ggc-tokens.css</code> v4.0
     </div>
   </footer>
 </div>

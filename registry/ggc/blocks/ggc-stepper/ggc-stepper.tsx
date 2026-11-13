@@ -37,7 +37,7 @@ function Step({
         <span className={cn("h-0.5 flex-1", state === "done" ? "bg-(--ggc-success)" : "bg-border")} />
       </div>
       <div className="mt-2 px-1">
-        <div className={cn("text-(length:--ggc-text-sm) font-bold", state === "current" ? "text-(--ggc-primary-deep)" : state === "done" ? "text-foreground" : "text-(--ggc-text-subtle)")}>{label}</div>
+        <div className={cn("text-(length:--ggc-text-sm) font-bold", state === "current" ? "text-(--ggc-text-strong)" : state === "done" ? "text-foreground" : "text-(--ggc-text-subtle)")}>{label}</div>
         {sub && <div className="mt-0.5 text-(length:--ggc-text-xs) text-(--ggc-text-subtle)">{sub}</div>}
       </div>
     </li>

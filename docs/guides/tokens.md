@@ -12,7 +12,8 @@
 
 | 역할 | 이름 | 언제 |
 |---|---|---|
-| 브랜드 | `--ggc-primary` / `-dark` / `-deep` / `-light` / `-light-strong` | 주요 버튼·활성·링크 / hover / pressed·유틸리티바·표 헤더선 / 선택 배경 / 강조 배경 |
+| 강조 잉크 (v4.0) | `--ggc-accent` / `-hover` / `-active` / `--ggc-on-accent` / `--ggc-accent-muted` / `-strong` | 주 버튼 · 체크 · 스위치 · 현재 단계 · 탭 밑줄 · 현재 쪽 · 진행 막대 / hover / pressed / 그 위 글자 / 선택 배경 · 2차 버튼 / 2차 hover · 트랙 |
+| 브랜드 | `--ggc-primary` / `-dark` / `-deep` / `-light` / `-light-strong` | **브랜드 자리에만**(v4.0): GNB 브랜드 · 링크 / 링크 hover / 유틸리티 바 · 역할 배지 / 히어로 바탕 / 납부 배지 |
 | 상태 | `--ggc-success` `--ggc-warning` `--ggc-danger` `--ggc-info` (+ `-tint`) | 승인·확정 / 대기·주의 / 반려·오류 / 정보·회기 중. 틴트는 배지·알림 배경 |
 | 텍스트 | `--ggc-text-strong` `--ggc-text` `--ggc-text-body` `--ggc-text-muted` `--ggc-text-subtle` | 제목·수치 / 본문 / 긴 단락·표 td / 보조·라벨·표 헤더 / 메타·힌트 |
 | ⚠ 텍스트 아님 | `--ggc-text-faint` | 아이콘 stroke · 구분 · 장식 (3:1 대상). **글자에 쓰면 AA 미달** |
@@ -26,7 +27,9 @@
 |---|---|
 | 서체 | `--ggc-font` `--ggc-font-mono` |
 | 간격 | `--ggc-space-1` ~ `-11` (4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64 · 80) — KRDS gap 부분집합. 사이 값을 발명하지 않는다 |
-| 형태 | `--ggc-radius-sm` `--ggc-radius` `--ggc-radius-lg` · `--ggc-shadow` `--ggc-shadow-primary` |
+| 형태 | `--ggc-radius-sm` `--ggc-radius` `--ggc-radius-lg` `--ggc-radius-full` (작은 상자 / 버튼·입력·세그먼트 / 카드·KPI / 알약) |
+| 깊이 (v4.0) | `--ggc-shadow-low` `-med` `-high` (카드·KPI / 메뉴·토스트 / 모달) · `--ggc-shadow`(= low) `--ggc-shadow-primary`(none) · `--ggc-hover-tint` `--ggc-pressed-tint` |
+| 움직임 (v4.0) | `--ggc-motion-fast` `-medium` `-slow` (125 / 300 / 700ms) |
 | 포커스 | `--ggc-focus-ring` (계약 §3 알파 .20) |
 | 셸 | `--ggc-gnb-h` `--ggc-lnb-w` `--ggc-lnb-w-icon` `--ggc-main-max` `--ggc-main-max-wide` (업무) |
 | 아이콘 (v3.0) | `--ggc-icon` `--ggc-icon-lg` `--ggc-icon-stroke` — lucide 전용, [icons.md](icons.md) |

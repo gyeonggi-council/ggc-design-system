@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-(--ggc-shadow-primary) hover:bg-(--ggc-primary-dark) active:bg-(--ggc-primary-deep)",
+        default: "bg-primary text-primary-foreground shadow-(--ggc-shadow-primary) hover:bg-(--ggc-accent-hover) active:bg-(--ggc-accent-active)",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
@@ -21,7 +21,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         /* 이 저장소 고유 — 점선 추가 버튼('조문 직접 추가'). 폭 100%, 높이는 입력과 같다 */
         dashed:
-          "w-full border-[1.5px] border-dashed border-input bg-(--ggc-row-hover) font-semibold text-muted-foreground hover:border-primary hover:bg-card hover:text-(--ggc-primary-deep)",
+          "w-full border-[1.5px] border-dashed border-input bg-(--ggc-row-hover) font-semibold text-muted-foreground hover:border-primary hover:bg-muted hover:text-foreground",
       },
       size: {
         default:

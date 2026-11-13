@@ -5,7 +5,8 @@
 펼치면 그대로 복사할 수 있다.
 
 인벤토리 정본은 [`design/components.tsv`](../../design/components.tsv) 다. 이 표와 CSS 가
-어긋나면 `check_design.py --canon` 이 잡는다.
+어긋나면 `check_design.py --canon` 이 잡는다. 형제 부품이 함께 지키는 규칙(높이 토큰 · 포커스 · 닫는 법 · 색 단독 금지)은
+부품마다 되풀이하지 않고 [패밀리](../families/README.md)에 한 번 둔다. 명령으로 꺼내려면 `python tools/ggc.py component <id> [--markup]`.
 
 ## Tier 1 — CSS 클래스 (전 스택 공용)
 
@@ -53,6 +54,9 @@
 | 서명 패드 `.ggc-signature` | [signature.md](signature.md) | public/solo | 있음 (v3.2) |
 | 문서 미리보기 틀 (렌더러는 서비스) `.ggc-viewer` | [viewer.md](viewer.md) | workbench | 있음 (v3.2) |
 | 좌우 두 칸 작업대 `.ggc-split` | [split.md](split.md) | workbench | 있음 (v3.2) |
+| 세그먼트 컨트롤 `.ggc-segmented` | [segmented.md](segmented.md) | components-forms | 있음 (v4.0) |
+| 아바타 `.ggc-avatar` | [avatar.md](avatar.md) | components | 있음 (v4.0) |
+| AI 작업 상태 `.ggc-agent` | [agent.md](agent.md) | components-overlay | 있음 (v4.0) |
 
 ## 대민 셸 — `design/ggc-public.css` (대민 전용)
 

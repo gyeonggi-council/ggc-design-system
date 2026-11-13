@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "avatar",
   "title": "아바타",
-  "description": "사용자 표시 — 실명 · 역할 · 부서 옆. 사진이 없으면 머리글자.",
+  "description": "사람 · 기관 · AI — 실명 · 역할 · 부서 옆. 사진이 없으면 머리글자, AI 는 잉크 바탕 사각(Tier 1 .ggc-avatar--ai).",
   "dependencies": [
     "radix-ui"
   ],
