@@ -1,0 +1,23 @@
+/* chair.css — 의장 소개 목업 전용. app.css 다음에 로드한다. 값은 전부 토큰 — 색 리터럴 0. */
+.sm-profile { display: grid; grid-template-columns: minmax(200px, 260px) minmax(0, 1fr); gap: var(--ggc-space-6); align-items: start; }
+.sm-photo { margin: 0; }
+.sm-photo-box { aspect-ratio: 3 / 4; display: flex; align-items: center; justify-content: center; background: var(--ggc-surface-inset); border: 1px dashed var(--ggc-border-strong); border-radius: var(--ggc-radius-lg); }
+.sm-photo-mark { transform: scale(1.6); }
+.sm-photo figcaption { margin-top: var(--ggc-space-2); font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); text-align: center; }
+.sm-section-note { margin: 0 0 var(--ggc-space-4); font-size: var(--ggc-text-sm); color: var(--ggc-text-muted); }
+.sm-h2-sub { font-size: var(--ggc-text-sm); font-weight: 400; color: var(--ggc-text-subtle); margin-left: var(--ggc-space-2); }
+.sm-quotes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ggc-space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.sm-quote { margin: 0; padding-left: var(--ggc-space-4); border-left: 3px solid var(--ggc-primary); }
+.sm-quote p { margin: 0; font-size: var(--ggc-text-lg); font-weight: 700; line-height: var(--ggc-leading-tight); color: var(--ggc-text-strong); }
+.sm-quote-meta { margin: var(--ggc-space-3) 0 0; font-size: var(--ggc-text-xs); color: var(--ggc-text-subtle); }
+.sm-quote-body { margin: var(--ggc-space-2) 0 0; font-size: var(--ggc-text-sm); line-height: var(--ggc-leading-normal); color: var(--ggc-text-body); }
+.sm-src { font-size: var(--ggc-text-xs); white-space: nowrap; }
+.sm-todo { color: var(--ggc-warning); font-weight: 600; }
+.sm-sources li { font-size: var(--ggc-text-sm); }
+#main section { scroll-margin-top: var(--ggc-space-4); }
+#main .inner > section { margin-top: var(--ggc-space-9); }   /* 단락 사이 — 제목이 앞 단락 끝에 붙지 않게 */
+#main .inner > section:first-child { margin-top: var(--ggc-space-7); }
+@media (max-width: 720px) {
+  .sm-profile { grid-template-columns: minmax(0, 1fr); }
+  .sm-photo { max-width: 200px; margin: 0 auto; }
+}
