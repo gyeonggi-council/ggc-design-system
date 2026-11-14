@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""build-single.py — 샘플 목업 아홉 쪽을 **파일 하나짜리 HTML** 로 합친다(휴대폰 내려받기 · 메신저 전달용).
+"""build-single.py — 샘플 목업 열 쪽을 **파일 하나짜리 HTML** 로 합친다(휴대폰 내려받기 · 메신저 전달용).
 
 이 폴더의 쪽은 정본 사본을 상대경로로 링크해서 파일 열몇 개가 함께 있어야 열린다.
 휴대폰은 폴더째 내려받기 어렵다 — 그래서 CSS · 폰트 · 스크립트 · 이미지를 한 파일에 넣는다.
@@ -17,7 +17,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PAGES = [(n + ".html", "ggc-sample-%s.html" % n) for n in ("work", "work-detail", "work-form", "public", "public-detail", "public-form",
-                                                       "caption-dashboard", "caption-live", "caption-focus")]
+                                                       "caption-dashboard", "caption-live", "caption-focus", "chair")]
 # 쪽 사이 링크도 합본 이름으로 바꾼다 — 같은 폴더에 함께 받으면 서로 이어진다
 RENAME = dict(PAGES)
 MIME = {".png": "image/png", ".woff2": "font/woff2"}
